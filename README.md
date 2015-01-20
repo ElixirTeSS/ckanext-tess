@@ -1,8 +1,8 @@
 Installation
 
-First and foremost you need to have a CKAN instance setup by following the [CKAN Install Guide](http://docs.ckan.org/en/latest/maintaining/installing/index.html)
+First and foremost you need to have a CKAN instance setup by following the [CKAN Install Guide](http://docs.ckan.org/en/latest/maintaining/installing/index.html).
 
-Then follow these instructions to download, install and serve the TeSS theme extension in development mode:
+Then follow these instructions to download, install and serve the TeSS CKAN extension in development mode:
 
     cd /usr/lib/ckan/default
 
