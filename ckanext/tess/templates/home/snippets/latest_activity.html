@@ -1,0 +1,27 @@
+{# set latest_activity = h.get_latest_activity() #}
+{% set latest_activity =
+  [
+    {"date": "2015-01-07T19:24:04", "icon" : "content_provider_add.png", "title": "Corsera content provider added"},
+    {"date": "2015-01-03T15:31:02", "icon" : "training_material_add.png", "title": "New EBI-EMBL training material added"},
+    {"date": "2014-11-15T07:53:42", "icon" : "user_add.png", "title": "Michael Cornell from EBI-EMBL joined TeSS"}
+    ]
+%}
+
+<div class="box">
+    <section class="group-list module module-narrow module-shallow">
+        <header class="module-heading">
+            <h3 class="media-heading">LATEST ACTIVITY</h3>
+        </header>
+        {% if latest_activity %}
+            {% set list_class = "unstyled dataset-list" %}
+            {% set item_class = "dataset-item module-content" %}
+            <ul class="dataset-list unstyled">
+                {% for activity_item in latest_activity %}
+                    {% if activity_item.title %}
+                        {% snippet 'snippets/latest_activity_item.html', activity_item=activity_item, list_class=list_class, item_class=item_class, truncate=150, truncate_title=50 %}
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </section>
+</div>

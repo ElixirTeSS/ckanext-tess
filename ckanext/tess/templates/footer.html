@@ -1,0 +1,27 @@
+<footer class="site-footer">
+  <div class="container">
+    {% block footer_content %}
+      <nav class="footer-links">
+        {% block footer_nav %}
+          <ul class="unstyled">
+            {% block footer_links %}
+              {#<li><a href="{{ h.url_for(controller='home', action='about') }}">{{ _('About {0}').format(g.site_title) }}</a></li>#}
+              <li><a target="_blank" href="http://elixir-uk.org/"><img src="http://elixir-uk.org/++theme++elixir-uktheme/static/elixir-uk-logo.png"></a></li>
+            {% endblock %}
+          </ul>
+        {% endblock %}
+      </nav>
+      <div class="attribution">
+        {% block footer_attribution %}
+          <p>{% trans %}<strong>Powered by</strong> <a class="hide-text ckan-footer-logo" href="http://ckan.org">CKAN</a>{% endtrans %}</p>
+        {% endblock %}
+      </div>
+    {% endblock %}
+  </div>
+
+  {% block footer_debug %}
+    {% if g.debug %}
+      {% include 'snippets/debug.html' %}
+    {% endif %}
+  {% endblock %}
+</footer>

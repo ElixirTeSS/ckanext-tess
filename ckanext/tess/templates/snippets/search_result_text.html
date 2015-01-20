@@ -1,0 +1,51 @@
+{#
+
+Displays a test for results of a search.
+
+query        - The text that was searched for
+count        - The number of results for the search
+type         - Search result type (dataset, group, organization)
+
+Example:
+
+  {% snippet 'snippets/search_result_text.html', query=query, count=count, type='dataset' %}
+
+#}
+{% if type == 'dataset' %}
+  {% set text_query = ungettext('{number} training material found for "{query}"', '{number} training materials found for "{query}"', count) %}
+  {% set text_query_none = _('No training materials found for "{query}"') %}
+  {% set text_no_query = ungettext('{number} training material found', '{number} training materials found', count) %}
+  {% set text_no_query_none = _('No training materials found') %}
+
+{% elif type == 'group' %}
+  {% set text_query = ungettext('{number} package found for "{query}"', '{number} packages found for "{query}"', count) %}
+  {% set text_query_none = _('No packages found for "{query}"') %}
+  {% set text_no_query = ungettext('{number} packages found', '{number} packages found', count) %}
+  {% set text_no_query_none = _('No packages found') %}
+
+{% elif type == 'workflow' %}
+  {% set text_query = ungettext('{number} workflow found for "{query}"', '{number} workflows found for "{query}"', count) %}
+  {% set text_query_none = _('No workflows found for "{query}"') %}
+  {% set text_no_query = ungettext('{number} workflows found', '{number} workflows found', count) %}
+  {% set text_no_query_none = _('No workflows found') %}
+
+{% elif type == 'organization' %}
+  {% set text_query = ungettext('{number} content provider found for "{query}"', '{number} content providers found for "{query}"', count) %}
+  {% set text_query_none = _('No content providers found for "{query}"') %}
+  {% set text_no_query = ungettext('{number} content providers found', '{number} content providers found', count) %}
+  {% set text_no_query_none = _('No content providers found') %}
+{%- endif -%}
+
+{% if query %}
+  {%- if count -%}
+    {{ text_query.format(number=h.localised_number(count), query=query) }}
+  {%- else -%}
+    {{ text_query_none.format(query=query) }}
+  {%- endif -%}
+{%- else -%}
+  {%- if count -%}
+    {{ text_no_query.format(number=h.localised_number(count)) }}
+  {%- else -%}
+    {{ text_no_query_none }}
+  {%- endif -%}
+{%- endif -%}

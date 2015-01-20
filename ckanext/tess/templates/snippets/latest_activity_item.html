@@ -1,0 +1,19 @@
+<li class="{{ item_class or "dataset-item" }}">
+<div class="latest-activity-content">
+    <h3 class="dataset-heading">
+        {% if activity_item.icon %}
+            <img src="{{"/images/"+activity_item.icon}}"/>
+        {% endif %}
+        {% if activity_item.title %}
+            {% if truncate_title == 0 %}
+                {{ h.markdown_extract(activity_item.title)|urlize }}
+            {% else %}
+                {{ h.markdown_extract(activity_item.title, truncate_title)|urlize }}
+            {% endif %}
+            {% if activity_item.date %}
+                <span class="news_item_date">{{h.render_datetime(activity_item.date, '%b %d %Y')}}</span>
+            {% endif %}
+        {% endif %}
+    </h3>
+</div>
+</li>

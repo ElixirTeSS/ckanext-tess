@@ -1,0 +1,21 @@
+<li class="{{ item_class or "dataset-item" }}">
+<div class="dataset-content">
+    <h3 class="dataset-heading">
+        {% if news_item.title %}
+            {% if truncate_title == 0 %}
+                {{ h.markdown_extract(news_item.title)|urlize }}
+            {% else %}
+                {{ h.markdown_extract(news_item.title, truncate_title)|urlize }}
+            {% endif %}
+            {% if news_item.date %}
+                <span class="news_item_date">{{h.render_datetime(news_item.date, '%b %d %Y')}}</span>
+            {% endif %}
+        {% endif %}
+    </h3>
+    {% if truncate == 0 %}
+        {{ h.markdown_extract(news_item.description)|urlize }}
+    {% else %}
+        {{ h.markdown_extract(news_item.description, truncate)|urlize }}
+    {% endif %}
+</div>
+</li>

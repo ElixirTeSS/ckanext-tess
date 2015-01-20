@@ -1,0 +1,26 @@
+{% extends "page.html" %}
+
+{% block subtitle %}{{ _('Finland') }}{% endblock %}
+
+{% block breadcrumb_content %}
+<li class="active">{% link_for _('Finland'), controller='group', action='index' %}</li>
+{% endblock %}
+
+{% block primary %}
+{% snippet "nodes/snippets/helper.html" %}
+<br>
+<br>
+<br>
+<br>
+<h1>Content for Finnish Node</h1>
+<img src="
+http://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Flag_of_Finland.svg/2000px-Flag_of_Finland.svg.png" style="max-width:300px">
+<br>
+<br>
+<br>
+<br>
+<br>
+{% endblock %}
+{% block secondary %}{% endblock %}
+
+

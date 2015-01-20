@@ -1,0 +1,15 @@
+{% extends "page.html" %}
+
+{% block subtitle %}{{ _('Nodes') }}{% endblock %}
+
+{% block breadcrumb_content %}
+<li class="active">{% link_for _('Nodes'), controller='group', action='index' %}</li>
+{% endblock %}
+
+{% block primary %}
+{% snippet "nodes/snippets/helper.html" %}
+<img src="/images/hub.png">
+{% endblock %}
+{% block secondary %}{% endblock %}
+
+

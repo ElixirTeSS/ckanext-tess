@@ -1,0 +1,42 @@
+{% extends "page.html" %}
+
+{% block subtitle %}{{ _('Events') }}{% endblock %}
+
+{% block breadcrumb_content %}
+  <li class="active">{% link_for _('Events'), controller='home', action='about' %}</li>
+{% endblock %}
+
+{% block primary %}
+  <article class="module">
+    <div class="module-content">
+      {% block about %}
+          <h1 class="page-heading">{{ _('Events') }}</h1>
+      {% endblock %}
+    </div>
+  </article>
+<div class="events-source" id="iAnnList">
+    <p class="events-source-title"><strong>Source: </strong>
+        <a target="_blank" href="http://iann.pro">
+            <img alt="iAnn" src="/images/iann_logo-32x30.png"/>
+        </a>
+    </p>
+    <hr>
+    <ul>
+        <li class="views-row-odd views-row"><a taget="_blank" href="http://biosb.nl/sbnl2014/">SB@NL2014 Systems Biology Symposium</a>
+            <div class="iAnnDateCountry">Mon Dec 15 2014 - Netherlands</div>
+        </li>
+        <li class="views-row-even views-row"><a taget="_blank" href="http://www2.le.ac.uk/colleges/medbiopsych/facilities-and-services/cbs/lite/aif/workshops/imagej-workshops-15-and-16-December-2014">Introduction to ImageJ/Fiji and Writing macros in ImageJ</a>
+            <div class="iAnnDateCountry">Mon Dec 15 2014 - United Kingdom</div>
+        </li>
+        <li class="views-row-odd views-row"><a taget="_blank" href="http://www.is.mpg.de/star-m">StAR-M: Stuttgart Atomic Resolution Microscopy Symposium</a>
+            <div class="iAnnDateCountry">Mon Dec 15 2014 - Germany</div>
+        </li>
+        <li class="views-row-even views-row"><a taget="_blank" href="http://www.tgac.ac.uk/361_Division/training-programme/courses-workshops/tgac-events/best-practices-for-training-in-next-generation-sequencing-analysis/">Best practices for training in Next Generation Sequencing Analysis</a>
+            <div class="iAnnDateCountry">Tue Jan 13 2015 - United Kingdom</div>
+        </li>
+    </ul>
+    <div class="more-link"><a href="http://mygoblet.org/iannviewer" target="_blank">More events from iAnn</a></div>
+</div>
+{% endblock %}
+
+{% block secondary %}{% endblock %}

@@ -1,0 +1,27 @@
+{# set latest_news = h.get_latest_news() #}
+{% set latest_news =
+  [
+    {"date": "2015-01-07T19:53:42", "title": "Software developer vacancy at Oxford", "description": "Software developer vacancy at Oxford, including work on ELIXIR UK: http://t.co/0dhOYMuMUQ"},
+    {"date": "2015-01-07T10:14:02", "title": "Bring Your Own Data workshops", "description": "Find out more about 'Bring Your Own Data workshops': http://t.co/uHuYRNcQPi"},
+    {"date": "2015-01-05T09:43:29", "title": "Project leader vacancy at Vertebrate Genomics outreach team", "description": "EMBL-EBI's Vertebrate Genomics outreach team is recruiting a new project leader: https://t.co/2Mqf8oky1V"}
+    ]
+%}
+
+<div class="box">
+    <section class="group-list module module-narrow module-shallow">
+        <header class="module-heading">
+            <h3 class="media-heading">LATEST NEWS</h3>
+        </header>
+        {% if latest_news %}
+            {% set list_class = "unstyled dataset-list" %}
+            {% set item_class = "dataset-item module-content" %}
+            <ul class="dataset-list unstyled">
+                {% for news_item in latest_news %}
+                    {% if news_item.description %}
+                        {% snippet 'snippets/news_item.html', news_item=news_item, list_class=list_class, item_class=item_class, truncate=150, truncate_title=50 %}
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </section>
+</div>
