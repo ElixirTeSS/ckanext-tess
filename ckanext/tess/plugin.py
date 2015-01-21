@@ -2,19 +2,45 @@
 
 '''
 import ckan.plugins.toolkit as toolkit
+import ckan.plugins as plugins
 import os
-from ckan.plugins import implements, SingletonPlugin
-from ckan.plugins import IConfigurer
-from ckan.plugins import IRoutes
 
-class TeSSPlugin(SingletonPlugin):
+def country_codes():
+    create_country_codes()
+    try:
+        tag_list = toolkit.get_action('tag_list')
+        country_codes = tag_list(data_dict={'vocabulary_id': 'country_codes'})
+        return country_codes
+    except toolkit.ObjectNotFound:
+        return None
+
+def create_country_codes():
+    user = toolkit.get_action('get_site_user')({'ignore_auth': True}, {})
+    context = {'user': user['name']}
+    try:
+       data = {'id': 'country_codes'}
+       toolkit.get_action('vocabulary_show')(context, data)
+    except toolkit.ObjectNotFound:
+       data = {'name': 'country_codes'}
+       vocab = toolkit.get_action('vocabulary_create')(context, data)
+       for tag in (u'United Kingdom', u'Netherlands', u'Switzerland', u'Sweden', u'Finland',
+                   u'Portugal', u'Estonia', u'Israel', u'Norway', u'Denmark', u'EBI', 'Czech Republic',
+                   u'Belgium', u'Slovenia', u'France', u'Greece', u'Italy', u'Spain'):
+           data = {'name': tag, 'vocabulary_id': vocab['id']}
+           toolkit.get_action('tag_create')(context, data)
+
+class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     '''TeSS CKAN plugin.
 
     '''
     # Declare that this class implements IConfigurer.
     #plugins.implements(plugins.IConfigurer)
-    implements(IConfigurer, inherit=True)
-    implements(IRoutes, inherit=True)
+
+    plugins.implements(plugins.IConfigurer, inherit=True)
+    plugins.implements(plugins.IRoutes, inherit=True)
+    plugins.implements(plugins.IDatasetForm, inherit=True)
+    plugins.implements(plugins.ITemplateHelpers, inherit=True)
+    plugins.implements(plugins.IFacets, inherit=True)
 
     def update_config(self, config):
 
@@ -23,10 +49,7 @@ class TeSSPlugin(SingletonPlugin):
         # 'templates' is the path to the templates dir, relative to this
         # plugin.py file.
         #toolkit.add_template_directory(config, 'templates')
-	#toolkit.add_public_directory(config, 'public')
-
-	#here = os.path.dirname(__file__)
-	#config['ckan.site_logo'] = 'images/TeSSLogo.png'
+	    #toolkit.add_public_directory(config, 'public')
 
         here = os.path.dirname(__file__)
         rootdir = os.path.dirname(os.path.dirname(here))
@@ -46,7 +69,7 @@ class TeSSPlugin(SingletonPlugin):
     	# set the logo
     	config['ckan.site_logo'] = 'images/TeSSLogo.png'
 
-	#config['ckan.template_head_end'] = config.get('ckan.template_head_end', '') +\
+	    #config['ckan.template_head_end'] = config.get('ckan.template_head_end', '') +\
         #                '<link rel="stylesheet" href="/css/tess.css" type="text/css"> '
 
     def before_map(self, map):
@@ -55,4 +78,57 @@ class TeSSPlugin(SingletonPlugin):
         map.connect('events', '/events', controller='ckanext.tess.controller:SpecialRouteController', action='events')
         return map
 
+    def dataset_facets(self, facets_dict, package_type):
+        facets_dict['vocab_country_codes'] = plugins.toolkit._('ELIXIR Nodes')
+        return facets_dict
 
+    def get_helpers(self):
+        return {'country_codes': country_codes}
+
+    def _modify_package_schema(self, schema):
+        schema.update({
+            'custom_text': [toolkit.get_validator('ignore_missing'),
+                            toolkit.get_converter('convert_to_extras')]
+        })
+        schema.update({
+            'country_code': [
+                toolkit.get_validator('ignore_missing'),
+                toolkit.get_converter('convert_to_tags')('country_codes')
+            ]
+        })
+        return schema
+
+    def show_package_schema(self):
+        schema = super(TeSSPlugin, self).show_package_schema()
+        schema.update({
+            'custom_text': [toolkit.get_converter('convert_from_extras'),
+                            toolkit.get_validator('ignore_missing')]
+        })
+
+        schema['tags']['__extras'].append(toolkit.get_converter('free_tags_only'))
+        schema.update({
+            'country_code': [
+                toolkit.get_converter('convert_from_tags')('country_codes'),
+                toolkit.get_validator('ignore_missing')]
+            })
+        return schema
+
+    def create_package_schema(self):
+        schema = super(TeSSPlugin, self).create_package_schema()
+        schema = self._modify_package_schema(schema)
+        return schema
+
+    def update_package_schema(self):
+        schema = super(TeSSPlugin, self).update_package_schema()
+        schema = self._modify_package_schema(schema)
+        return schema
+
+    def is_fallback(self):
+        # Return True to register this plugin as the default handler for
+        # package types not handled by any other IDatasetForm plugin.
+        return True
+
+    def package_types(self):
+        # This plugin doesn't handle any special package types, it just
+        # registers itself as the default (above).
+        return []
