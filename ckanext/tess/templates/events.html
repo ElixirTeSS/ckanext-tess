@@ -1,65 +1,3 @@
-<script language="JavaScript" type="text/javascript">
-			window.onload = function() {
-				var iannUrl = "http://iann.pro/solr/select/?q=*:*&rows=4&fl=start,title,country,link&fq=end%3A[NOW%20TO%20*]&wt=json&json.wrf=?&sort=start%20asc";	
-				jQuery.ajax({
-				    type: "GET",
-				    url: iannUrl,
-				    dataType: 'json',
-				    success: function(data){processResults(data);},
-					error: function(e){processError(e);}
-			    });
-			    
-			    var processResults = function(data) {
-			    	//alert(JSON.stringify(data.response.docs[0]));
-			    	if(data.response != undefined){
-			    		if(data.response.docs != undefined){
-			    			buildList(data.response.docs);
-			    		} else {	
-			    			console.log(processError("data.response.docs undefined"));
-			    		}
-			    	} else {
-			    		console.log(processError("data.response undefined"));
-			    	}
-				}
-				var processError = function(error) {
-					console.log("ERROR:" + error);	
-				}
-				var buildList = function(docs){
-					var target =jQuery('#iAnnList');
-					target.html('<p class="events-source-title"><strong>Source: </strong><a target="_blank" href="http://iann.pro">' +
-                            '<img alt="iAnn" src="/images/iann_logo-32x30.png"/></a></p><hr/>');
-					var table = jQuery('<ul></ul>').appendTo(target);
- 					jQuery('<div class="more-link"><a target="_blank" href="http://mygoblet.org/iannviewer">More events from iAnn</a></div>').appendTo(target);
-                                        var oddRow = true;
-					jQuery.each(docs, function(rowIndex, rowData) { 
-						var cols = {'start':'','title':'','link':'','country':''};
-			    	        	jQuery.each(cols, function(colsIndex, colsData) {
-			 	   			var field = rowData[colsIndex];
-			    			        if(colsIndex == 'start'){
-			    					field = field.substring(0,10);	
-				    				date = field.split("-");	
-				    				field = date[2] + "-" + date[1] + "-" + date[0]; 
-			    			         }
-				    		         cols[colsIndex] = field
-				    	         });
-                                                 var iAnnDate = cols['start'].split("-");
-                                                 var date = new Date();
-                                                 date.setFullYear(iAnnDate[2],iAnnDate[1]-1,iAnnDate[0]);
-                                                 date = date.toString();
-				    	         var row = jQuery('<li><a href="'+cols['link']+'" taget="_blank">'+cols['title']+'</a><div class="iAnnDateCountry">'+date.substring(0,15)+' - '+cols['country']+'</div></li>');
-                                                 if(oddRow == true){
-							row.addClass("views-row-odd");
-							oddRow = false;
-						 } else {
-							row.addClass("views-row-even");
-							oddRow = true;
-						 }
-                                                 row.addClass("views-row");
-                                                 row.appendTo(table);
-					});
-				}
-			};
-</script>
 {% extends "page.html" %}
 
 {% block subtitle %}{{ _('Events') }}{% endblock %}
@@ -76,7 +14,12 @@
       {% endblock %}
     </div>
   </article>
-  <div id="iAnnList" class="events-source"><div style="font-style: italic; color: grey;">Uploading events ... please wait</div></div>
+  <div id="iAnnList" class="events-source">
+  <p class="events-source-title"><strong>Source: </strong><a target="_blank" href="http://iann.pro">
+  <img alt="iAnn" src="/images/iann_logo-32x30.png"/></a></p><hr/>
+  {{ h.read_news() }}
+  <div class="more-link"><a target="_blank" href="http://mygoblet.org/iannviewer">More events from iAnn</a></div>
+  </div>
 {% endblock %}
 
 {% block secondary %}{% endblock %}
