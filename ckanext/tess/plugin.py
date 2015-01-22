@@ -29,6 +29,21 @@ def create_country_codes():
            data = {'name': tag, 'vocabulary_id': vocab['id']}
            toolkit.get_action('tag_create')(context, data)
 
+def reorder_dataset_facets(facet_keys, facet_values):
+    ''' Helper function that reorders 2 input lists so that
+        our 'ELIXIR Nodes' facet/filter (using key 'vocab_country_codes') is the second in the list (if there are more than 2 facets).
+        Input parameters:
+        facet_keys is list of facet dictionary keys;
+        facet_values is list of facet dictionary values
+        Both lists must be of the same length.
+
+    '''
+    index = facet_keys.index("vocab_country_codes") if "vocab_country_codes" in facet_keys else None
+    if (index is not None and index > 1 and len(facet_keys) > 2):
+        facet_keys[1], facet_keys[index] = facet_keys[index], facet_keys[1]
+        facet_values[1], facet_values[index] = facet_values[index], facet_values[1]
+    return facet_keys, facet_values
+
 class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     '''TeSS CKAN plugin.
 
@@ -83,7 +98,7 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         return facets_dict
 
     def get_helpers(self):
-        return {'country_codes': country_codes}
+        return {'country_codes': country_codes, 'tess_reorder_dataset_facets': reorder_dataset_facets}
 
     def _modify_package_schema(self, schema):
         schema.update({
