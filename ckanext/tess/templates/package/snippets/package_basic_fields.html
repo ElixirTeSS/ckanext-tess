@@ -20,13 +20,13 @@
 {% endblock %}
 
 <div class="control-group">
-    <label class="control-label" for="field-country_code">{{ _("ELIXIR Node") }}</label>
+    <label class="control-label" for="field-elixir_node">{{ _("ELIXIR Node") }}</label>
     <div class="controls">
-        <select id="field-country_code" name="country_code" data-module="autocomplete">
-            <option value="" {% if not country_code %} selected="selected" {% endif %}>{{ _('None') }}</option>
-            {% for country_code in h.country_codes() %}
-            <option value="{{ country_code }}"
-            {% if country_code in data.get('country_code', []) %}selected="selected"{% endif %}>{{ country_code }}
+        <select id="field-elixir_node" name="elixir_node" data-module="autocomplete">
+            <option value="" {% if not elixir_node %} selected="selected" {% endif %}>{{ _('None') }}</option>
+            {% for elixir_node in h.tess_elixir_nodes() %}
+            <option value="{{ elixir_node }}"
+            {% if elixir_node in data.get('elixir_node', []) %}selected="selected"{% endif %}>{{ elixir_node }}
             </option>
             {% endfor %}
         </select>

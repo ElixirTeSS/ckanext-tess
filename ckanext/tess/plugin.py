@@ -5,23 +5,23 @@ import ckan.plugins.toolkit as toolkit
 import ckan.plugins as plugins
 import os
 
-def country_codes():
-    create_country_codes()
+def elixir_nodes():
+    create_elixir_nodes()
     try:
         tag_list = toolkit.get_action('tag_list')
-        country_codes = tag_list(data_dict={'vocabulary_id': 'country_codes'})
-        return country_codes
+        elixir_nodes = tag_list(data_dict={'vocabulary_id': 'elixir_nodes'})
+        return elixir_nodes
     except toolkit.ObjectNotFound:
         return None
 
-def create_country_codes():
+def create_elixir_nodes():
     user = toolkit.get_action('get_site_user')({'ignore_auth': True}, {})
     context = {'user': user['name']}
     try:
-       data = {'id': 'country_codes'}
+       data = {'id': 'elixir_nodes'}
        toolkit.get_action('vocabulary_show')(context, data)
     except toolkit.ObjectNotFound:
-       data = {'name': 'country_codes'}
+       data = {'name': 'elixir_nodes'}
        vocab = toolkit.get_action('vocabulary_create')(context, data)
        for tag in (u'United Kingdom', u'Netherlands', u'Switzerland', u'Sweden', u'Finland',
                    u'Portugal', u'Estonia', u'Israel', u'Norway', u'Denmark', u'EBI', 'Czech Republic',
@@ -31,14 +31,14 @@ def create_country_codes():
 
 def reorder_dataset_facets(facet_keys, facet_values):
     ''' Helper function that reorders 2 input lists so that
-        our 'ELIXIR Nodes' facet/filter (using key 'vocab_country_codes') is the second in the list (if there are more than 2 facets).
+        our 'ELIXIR Nodes' facet/filter (using key 'vocab_elixir_nodes') is the second in the list (if there are more than 2 facets).
         Input parameters:
         facet_keys is list of facet dictionary keys;
         facet_values is list of facet dictionary values
         Both lists must be of the same length.
 
     '''
-    index = facet_keys.index("vocab_country_codes") if "vocab_country_codes" in facet_keys else None
+    index = facet_keys.index("vocab_elixir_nodes") if "vocab_elixir_nodes" in facet_keys else None
     if (index is not None and index > 1 and len(facet_keys) > 2):
         facet_keys[1], facet_keys[index] = facet_keys[index], facet_keys[1]
         facet_values[1], facet_values[index] = facet_values[index], facet_values[1]
@@ -94,11 +94,11 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         return map
 
     def dataset_facets(self, facets_dict, package_type):
-        facets_dict['vocab_country_codes'] = plugins.toolkit._('ELIXIR Nodes')
+        facets_dict['vocab_elixir_nodes'] = plugins.toolkit._('ELIXIR Nodes')
         return facets_dict
 
     def get_helpers(self):
-        return {'country_codes': country_codes, 'tess_reorder_dataset_facets': reorder_dataset_facets}
+        return {'tess_elixir_nodes': elixir_nodes, 'tess_reorder_dataset_facets': reorder_dataset_facets}
 
     def _modify_package_schema(self, schema):
         schema.update({
@@ -106,9 +106,9 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                             toolkit.get_converter('convert_to_extras')]
         })
         schema.update({
-            'country_code': [
+            'elixir_node': [
                 toolkit.get_validator('ignore_missing'),
-                toolkit.get_converter('convert_to_tags')('country_codes')
+                toolkit.get_converter('convert_to_tags')('elixir_nodes')
             ]
         })
         return schema
@@ -122,8 +122,8 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
 
         schema['tags']['__extras'].append(toolkit.get_converter('free_tags_only'))
         schema.update({
-            'country_code': [
-                toolkit.get_converter('convert_from_tags')('country_codes'),
+            'elixir_node': [
+                toolkit.get_converter('convert_from_tags')('elixir_nodes'),
                 toolkit.get_validator('ignore_missing')]
             })
         return schema
