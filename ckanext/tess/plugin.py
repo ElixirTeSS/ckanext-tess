@@ -5,6 +5,18 @@ import ckan.plugins.toolkit as toolkit
 import ckan.plugins as plugins
 import os
 
+def node_list():
+    return country_codes()
+
+def node_materials(node):
+    datasets = toolkit.get_action("package_search")(
+        data_dict={'fq':node, 'facet.field':['country_code']})
+    if (datasets['count'] > 0):
+        return datasets['results']
+    else:
+        return None
+    
+
 def country_codes():
     create_country_codes()
     try:
@@ -83,7 +95,9 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         return facets_dict
 
     def get_helpers(self):
-        return {'country_codes': country_codes}
+        return {'country_codes': country_codes,
+                'get_node_list': node_list,
+                'get_node_materials': node_materials }
 
     def _modify_package_schema(self, schema):
         schema.update({
