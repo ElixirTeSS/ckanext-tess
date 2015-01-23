@@ -323,3 +323,11 @@ hr.style-one {
     padding: 20px;
 }
 
+.icon-elixir {
+    width:16px;
+    height:16px;
+    background-image: url('/images/icon-elixir.png');
+    margin:0;
+    padding:0;
+    float:left;
+}

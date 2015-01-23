@@ -60,7 +60,9 @@
 {% endblock %}
 
 {% block secondary_content %}
-  {% for facet in c.facet_titles %}
-    {{ h.snippet('snippets/facet_list.html', title=c.facet_titles[facet], name=facet) }}
-  {% endfor %}
+{# Reorder facets so that 'ELIXIR Nodes' (with internal key 'vocab_elixir_nodes') comes second after 'Content Provider' #}
+    {% set facet_keys, facet_values = h.tess_reorder_dataset_facets(c.facet_titles.keys(), c.facet_titles.values()) %}
+    {% for facet in facet_keys %}
+        {{ h.snippet('snippets/facet_list.html', title=facet_values[loop.index0], name=facet_keys[loop.index0]) }}
+    {% endfor %}
 {% endblock %}
