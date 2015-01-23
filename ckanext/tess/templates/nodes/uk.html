@@ -1,22 +1,18 @@
-{% extends "page.html" %}
+{% set node_name = 'United Kingdom' %}
+{% extends "node_template.html" %}
 
-{% block subtitle %}{{ _('United Kingdom') }}{% endblock %}
 
-{% block breadcrumb_content %}
-<li class="active">{% link_for _('United Kingdom'), controller='group', action='index' %}</li>
-{% endblock %}
+{#
+ Override blocks from the nodes_template.html here to add your own custom configuration.
+ The blocks are listed below. Move them out of this comment bracket to override.
+    {% block materials %}
+    {% endblock %}
+    {% block events %}
+    {% endblock %}
+    {% block related_orgs %}
+    {% endblock %}
+#}
 
-{% block primary %}
-{% snippet "nodes/snippets/helper.html" %}
-<br>
-<!--img src="http://resources.woodlands-junior.kent.sch.uk/customs/images/uk.jpg"-->
-<img src="/images/uk.png">
-<br>
-<br>
-<br>
-<br>
-<br>
-{% endblock %}
-{% block secondary %}{% endblock %}
+
 
 

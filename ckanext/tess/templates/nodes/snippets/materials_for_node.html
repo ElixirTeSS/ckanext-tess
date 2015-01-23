@@ -1,0 +1,9 @@
+
+{% set datasets = h.get_node_materials(node) %}
+{% if datasets != None %}
+   <h1> Materials from the {{ node }} Node </h1>
+    <hr/>
+   {% for dataset in datasets %}
+      <br>{% snippet 'snippets/package_item.html', package=dataset %}<br>
+   {% endfor %}
+{% endif %}

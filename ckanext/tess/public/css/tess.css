@@ -316,3 +316,10 @@ hr.style-one {
 .flash-messages{
     text-align:center;
 }
+
+.materials {
+    margin: 20px;
+    border: solid;
+    padding: 20px;
+}
+

@@ -1,24 +1,5 @@
-{% extends "page.html" %}
+{% set node_name = 'EMBL' %}
+{% extends "node_template.html" %}
 
-{% block subtitle %}{{ _('EMBL-EBI') }}{% endblock %}
-
-{% block breadcrumb_content %}
-<li class="active">{% link_for _('EMBL-EBI'), controller='group', action='index' %}</li>
-{% endblock %}
-
-{% block primary %}
-{% snippet "nodes/snippets/helper.html" %}
-<br>
-<br>
-<br>
-<br>
-<h1>Content for EMBL-EBI Node</h1>
-<br>
-<br>
-<br>
-<br>
-<br>
-{% endblock %}
-{% block secondary %}{% endblock %}
-
+{# Override node_template blocks here for custom configuration #}
 
