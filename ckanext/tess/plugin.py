@@ -15,6 +15,10 @@ def node_materials(node):
         return datasets['results']
     else:
         return None
+
+def node_organizations(node):
+    return None
+
     
 def elixir_nodes():
     create_elixir_nodes()
@@ -113,7 +117,9 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         return {'elixir_nodes': elixir_nodes,
                 'get_node_list': node_list,
                 'get_node_materials': node_materials,
-                'tess_elixir_nodes': elixir_nodes, 'tess_reorder_dataset_facets': reorder_dataset_facets}
+                'get_node_organizations': node_organizations,
+                'tess_elixir_nodes': elixir_nodes, 'tess_reorder_dataset_facets': reorder_dataset_facets
+                }
 
     def _modify_package_schema(self, schema):
         schema.update({
