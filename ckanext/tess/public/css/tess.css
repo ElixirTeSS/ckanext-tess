@@ -317,11 +317,11 @@ hr.style-one {
     text-align:center;
 }
 
-.materials {
+/*.materials {
     margin: 20px;
     border: solid;
     padding: 20px;
-}
+}*/
 
 .icon-elixir {
     width:16px;
@@ -331,3 +331,13 @@ hr.style-one {
     padding:0;
     float:left;
 }
+
+.feed {
+    border:solid;
+    padding: 20px;
+    margin: 20px;
+    border-color: lightgrey;
+    background-color: ghostwhite;
+
+}
+
