@@ -14,24 +14,129 @@
 {% endblock %}
 
 {% block primary %}
-  {% snippet "nodes/snippets/helper.html" %}
-  <div class="row-fluid">
-     <div class="span12">
-         {% block node_heading %}
-             <h1 class="page-heading" style="text-align:center">{{ _('Node Hub') }}</h1>
-         {% endblock %}
-     </div>
-     <div class="span10">
-       {% block materials %}
-            {% for node_name in h.get_node_list() %}
-                {% snippet "nodes/snippets/materials_for_node.html", node=node_name, hub=True %}
-            {% endfor %}
-       {% endblock %}
-     </div>
-    </div>     
-    <div class="span2"></div>
-  </div>
-<img src="/images/hub.png">
+  {# snippet "nodes/snippets/helper.html" #}
+
+<div class="row-fluid">
+    <div class="span8 offset2">
+      <div style="width:90%; margin:auto;">
+        <h1> Welcome to ELIXIR! <br>Select an ELIXIR Node to find out more about it: </h1>
+      </div>
+    </div>
+</div>
+<br><br>
+<div class="row-fluid">
+     <div class="span3">
+      <a href="/nodes/uk.html"><img src="/images/node_flags/GB.png" class="img-circle"/>
+      <div style="width:90%; margin:auto;">
+        <h3>United Kingdom</h3></a>
+        <b>Head of Node:</b> Chris Ponting <br/>
+        <b>Training Co-Ordinator:</b> Rita Hendricusdottir <br/>
+        <b>Technical Co-Ordinator:</b> Manuel Corpas
+      </div>
+    </div>
+    <div class="span1"></div>
+    <div class="span3">
+      <a href="/nodes/nl.html"><img src="/images/node_flags/NL.png" class="img-circle"/>
+      <div style="width:70%; margin:auto;">
+        <h3>Netherlands</h3></a>
+        <b>Head of Node:</b> Barend Mons <br>
+        <b>Training Co-Ordinator:</b> Celia Van Gelder <br>
+        <b>Technical Co-Ordinator:</b> Rob Hooft
+      </div>
+    </div>
+    <div class="span1"></div>
+     <div class="span3">
+      <a href="/nodes/ch.html"><img src="/images/node_flags/CH.png" class="img-circle"/>
+      <div style="width:70%; margin:auto;">
+        <h3>Switzerland</h3></a>
+        <b>Head of Node:</b> Rob Appel <br>
+        <b>Training Co-Ordinator:</b> Patricia Palagi <br>
+        <b>Technical Co-Ordinator:</b> Heinz Stockinger
+      </div>
+    </div>
+</div>
+<br><br>    
+
+<div class="row-fluid">
+   <div class="span3">
+      <a href="/nodes/se.html"><img src="/images/node_flags/SE.png" class="img-circle"/>
+      <div style="width:70%; margin:auto;">
+        <h3>Sweden</h3></a>
+        <b>Head of Node:</b> Chris Ponting
+        <b>Training Co-Ordinator:</b> Rita Hendricusdottir
+        <b>Technical Co-Ordinator:</b> Manuel Corpas
+      </div>
+   </div>
+   <div class="span1"></div>
+     <div class="span3">
+      <a href="/nodes/fi.html"><img src="/images/node_flags/FI.png" class="img-circle"/>
+      <div style="width:70%; margin:auto;">
+        <h3>Finland</h3></a>
+        <h4> Training Co-Ordinator:</h4> Lee Larcombe
+        <h4> Technical Co-Ordinator:</h4> Aleks Nenadic
+      </div>
+    </div>
+  <div class="span1"></div>
+     <div class="span3">
+      <a href="/nodes/pt.html"><img src="/images/node_flags/PT.png" class="img-circle"/>
+      <div style="width:70%; margin:auto;">
+        <h3>Portugal</h3></a>
+        <h4> Training Co-Ordinator:</h4> Lee Larcombe
+        <h4> Technical Co-Ordinator:</h4> Aleks Nenadic
+      </div>
+    </div>
+</div>
+<br><br>    
+
+<div class="row-fluid">
+   <div class="span3">
+      <a href="/nodes/ee.html"><img src="/images/node_flags/EE.png" class="img-circle"/>
+      <div style="width:70%; margin:auto;">
+        <h3>Estonia</h3></a>
+        <h4> Training Co-Ordinator:</h4> Lee Larcombe
+        <h4> Technical Co-Ordinator:</h4> Aleks Nenadic
+      </div>
+    </div>
+    <div class="span1"></div>
+     <div class="span3">
+      <a href="/nodes/il.html"><img src="/images/node_flags/IL.png" class="img-circle"/>
+      <div style="width:70%; margin:auto;">
+        <h3>Israel</h3></a>
+        <h4> Training Co-Ordinator:</h4> Lee Larcombe
+        <h4> Technical Co-Ordinator:</h4> Aleks Nenadic
+      </div>
+    </div>
+    <div class="span1"></div>
+     <div class="span3">
+      <a href="/nodes/no.html"><img src="/images/node_flags/NO.png" class="img-circle"/>
+      <div style="width:70%; margin:auto;">
+        <h3>Norway</h3></a>
+        <h4> Training Co-Ordinator:</h4> Lee Larcombe
+        <h4> Technical Co-Ordinator:</h4> Aleks Nenadic
+      </div>
+    </div>
+</div>
+<br><br>    
+<div class="row-fluid">
+     <div class="span3">
+      <a href="/nodes/dk.html"><img src="/images/node_flags/DK.png" class="img-circle"/>
+      <div style="width:70%; margin:auto;">
+        <h3>Denmark</h3></a>
+        <h4> Training Co-Ordinator:</h4> Lee Larcombe
+        <h4> Technical Co-Ordinator:</h4> Aleks Nenadic
+      </div>
+    </div>
+    <div class="span1"></div>
+     <div class="span3">
+      <a href="/nodes/embl.html"><img src="/images/nodes/ebi/logo.png" class="img-circle"/>
+      <div style="width:70%; margin:auto;">
+        <h3>EBI</h3></a>
+        <h4> Training Co-Ordinator:</h4> Lee Larcombe
+        <h4> Technical Co-Ordinator:</h4> Aleks Nenadic
+      </div>
+    </div>
+<div class="span1"></div>
+</div>
 
 <br>
 {% endblock %}

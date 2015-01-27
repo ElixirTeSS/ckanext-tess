@@ -1,0 +1,46 @@
+
+{# node_name must be set from the page that extends this template.
+ If you do not set node_name to be a valid Elixir Node name like 'United Kingdom' or 'Switzerland'
+ you risk reversing the Entropy of the Universe and destroying us all. You've been warned!
+#}
+
+{% extends "page.html" %}
+
+{% set hub = True %}
+{% block subtitle %}{{ _('Nodes') }}{% endblock %}
+
+{% block breadcrumb_content %}
+<li class="active">{% link_for _('Nodes'), controller='group', action='index' %}</li>
+{% endblock %}
+
+{% block primary %}
+  {% snippet "nodes/snippets/helper.html" %}
+  <div class="row-fluid">
+     <div class="span12">
+         {% block node_heading %}
+             <h1 class="page-heading" style="text-align:center">{{ _('Node Hub') }}</h1>
+         {% endblock %}
+     </div>
+     <div class="span10">
+       {% block materials %}
+            {% for node_name in h.get_node_list() %}
+                {% snippet "nodes/snippets/materials_for_node.html", node=node_name, hub=True %}
+            {% endfor %}
+       {% endblock %}
+     </div>
+    </div>     
+    <div class="span2"></div>
+  </div>
+<img src="/images/hub.png">
+
+<br>
+{% endblock %}
+
+{% block secondary %}
+{% endblock %}
+
+
+
+
+
+
