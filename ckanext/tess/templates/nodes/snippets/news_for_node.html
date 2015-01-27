@@ -2,11 +2,11 @@
 {% set datasets = h.get_node_materials(node) %}
 {% if datasets != None %}
 
-   <div class="span5 offset1">
-     <div class="row-fluid feed">
+   <div class="span5">
+     <div class="feed">
        <h2> News and Events</h2>
        <hr/>
-       <div class="span10 offset1">
+       <!--div class="span10 offset1"-->
   <article class="module">
     <div class="module-content">
       {% block about %}
@@ -20,7 +20,7 @@
   {{ h.read_news_iann() }}
   <div class="more-link"><a target="_blank" href="http://mygoblet.org/iannviewer">More events from iAnn</a></div>
   </div>
-       </div>
+       <!--/div-->
     </div>
   </div>
 {% endif %}

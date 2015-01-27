@@ -6,8 +6,8 @@
 
 {% set datasets = h.get_node_materials(node) %}
 {% if datasets != None %}
-   <div class="span6">
-     <div class="row-fluid feed">
+   <div class="span5">
+     <div class="feed">
        {% if hub == True: %}
            <h2> Training Materials for {{ node }} </h2>      
        {% else: %}
