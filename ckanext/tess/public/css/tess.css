@@ -341,6 +341,7 @@ hr.style-one {
 }
 .span3-hub {
     width: 270px;
+    padding-bottom: 30px;
 }
 .row-fluid .span3-hub {
     width: 28%;
