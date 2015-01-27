@@ -21,36 +21,26 @@
          {% block node_heading %}
              <h1 class="page-heading" style="text-align:center">{{ node_name }}</h1>
          {% endblock %}
-     </div>
+     <div>
   </div>
   <div class="row-fluid">
-    <div class="span10">
        {% block materials %}
             {% snippet "nodes/snippets/materials_for_node.html", node=node_name %}    
        {% endblock %}
        {% block news %}
             {% snippet "nodes/snippets/news_for_node.html", node=node_name %}
        {% endblock %}
-     </div>
-  </div>
-  <div class="row-fluid">
-    <div class="span10">
        {% block events %}
             {% snippet "nodes/snippets/events_for_node.html", node=node_name %}
        {% endblock %}
        {% block staff %}
             {% snippet "nodes/snippets/staff_for_node.html", node=node_name %}
        {% endblock %}
-     <!--/div>
-  </div>
-  <div class="row-fluid">
-    <div class="span10"-->
        {% block organizations %}
             {% snippet "nodes/snippets/organizations_for_node.html", node=node_name %}
        {% endblock %}
-
-    </div>
   </div>
+
 <br>
 {% endblock %}
  
