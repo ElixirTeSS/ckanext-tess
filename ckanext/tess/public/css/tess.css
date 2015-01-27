@@ -338,6 +338,21 @@ hr.style-one {
     margin: 20px;
     border-color: lightgrey;
     background-color: ghostwhite;
-
+}
+.span3-hub {
+    width: 270px;
+}
+.row-fluid .span3-hub {
+    width: 28%;
+    *width: 28%;
+    margin-left: 1.2%;
+}
+.span1-hub {
+    width: 30px;
+}
+.row-fluid .span1-hub {
+    width: 3%;
+    *width: 3%;
+    margin-left: 1.2%;
 }
 
