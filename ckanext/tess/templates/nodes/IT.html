@@ -1,0 +1,19 @@
+{% extends "page.html" %}
+
+{% block subtitle %}{{ _('Italy') }}{% endblock %}
+
+{% block breadcrumb_content %}
+<li class="active">{% link_for _('Italy'), controller='group', action='index' %}</li>
+{% endblock %}
+
+{% block primary %}
+{% snippet "nodes/snippets/helper.html" %}
+<br>
+<br>
+<br>
+<img src="/images/node_flags/IT.png">
+<br>
+{% endblock %}
+{% block secondary %}{% endblock %}
+
+
