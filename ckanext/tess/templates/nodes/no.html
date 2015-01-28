@@ -1,18 +1,24 @@
-{% set node_name = 'Norway' %}
-{% extends "node_template.html" %}
+{% extends "page.html" %}
 
+{% block subtitle %}{{ _('Norway') }}{% endblock %}
 
-{#
- Override blocks from the nodes_template.html here to add your own custom configuration.
- The blocks are listed below. Move them out of this comment bracket to override.
-    {% block materials %}
-    {% endblock %}
-    {% block events %}
-    {% endblock %}
-    {% block related_orgs %}
-    {% endblock %}
-#}
+{% block breadcrumb_content %}
+<li class="active">{% link_for _('Norway'), controller='group', action='index' %}</li>
+{% endblock %}
 
-
+{% block primary %}
+{% snippet "nodes/snippets/helper.html" %}
+<br>
+<br>
+<br>
+<br>
+<h1>Content for Norwegian Node</h1>
+<br>
+<br>
+<br>
+<br>
+<br>
+{% endblock %}
+{% block secondary %}{% endblock %}
 
 
