@@ -1,24 +1,13 @@
-{% extends "page.html" %}
+{% set node_name = 'Portgal' %}
+{% extends "node_template.html" %}
 
-{% block subtitle %}{{ _('Portugal') }}{% endblock %}
-
-{% block breadcrumb_content %}
-<li class="active">{% link_for _('Portugal'), controller='group', action='index' %}</li>
+{#
+Override blocks from the nodes_template.html here to add your own custom configuration.
+The blocks are listed below. Move them out of this comment bracket to override.
+{% block materials %}
 {% endblock %}
-
-{% block primary %}
-{% snippet "nodes/snippets/helper.html" %}
-<br>
-<br>
-<br>
-<br>
-<h1>Content for Portugese Node</h1>
-<br>
-<br>
-<br>
-<br>
-<br>
+{% block events %}
 {% endblock %}
-{% block secondary %}{% endblock %}
-
-
+{% block related_orgs %}
+{% endblock %}
+#}

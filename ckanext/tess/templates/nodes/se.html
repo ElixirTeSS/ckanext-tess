@@ -1,25 +1,13 @@
-{% extends "page.html" %}
+{% set node_name = 'Sweden' %}
+{% extends "node_template.html" %}
 
-{% block subtitle %}{{ _('Sweden') }}{% endblock %}
-
-{% block breadcrumb_content %}
-<li class="active">{% link_for _('Sweden'), controller='group', action='index' %}</li>
+{#
+Override blocks from the nodes_template.html here to add your own custom configuration.
+The blocks are listed below. Move them out of this comment bracket to override.
+{% block materials %}
 {% endblock %}
-
-{% block primary %}
-{% snippet "nodes/snippets/helper.html" %}
-<br>
-<br>
-<br>
-<br>
-<h1>Content for Swedish Node</h1>
-<img src="http://upload.wikimedia.org/wikipedia/en/archive/4/4c/20140526092805!Flag_of_Sweden.svg" style="max-width:300px">
-<br>
-<br>
-<br>
-<br>
-<br>
+{% block events %}
 {% endblock %}
-{% block secondary %}{% endblock %}
-
-
+{% block related_orgs %}
+{% endblock %}
+#}
