@@ -36,6 +36,8 @@ you risk reversing the Entropy of the Universe and destroying us all. You've bee
     </div>
 </div>
 <hr>
+
+{# Country flags obtained from https://github.com/googlei18n/region-flags/tree/master/png #}
 {% set nodes = [
 {'name' : 'Belgium', 'country_code' : 'BE', 'hon' : 'Head of node', 'trc': 'Training co-ord', 'tc' : 'Tech co-ord'},
 {'name' : 'Czech Republic', 'country_code' : 'CR', 'hon' : 'Head of node', 'trc': 'Training co-ord', 'tc' : 'Tech co-ord'},
@@ -60,7 +62,7 @@ you risk reversing the Entropy of the Universe and destroying us all. You've bee
 {% for index in range(0,nodes|length,3): %}
 <div class="row-fluid">
     <div class="span11 offset1">
-        {% snippet "nodes/snippets/flag.html",
+        {% snippet "nodes/snippets/node_info.html",
         name = nodes[index].name,
         flag = "/images/node_flags/" ~ nodes[index].country_code ~ ".png",
         page = "/nodes/" ~ nodes[index].country_code ~ ".html",
@@ -68,7 +70,7 @@ you risk reversing the Entropy of the Universe and destroying us all. You've bee
         trc = nodes[index].trc,
         tc = nodes[index].tc %}
         {% if index + 1 < nodes|length: %}
-        {% snippet "nodes/snippets/flag.html",
+        {% snippet "nodes/snippets/node_info.html",
         name = nodes[index+1].name,
         flag = "/images/node_flags/" ~ nodes[index+1].country_code ~ ".png",
         page = "/nodes/" ~ nodes[index+1].country_code ~ ".html",
@@ -77,7 +79,7 @@ you risk reversing the Entropy of the Universe and destroying us all. You've bee
         tc = nodes[index+1].tc %}
         {% endif %}
         {% if index + 2 < nodes|length: %}
-        {% snippet "nodes/snippets/flag.html", name=nodes[index+2].name,
+        {% snippet "nodes/snippets/node_info.html", name=nodes[index+2].name,
         name = nodes[index+2].name,
         flag = "/images/node_flags/" ~ nodes[index+2].country_code ~ ".png",
         page = "/nodes/" ~ nodes[index+2].country_code ~ ".html",
