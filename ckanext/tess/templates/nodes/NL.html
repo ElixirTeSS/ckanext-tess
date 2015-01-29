@@ -3,30 +3,30 @@
 {% extends "node_template.html" %}
 
 {#
- Override blocks from the nodes_template.html here to add your own custom configuration.
- The blocks are listed below. Move them out of this comment bracket to override.
-    {% block materials %}
-    {% endblock %}
-    {% block events %}
-    {% endblock %}
-    {% block related_orgs %}
-    {% endblock %}
+Override blocks from the nodes_template.html here to add your own custom configuration.
+The blocks are listed below. Move them out of this comment bracket to override.
+{% block materials %}
+{% endblock %}
+{% block events %}
+{% endblock %}
+{% block related_orgs %}
+{% endblock %}
 #}
 
-  {% block node_heading %}
-        <div class="row-fluid">
-            <div class="span3">
-                <h3 style="text-align:center"><a href="http://elixir-uk.org">{{ node_name }}</a></h3>
-            </div>
-            <div class="span2">
-                <a href="http://www.dtls.nl/elixir-nl/elixir-nl-2/>
-               <img src="/images/nl/png">     <!--style="max-height:200px"/-->     
-                </a>
-            </div>  
-        </div><br>
-        <div class="row-fluid">
-        <div class="span12">
-          <div id="myCarousel" class="carousel slide">
+{% block node_heading %}
+<div class="row-fluid">
+    <div class="span3">
+        <h3 style="text-align:center"><a href="http://elixir-uk.org">{{ node_name }}</a></h3>
+    </div>
+    <div class="span2">
+        <a href="http://www.dtls.nl/elixir-nl/elixir-nl-2/>
+               <img src="/images/nl/png">     <!--style="max-height:200px"/-->
+        </a>
+    </div>
+</div><br>
+<div class="row-fluid">
+    <div class="span12">
+        <div id="myCarousel" class="carousel slide">
             <ol class="carousel-indicators">
                 <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
                 <li data-target="#myCarousel" data-slide-to="1"></li>
@@ -37,60 +37,41 @@
                 <div class="active item"><img src="/images/nodes/nl/windmills.jpg" style="min-width:100%"/></div>
                 <div class="item"><img src="/images/nodes/nl/canal-boat.jpg  " style="min-width:100%"/></div>
             </div>
-              <!-- Carousel nav -->
-              <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-              <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
-          </div>
+            <!-- Carousel nav -->
+            <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+            <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
         </div>
-       </div>
+    </div>
+</div>
 
-  {% endblock %}
- 
-  {% block organizations %}
-    <div class="span5">
-     <div class="feed">
-       <h2> Institutions </h2>
-       <hr/>
-        <div style="margin-left:auto; margin-right:auto; width:90%">
-            <a href="http://ww.dtls.nl/NL.html"> <h3>Duth Techncentre for Life Sciences (DTL)</h3>
+{% endblock %}
+
+{% block organizations %}
+<li style="position: absolute; top: 0px; left: 0px; width: 280px; border: 1px solid #DDD;" class="media-item masonry-brick">
+    <h2>Member Institutions</h2>
+    <hr/>
+    <div style="margin-left:auto; margin-right:auto; width:90%">
+        <a href="http://ww.dtls.nl/NL.html"><h3>Duth Techncentre for Life Sciences (DTL)</h3>
             <img src="/images/nodes/nl/dtl.png"/></a>
-       </div>
     </div>
-  </div>
-  {% endblock %}
+</li>
+{% endblock %}
 
-  {% block news %}
-  {% endblock %} 
+{% block staff %}
+<li style="position: absolute; top: 0px; left: 0px; width: 280px; border: 1px solid #DDD;" class="media-item masonry-brick">
+    <h2>Staff</h2>
+    <hr/>
+    <h4>Head of node</h4>
+    <img src="/images/nodes/nl/mons.jpg" style="max-height:100px" class="img-rounded"/>
+    <a href='mailto: '>Barend Mons</a>
 
-    <div class="span5">
-     <div class="feed">
-       <h2> Latest News </h2>
-       <hr/>
-    <a class="twitter-timeline" href="https://twitter.com/ElixirNodeUk" data-widget-id="559708972698308608">Tweets by @ElixirNodeUk</a>
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-     </div>
-    </div>
+    <h4>Training co-ordinator</h4>
+    <img src="/images/nodes/nl/gelder.jpg" style="max-height:100px" class="img-rounded"/>
+    <a href='mailto: '>Celia Van Gelder</a><br>
 
-  {% block staff %}
-    <div class="span5">
-     <div class="feed">
-       <h2> Staff </h2>
-       <hr/>
-         <h4> Head of Node</h4>
-         <img src="/images/nodes/nl/mons.jpg" style="max-height:100px" class="img-rounded"/>
-         <a href='mailto: '>Barend Mons</a>
-
-         <h4> Training Co-ordinator</h4>
-         <img src="/images/nodes/nl/gelder.jpg" style="max-height:100px" class="img-rounded"/>        
-         <a href='mailto: '>Celia Van Gelder</a><br>
-        
-         <h4> Technical Co-ordinator</h4>
-        <img src="/images/nodes/nl/hooft.jpg" style="max-height:100px" class="img-rounded"/>
-        <a href='mailto: '>Rob Hooft</a>
-        <br/>
-
-        
-    </div>
-  </div>
- {% endblock %}
+    <h4>Technical co-ordinator</h4>
+    <img src="/images/nodes/nl/hooft.jpg" style="max-height:100px" class="img-rounded"/>
+    <a href='mailto: '>Rob Hooft</a>
+</li>
+{% endblock %}
 
