@@ -60,6 +60,17 @@ def reorder_dataset_facets(facet_keys, facet_values):
         facet_values[1], facet_values[index] = facet_values[index], facet_values[1]
     return facet_keys, facet_values
 
+# Return the iann specific news. This could be replaced with a general news function taking
+# the news source as an argument.
+def iann_news():
+  try:
+    with open ("/tmp/iann.txt", "r") as myfile:
+      data = myfile.read()
+  except Exception, e:
+    print "iann_news: " + str(e)
+    data = "<p>No news found!</p>"
+  return plugins.toolkit.literal(data)
+
 class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     '''TeSS CKAN plugin.
 
@@ -118,7 +129,8 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                 'get_node_list': node_list,
                 'get_node_materials': node_materials,
                 'get_node_organizations': node_organizations,
-                'tess_elixir_nodes': elixir_nodes, 'tess_reorder_dataset_facets': reorder_dataset_facets
+                'tess_elixir_nodes': elixir_nodes, 'tess_reorder_dataset_facets': reorder_dataset_facets,
+                'read_news_iann': iann_news
                 }
 
     def _modify_package_schema(self, schema):
