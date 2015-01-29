@@ -15,6 +15,7 @@ class NodePlugin(plugins.SingletonPlugin,DefaultGroupForm):
         map.connect('/node', controller='ckanext.tess.controller:NodeController', action='index')
         map.connect('/node/new', controller='ckanext.tess.controller:NodeController', action='new')
         map.connect('/node/edit/{id}', controller='ckanext.tess.controller:NodeController', action='edit')
+        map.connect('/node/{id}', controller='ckanext.tess.controller:NodeController', action='read')
         return map
 
     def after_map(self, map):
