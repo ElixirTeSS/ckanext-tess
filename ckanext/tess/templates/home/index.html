@@ -7,6 +7,7 @@
 {% block toolbar %}{% endblock %}
 
 {% block content %}
+  {{ h.flash_notice('<b>Note</b>: This site is in development and is intended for evaluation purposes only. Data found here should be considered test data only!', allow_html=True) }}
   <div class="homepage layout-{{ homepage_style }}">
     <div class="container">
       {{ self.flash() }}
