@@ -3,30 +3,31 @@
 {% extends "node_template.html" %}
 
 {#
- Override blocks from the nodes_template.html here to add your own custom configuration.
- The blocks are listed below. Move them out of this comment bracket to override.
-    {% block materials %}
-    {% endblock %}
-    {% block events %}
-    {% endblock %}
-    {% block related_orgs %}
-    {% endblock %}
+Override blocks from the nodes_template.html here to add your own custom configuration.
+The blocks are listed below. Move them out of this comment bracket to override.
+{% block materials %}
+{% endblock %}
+{% block events %}
+{% endblock %}
+{% block related_orgs %}
+{% endblock %}
 #}
 
-  {% block node_heading %}
-        <div class="row-fluid">
-            <div class="span3">
-                <h3 style="text-align:center"><a href="http://elixir-uk.org">{{ node_name }}</a></h3>
-            </div>
-            <!--<div class="span2">-->
-                <!--<a href="http://elixir-uk.org">-->
-               <!--<img src="http://www.tgac.ac.uk/uploads/images/Outreach/ELIXIR_node_UK.png"/>     &lt;!&ndash;style="max-height:200px"/&ndash;&gt;     -->
-                <!--</a>-->
-            <!--</div>  -->
-        </div><br>
-        <div class="row-fluid">
-        <div class="span12">
-          <div id="myCarousel" class="carousel slide">
+{% block node_heading %}
+<div class="row-fluid">
+    <div class="span3">
+        <h3 style="text-align:center"><a href="http://elixir-uk.org">{{ node_name }}</a></h3>
+    </div>
+    <!--<div class="span2">-->
+    <!--<a href="http://elixir-uk.org">-->
+    <!--<img src="http://www.tgac.ac.uk/uploads/images/Outreach/ELIXIR_node_UK.png"/>     &lt;!&ndash;style="max-height:200px"/&ndash;&gt;     -->
+    <!--</a>-->
+    <!--</div>  -->
+</div>
+<br>
+<div class="row-fluid">
+    <div class="span12">
+        <div id="myCarousel" class="carousel slide">
             <ol class="carousel-indicators">
                 <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
                 <li data-target="#myCarousel" data-slide-to="1"></li>
@@ -39,57 +40,62 @@
                 <div class="item"><img src="/images/nodes/uk/cabs.jpg" style="min-width:100%"/></div>
                 <div class="item"><img src="/images/nodes/uk/peaks.jpg" style="min-width:100%"/></div>
             </div>
-              <!-- Carousel nav -->
-              <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-              <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
-          </div>
+            <!-- Carousel nav -->
+            <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+            <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
         </div>
-       </div>
-
-  {% endblock %}
- 
-  {% block organizations %}
-    <div class="span6">
-     <div class="feed">
-       <h2> Institutions </h2>
-       <hr/>
-        <div style="margin-left:auto; margin-right:auto; width:80%">
-            <a href="http://www.ox.ac.uk/GB.html"> <h3>The University of Oxford</h3>
-            <img src="/images/institutions/oxford.png"/></a>
-            <a href="http://www.manchester.ac.uk/GB.html"> <h3>The University of Manchester</h3>
-            <img src="/images/institutions/manchester.jpg"/></a>     
-       </div>
     </div>
-  </div>
-  {% endblock %}
+</div>
+{% endblock %}
 
-  {% block news %}
-    <div class="span6">
-     <!--div class="feed"-->
-       <h2> Latest News </h2>
-       <hr/>
+{% block news %}
+<li style="position: absolute; top: 0px; left: 0px; width: 280px; border: 1px solid #DDD;" class="media-item masonry-brick">
+    <h2>Latest News</h2>
+    <hr/>
+    <div>
         <a class="twitter-timeline" href="https://twitter.com/ElixirNodeUk" data-widget-id="559708972698308608">Tweets by @ElixirNodeUk</a>
-        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-     </div>
-    <!--/div-->
-  {% endblock %} 
-
-
-  {% block staff %}
-   <div class="span5">
-     <div class="feed">
-       <h2> Staff </h2>
-       <hr/>
-        Chris Ponting <br>
-        Carole Goble <br> 
-        Terri Attwood <br>
-        Susanna Assunta-Sansone <br>
-        Aleksandra Nenadic <br>
-        Lee Larcombe <br>
-        Manuel Corpas <br>
-        Niall Beard <br>
-        Milo Thurston
     </div>
-  </div>
-  {% endblock %}
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</li>
+{% endblock %}
+
+{% block organizations %}
+<li style="position: absolute; top: 0px; left: 0px; width: 280px; border: 1px solid #DDD;" class="media-item masonry-brick">
+    <h2>Member Institutions</h2>
+    <hr/>
+    <div style="margin-left:auto; margin-right:auto; width:90%">
+        <a href="http://www.ox.ac.uk/GB.html"><h3>The University of Oxford</h3>
+            <img src="/images/institutions/oxford.png" style="max-width: 120px;" /></a>
+        <a href="http://www.manchester.ac.uk/GB.html"><h3>The University of Manchester</h3>
+            <img src="/images/institutions/manchester.jpg" style="width: 120px;"/></a>
+    </div>
+</li>
+{% endblock %}
+
+{% block staff %}
+<li style="position: absolute; top: 0px; left: 0px; width: 280px; border: 1px solid #DDD;" class="media-item masonry-brick">
+    <h2>Staff</h2>
+    <hr/>
+    <h4>Head of node</h4>
+    <img src="/images/nodes/uk/chris-ponting.jpg" style="max-height:100px" class="img-rounded"/>
+    <a href='mailto: '>Chris Ponting</a>
+
+    <h4>Training co-ordinator</h4>
+    <img src="/images/nodes/uk/rita-hendricusdottir.png" style="max-height:100px" class="img-rounded"/>
+    <a href='mailto: '>Rita Hendricusdottir</a><br>
+
+    <h4>Technical co-ordinator</h4>
+    <img src="/images/nodes/uk/manuel-corpas.jpg" style="max-height:100px" class="img-rounded"/>
+    <a href='mailto: '>Manuel Corpas</a>
+
+    <h4>Other team members</h4>
+    Carole Goble <br>
+    Terri Attwood <br>
+    Susanna Assunta-Sansone <br>
+    Aleksandra Nenadic <br>
+    Lee Larcombe <br>
+    Niall Beard <br>
+    Milo Thurston
+</li>
+{% endblock %}
 
