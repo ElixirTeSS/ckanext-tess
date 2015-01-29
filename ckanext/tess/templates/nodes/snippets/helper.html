@@ -1,8 +1,13 @@
 <!--div class="content"-->
 {% block about %}
 {% block header_site_navigation %}
-<nav class="section navigation">
-    <ul class="nav nav-pills">
+    <nav class="section navigation">
+    <div class="dropdown" style="padding-left:20px;padding-top:10px;">
+     <a href="#" class="button image dropdown-toggle" data-toggle="dropdown">
+         Nodes
+         <i class="icon-chevron-down"></i>
+      </a>
+      <ul class="user-dropdown-menu dropdown-menu pull-left" role="menu">
         <li><a href="/nodes/hub.html">The Hub</a></li>
         <li><a href="/nodes/BE.html">Belgium</a></li>
         <li><a href="/nodes/CR.html">Czech Republic</a></li>
@@ -22,8 +27,32 @@
         <li><a href="/nodes/SE.html">Sweden</a></li>
         <li><a href="/nodes/CH.html">Switzerland</a></li>
         <li><a href="/nodes/GB.html">UK</a></li>
-    </ul>
-</nav>
+      </ul>
+   </div>
+   </nav>
 {% endblock %}
 {% endblock %}
+
+<!--
+        <li><a href="/nodes/hub.html">The Hub</a></li>
+        <li><a href="/nodes/BE.html">Belgium</a></li>
+        <li><a href="/nodes/CR.html">Czech Republic</a></li>
+        <li><a href="/nodes/DK.html">Denmark</a></li>
+        <li><a href="/nodes/EMBL-EBI.html">EMBL-EBI</a></li>
+        <li><a href="/nodes/EE.html">Estonia</a></li>
+        <li><a href="/nodes/FI.html">Finland</a></li>
+        <li><a href="/nodes/FR.html">France</a></li>
+        <li><a href="/nodes/GR.html">Greece</a></li>
+        <li><a href="/nodes/IL.html">Israel</a></li>
+        <li><a href="/nodes/IT.html">Italy</a></li>
+        <li><a href="/nodes/NL.html">Netherlands</a></li>
+        <li><a href="/nodes/NO.html">Norway</a></li>
+        <li><a href="/nodes/PT.html">Portugal</a></li>
+        <li><a href="/nodes/SI.html">Slovenia</a></li>
+        <li><a href="/nodes/ES.html">Spain</a></li>
+        <li><a href="/nodes/SE.html">Sweden</a></li>
+        <li><a href="/nodes/CH.html">Switzerland</a></li>
+        <li><a href="/nodes/GB.html">UK</a></li>
+ -->
+
 
