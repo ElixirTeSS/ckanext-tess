@@ -1,26 +1,3 @@
-
-{% set datasets = h.get_node_materials(node) %}
-{% if datasets != None %}
-
-  <div class="span5">
-     <div class="feed">
-       <h2> News and Events</h2>
-       <hr/>
-       <!--div class="span10 offset1"-->
-  <article class="module">
-    <div class="module-content">
-      {% block about %}
-          <h1 class="page-heading">{{ _('Events') }}</h1>
-      {% endblock %}
-    </div>
-  </article>
-  <div id="iAnnList" class="events-source">
-  <p class="events-source-title"><strong>Source: </strong><a target="_blank" href="http://iann.pro">
-  <img alt="iAnn" src="/images/iann_logo-32x30.png"/></a></p><hr/>
-  {{ h.read_news_iann() }}
-  <div class="more-link"><a target="_blank" href="http://mygoblet.org/iannviewer">More events from iAnn</a></div>
-  </div>
-       <!--/div-->
-    </div>
-  </div>
-{% endif %}
+<h2>News</h2>
+<hr/>
+<p class="module-content empty">No news found for this node</p>
