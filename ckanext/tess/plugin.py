@@ -71,6 +71,10 @@ def iann_news():
     data = "<p>No news found!</p>"
   return plugins.toolkit.literal(data)
 
+
+######################
+# Plugin starts here #
+######################
 class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     '''TeSS CKAN plugin.
 
