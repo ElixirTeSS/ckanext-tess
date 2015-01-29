@@ -8,11 +8,10 @@
 {% block subtitle %}{{ node_name }}{% endblock %}
 
 {% block breadcrumb_content %}
-<li class="active">{% link_for _('Node'), controller='ckanext.tess.controller:SpecialRouteController', action='nodes' %}</li>
-/
+<li>{% link_for _('Nodes'), controller='ckanext.tess.controller:SpecialRouteController', action='nodes' %}</li>
 <!--<li class="active">{% link_for _(node_name), controller='ckanext.tess.controller:SpecialRouteController', action='nodes'  %}</li>-->
-<!--<li class="active"><a href="{{'/nodes/' + country_code + '.html'}}">{{ node_name }}</a></li>-->
-<li class="active">{{ node_name }}</li>
+<li class="active"><a href="{{'/nodes/' + country_code + '.html'}}">{{ node_name }}</a></li>
+<!--<li class="active">{{ node_name }}</li>-->
 {% endblock %}
 
 {% block primary %}
