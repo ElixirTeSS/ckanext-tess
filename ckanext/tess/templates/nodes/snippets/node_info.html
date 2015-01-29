@@ -4,12 +4,11 @@
         <div style="width: 95%; margin: auto;">
             <h3>{{name}}</h3>
     </a>
-    {% if not 'hub' in name.lower() %}
-        <b>Head of node:</b> {{ hon | safe }} <br/>
-        <b>Training co-ord:</b> {{ trc | safe  }} <br/>
-        <b>Technical co-ord:</b> {{ tec | safe  }}
+    {% if not 'hub' in name.lower(): %}
+    <b>Head of node:</b> {{ hon | safe }} <br/>
+    <b>Training co-ord:</b> {{ trc | safe  }} <br/>
+    <b>Technical co-ord:</b> {{ tc | safe  }}
     {% endif %}
 </div>
 </div>
 <div class="span1-hub"></div>
-

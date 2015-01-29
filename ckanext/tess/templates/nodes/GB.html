@@ -15,18 +15,14 @@
 
   {% block node_heading %}
         <div class="row-fluid">
-            <div class="span10">
-                <div style="text-align:center">
-                <h1> {{ node_name }} </h1>
-                <h3><a href="http://elixir-uk.org">{{ node_name }} Homepage</a></h3>
+            <div class="span3">
+                <h3 style="text-align:center"><a href="http://elixir-uk.org">{{ node_name }}</a></h3>
             </div>
-            </div>
-    
-            <div class="span2">
-                <a href="http://elixir-uk.org">
-                <img src="http://www.tgac.ac.uk/uploads/images/Outreach/ELIXIR_node_UK.png" style="max-height:200px"/>    
-                </a>
-            </div>  
+            <!--<div class="span2">-->
+                <!--<a href="http://elixir-uk.org">-->
+               <!--<img src="http://www.tgac.ac.uk/uploads/images/Outreach/ELIXIR_node_UK.png"/>     &lt;!&ndash;style="max-height:200px"/&ndash;&gt;     -->
+                <!--</a>-->
+            <!--</div>  -->
         </div><br>
         <div class="row-fluid">
         <div class="span12">
@@ -58,9 +54,9 @@
        <h2> Institutions </h2>
        <hr/>
         <div style="margin-left:auto; margin-right:auto; width:80%">
-            <a href="http://www.ox.ac.uk/"> <h3>The University of Oxford</h3>
+            <a href="http://www.ox.ac.uk/GB.html"> <h3>The University of Oxford</h3>
             <img src="/images/institutions/oxford.png"/></a>
-            <a href="http://www.manchester.ac.uk/"> <h3>The University of Manchester</h3>
+            <a href="http://www.manchester.ac.uk/GB.html"> <h3>The University of Manchester</h3>
             <img src="/images/institutions/manchester.jpg"/></a>     
        </div>
     </div>
@@ -69,13 +65,13 @@
 
   {% block news %}
     <div class="span6">
-     <div class="feed">
+     <!--div class="feed"-->
        <h2> Latest News </h2>
        <hr/>
         <a class="twitter-timeline" href="https://twitter.com/ElixirNodeUk" data-widget-id="559708972698308608">Tweets by @ElixirNodeUk</a>
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
      </div>
-    </div>
+    <!--/div-->
   {% endblock %} 
 
 
