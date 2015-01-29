@@ -23,3 +23,6 @@ class NodeController(group.GroupController):
 
     def _guess_group_type(self, expecting_name=False):
         return 'node'
+
+    def read(self):
+        return base.render('node/index.html')    
