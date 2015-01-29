@@ -11,8 +11,8 @@
 <li class="active">{% link_for _('Node'), controller='ckanext.tess.controller:SpecialRouteController', action='nodes' %}</li>
 /
 <!--<li class="active">{% link_for _(node_name), controller='ckanext.tess.controller:SpecialRouteController', action='nodes'  %}</li>-->
-{% set node_url = "/nodes/" + country_code + ".html" %}
-<li class="active"><a href="{{"/nodes/" + country_code + ".html"}}">{{ node_name }}</a></li>
+<!--<li class="active"><a href="{{'/nodes/' + country_code + '.html'}}">{{ node_name }}</a></li>-->
+<li class="active">{{ node_name }}</li>
 {% endblock %}
 
 {% block primary %}
