@@ -9,16 +9,16 @@
 {% block page_header %}{% endblock %}
 
 {% block page_primary_action %}
-  {% if h.check_access('node_create') %}
+  {#% if h.check_access('node_create') %#}
     {% link_for _('Add content provider'), controller='ckanext.tess.controller:NodeController', action='new', class_='btn btn-primary', icon='plus-sign-alt' %}
-  {% endif %}
+  {#% endif %#}
 {% endblock %}
 
 {% block primary_content_inner %}
   <h1 class="hide-heading">{% block page_heading %}{{ _('Content providers') }}{% endblock %}</h1>
-  {% block nodes_search_form %}
+  {#% block nodes_search_form %}
     {% snippet 'snippets/search_form.html', type='node', query=c.q, sorting_selected=c.sort_by_selected, count=c.page.item_count, placeholder=_('Search content providers...'), show_empty=request.params, no_bottom_border=true if c.page.items %}
-  {% endblock %}
+  {% endblock %#}
   {% block nodes_list %}
     {% if c.page.items or request.params %}
       {% if c.page.items %}
