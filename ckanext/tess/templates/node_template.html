@@ -1,4 +1,4 @@
-{# node_name must be set from the page that extends this template. 
+{# node_name and country_code must be set from the page that extends this template.
  If you do not set node_name to be a valid Elixir Node name like 'United Kingdom' or 'Switzerland'
  you risk reversing the Entropy of the Universe and destroying us all. You've been warned!
 #}
@@ -8,11 +8,11 @@
 {% block subtitle %}{{ node_name }}{% endblock %}
 
 {% block breadcrumb_content %}
-<li class="active">{% link_for _('Node'), controller='ckanext.tess.controller:SpecialRouteController', action='nodes' %}</li>
-/
-<li class="active">{% link_for _(node_name), controller='ckanext.tess.controller:SpecialRouteController', action='nodes'  %}</li>
+<li>{% link_for _('Nodes'), controller='ckanext.tess.controller:SpecialRouteController', action='nodes' %}</li>
+<!--<li class="active">{% link_for _(node_name), controller='ckanext.tess.controller:SpecialRouteController', action='nodes'  %}</li>-->
+<li class="active"><a href="{{'/nodes/' + country_code + '.html'}}">{{ node_name }}</a></li>
+<!--<li class="active">{{ node_name }}</li>-->
 {% endblock %}
-
 
 {% block primary %}
   {% snippet "nodes/snippets/helper.html" %}
@@ -21,7 +21,7 @@
          {% block node_heading %}
              <h1 class="page-heading" style="text-align:center">{{ node_name }}</h1>
          {% endblock %}
-     <div>
+     </div>
   </div>
   <div class="row-fluid">
        {% block materials %}
@@ -46,4 +46,3 @@
  
 {% block secondary %}
 {% endblock %}
-
