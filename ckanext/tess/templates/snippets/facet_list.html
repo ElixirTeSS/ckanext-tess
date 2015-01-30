@@ -50,7 +50,6 @@ within_tertiary
         <section class="{{ wrapper_class or 'module module-narrow module-shallow' }}">
           {% block facet_list_heading %}
             <h2 class="module-heading">
-              <i class="icon-medium icon-filter"></i>
               {% set title = title or h.get_facet_title(name) %}
               {% if title.lower().startswith('organizations') %}
                 {% set title = 'Content providers' %}
@@ -58,6 +57,11 @@ within_tertiary
                 {% set title = 'Training materials' %}
               {% elif title.lower().startswith('groups') %}
                 {% set title = 'Packages' %}
+              {% endif %}
+              {% if title.lower().startswith('elixir') %}
+                <i class="icon-medium icon-elixir"></i>
+              {% else %}
+                <i class="icon-medium icon-filter"></i>
               {% endif %}
               {{ title }}
             </h2>
