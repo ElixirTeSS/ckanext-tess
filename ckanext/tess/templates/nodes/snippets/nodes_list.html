@@ -1,16 +1,36 @@
 <div class="module module-narrow module-shallow">
-  <h2 class="module-heading">
-    <i class="icon-info-sign"></i>
-    {{ _('What are content providers?') }}
-  </h2>
-  <div class="module-content">
-    {% trans %}
-      <p>
-        Content providers are organizations (real or virtual) that provide
-        or link to training material. TeSS is fed by content from training
-        portals, such as GOBLET, ELIXIR nodes' own training material,
-        foundation organisations, such as Software and Data Carpentry, etc.
-     </p>
-    {% endtrans %}
-  </div>
+    <h2 class="module-heading">
+        {{ _('Nodes') }}
+    </h2>
+    <div class="module-content">
+        <ul class="unstyled nav nav-simple nav-facet">
+            <li class="nav-item">
+                <a href="/nodes/hub.html" title="">
+                    <span>The Hub</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/nodes/CR.html" title="">
+                    <span>Czech Republic</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/nodes/EE.html" title="">
+                    <span>Estonia</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/nodes/GB.html" title="">
+                    <span>United Kingdom</span>
+                </a>
+            </li>
+            {% for node in nodes: %}
+            <li class="nav-item">
+                <a href="/nodes/{{node.country_code}}.html" title="">
+                    <span>{{node.name}}</span>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
 </div>
