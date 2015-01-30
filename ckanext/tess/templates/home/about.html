@@ -7,23 +7,13 @@
 {% endblock %}
 
 {% block primary %}
-
-<nav class="section navigation">
-  <ul class="nav nav-pills">
-    <li><a href="#about">About</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#faq">FAQ</a></li>
-    <li><a href="#software">Software</a></li>
-  </ul>
-</nav>
-
-<article class="module">
-    <div class="module-content">
+<div class="primary">
+    <section class="module">
         {% block about %}
         {% if g.site_about %}
-        {{ h.render_markdown(g.site_about) }}
+            {{ h.render_markdown(g.site_about) }}
         {% else %}
-        <a name="about"></a><h1 class="page-heading">{{ _('About') }}</h1>
+        <a name="about"></a><h1>{{ _('About') }}</h1>
         {% trans %}
         <p>
             TeSS (ELIXIR Training eSupport System) is <a target="_blank" href="http://www.elixir-europe.org/">ELIXIR's</a> training portal,
@@ -55,12 +45,12 @@
                     <h3 class="faq-heading">Is TeSS a repository of materials?</h3>
                     <div class="faq-answer">
                         <p>No. The TeSS is an aggregator of ELIXIR-relevant training information,
-                        harvested from individual ELIXIR Nodes and from third-party training content providers.
+                            harvested from individual ELIXIR Nodes and from third-party training content providers.
                         </p>
                         <p>
-                        TeSS does not store training materials itself, rather it stores links to original
-                        training materials and also enables users to create their own <a href="/group">packages</a>
-                        and <a href="/workflows">workflows</a> of (linked) materials to suit their needs.
+                            TeSS does not store training materials itself, rather it stores links to original
+                            training materials and also enables users to create their own <a href="/group">packages</a>
+                            and <a href="/workflows">workflows</a> of (linked) materials to suit their needs.
                         </p>
                     </div>
                 </div>
@@ -83,62 +73,62 @@
                     <h3 class="faq-heading">Do I have to upload training materials to TeSS manually?</h3>
                     <div class="faq-answer">
                         <p>
-                        Training information is brought into TeSS from various content providers automatically using their APIs (or, where these
-                        do not exist, can be scraped automatically from providers’ websites).
+                            Training information is brought into TeSS from various content providers automatically using their APIs (or, where these
+                            do not exist, can be scraped automatically from providers’ websites).
                         </p>
                         <p>
-                        If you would like your content provider to be added to TeSS,
-                        please contact the TeSS team so we can arrange a scraper for your site. Alternatively, all of these can be manually added and curated
-                        by registered users.
+                            If you would like your content provider to be added to TeSS,
+                            please contact the TeSS team so we can arrange a scraper for your site. Alternatively, all of these can be manually added and curated
+                            by registered users.
                         </p>
                     </div>
                 </div>
             </li>
-        <li class="faq-item">
-            <div class="faq-content">
-                <h3 class="faq-heading">How can I add a content provider?</h3>
-                <div class="faq-answer">
-                    <p>
-                        Registered users can add a content provider manually from <a href="/organization">content providers page</a>, by clicking
-                        the 'Add content provider' button. They will be presented with a form to
-                        write a short description, upload the provider's logo and provide a link to provider's website.
-                    </p>
-                    <p>
-                        Alternatively, content provider can be added automatically from a script at the time of ingesting training material content from that provider.
-                    </p>
+            <li class="faq-item">
+                <div class="faq-content">
+                    <h3 class="faq-heading">How can I add a content provider?</h3>
+                    <div class="faq-answer">
+                        <p>
+                            Registered users can add a content provider manually from <a href="/organization">content providers page</a>, by clicking
+                            the 'Add content provider' button. They will be presented with a form to
+                            write a short description, upload the provider's logo and provide a link to provider's website.
+                        </p>
+                        <p>
+                            Alternatively, content provider can be added automatically from a script at the time of ingesting training material content from that provider.
+                        </p>
+                    </div>
                 </div>
-            </div>
-        </li>
-        <li class="faq-item">
-            <div class="faq-content">
-                <h3 class="faq-heading">How can I add a training material?</h3>
-                <div class="faq-answer">
-                    <p>
-                        Registered users can add training material manually from <a href="/dataset">training materials page</a>,
-                        by clicking the 'Add training material' button. They will be presented with a multi-step form to
-                        fill in various fields and link to resources. They can also attribute this training material to a particular content provider.
-                    </p>
-                    <p>
-                        Alternatively, training material can be added automatically from a script ingesting training material from a particular content provider.
-                        Typically, such a script would use the content provider's API, if such exists, or TeSS development team writes a script that scrapes
-                        the training materials off provider's website.
-                    </p>
+            </li>
+            <li class="faq-item">
+                <div class="faq-content">
+                    <h3 class="faq-heading">How can I add a training material?</h3>
+                    <div class="faq-answer">
+                        <p>
+                            Registered users can add training material manually from <a href="/dataset">training materials page</a>,
+                            by clicking the 'Add training material' button. They will be presented with a multi-step form to
+                            fill in various fields and link to resources. They can also attribute this training material to a particular content provider.
+                        </p>
+                        <p>
+                            Alternatively, training material can be added automatically from a script ingesting training material from a particular content provider.
+                            Typically, such a script would use the content provider's API, if such exists, or TeSS development team writes a script that scrapes
+                            the training materials off provider's website.
+                        </p>
+                    </div>
                 </div>
-            </div>
-        </li>
-        <li class="faq-item">
-            <div class="faq-content">
-                <h3 class="faq-heading">How do I create a package (or a workflow) and add training material it?</h3>
-                <div class="faq-answer">
-                    <p>
-                        This is a two step process. Firstly, you have to create, say, a package from the <a href="/group">packages</a> pages.
-                        Secondly, you have to add an existing training material to that package (note that one training material can belong to
-                        several packages and/or workflows). This is done by navigating to the page of that particular training material, then
-                        selecting the 'Packages' tab, and selecting the appropriate package from a drop-down list.
-                    </p>
+            </li>
+            <li class="faq-item">
+                <div class="faq-content">
+                    <h3 class="faq-heading">How do I create a package (or a workflow) and add training material it?</h3>
+                    <div class="faq-answer">
+                        <p>
+                            This is a two step process. Firstly, you have to create, say, a package from the <a href="/group">packages</a> pages.
+                            Secondly, you have to add an existing training material to that package (note that one training material can belong to
+                            several packages and/or workflows). This is done by navigating to the page of that particular training material, then
+                            selecting the 'Packages' tab, and selecting the appropriate package from a drop-down list.
+                        </p>
+                    </div>
                 </div>
-            </div>
-        </li>
+            </li>
         </ul>
         <a name="software"> </a>
         <h2>Software</h2>
@@ -151,13 +141,34 @@
             The source code be found in <a href="https://github.com/ElixirUK">GitHub</a>.
         </p>
         <p>
-         Please note that the TeSS at present is in pre-alpha state (as of 21th January 2015). Our first official alpha release is scheduled for the 30th March 2015.
+            Please note that the TeSS at present is in pre-alpha state (as of 21th January 2015). Our first official alpha release is scheduled for the 30th March 2015.
         </p>
         {% endtrans %}
         {% endif %}
         {% endblock %}
-    </div>
-</article>
+    </section>
+</div>
 {% endblock %}
 
-{% block secondary %}{% endblock %}
+{% block secondary %}
+<aside class="secondary">
+<div class="module module-narrow module-shallow">
+    <h2 class="module-heading">
+        <div class="icon-filter"></div>{{ _('About') }}
+    </h2>
+    <nav>
+        <ul class="unstyled nav nav-simple nav-facet">
+            <li class="nav-item">
+                <a href="#contact" title="">Contact</a>
+            </li>
+            <li class="nav-item">
+                <a href="#faq" title="">FAQ</a>
+            </li>
+            <li class="nav-item">
+                <a href="#software" title="">Software</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+</aside>
+{% endblock %}
