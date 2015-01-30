@@ -14,31 +14,30 @@ you risk reversing the Entropy of the Universe and destroying us all. You've bee
 
 {% block primary %}
 {# snippet "nodes/snippets/helper.html" #}
-<div class="primary">
-    <section class="module">
-        <div class="row-fluid">
-            <div>
-                <h1>Welcome to ELIXIR Nodes</h1>
-                <p>Find out training-related information for each node.</p>
-                <br>
-            </div>
+
+<div class="row-fluid">
+    <div class="offset1">
+        <h1>Welcome to ELIXIR Nodes</h1>
+        <p>Find out training-related information for each node</p>
+        <br>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span11 offset1">
+        <div class="span3-hub" style="padding-bottom: 0px;">
+            <a href="/nodes/hub.html">
+                <img src="/images/ELIXIR_logo.png" class="img-circle" style="max-height:120px">
+                <div style="width: 95%; margin: auto;">
+                    <h3 style="margin-bottom: 0px;">The Hub</h3>
+            </a>
         </div>
-        <div class="row-fluid">
-            <div class="span11">
-                <div class="span3-hub" style="padding-bottom: 0px;">
-                    <a href="/nodes/hub.html">
-                        <img src="/images/ELIXIR_logo.png" class="img-circle" style="max-height:120px">
-                        <div style="width: 95%; margin: auto;">
-                            <h3 style="margin-bottom: 0px;">The Hub</h3>
-                    </a>
-                </div>
-            </div>
-            <div class="span1-hub"></div>
-        </div>
+    </div>
+    <div class="span1-hub"></div>
+    </div>
 </div>
 <hr>
 
-{# Country flags obtained from https://github.com/googlei18n/region-flags/tree/master/png #}
+{# Country flags obtained from https://github.com/googlei18n/region-flags #}
 {% set nodes = [
 {'name' : 'Belgium', 'country_code' : 'BE', 'hon' : 'Head of node', 'trc': 'Training co-ord', 'tc' : 'Tech co-ord'},
 {'name' : 'Czech Republic', 'country_code' : 'CZ', 'hon' : 'Head of node', 'trc': 'Training co-ord', 'tc' : 'Tech co-ord'},
@@ -62,8 +61,8 @@ you risk reversing the Entropy of the Universe and destroying us all. You've bee
 
 {% for index in range(0,nodes|length,3): %}
 <div class="row-fluid">
-    <div class="span11">
-        {% snippet "nodes/snippets/node_info_new.html",
+    <div class="span11 offset1">
+        {% snippet "nodes/snippets/node_info.html",
         name = nodes[index].name,
         flag = "/images/node_flags/" ~ nodes[index].country_code ~ ".png",
         page = "/nodes/" ~ nodes[index].country_code ~ ".html",
@@ -71,7 +70,7 @@ you risk reversing the Entropy of the Universe and destroying us all. You've bee
         trc = nodes[index].trc,
         tc = nodes[index].tc %}
         {% if index + 1 < nodes|length: %}
-        {% snippet "nodes/snippets/node_info_new.html",
+        {% snippet "nodes/snippets/node_info.html",
         name = nodes[index+1].name,
         flag = "/images/node_flags/" ~ nodes[index+1].country_code ~ ".png",
         page = "/nodes/" ~ nodes[index+1].country_code ~ ".html",
@@ -80,7 +79,7 @@ you risk reversing the Entropy of the Universe and destroying us all. You've bee
         tc = nodes[index+1].tc %}
         {% endif %}
         {% if index + 2 < nodes|length: %}
-        {% snippet "nodes/snippets/node_info_new.html", name=nodes[index+2].name,
+        {% snippet "nodes/snippets/node_info.html", name=nodes[index+2].name,
         name = nodes[index+2].name,
         flag = "/images/node_flags/" ~ nodes[index+2].country_code ~ ".png",
         page = "/nodes/" ~ nodes[index+2].country_code ~ ".html",
@@ -91,10 +90,7 @@ you risk reversing the Entropy of the Universe and destroying us all. You've bee
     </div>
 </div>
 {% endfor %}
-</section>
-</div>
 {% endblock %}
 
-{% block secondary_content %}
-    {% snippet "nodes/snippets/nodes_list.html", nodes = nodes %}
+{% block secondary %}
 {% endblock %}
