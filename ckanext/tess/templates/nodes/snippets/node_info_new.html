@@ -1,7 +1,6 @@
 <div class="span3-hub">
     <a href="{{page}}">
         <img src="{{flag}}" class="img-circle" style="max-height:60px">
-        <div style="width: 95%; margin: auto;">
             <h3>{{name}}</h3>
     </a>
     {% if not 'hub' in name.lower(): %}
@@ -10,5 +9,3 @@
     <b>Technical co-ord:</b> {{ tc | safe  }}
     {% endif %}
 </div>
-</div>
-<div class="span1-hub"></div>

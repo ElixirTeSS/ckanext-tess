@@ -14,7 +14,7 @@ you risk reversing the Entropy of the Universe and destroying us all. You've bee
 
 {% block primary %}
 {# snippet "nodes/snippets/helper.html" #}
-<div class="primary">
+<div class="primary" style="width: 75%;">
     <section class="module">
         <div class="row-fluid">
             <div>
@@ -24,74 +24,88 @@ you risk reversing the Entropy of the Universe and destroying us all. You've bee
             </div>
         </div>
         <div class="row-fluid">
-            <div class="span11">
+            <div class="span11-nodes">
                 <div class="span3-hub" style="padding-bottom: 0px;">
                     <a href="/nodes/hub.html">
                         <img src="/images/ELIXIR_logo.png" class="img-circle" style="max-height:120px">
-                        <div style="width: 95%; margin: auto;">
-                            <h3 style="margin-bottom: 0px;">The Hub</h3>
+                        <h3 style="margin-bottom: 0px;">The Hub</h3>
                     </a>
                 </div>
             </div>
-            <div class="span1-hub"></div>
         </div>
-</div>
-<hr>
+        <hr>
 
-{# Country flags obtained from https://github.com/googlei18n/region-flags/tree/master/png #}
-{% set nodes = [
-{'name' : 'Belgium', 'country_code' : 'BE', 'hon' : 'Head of node', 'trc': 'Training co-ord', 'tc' : 'Tech co-ord'},
-{'name' : 'Czech Republic', 'country_code' : 'CZ', 'hon' : 'Head of node', 'trc': 'Training co-ord', 'tc' : 'Tech co-ord'},
-{'name' : 'Denmark', 'country_code' : 'DK', 'hon' : 'Head of node', 'trc': 'Training co-ord', 'tc' : 'Tech co-ord'},
-{'name' : 'EMBL-EBI', 'country_code' : 'EMBL-EBI', 'hon' : 'Head of node', 'trc': 'Training co-ord', 'tc' : 'Tech co-ord'},
-{'name' : 'Estonia', 'country_code' : 'EE', 'hon' : 'Head of node', 'trc': 'Training co-ord', 'tc' : 'Tech co-ord'},
-{'name' : 'Finland', 'country_code' : 'FI', 'hon' : 'Head of node', 'trc': 'Training co-ord', 'tc' : 'Tech co-ord'},
-{'name' : 'France', 'country_code' : 'FR', 'hon' : 'Head of node', 'trc': 'Training co-ord', 'tc' : 'Tech co-ord'},
-{'name' : 'Greece', 'country_code' : 'GR', 'hon' : 'Head of node', 'trc': 'Training co-ord', 'tc' : 'Tech co-ord'},
-{'name' : 'Israel', 'country_code' : 'IL', 'hon' : 'Head of node', 'trc': 'Training co-ord', 'tc' : 'Tech co-ord'},
-{'name' : 'Italy', 'country_code' : 'IT', 'hon' : 'Head of node', 'trc': 'Training co-ord', 'tc' : 'Tech co-ord'},
-{'name' : 'Netherlands', 'country_code' : 'NL', 'hon' : 'Barend Mons', 'trc': 'Celia Van Gelder', 'tc' : 'Rob Hooft'},
-{'name' : 'Norway', 'country_code' : 'NO', 'hon' : 'Head of node', 'trc': 'Training co-ord', 'tc' : 'Tech co-ord'},
-{'name' : 'Portugal', 'country_code' : 'PT', 'hon' : 'Head of node', 'trc': 'Training co-ord', 'tc' : 'Tech co-ord'},
-{'name' : 'Slovenia', 'country_code' : 'SI', 'hon' : 'Head of node', 'trc': 'Training co-ord', 'tc' : 'Tech co-ord'},
-{'name' : 'Spain', 'country_code' : 'ES', 'hon' : 'Head of node', 'trc': 'Training co-ord', 'tc' : 'Tech co-ord'},
-{'name' : 'Sweden', 'country_code' : 'SE', 'hon' : 'Bengt Persson', 'trc': 'Sara Light', 'tc' : 'Mikael Borg'},
-{'name' : 'Switzerland', 'country_code' : 'CH', 'hon' : 'Rob Appel', 'trc': 'Patricia Palagi', 'tc' : 'Heinz Stockinger'},
-{'name' : 'United Kingdom', 'country_code' : 'GB', 'hon' : 'Chris Ponting', 'trc': 'Rita Hendricusdottir', 'tc' : 'Manuel Corpas'},
-] %}
+        {# Country flags obtained from https://github.com/googlei18n/region-flags/tree/master/png #}
+        {% set nodes = [
+        {'name' : 'Belgium', 'country_code' : 'BE', 'hon' : 'Head of node', 'trc': 'Training co-ord', 'tc' : 'Tech
+        co-ord'},
+        {'name' : 'Czech Republic', 'country_code' : 'CZ', 'hon' : 'Head of node', 'trc': 'Training co-ord', 'tc' :
+        'Tech co-ord'},
+        {'name' : 'Denmark', 'country_code' : 'DK', 'hon' : 'Head of node', 'trc': 'Training co-ord', 'tc' : 'Tech
+        co-ord'},
+        {'name' : 'EMBL-EBI', 'country_code' : 'EMBL-EBI', 'hon' : 'Head of node', 'trc': 'Training co-ord', 'tc' :
+        'Tech co-ord'},
+        {'name' : 'Estonia', 'country_code' : 'EE', 'hon' : 'Head of node', 'trc': 'Training co-ord', 'tc' : 'Tech
+        co-ord'},
+        {'name' : 'Finland', 'country_code' : 'FI', 'hon' : 'Head of node', 'trc': 'Training co-ord', 'tc' : 'Tech
+        co-ord'},
+        {'name' : 'France', 'country_code' : 'FR', 'hon' : 'Head of node', 'trc': 'Training co-ord', 'tc' : 'Tech
+        co-ord'},
+        {'name' : 'Greece', 'country_code' : 'GR', 'hon' : 'Head of node', 'trc': 'Training co-ord', 'tc' : 'Tech
+        co-ord'},
+        {'name' : 'Israel', 'country_code' : 'IL', 'hon' : 'Head of node', 'trc': 'Training co-ord', 'tc' : 'Tech
+        co-ord'},
+        {'name' : 'Italy', 'country_code' : 'IT', 'hon' : 'Head of node', 'trc': 'Training co-ord', 'tc' : 'Tech
+        co-ord'},
+        {'name' : 'Netherlands', 'country_code' : 'NL', 'hon' : 'Barend Mons', 'trc': 'Celia Van Gelder', 'tc' : 'Rob
+        Hooft'},
+        {'name' : 'Norway', 'country_code' : 'NO', 'hon' : 'Head of node', 'trc': 'Training co-ord', 'tc' : 'Tech
+        co-ord'},
+        {'name' : 'Portugal', 'country_code' : 'PT', 'hon' : 'Head of node', 'trc': 'Training co-ord', 'tc' : 'Tech
+        co-ord'},
+        {'name' : 'Slovenia', 'country_code' : 'SI', 'hon' : 'Head of node', 'trc': 'Training co-ord', 'tc' : 'Tech
+        co-ord'},
+        {'name' : 'Spain', 'country_code' : 'ES', 'hon' : 'Head of node', 'trc': 'Training co-ord', 'tc' : 'Tech
+        co-ord'},
+        {'name' : 'Sweden', 'country_code' : 'SE', 'hon' : 'Bengt Persson', 'trc': 'Sara Light', 'tc' : 'Mikael Borg'},
+        {'name' : 'Switzerland', 'country_code' : 'CH', 'hon' : 'Rob Appel', 'trc': 'Patricia Palagi', 'tc' : 'Heinz
+        Stockinger'},
+        {'name' : 'United Kingdom', 'country_code' : 'GB', 'hon' : 'Chris Ponting', 'trc': 'Rita Hendricusdottir', 'tc'
+        : 'Manuel Corpas'},
+        ] %}
 
-{% for index in range(0,nodes|length,3): %}
-<div class="row-fluid">
-    <div class="span11">
-        {% snippet "nodes/snippets/node_info_new.html",
-        name = nodes[index].name,
-        flag = "/images/node_flags/" ~ nodes[index].country_code ~ ".png",
-        page = "/nodes/" ~ nodes[index].country_code ~ ".html",
-        hon = nodes[index].hon,
-        trc = nodes[index].trc,
-        tc = nodes[index].tc %}
-        {% if index + 1 < nodes|length: %}
-        {% snippet "nodes/snippets/node_info_new.html",
-        name = nodes[index+1].name,
-        flag = "/images/node_flags/" ~ nodes[index+1].country_code ~ ".png",
-        page = "/nodes/" ~ nodes[index+1].country_code ~ ".html",
-        hon = nodes[index+1].hon,
-        trc = nodes[index+1].trc,
-        tc = nodes[index+1].tc %}
-        {% endif %}
-        {% if index + 2 < nodes|length: %}
-        {% snippet "nodes/snippets/node_info_new.html", name=nodes[index+2].name,
-        name = nodes[index+2].name,
-        flag = "/images/node_flags/" ~ nodes[index+2].country_code ~ ".png",
-        page = "/nodes/" ~ nodes[index+2].country_code ~ ".html",
-        hon = nodes[index+2].hon,
-        trc = nodes[index+2].trc,
-        tc = nodes[index+2].tc %}
-        {% endif %}
-    </div>
-</div>
-{% endfor %}
-</section>
+        {% for index in range(0,nodes|length,3): %}
+        <div class="row-fluid">
+            <div class="span11-nodes">
+                {% snippet "nodes/snippets/node_info_new.html",
+                name = nodes[index].name,
+                flag = "/images/node_flags/" ~ nodes[index].country_code ~ ".png",
+                page = "/nodes/" ~ nodes[index].country_code ~ ".html",
+                hon = nodes[index].hon,
+                trc = nodes[index].trc,
+                tc = nodes[index].tc %}
+                {% if index + 1 < nodes|length: %}
+                {% snippet "nodes/snippets/node_info_new.html",
+                name = nodes[index+1].name,
+                flag = "/images/node_flags/" ~ nodes[index+1].country_code ~ ".png",
+                page = "/nodes/" ~ nodes[index+1].country_code ~ ".html",
+                hon = nodes[index+1].hon,
+                trc = nodes[index+1].trc,
+                tc = nodes[index+1].tc %}
+                {% endif %}
+                {% if index + 2 < nodes|length: %}
+                {% snippet "nodes/snippets/node_info_new.html", name=nodes[index+2].name,
+                name = nodes[index+2].name,
+                flag = "/images/node_flags/" ~ nodes[index+2].country_code ~ ".png",
+                page = "/nodes/" ~ nodes[index+2].country_code ~ ".html",
+                hon = nodes[index+2].hon,
+                trc = nodes[index+2].trc,
+                tc = nodes[index+2].tc %}
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </section>
 </div>
 {% endblock %}
 
