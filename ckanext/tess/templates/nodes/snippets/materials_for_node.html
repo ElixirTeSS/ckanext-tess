@@ -1,22 +1,15 @@
 {# parameters:
-    node - the name of the node like 'United Kingdom' or 'Switzerland'
-    hub - True if we're on the hub page and we need to have the header for each section display the country name
-         - No need to set for other pages
+node - the name of the node like 'United Kingdom' or 'Switzerland'
+hub - True if we're on the hub page and we need to have the header for each section display the country name
+- No need to set for other pages
 #}
-
+<h2>Training materials</h2>
+<hr/>
 {% set datasets = h.get_node_materials(node) %}
-{% if datasets != None %}
-   <div class="span12">
-     <div class="feed">
-       {% if hub == True: %}
-           <h2> Training Materials for {{ node }} </h2>      
-       {% else: %}
-            <h2> Training Materials </h2>
-       {% endif %}
-       <hr/>
-          {% for dataset in datasets %}
-             {% snippet 'snippets/package_item.html', package=dataset %}
-          {% endfor %}
-    </div>
-  </div>
+{% if datasets != None: %}
+    <ul style="list-style: outside none none; margin-left: 5px;" >
+    {% for dataset in datasets %}
+        {% snippet 'snippets/package_item.html', package=dataset %}
+    {% endfor %}
+    </ul>
 {% endif %}
