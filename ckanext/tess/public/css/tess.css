@@ -317,6 +317,16 @@ hr.style-one {
     text-align:center;
 }
 
+.alert-info{
+  position: relative;
+  top: 10px;
+}
+
+.alert-info a:link {
+  text-decoration: underline;
+}
+
+
 /*.materials {
     margin: 20px;
     border: solid;
