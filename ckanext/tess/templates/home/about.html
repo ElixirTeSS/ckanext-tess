@@ -136,7 +136,8 @@
             TeSS is implemented by extending the <a href="http://ckan.org">CKAN platform</a>, an Open Source Data Portal software.
         </p>
         <p>
-            TeSS is populated automatically by scraping content providers for their training materials. Both the TeSS Portal and all the scraping/aggregation
+            TeSS is populated either automatically by scraping content providers for their training materials or by adding materials manually.
+            Both the TeSS Portal and all the scraping/aggregation
             scripts are open source and are released under the GPL license.
             The source code be found in <a href="https://github.com/ElixirUK">GitHub</a>.
         </p>
@@ -154,10 +155,13 @@
 <aside class="secondary" style="position: fixed;">
 <div class="module module-narrow module-shallow">
     <h2 class="module-heading">
-        <div class="icon-filter"></div>{{ _('About') }}
+        <div class="icon-filter"></div>{{ _('Menu') }}
     </h2>
     <nav>
         <ul class="unstyled nav nav-simple nav-facet">
+            <li class="nav-item">
+                <a href="#about" title="">About</a>
+            </li>
             <li class="nav-item">
                 <a href="#contact" title="">Contact</a>
             </li>
