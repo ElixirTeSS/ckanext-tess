@@ -1,126 +1,86 @@
-import logging
+import re
 import os
+import logging
+import genshi
+import cgi
+import datetime
+from urllib import urlencode
+
+from pylons.i18n import get_lang
+
+import ckan.lib.base as base
+import ckan.lib.helpers as h
+import ckan.lib.maintain as maintain
+import ckan.lib.navl.dictization_functions as dict_fns
+import ckan.logic as logic
+import ckan.lib.search as search
+import ckan.model as model
+import ckan.new_authz as new_authz
+import ckan.lib.plugins
 import ckan.plugins as plugins
-import ckan.plugins.toolkit as tk
-from ckan.lib.plugins import DefaultGroupForm
+from ckan.common import OrderedDict, c, g, request, _
+
+log = logging.getLogger(__name__)
+
+render = base.render
+abort = base.abort
+
+NotFound = logic.NotFound
+NotAuthorized = logic.NotAuthorized
+ValidationError = logic.ValidationError
+check_access = logic.check_access
+get_action = logic.get_action
+tuplize_dict = logic.tuplize_dict
+clean_dict = logic.clean_dict
+parse_params = logic.parse_params
+
+lookup_group_plugin = ckan.lib.plugins.lookup_group_plugin
 
 
-class NodePlugin(plugins.SingletonPlugin,DefaultGroupForm):
+class NodeController(base.BaseController):
 
-    plugins.implements(plugins.IConfigurer, inherit=True)
-    plugins.implements(plugins.IGroupForm, inherit=True)
-    plugins.implements(plugins.IRoutes, inherit=True)
+    group_type = 'node'
 
-    def before_map(self, map):
-        map.connect('/node', controller='ckanext.tess.controller:NodeController', action='index')
-        map.connect('/node/new', controller='ckanext.tess.controller:NodeController', action='new')
-        map.connect('/node/edit/{id}', controller='ckanext.tess.controller:NodeController', action='edit')
-        map.connect('/node/{id}', controller='ckanext.tess.controller:NodeController', action='read')
-        return map
+    ## hooks for subclasses
+    def _node_form(self):
+        return lookup_group_plugin(group_type).group_form()
 
-    def after_map(self, map):
-        return map
+    def _form_to_db_schema(self, group_type=None):
+        return lookup_group_plugin(group_type).form_to_db_schema()
 
-    def update_config(self, config):
-        tk.add_template_directory(config, 'templates')
+    def _db_to_form_schema(self, group_type=None):
+        '''This is an interface to manipulate data from the database
+        into a format suitable for the form (optional)'''
+        return lookup_group_plugin(group_type).db_to_form_schema()
 
-    def group_form(self):
-        return 'node/new_node_form.html'
+    def _setup_template_variables(self, context, data_dict, group_type=None):
+        return lookup_group_plugin(group_type).\
+            setup_template_variables(context, data_dict)
 
-    def new_template(self):
-        return 'node/new.html'
+    def _new_template(self, group_type):
+        return lookup_group_plugin(group_type).new_template()
 
-    def about_template(self):
-        return 'node/about.html'
+    def _index_template(self, group_type):
+        return lookup_group_plugin(group_type).index_template()
 
-    def index_template(self):
-        print '============+CAllling node.py index_template method'
-        return 'node/index.html'
+    def _about_template(self, group_type):
+        return lookup_group_plugin(group_type).about_template()
 
-    def admins_template(self):
-        return 'node/admins.html'
+    def _read_template(self, group_type):
+        return lookup_group_plugin(group_type).read_template()
 
-    def bulk_process_template(self):
-        return 'node/bulk_process.html'
+    def _history_template(self, group_type):
+        return lookup_group_plugin(group_type).history_template()
 
-    # don't override history_template - use group template for history
+    def _edit_template(self, group_type):
+        return lookup_group_plugin(group_type).edit_template()
 
-    def edit_template(self):
-        return 'node/edit.html'
+    def _activity_template(self, group_type):
+        return lookup_group_plugin(group_type).activity_template()
 
-    def activity_template(self):
-        return 'node/activity_stream.html'
+    def _admins_template(self, group_type):
+        return lookup_group_plugin(group_type).admins_template()
 
-    def is_fallback(self):
-        # Return True to register this plugin as the default handler for
-        # package types not handled by any other IDatasetForm plugin.
-        return False
+    def _bulk_process_template(self, group_type):
+        return lookup_group_plugin(group_type).bulk_process_template()
 
-    def group_types(self):
-        # This plugin doesn't handle any special package types, it just
-        # registers itself as the default (above).
-        return ['node']
-
-    def form_to_db_schema_options(self, options):
-        ''' This allows us to select different schemas for different
-        purpose eg via the web interface or via the api or creation vs
-        updating. It is optional and if not available form_to_db_schema
-        should be used.
-        If a context is provided, and it contains a schema, it will be
-        returned.
-        '''
-        schema = options.get('context', {}).get('schema', None)
-        if schema:
-            return schema
-
-        if options.get('api'):
-            if options.get('type') == 'create':
-                return self.form_to_db_schema_api_create()
-            else:
-                return self.form_to_db_schema_api_update()
-        else:
-            return self.form_to_db_schema()
-
-    def form_to_db_schema_api_create(self):
-        schema = super(NodePlugin, self).form_to_db_schema_api_create()
-        schema = self._modify_group_schema(schema)
-        return schema
-
-    def form_to_db_schema_api_update(self):
-        schema = super(NodePlugin, self).form_to_db_schema_api_update()
-        schema = self._modify_group_schema(schema)
-        return schema
-
-    def form_to_db_schema(self):
-        schema = super(NodePlugin, self).form_to_db_schema()
-        schema = self._modify_group_schema(schema)
-        return schema
-
-    def _modify_group_schema(self, schema):
-         #Import core converters and validators
-        _convert_to_extras = tk.get_converter('convert_to_extras')
-        _ignore_missing = tk.get_validator('ignore_missing')
-
-
-        default_validators = [_ignore_missing, _convert_to_extras]
-        schema.update({
-                       'project_leader':default_validators
-                       })
-        return schema
-
-    def db_to_form_schema(self):
-
-        # Import core converters and validators
-        _convert_from_extras = tk.get_converter('convert_from_extras')
-        _ignore_missing = tk.get_validator('ignore_missing')
-        _not_empty = tk.get_validator('not_empty')
-
-        schema = super(IgroupformExample, self).form_to_db_schema()
-
-        default_validators = [_convert_from_extras, _ignore_missing]
-        schema.update({
-                        'project_leader':default_validators,
-                        'num_followers': [_not_empty],
-                        'package_count': [_not_empty],
-                       })
-        return schema

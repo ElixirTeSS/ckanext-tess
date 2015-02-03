@@ -1,8 +1,7 @@
 import ckan.lib.base as base
 import ckan.controllers.group as group
 from ckan.controllers.home import HomeController
-    
-
+import ckan.controllers.group as group
 
 class SpecialRouteController(HomeController):
     def nodes(self):
@@ -15,14 +14,7 @@ class SpecialRouteController(HomeController):
         return base.render('workflow/index.html')
 
 class NodeController(group.GroupController):
-    ''' 
-        God I hope this works.
-    '''
-    # this makes us use organization actions
     group_type = 'node'
 
     def _guess_group_type(self, expecting_name=False):
         return 'node'
-
-    def read(self):
-        return base.render('node/index.html')    

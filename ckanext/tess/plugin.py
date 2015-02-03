@@ -4,6 +4,7 @@
 import ckan.plugins.toolkit as toolkit
 import ckan.plugins as plugins
 import os
+
 from ckan.lib.plugins import DefaultGroupForm
 
 def node_list():
@@ -185,19 +186,34 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
 
 class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
     plugins.implements(plugins.IGroupForm, inherit=True)
+    plugins.implements(plugins.IRoutes, inherit=True)
+
+    def before_map(self, map):
+        map.connect('node', '/node', controller='ckanext.tess.controller:NodeController', action='index')
+        map.connect('new-node', '/node/new', controller='ckanext.tess.controller:NodeController', action='new')
+        map.connect('edit-node', '/node/edit/{id}', controller='ckanext.tess.controller:NodeController', action='edit')
+        return map
+
+    def after_map(self, map):
+        return map
 
     def is_fallback(self):
-        return True    
+        return False    
 
     def group_types(self):
-        return ['nodes']
-
+        return ['node']
 
     def group_form(self):
-        return 'nodes/new_node_form.html'
+        return 'node/new_node_form.html'
 
     def new_template(self):
-        return 'new_node_form.html'
+        return 'node/new.html'
+
+    def index_template(self):
+        return 'node/index.html'
+
+    def edit_template(self):
+        return 'node/edit.html'
 
     def form_to_db_schema_options(self, options):
         ''' This allows us to select different schemas for different
@@ -236,8 +252,8 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
 
     def _modify_group_schema(self, schema):
          #Import core converters and validators
-        _convert_to_extras = tk.get_converter('convert_to_extras')
-        _ignore_missing = tk.get_validator('ignore_missing')
+        _convert_to_extras = toolkit.get_converter('convert_to_extras')
+        _ignore_missing = toolkit.get_validator('ignore_missing')
 
 
         default_validators = [_ignore_missing, _convert_to_extras]
@@ -249,9 +265,9 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
     def db_to_form_schema(self):
 
         # Import core converters and validators
-        _convert_from_extras = tk.get_converter('convert_from_extras')
-        _ignore_missing = tk.get_validator('ignore_missing')
-        _not_empty = tk.get_validator('not_empty')
+        _convert_from_extras = toolkit.get_converter('convert_from_extras')
+        _ignore_missing = toolkit.get_validator('ignore_missing')
+        _not_empty = toolkit.get_validator('not_empty')
 
         schema = super(NodePlugin, self).form_to_db_schema()
 
