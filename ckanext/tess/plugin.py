@@ -68,7 +68,7 @@ def iann_news():
       data = myfile.read()
   except Exception, e:
     print "iann_news: " + str(e)
-    data = "<p>No news found!</p>"
+    data = "<p>No events found!</p>"
   return plugins.toolkit.literal(data)
 
 

@@ -15,14 +15,17 @@
     </div>
   </article>
   <div id="iAnnList" class="events-source">
-  <p class="events-source-title"><strong>Source: </strong><a target="_blank" href="http://iann.pro">
-  <img alt="iAnn" src="/images/iann_logo-32x30.png"/></a></p><hr/>
-  {{ h.read_news_iann() }}
-  <div class="more-link"><a target="_blank" href="http://mygoblet.org/iannviewer">More events from iAnn</a></div>
+    <p class="events-source-title"><strong>Source: </strong>
+        <a target="_blank" href="http://iann.pro"><img alt="iAnn" src="/images/iann_logo-32x30.png"/></a>
+    </p>
+    <hr/>
+    {{ h.read_news_iann() }}
+    <div class="more-link"><a target="_blank" href="http://mygoblet.org/iannviewer">More events from iAnn</a></div>
   </div>
 {% endblock %}
 
 {% block secondary %}
+<aside class="secondary">
     <div class="module module-narrow module-shallow">
         <h2 class="module-heading">
             <div class="icon-filter"></div>{{ _('Source') }}
@@ -35,4 +38,5 @@
             </ul>
         </nav>
     </div>
+</aside>
 {% endblock %}
