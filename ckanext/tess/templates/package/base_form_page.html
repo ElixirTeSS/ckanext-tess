@@ -1,15 +1,4 @@
-{% extends "package/edit_base.html" %}
-
-{% block primary_content %}
-  <section class="module">
-    {% block page_header %}{% endblock %}
-    <div class="module-content">
-      {% block primary_content_inner %}
-        {% block form %}{{ c.form | safe }}{% endblock %}
-      {% endblock %}
-    </div>
-  </section>
-{% endblock %}
+{% ckan_extends %}
 
 {% block secondary_content %}
   {% block info_module %}
@@ -25,9 +14,3 @@
       </div>
     </section>
   {% endblock %}
-
-  {% block resources_module %}
-    {# TODO: Pass in a list of previously created resources and the current package dict #}
-    {% snippet "package/snippets/resources.html", pkg={}, action='new_resource' %}
-  {% endblock %}
-{% endblock %}
