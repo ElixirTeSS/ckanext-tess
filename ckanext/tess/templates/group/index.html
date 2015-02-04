@@ -1,4 +1,4 @@
-{% extends "page.html" %}
+{% ckan_extends %}
 
 {% block subtitle %}{{ _('Packages') }}{% endblock %}
 
@@ -36,8 +36,4 @@
   {% block page_pagination %}
     {{ c.page.pager() }}
   {% endblock %}
-{% endblock %}
-
-{% block secondary_content %}
-  {% snippet "group/snippets/helper.html" %}
 {% endblock %}
