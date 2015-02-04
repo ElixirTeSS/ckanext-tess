@@ -3,12 +3,12 @@
 {% block subtitle %}{{ _('Edit datasets') }} - {{ super() }}{% endblock %}
 
 {% block page_primary_action %}
-  {% link_for _('Add dataset'), controller='package', action='new', group=c.group_dict.id, class_='btn btn-primary', icon='plus-sign-alt' %}
+  {% link_for _('Add training material'), controller='package', action='new', group=c.group_dict.id, class_='btn btn-primary', icon='plus-sign-alt' %}
 {% endblock %}
 
 {% block primary_content_inner %}
   <div class="clearfix">
-    <h1 class="hide-heading">{{ _('Edit datasets') }}</h1>
+    <h1 class="hide-heading">{{ _('Edit training materials') }}</h1>
     <div class="primary">
       <h3 class="page-heading">
         {% block page_heading %}
