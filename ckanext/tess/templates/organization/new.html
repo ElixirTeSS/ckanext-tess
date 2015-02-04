@@ -1,4 +1,4 @@
-{% extends "organization/base_form_page.html" %}
+{% ckan_extends %}
 
 {% block subtitle %}{{ _('Create content provider') }}{% endblock %}
 
@@ -6,12 +6,6 @@
 
 {% block page_heading %}{{ _('Create content provider') }}{% endblock %}
 
-{% block page_header %}{% endblock %}
-
 {% block breadcrumb_content_inner %}
   <li class="active"><a href="#">{{ _('Create content provider') }}</a></li>
-{% endblock %}
-
-{% block secondary_content %}
-  {% snippet "organization/snippets/helper.html" %}
 {% endblock %}
