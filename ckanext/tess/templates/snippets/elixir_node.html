@@ -1,0 +1,38 @@
+{#
+Embeds a organization within the sidebar of a page.
+
+organization    - The organization dict.
+truncate - A max length for the organization description. If not provided the description
+will be full length.
+has_context_title - Boolean for whether to display a module-heading for when
+this snippet appears within a non-organization template
+(e.g. dataset page sidebar)
+
+Example:
+
+{% snippet 'snippets/organization, organization=c.group_dict %}
+
+#}
+
+{% set truncate = truncate or 0 %}
+{# set url = h.url_for(controller='organization', action='read', id=organization.name) #}
+
+{% block info %}
+<div class="module module-narrow module-shallow context-info">
+    {% if has_context_title %}
+    <h2 class="module-heading"><div class="icon-elixir"></div> {{ _('ELIXIR Node') }}</h2>
+    {% endif %}
+    <section class="module-content">
+        {#
+        {% block image %}
+        <div class="image">
+            <a href="{{ url }}">
+                <img src="{{ h.url_for_static('/base/images/placeholder-organization.png') }}" alt="{{ elixir_node }}" />
+            </a>
+        </div>
+        {% endblock %}
+        #}
+        <h1 class="heading">{{ elixir_node }}</h1>
+    </section>
+</div>
+{% endblock %}
