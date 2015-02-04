@@ -1,0 +1,40 @@
+{% ckan_extends %}
+
+{% block content_primary_nav %}
+{{ h.build_nav_icon('dataset_read', _('Training material'), id=pkg.name) }}
+{{ h.build_nav_icon('dataset_groups', _('Package'), id=pkg.name) }}
+{{ h.build_nav_icon('dataset_activity', _('Activity Stream'), id=pkg.name) }}
+{% endblock %}
+
+{% block secondary_content %}
+
+{% block secondary_help_content %}{% endblock %}
+
+{% block package_info %}
+{% snippet 'package/snippets/info.html', pkg=pkg %}
+{% endblock %}
+
+{% block package_organization %}
+{% if pkg.organization %}
+{% set org = h.get_organization(pkg.organization.name) %}
+{% snippet "snippets/organization.html", organization=org, has_context_title=true %}
+{% endif %}
+{% endblock %}
+
+{% block package_elixir_node %}
+{% if pkg.elixir_node and pkg.elixir_node|length >= 1 %}
+{# Looks like a list of nodes is returned but we only ever have 0 or 1 nodes #}
+{% set elixir_node = pkg.elixir_node[0] %}
+{% snippet "snippets/elixir_node.html", elixir_node=elixir_node, has_context_title=true %}
+{% endif %}
+{% endblock %}
+
+{% block package_social %}
+{% snippet "snippets/social.html" %}
+{% endblock %}
+
+{% block package_license %}
+{% snippet "snippets/license.html", pkg_dict=pkg %}
+{% endblock %}
+
+{% endblock %}
