@@ -359,3 +359,11 @@ hr.style-one {
 .container-home{
     width: 1000px;
 }
+
+.brick {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 260px;
+    border: 1px solid #DDD;
+}

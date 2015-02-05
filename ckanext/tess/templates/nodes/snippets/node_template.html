@@ -25,35 +25,37 @@ you risk reversing the Entropy of the Universe and destroying us all. You've bee
 </div>
 {% endblock %}
 
+
+
 <div class="module-content">
     <ul style="position: relative;" class="media-grid masonry" data-module="media-grid">
 
         {% block news %}
-        <li style="position: absolute; top: 0px; left: 0px; width: 280px; border: 1px solid #DDD;" class="media-item masonry-brick">
+        <li class="media-item masonry-brick brick">
             {% snippet "nodes/snippets/news_for_node.html", node=node_name %}
         </li>
         {% endblock %}
 
         {% block organizations %}
-        <li style="position: absolute; top: 0px; left: 0px; width: 280px; border: 1px solid #DDD;" class="media-item masonry-brick">
+        <li class="media-item masonry-brick brick">
             {% snippet "nodes/snippets/organizations_for_node.html", node=node_name %}
         </li>
         {% endblock %}
 
         {% block materials %}
-        <li style="position: absolute; top: 0px; left: 0px; width: 280px; border: 1px solid #DDD;" class="media-item masonry-brick">
+        <li class="media-item masonry-brick brick">
             {% snippet "nodes/snippets/materials_for_node.html", node=node_name %}
         </li>
         {% endblock %}
 
         {% block events %}
-        <li style="position: absolute; top: 0px; left: 0px; width: 280px; border: 1px solid #DDD;" class="media-item masonry-brick">
+        <li class="media-item masonry-brick brick">
             {% snippet "nodes/snippets/events_for_node.html", node=node_name %}
         </li>
         {% endblock %}
 
         {% block staff %}
-        <li style="position: absolute; top: 0px; left: 0px; width: 280px; border: 1px solid #DDD;" class="media-item masonry-brick">
+        <li class="media-item masonry-brick brick">
             {% snippet "nodes/snippets/staff_for_node.html", node=node_name %}
         </li>
         {% endblock %}
