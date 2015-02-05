@@ -317,6 +317,16 @@ hr.style-one {
     text-align:center;
 }
 
+.alert-info{
+  position: relative;
+  top: 10px;
+}
+
+.alert-info a:link {
+  text-decoration: underline;
+}
+
+
 /*.materials {
     margin: 20px;
     border: solid;
@@ -340,13 +350,13 @@ hr.style-one {
     background-color: ghostwhite;
 }
 .span3-hub {
-    width: 270px;
+    width: 210px;
     padding-bottom: 30px;
 }
 .row-fluid .span3-hub {
-    width: 28%;
-    *width: 28%;
-    margin-left: 1.2%;
+    width: 32%;
+    *width: 32%;
+    margin-left: 1.5%;
 }
 .span1-hub {
     width: 30px;
@@ -355,5 +365,13 @@ hr.style-one {
     width: 3%;
     *width: 3%;
     margin-left: 1.2%;
+}
+.span11-nodes {
+    width: 900px;
+}
+
+.row-fluid .span11-nodes {
+    width: 97%;
+    *width: 97%;
 }
 
