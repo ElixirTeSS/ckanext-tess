@@ -360,10 +360,14 @@ hr.style-one {
     width: 1000px;
 }
 
-.brick {
+.node-brick {
     position: absolute;
     top: 0px;
     left: 0px;
     width: 260px;
     border: 1px solid #DDD;
+}
+
+.media-grid {
+    margin-left: -25px;
 }
