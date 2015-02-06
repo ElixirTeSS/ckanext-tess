@@ -7,19 +7,47 @@
 {% endblock %}
 
 {% block primary %}
-  <article class="module">
-    <div class="module-content">
-      {% block about %}
-          <h1 class="page-heading">{{ _('Events') }}</h1>
-      {% endblock %}
-    </div>
-  </article>
-  <div id="iAnnList" class="events-source">
-  <p class="events-source-title"><strong>Source: </strong><a target="_blank" href="http://iann.pro">
-  <img alt="iAnn" src="/images/iann_logo-32x30.png"/></a></p><hr/>
-  {{ h.read_news_iann() }}
-  <div class="more-link"><a target="_blank" href="http://mygoblet.org/iannviewer">More events from iAnn</a></div>
-  </div>
+<div class="primary" style="width: 74%; padding-right: 10px;">
+    <section class="module">
+        {% block about %}
+        <h1 >{{ _('Events') }}</h1>
+        {% endblock %}
+        <div id="iAnnList" class="events-source">
+            <p class="events-source-title"><strong>Source:</strong>
+                <a target="_blank" href="http://iann.pro"><img alt="iAnn" src="/images/iann_logo-32x30.png"/></a>
+            </p>
+            <p>
+            {{ h.read_news_iann() }}
+            </p>
+            <p class="more-link"><a target="_blank" href="http://mygoblet.org/iannviewer">More events from iAnn</a></p>
+            <hr/>
+        </div>
+    </section>
+</div>
 {% endblock %}
 
-{% block secondary %}{% endblock %}
+{% block secondary %}
+<aside class="secondary span3" style="position: fixed;">
+    <div class="filters">
+        <div>
+            <section class="module module-narrow module-shallow">
+                <h2 class="module-heading">
+                    <i class="icon-medium icon-filter"></i>
+                    Source
+                </h2>
+                <nav>
+                    <ul class="unstyled nav nav-simple nav-facet">
+                        <li class="nav-item">
+                            <a href="##iAnnList" title="">
+                                <span>iAnn</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <p class="module-footer">
+                </p>
+            </section>
+        </div>
+    </div>
+</aside>
+{% endblock %}

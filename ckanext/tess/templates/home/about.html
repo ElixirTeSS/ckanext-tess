@@ -1,4 +1,4 @@
-{% extends "page.html" %}
+{% ckan_extends %}
 
 {% block subtitle %}{{ _('About') }}{% endblock %}
 
@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block primary %}
-<div class="primary" style="width: 74%; padding-right: 10px;">
+<div class="primary span9">
     <section class="module">
         {% block about %}
         {% if g.site_about %}
@@ -152,27 +152,42 @@
 {% endblock %}
 
 {% block secondary %}
-<aside class="secondary" style="position: fixed;">
-<div class="module module-narrow module-shallow">
-    <h2 class="module-heading">
-        <div class="icon-filter"></div>{{ _('Menu') }}
-    </h2>
-    <nav>
-        <ul class="unstyled nav nav-simple nav-facet">
-            <li class="nav-item">
-                <a href="#about" title="">About</a>
-            </li>
-            <li class="nav-item">
-                <a href="#contact" title="">Contact</a>
-            </li>
-            <li class="nav-item">
-                <a href="#faq" title="">FAQ</a>
-            </li>
-            <li class="nav-item">
-                <a href="#software" title="">Software</a>
-            </li>
-        </ul>
-    </nav>
-</div>
+<aside class="secondary span3" style="position: fixed;">
+    <div class="filters">
+        <div>
+            <section class="module module-narrow module-shallow">
+                <h2 class="module-heading">
+                    <i class="icon-medium icon-filter"></i>
+                    Menu
+                </h2>
+                <nav>
+                    <ul class="unstyled nav nav-simple nav-facet-no-icon">
+                        <li class="nav-item">
+                            <a href="#about" title="">
+                                <span>About</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#contact" title="">
+                                <span>Contact</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#faq" title="">
+                                <span>FAQ</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#software" title="">
+                                <span>Software</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <p class="module-footer">
+                </p>
+            </section>
+        </div>
+    </div>
 </aside>
 {% endblock %}

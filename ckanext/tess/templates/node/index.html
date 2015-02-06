@@ -10,7 +10,7 @@
 
 {% block page_primary_action %}
   {#% if h.check_access('node_create') %#}
-    {% link_for _('Add Node'), controller='ckanext.tess.controller:NodeController', action='new', class_='btn btn-primary', icon='plus-sign-alt' %}
+    {% link_for _('Add node'), controller='ckanext.tess.controller:NodeController', action='new', class_='btn btn-primary', icon='plus-sign-alt' %}
   {#% endif %#}
 {% endblock %}
 
@@ -26,7 +26,7 @@
       {% endif %}
     {% else %}
       <p class="empty">
-        {{ _('There are currently no content providers for this site') }}.
+        {{ _('There are currently no ELIXIR nodes for this site') }}.
         {#% if h.check_access('node_create') %#}
           {% link_for _('How about creating one?'), controller='ckanext.tess.controller:NodeController', action='new' %}</a>
         {#% endif %#}

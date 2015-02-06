@@ -3,7 +3,7 @@
             <h2 class="module-heading">
               {% set title = title or h.get_facet_title(name) %}
               {% if title.lower().startswith('organizations') %}
-                {% set title = 'Content providers' %}
+                {% set title = 'Content Providers' %}
               {% elif title.lower().startswith('datasets') %}
                 {% set title = 'Training materials' %}
               {% elif title.lower().startswith('groups') %}

@@ -1,0 +1,12 @@
+{% ckan_extends %}
+
+{% block save_text %}
+  {%- if action == "edit" -%}
+    {{ _('Update package') }}
+  {%- else -%}
+    {{ _('Create package') }}
+  {%- endif -%}
+{% endblock %}
+
+{% block custom_fields %}
+{% endblock %}

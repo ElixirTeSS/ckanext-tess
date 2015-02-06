@@ -1,28 +1,4 @@
-body {
-  background-color: #F8761F;
-}
-
-
-.masthead a {
-  color: #A24200;
-}
-.masthead .navigation .nav-pills a:hover {
-	color: #FFAC74;
-	background-color: #A24200;
-}
-
-.masthead .navigtaion .nav-pills li.active a {
-	background-color: #A24200;
-}
-
-.container {
-  width: 1000px;
-}
-
-.nav-pills {
-
-}
-/* 
+/*
 Dark Orange #F8761F
 Light Orange #FFAC74
 Text Color #FFAC74
@@ -57,6 +33,7 @@ Text Color #FFAC74
 .masthead {
   background-color:#F3CDB4;
 }
+
 .masthead .content {
   top: 35px;
   right: -30px;
@@ -80,6 +57,10 @@ Text Color #FFAC74
   box-shadow: inset 0px 0px 2px 0px rgba(0, 0, 0, 0.7);
 }
 
+.navbar .nav > li > a {
+    padding: 10px 7px;
+    color: #A24200;
+}
 
 /* ===========================================
    The content in the middle of the front page
@@ -100,7 +81,11 @@ Text Color #FFAC74
   background-color: #F8761F;
 }
 */
-
+[role=main] .primary {
+    float: right;
+    margin-left: 0;
+    margin-bottom: 10px;
+}
 /* Change the colors of the "Search Your Data" box. */
 .homepage .module-search .module-content {
   color: rgb(68, 68, 68);
@@ -349,23 +334,28 @@ hr.style-one {
     border-color: lightgrey;
     background-color: ghostwhite;
 }
+
 .span3-hub {
     width: 210px;
     padding-bottom: 30px;
 }
+
 .row-fluid .span3-hub {
     width: 32%;
     *width: 32%;
     margin-left: 1.5%;
 }
+
 .span1-hub {
     width: 30px;
 }
+
 .row-fluid .span1-hub {
     width: 3%;
     *width: 3%;
     margin-left: 1.2%;
 }
+
 .span11-nodes {
     width: 900px;
 }
@@ -375,3 +365,36 @@ hr.style-one {
     *width: 97%;
 }
 
+.container-home{
+    width: 1000px;
+}
+
+.node-brick {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 260px;
+    border: 1px solid #DDD;
+}
+
+.media-grid {
+    margin-left: -25px;
+}
+
+.nav-facet-no-icon .nav-item > a:hover:after,
+.nav-facet-no-icon .nav-item.active > a:after {
+    *margin-right: .3em;
+    display: inline-block;
+    vertical-align: text-bottom;
+    position: relative;
+    top: 2px;
+    width: 16px;
+    height: 16px;
+    background-repeat: no-repeat;
+    background-position: 16px 16px;
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    margin-top: -8px;
+}

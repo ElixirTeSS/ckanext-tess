@@ -1,0 +1,8 @@
+{% ckan_extends %}
+
+{% block subtitle %}{{ _('Create package') }}{% endblock %}
+
+{% block breadcrumb_link %}{{ h.nav_link(_('Create package'), controller='group', action='edit', id=c.group.name) }}{% endblock %}
+
+{% block page_heading %}{{ _('Create package') }}{% endblock %}
+
