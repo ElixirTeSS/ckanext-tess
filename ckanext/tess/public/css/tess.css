@@ -330,23 +330,28 @@ hr.style-one {
     border-color: lightgrey;
     background-color: ghostwhite;
 }
+
 .span3-hub {
     width: 210px;
     padding-bottom: 30px;
 }
+
 .row-fluid .span3-hub {
     width: 32%;
     *width: 32%;
     margin-left: 1.5%;
 }
+
 .span1-hub {
     width: 30px;
 }
+
 .row-fluid .span1-hub {
     width: 3%;
     *width: 3%;
     margin-left: 1.2%;
 }
+
 .span11-nodes {
     width: 900px;
 }
@@ -370,4 +375,22 @@ hr.style-one {
 
 .media-grid {
     margin-left: -25px;
+}
+
+.nav-facet-no-icon .nav-item > a:hover:after,
+.nav-facet-no-icon .nav-item.active > a:after {
+    *margin-right: .3em;
+    display: inline-block;
+    vertical-align: text-bottom;
+    position: relative;
+    top: 2px;
+    width: 16px;
+    height: 16px;
+    background-repeat: no-repeat;
+    background-position: 16px 16px;
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    margin-top: -8px;
 }
