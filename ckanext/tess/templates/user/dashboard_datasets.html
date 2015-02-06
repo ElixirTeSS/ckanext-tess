@@ -14,7 +14,7 @@
     {% snippet 'snippets/package_list.html', packages=c.user_dict.datasets %}
   {% else %}
     <p class="empty">
-      {{ _('You haven\'t created any datasets.') }}
+      {{ _('You have not created any training materials.') }}
       {% if h.check_access('package_create') %}
         {% link_for _('Create one now?'), controller='package', action='new' %}
       {% endif %}
