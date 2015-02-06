@@ -2,7 +2,7 @@
 
 {% block primary_content_inner %}
   <h2 class="hide-heading">
-    {% block page_heading %}{{ _('Datasets') }}{% endblock %}
+    {% block page_heading %}{{ _('Training materials') }}{% endblock %}
   </h2>
   {% block package_list %}
   {% if user.datasets %}
@@ -11,14 +11,14 @@
 
     {% if c.is_myself %}
       <p class="empty">
-        {{ _('You haven\'t created any datasets.') }}
+        {{ _('You have not created any training materials.') }}
         {% if h.check_access('package_create') %}
           {% link_for _('Create one now?'), controller='package', action='new' %}
         {% endif %}
       </p>
     {% else %}
       <p class="empty">
-        {{ _('User hasn\'t created any datasets.') }}
+        {{ _('User has not created any training materials.') }}
       </p>
     {% endif %}
   {% endif %}
