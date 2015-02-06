@@ -13,15 +13,21 @@
     {% set prefix = h.url_for(controller='node', action='read', id='') %}
     {% set domain = h.url_for(controller='node', action='read', id='', qualified=true) %}
     {% set domain = domain|replace("http://", "")|replace("https://", "") %}
-    {% set attrs = {'data-module': 'slug-preview-slug', 'data-module-prefix': domain, 'data-module-placeholder': '<node>'} %}
+    {% set attrs = {'data-module': 'slug-preview-slug', 'data-module-prefix': domain, 'data-module-placeholder': '<node-id>'} %}
 
     {{ form.prepend('name', label=_('URL'), prepend=prefix, id='field-url', placeholder=_('my-node'), value=data.name, error=errors.name, 
 attrs=attrs, is_required=true) }}
     {{ form.markdown('description', label=_('Description'), id='field-description', placeholder=_('A little information about the ELIXIR Node...'), value=data.description, error=errors.description) }}
+   {{ data.image_url }}
+
+    {{ form.input('hon', label=_('Head of Node'), id='hon', placeholder=('The Head of this Node'), value=data.hon) }}
+    {{ form.input('trc', label=_('Training Coordinator'), id='trc', placeholder=('Name of Training Coordinator'), value=data.trc) }}
+    {{ form.input('tec', label=_('Technical Coordinator'), id='tec', placeholder=('Name of Technical Coordinator'), value=data.tec) }}
+    {{ form.input('cc', label=_('Country Code'), id='tec', placeholder=('e.g. GB for Great Britain, CH for Swiss'), value=data.cc) }}
 
     {% set is_upload = data.image_url and not data.image_url.startswith('http') %}
     {% set is_url = data.image_url and data.image_url.startswith('http') %}
-
+    {{ c.ass }}
     {{ form.image_upload(data, errors, is_upload_enabled=h.uploads_enabled(), is_url=is_url, is_upload=is_upload) }}
 
   {% endblock %}

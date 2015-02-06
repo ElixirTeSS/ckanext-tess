@@ -3,6 +3,7 @@
 '''
 import ckan.plugins.toolkit as toolkit
 import ckan.plugins as plugins
+import ckan.lib.helpers as h
 import os
 
 from ckan.lib.plugins import DefaultGroupForm
@@ -187,10 +188,30 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         # registers itself as the default (above).
         return []
 
+def file_exist(file_name):
+    here = os.path.dirname(__file__)
+    rootdir = os.path.dirname(os.path.dirname(here))
+    template_dir = os.path.join(rootdir, 'ckanext',
+                                  'tess', 'templates')
+    return os.path.exists(template_dir + "/" + file_name)
+
+def get_all_nodes():
+    nodes = toolkit.get_action("group_list")(
+    data_dict={'all_fields':True, 'type':'node'})
+    if len(nodes) > 0:
+        return nodes
+    else:
+        return None
+
 
 class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
     plugins.implements(plugins.IGroupForm, inherit=True)
     plugins.implements(plugins.IRoutes, inherit=True)
+    plugins.implements(plugins.ITemplateHelpers, inherit=True)
+
+    def get_helpers(self):
+        return {'file_exist':file_exist,
+                'get_all_nodes': get_all_nodes }
 
     def before_map(self, map):
         map.connect('node', '/node', controller='ckanext.tess.controller:NodeController', action='index')
@@ -212,6 +233,9 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
 
     def new_template(self):
         return 'node/new.html'
+
+    def read_template(self):
+        return 'node/read.html'
 
     def index_template(self):
         return 'node/index.html'
@@ -262,9 +286,17 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
 
         default_validators = [_ignore_missing, _convert_to_extras]
         schema.update({
-                       'project_leader':default_validators
+                       'cc': [_convert_to_extras],
+                       'hon':default_validators,
+                       'tec':default_validators,
+                       'trc':default_validators
                        })
         return schema
+
+    def setup_template_variables(self, context, data_dict):
+        if not data_dict.has_key('cc'):
+            data_dict['cc'] = 'Error'
+        return data_dict
 
     def db_to_form_schema(self):
 
@@ -277,8 +309,9 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
 
         default_validators = [_convert_from_extras, _ignore_missing]
         schema.update({
-                        'project_leader':default_validators,
-                        'num_followers': [_not_empty],
-                        'package_count': [_not_empty],
+                       'cc':default_validators,
+                       'hon':default_validators,
+                       'tec':default_validators,
+                       'trc':default_validators
                        })
         return schema
