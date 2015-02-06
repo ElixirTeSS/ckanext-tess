@@ -15,7 +15,7 @@
 {% endblock %}
 
 {% block primary_content_inner %}
-  <h1 class="hide-heading">{% block page_heading %}{{ _('Content providers') }}{% endblock %}</h1>
+  <h1 class="hide-heading">{% block page_heading %}{{ _('Nodes') }}{% endblock %}</h1>
   {#% block nodes_search_form %}
     {% snippet 'snippets/search_form.html', type='node', query=c.q, sorting_selected=c.sort_by_selected, count=c.page.item_count, placeholder=_('Search content providers...'), show_empty=request.params, no_bottom_border=true if c.page.items %}
   {% endblock %#}

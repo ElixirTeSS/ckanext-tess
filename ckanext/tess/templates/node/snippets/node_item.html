@@ -15,11 +15,17 @@ Example:
 {% set url = h.url_for(node.type ~ '_read', action='read', id=node.name) %}
 <li class="media-item">
   {% block image %}
-    <img src="{{ node.image_display_url or h.url_for_static('/base/images/placeholder-node.png') }}" alt="{{ node.name }}" class="media-image">
+    <img src="{{ node.image_display_url or h.url_for_static('/images/empty.gif') }}" alt="{{ node.name }}" class="media-image">
   {% endblock %}
   {% block title %}
     <h3 class="media-heading">{{ node.display_name }}</h3>
   {% endblock %}
+    {% block node_info %}
+    {{ node }}
+    <b>Head of Node:</b> <i>{{node.hon}}</i><br>
+    <b>Technical Co-Ordinator</b>: <i>{{node.tec}}</i><br>
+    <b>Training Co-Ordinator</b>:<i>{{node.trc}}</i><br>
+    {% endblock %}
   {% block description %}
     {% if node.description %}
       <p>{{ h.markdown_extract(node.description, extract_length=80) }}</p>

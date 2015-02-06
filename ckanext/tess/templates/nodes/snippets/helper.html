@@ -9,24 +9,10 @@
       </a>
       <ul class="user-dropdown-menu dropdown-menu pull-left" role="menu">
         <li><a href="/nodes/hub.html">The Hub</a></li>
-        <li><a href="/nodes/BE.html">Belgium</a></li>
-        <li><a href="/nodes/CZ.html">Czech Republic</a></li>
-        <li><a href="/nodes/DK.html">Denmark</a></li>
-        <li><a href="/nodes/EMBL-EBI.html">EMBL-EBI</a></li>
-        <li><a href="/nodes/EE.html">Estonia</a></li>
-        <li><a href="/nodes/FI.html">Finland</a></li>
-        <li><a href="/nodes/FR.html">France</a></li>
-        <li><a href="/nodes/GR.html">Greece</a></li>
-        <li><a href="/nodes/IL.html">Israel</a></li>
-        <li><a href="/nodes/IT.html">Italy</a></li>
-        <li><a href="/nodes/NL.html">Netherlands</a></li>
-        <li><a href="/nodes/NO.html">Norway</a></li>
-        <li><a href="/nodes/PT.html">Portugal</a></li>
-        <li><a href="/nodes/SI.html">Slovenia</a></li>
-        <li><a href="/nodes/ES.html">Spain</a></li>
-        <li><a href="/nodes/SE.html">Sweden</a></li>
-        <li><a href="/nodes/CH.html">Switzerland</a></li>
-        <li><a href="/nodes/GB.html">UK</a></li>
+          {% for node in h.get_all_nodes(): %}
+            {% set url = h.url_for(node.type ~ '_read', action='read', id=node.name) %}
+            <li>{% link_for node.display_name, url %}</li>
+          {% endfor %}
       </ul>
    </div>
    </nav>
