@@ -1,7 +1,7 @@
 import ckan.lib.base as base
 import ckan.controllers.group as group
 from ckan.controllers.home import HomeController
-import ckan.controllers.group as group
+
 
 class SpecialRouteController(HomeController):
     def nodes(self):
