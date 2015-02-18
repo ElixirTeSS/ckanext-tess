@@ -110,7 +110,7 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                 config.get('extra_template_paths', '')])
 
     	# set the title
-        config['ckan.site_title'] = "TeSS Demo"
+        config['ckan.site_title'] = "TeSS Training Portal"
 
     	# set the logo
     	config['ckan.site_logo'] = 'images/TeSSLogo-small.png'
