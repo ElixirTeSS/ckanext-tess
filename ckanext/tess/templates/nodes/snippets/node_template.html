@@ -6,7 +6,7 @@ you risk reversing the Entropy of the Universe and destroying us all. You've bee
 {% extends "page.html" %}
 
 {% block subtitle %}
-{{ node_name }}
+    {{ node_name }}
 {% endblock %}
 
 {% block breadcrumb_content %}
@@ -14,15 +14,18 @@ you risk reversing the Entropy of the Universe and destroying us all. You've bee
 <!--<li class="active">{% link_for _(node_name), controller='ckanext.tess.controller:SpecialRouteController', action='nodes'  %}</li>-->
 <li class="active"><a href="">{{ node_name }}</a></li>
 <!--<li class="active">{{ node_name }}</li>-->
+
 {% endblock %}
 
 {% block primary %}
+{% link_for _('Manage'), controller='ckanext.tess.controller:NodeController', action='edit', id=c.group_dict.name, class_='btn right', icon='wrench' %}
 {% snippet "nodes/snippets/helper.html" %}
 
 {% block node_heading %}
 <div class="row-fluid">
     <div class="span12">
         <h1 class="page-heading" style="text-align:center">{{ node_name }}</h1>
+        <h3 style="text-align:center">{{ node.get('description') }}</h3>
     </div>
 </div>
 {% endblock %}
@@ -58,7 +61,7 @@ you risk reversing the Entropy of the Universe and destroying us all. You've bee
 
         {% block staff %}
         <li class="media-item masonry-brick node-brick">
-            {% snippet "nodes/snippets/staff_for_node.html", node=node_name %}
+            {% snippet "nodes/snippets/staff_for_node.html", node=node %}
         </li>
         {% endblock %}
 

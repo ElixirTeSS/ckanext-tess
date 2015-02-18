@@ -1,8 +1,6 @@
 {#
 If there's a country name, and code with a file of the same name - load it
-If there's no custom file, pass the name to node_template.
-If there isn't then we're in deep doodoo
-If
+If there's no custom file or cc, pass the name to node_template which will render a blank looking node template.
 #}
 
 {% set node_name = c.group_dict['title'] %}
@@ -16,10 +14,10 @@ If
     {% if has_custom == True: %}
         {% snippet custom_file_path, node=c.group_dict %}
     {% else: %}
-        {% snippet "node_template.html", node=c.group_dict %}
+        {% snippet "nodes/snippets/node_template.html", node=c.group_dict %}
     {% endif %}
 {% else: %}
-    {% snippet "node_template.html", node=c.group_dict %}
+    {% snippet "nodes/snippets/node_template.html", node=c.group_dict %}
     {# This could load the edit page for the node and say 'make sure you have a country code and node name' #}
     {#% snippet "node/edit_base.html", node=c.group_dict %#}
 {% endif %}

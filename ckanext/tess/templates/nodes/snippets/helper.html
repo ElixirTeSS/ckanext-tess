@@ -11,7 +11,7 @@
         <li><a href="/nodes/hub.html">The Hub</a></li>
           {% for node in h.get_all_nodes(): %}
             {% set url = h.url_for(node.type ~ '_read', action='read', id=node.name) %}
-            <li>{% link_for node.display_name, url %}</li>
+            <li><a href="{{url}}">{{node.display_name }}</a></li>
           {% endfor %}
       </ul>
    </div>

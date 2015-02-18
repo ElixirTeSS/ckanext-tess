@@ -1,6 +1,7 @@
 '''plugin.py
 
 '''
+import json as json
 import ckan.plugins.toolkit as toolkit
 import ckan.plugins as plugins
 import ckan.lib.helpers as h
@@ -197,11 +198,52 @@ def file_exist(file_name):
 
 def get_all_nodes():
     nodes = toolkit.get_action("group_list")(
-    data_dict={'all_fields':True, 'type':'node'})
+    data_dict={'all_fields':True, 'include_extras':True, 'type':'node'})
     if len(nodes) > 0:
         return nodes
     else:
         return None
+
+def node_domain():
+    return 'http://127.0.0.1:5000/node'
+
+def key_to_title(key):
+    lookup = { 'trc': 'Training Co-ordinator',
+                     'tec': 'Technical Co-ordinator',
+                     'hon': 'Head of Node',
+                     'cc': 'Country Code'}
+    return lookup.get(key)
+
+
+def available_countries():
+
+    here = os.path.dirname(__file__)
+    file = os.path.join(here,'countries.json')
+    with open(file) as data_file:
+        try:
+            country_codes = json.load(data_file)
+        except Exception, e:
+            country_codes = {}
+    nodes = get_all_nodes()
+    cc_in_use = []
+    for node in nodes:
+        try:
+            extras = node.get('extras')
+            cc_in_use.append(extras['key' == 'cc'].get('value', None))
+        except Exception, e:
+            cc_in_use
+    available_codes = []
+    for cc in country_codes.keys():
+        if not cc in cc_in_use:
+             #output in format - [{'name':2010, 'value': 2010},{'name': 2011, 'value': 2011}]
+             #to use the form macro form.select(...).
+            display_name = cc + ' (' + country_codes.get(cc) + ')'
+            available_codes.append({'name':display_name, 'value':cc})
+
+    return available_codes
+
+    #for key in data.keys():
+    #    return data
 
 
 class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
@@ -210,8 +252,13 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
     plugins.implements(plugins.ITemplateHelpers, inherit=True)
 
     def get_helpers(self):
-        return {'file_exist':file_exist,
-                'get_all_nodes': get_all_nodes }
+        return {
+                'file_exist':file_exist,
+                'get_all_nodes': get_all_nodes,
+                'node_domain': node_domain,
+                'key_to_title': key_to_title,
+                'available_countries': available_countries,
+        }
 
     def before_map(self, map):
         map.connect('node', '/node', controller='ckanext.tess.controller:NodeController', action='index')
@@ -234,8 +281,7 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
     def new_template(self):
         return 'node/new.html'
 
-    def read_template(self):
-        return 'node/read.html'
+    def read_template(self):        return 'node/read.html'
 
     def index_template(self):
         return 'node/index.html'
@@ -293,13 +339,13 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
                        })
         return schema
 
-    def setup_template_variables(self, context, data_dict):
-        if not data_dict.has_key('cc'):
-            data_dict['cc'] = 'Error'
-        return data_dict
+    def setup_template_variables(self, context, dict):
+        if not dict.has_key('cc'):
+            dict['cc'] = 'Error'
+        return dict
 
     def db_to_form_schema(self):
-
+        print 'updating schema'
         # Import core converters and validators
         _convert_from_extras = toolkit.get_converter('convert_from_extras')
         _ignore_missing = toolkit.get_validator('ignore_missing')

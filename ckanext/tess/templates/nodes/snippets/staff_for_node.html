@@ -1,3 +1,22 @@
 <h2>Staff</h2>
 <hr/>
-<p class="module-content empty">No staff found for this node</p>
+
+{% set trc = node.has_key('trc') %}
+{% set tec = node.has_key('tec') %}
+{% set hon = node.has_key('hon') %}
+{% if trc or tec or hon %}
+    <p class="module-content">
+    {% if hon %}
+        <b>Head of Node:</b> {{node.get('hon')}} <br>
+    {% endif %}
+    {% if trc %}
+        <b>Training Co-ordinator:</b> {{node.get('trc')}} <br>
+    {% endif %}
+    {% if tec %}
+        <b>Technical Co-ordinator:</b> {{node.get('tec')}}
+    {% endif %}
+    </p>
+{% else %}
+    <p class="module-content empty">No staff found for this node</p>
+{% endif %}
+

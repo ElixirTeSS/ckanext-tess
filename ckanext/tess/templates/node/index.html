@@ -20,10 +20,12 @@
     {% snippet 'snippets/search_form.html', type='node', query=c.q, sorting_selected=c.sort_by_selected, count=c.page.item_count, placeholder=_('Search content providers...'), show_empty=request.params, no_bottom_border=true if c.page.items %}
   {% endblock %#}
   {% block nodes_list %}
+    {{results}}
     {% if c.page.items or request.params %}
       {% if c.page.items %}
         {% snippet "node/snippets/node_list.html", nodes=c.page.items %}
-      {% endif %}
+     {% endif %}
+      {{ c.page.collection }}
     {% else %}
       <p class="empty">
         {{ _('There are currently no ELIXIR nodes for this site') }}.
