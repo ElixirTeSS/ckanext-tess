@@ -6,7 +6,7 @@
   {% endblock %}
 
   {% block basic_fields %}
-    {% if action == 'new' %}
+      {% if action == 'new' %}
     <div class="control-group">
         <label class="control-label" for="field-country_code">{{ _("Available Country Codes") }}</label>
         <div class="controls">
@@ -18,9 +18,16 @@
         </select>
         </div>
     </div>
-    <img src="/images/node_flags/{{ data.cc }}.png" />
+    {{ form.input('title', label=_('Name'), id='field-name', placeholder=_('Create node'), value=data.title, error=errors.title, classes=['control-full'], attrs=attrs) }}
     {% else %}
-        {{ data.get('cc')}}
+        <h2>
+        Country Code: {{ data.get('cc') }}
+            {{ form.hidden('cc', data.get('cc')) }}
+       </h2><h2>
+        Name: {{ data.get('title') }}
+            {{ form.hidden('cc', data.get('title')) }}
+        </h2>
+        <img src="/images/node_flags/{{ data.cc }}.png" class="img-circle" style="max-height:60px">
     {% endif %}
     {% set attrs = {'data-module': 'slug-preview-target'} %}
     {{ form.input('title', label=_('Name'), id='field-name', placeholder=_('Create node'), value=data.title, error=errors.title, classes=['control-full'], attrs=attrs) }}
