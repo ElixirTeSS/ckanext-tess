@@ -93,33 +93,21 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     plugins.implements(plugins.IFacets, inherit=True)
 
     def update_config(self, config):
-
         # Add this plugin's templates dir to CKAN's extra_template_paths, so
         # that CKAN will use this plugin's custom templates.
         # 'templates' is the path to the templates dir, relative to this
         # plugin.py file.
-        #toolkit.add_template_directory(config, 'templates')
-	    #toolkit.add_public_directory(config, 'public')
-
-        here = os.path.dirname(__file__)
-        rootdir = os.path.dirname(os.path.dirname(here))
-        our_public_dir = os.path.join(rootdir, 'ckanext',
-                                      'tess', 'public')
-        template_dir = os.path.join(rootdir, 'ckanext',
-                                    'tess', 'templates')
-        # set our local template and resource overrides
-        config['extra_public_paths'] = ','.join([our_public_dir,
-                config.get('extra_public_paths', '')])
-        config['extra_template_paths'] = ','.join([template_dir,
-                config.get('extra_template_paths', '')])
-
-    	# set the title
+        toolkit.add_template_directory(config, 'templates')
+        toolkit.add_public_directory(config, 'public')
+        toolkit.add_resource('fantastic', 'tess')
+        
+        # set the title
         config['ckan.site_title'] = "TeSS Demo"
 
-    	# set the logo
+        # set the logo
     	config['ckan.site_logo'] = 'images/TeSSLogo-small.png'
 
-	    #config['ckan.template_head_end'] = config.get('ckan.template_head_end', '') +\
+        #config['ckan.template_head_end'] = config.get('ckan.template_head_end', '') +\
         #                '<link rel="stylesheet" href="/css/tess.css" type="text/css"> '
 
     def before_map(self, map):
@@ -216,7 +204,6 @@ def key_to_title(key):
 
 
 def available_countries():
-
     here = os.path.dirname(__file__)
     file = os.path.join(here,'countries.json')
     with open(file) as data_file:
@@ -239,11 +226,14 @@ def available_countries():
              #to use the form macro form.select(...).
             display_name = cc + ' (' + country_codes.get(cc) + ')'
             available_codes.append({'name':display_name, 'value':cc})
-
     return available_codes
 
-    #for key in data.keys():
-    #    return data
+def get_extras(node):
+    extras = node.get('extras')
+    if extras is not None:
+        for extra in extras:
+            node[extra['key']] = extra['value']
+    return node
 
 
 class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
@@ -258,12 +248,14 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
                 'node_domain': node_domain,
                 'key_to_title': key_to_title,
                 'available_countries': available_countries,
+                'get_extras': get_extras,
         }
 
     def before_map(self, map):
         map.connect('node', '/node', controller='ckanext.tess.controller:NodeController', action='index')
         map.connect('new-node', '/node/new', controller='ckanext.tess.controller:NodeController', action='new')
         map.connect('edit-node', '/node/edit/{id}', controller='ckanext.tess.controller:NodeController', action='edit')
+        map.connect('read-node', '/node/{id}', controller='ckanext.tess.controller:NodeController', action='read')
         return map
 
     def after_map(self, map):
@@ -281,7 +273,8 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
     def new_template(self):
         return 'node/new.html'
 
-    def read_template(self):        return 'node/read.html'
+    def read_template(self):
+        return 'node/read.html'
 
     def index_template(self):
         return 'node/index.html'
