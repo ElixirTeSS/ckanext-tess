@@ -17,11 +17,10 @@
 
     {# Perhaps these should be moved into the controller? #}
     {% set attrs = {'data-module': 'slug-preview-target'} %}
-    {% set prefix = h.url_for(controller='node', action='read', id='') %}
-    {% set domain = h.url_for(controller='node', action='read', id='', qualified=true) %}
+    {% set prefix = h.url_for('read-node', id='') %}
+    {% set domain = h.url_for('read-node', id='', qualified=true) %}
     {% set domain = domain|replace("http://", "")|replace("https://", "") %}
     {% set attrs = {'data-module': 'slug-preview-slug', 'data-module-prefix': domain, 'data-module-placeholder': '<node>'} %}
-
     {{ form.prepend('name', label=_('URL'), prepend=prefix, id='field-url', placeholder=_('my-node'), value=data.name, error=errors.name, attrs=attrs, is_required=true) }}
 
     {{ form.markdown('description', label=_('Description'), id='field-description', placeholder=_('A little information about this node...'), value=data.description, error=errors.description) }}

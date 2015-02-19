@@ -192,10 +192,10 @@ def node_domain():
     return 'http://127.0.0.1:5000/node'
 
 def key_to_title(key):
-    lookup = { 'trc': 'Training Co-ordinator',
-                     'tec': 'Technical Co-ordinator',
-                     'hon': 'Head of Node',
-                     'cc': 'Country Code'}
+    lookup = { 'trc': 'Training coordinator',
+                     'tec': 'Technical coordinator',
+                     'hon': 'Head of node',
+                     'cc': 'Country code'}
     return lookup.get(key)
 
 
