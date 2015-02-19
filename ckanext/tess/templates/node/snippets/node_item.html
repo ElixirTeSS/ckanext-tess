@@ -12,27 +12,29 @@ Example:
     </ul>
 #}
 
+{% resource 'tess/load_country_info.js' %}
+{% set node = h.get_extras(node) %}
+
 {% set url = h.url_for(node.type ~ '_read', action='read', id=node.name) %}
-<li class="media-item">
+<li class="media-item" data-module="load_country_info"
+            data-module-title="{{ node.display_name }}"
+            data-module-country_code="{{node.cc}}" >
   {% block image %}
-    <img src="{{ node.image_display_url or h.url_for_static('/images/empty.gif') }}" alt="{{ node.name }}" class="media-image">
+    {% if node.cc: %}
+        <img src="/images/node_flags/{{node.cc}}.png">
+    {% else %}
+        <img src="{{ node.image_display_url or h.url_for_static('/images/empty.gif') }}" alt="{{ node.name }}" class="media-image">
+    {% endif %}
   {% endblock %}
   {% block title %}
     <h3 class="media-heading">{{ node.display_name }}</h3>
+
   {% endblock %}
   {% block node_info %}
-
-    {% if node.has_key('extras') %}
-        {% for extra in node['extras'] %}
-            {% set key = h.key_to_title(extra['key']) %}
-            {% set val = extra['value'] %}
-            <p><b> {{key}} </b>: {{val}} </p>
-        {% endfor %}
-    {% endif %}
-
     <b>Head of Node:</b> <i>{{node.hon}}</i><br>
-    <b>Technical Co-Ordinator</b>: <i>{{node.tec}}</i><br>
-    <b>Training Co-Ordinator</b>:<i>{{node.trc}}</i><br>
+    <b>Technical Co-Ordinator</b>: {{node.tec }} <i></i><br>
+    <b>Training Co-Ordinator</b>: {{node.trc }}<i></i><br>
+    <b>Country Code</b>: {{node.cc }}<i></i><br>
   {% endblock %}
   {% block description %}
     {% if node.description %}
@@ -50,6 +52,7 @@ Example:
     <span>{{ _('View {node_name}').format(node_name=node.display_name) }}</span>
   </a>
 </li>
+
 {% if position is divisibleby 3 %}
   <li class="clearfix js-hide"></li>
 {% endif %}
