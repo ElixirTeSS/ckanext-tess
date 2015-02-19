@@ -2,7 +2,7 @@
 
 {% set organization = c.group_dict %}
 
-{% block subtitle %}{{ c.group_dict.display_name }} - {{ _('Organizations') }}{% endblock %}
+{% block subtitle %}{{ c.group_dict.display_name }} - {{ _('Content providers') }}{% endblock %}
 
 {% block breadcrumb_content %}
   <li>{% link_for _('Nodes'), controller='organization', action='index' %}</li>
@@ -20,7 +20,7 @@
 
 {% block content_primary_nav %}
   {{ h.build_nav_icon('organization_edit', _('Edit'), id=c.group_dict.name) }}
-  {{ h.build_nav_icon('organization_bulk_process', _('Datasets'), id=c.group_dict.name) }}
+  {{ h.build_nav_icon('organization_bulk_process', _('Training materials'), id=c.group_dict.name) }}
   {{ h.build_nav_icon('organization_members', _('Members'), id=c.group_dict.name) }}
 {% endblock %}
 

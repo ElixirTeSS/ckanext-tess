@@ -11,7 +11,7 @@
         {{ form.select('cc', id='cc', label=_('Select country'), options=h.available_countries(), selected=data.get('cc'), attrs={'data-module':'autocomplete', 'data-module':'load_country_info'})}}
     {% else %}
         <!--<h2>Country code: {{ data.get('cc') }}{{ form.hidden('cc', data.get('cc')) }}</h2>-->
-        <h2>Country: {{ data.get('title') }}{{ form.hidden('cc', data.get('title')) }}</h2>
+        <h2>ELIXIR node: {{ data.get('title') }}{{ form.hidden('cc', data.get('title')) }}</h2>
         <img src="/images/node_flags/{{ data.cc }}.png" class="img-circle" style="max-height:60px">
     {% endif %}
 
