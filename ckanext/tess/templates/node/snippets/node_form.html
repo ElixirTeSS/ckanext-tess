@@ -6,7 +6,8 @@
   {% endblock %}
 
   {% block basic_fields %}
-      {% if action == 'new' %}
+
+    {% if action == 'new' %}
         {{ form.select('cc', id='cc', label=_('Select country'), options=h.available_countries(), selected=data.get('cc'), attrs={'data-module':'autocomplete', 'data-module':'load_country_info'})}}
     {% else %}
         <!--<h2>Country code: {{ data.get('cc') }}{{ form.hidden('cc', data.get('cc')) }}</h2>-->
@@ -21,10 +22,10 @@
     {% set domain = domain|replace("http://", "")|replace("https://", "") %}
     {% set attrs = {'data-module': 'slug-preview-slug', 'data-module-prefix': domain, 'data-module-placeholder': '<node>'} %}
 
-    {{ form.input('title', label=_('Name'), id='field-name', placeholder=_('Create node'), value=data.title, error=errors.title, classes=['control-full'], attrs=attrs) }}
-    {{ form.prepend('name', label=_('URL'), prepend=prefix, id='field-url', placeholder=_('my-node'), value=data.name, error=errors.name,
-    attrs=attrs, is_required=true) }}
+    {{ form.prepend('name', label=_('URL'), prepend=prefix, id='field-url', placeholder=_('my-node'), value=data.name, error=errors.name, attrs=attrs, is_required=true) }}
+
     {{ form.markdown('description', label=_('Description'), id='field-description', placeholder=_('A little information about this node...'), value=data.description, error=errors.description) }}
+
     {{ data.image_url }}
 
     {{ form.input('hon', label=_('Head of node'), id='hon', placeholder=('Name of the head of node'), value=data.hon, classes=['control-full']) }}
