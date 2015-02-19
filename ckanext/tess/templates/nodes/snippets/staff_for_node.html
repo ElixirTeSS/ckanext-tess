@@ -7,13 +7,13 @@
 {% if trc or tec or hon %}
     <p class="module-content">
     {% if hon %}
-        <b>Head of Node:</b> {{node.get('hon')}} <br>
+        <b>Head of node:</b> {{node.get('hon')}} <br>
     {% endif %}
     {% if trc %}
-        <b>Training Co-ordinator:</b> {{node.get('trc')}} <br>
+        <b>Training coordinator:</b> {{node.get('trc')}} <br>
     {% endif %}
     {% if tec %}
-        <b>Technical Co-ordinator:</b> {{node.get('tec')}}
+        <b>Technical coordinator:</b> {{node.get('tec')}}
     {% endif %}
     </p>
 {% else %}

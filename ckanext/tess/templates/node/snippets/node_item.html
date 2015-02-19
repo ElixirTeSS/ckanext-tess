@@ -31,10 +31,9 @@ Example:
 
   {% endblock %}
   {% block node_info %}
-    <b>Head of Node:</b> <i>{{node.hon}}</i><br>
-    <b>Technical Co-Ordinator</b>: {{node.tec }} <i></i><br>
-    <b>Training Co-Ordinator</b>: {{node.trc }}<i></i><br>
-    <b>Country Code</b>: {{node.cc }}<i></i><br>
+    <b>Head of node:</b> {{node.hon}} <br>
+    <b>Training coordinator</b>: {{node.trc}}<i></i><br>
+    <b>Technical coordinator</b>: {{node.tec}} <i></i><br>
   {% endblock %}
   {% block description %}
     {% if node.description %}
@@ -43,7 +42,7 @@ Example:
   {% endblock %}
   {% block datasets %}
     {% if node.packages %}
-      <strong class="count">{{ ungettext('{num} Dataset', '{num} training materials', node.packages).format(num=node.packages) }}</strong>
+      <strong class="count">{{ ungettext('{num} training material', '{num} training materials', node.packages).format(num=node.packages) }}</strong>
     {% else %}
       <span class="count">{{ _('0 training materials') }}</span>
     {% endif %}
