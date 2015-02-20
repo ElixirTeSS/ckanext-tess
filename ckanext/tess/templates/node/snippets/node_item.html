@@ -16,9 +16,7 @@ Example:
 {% set node = h.get_extras(node) %}
 
 {% set url = h.url_for(node.type ~ '_read', action='read', id=node.name) %}
-<li class="media-item" data-module="load_country_info"
-            data-module-title="{{ node.display_name }}"
-            data-module-country_code="{{node.cc}}" >
+<li class="media-item">
   {% block image %}
     {% if node.cc: %}
         <img src="/images/node_flags/{{node.cc}}.png">

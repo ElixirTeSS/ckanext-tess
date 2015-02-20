@@ -1,5 +1,8 @@
 {% import 'macros/form.html' as form %}
 
+{% resource 'tess/load_country_info.js' %}
+
+
 <form class="dataset-form form-horizontal" method="post" data-module="basic-form" enctype="multipart/form-data">
   {% block error_summary %}
     {{ form.errors(error_summary) }}
@@ -7,8 +10,17 @@
 
   {% block basic_fields %}
 
-    {% if action == 'new' %}
-        {{ form.select('cc', id='cc', label=_('Select country'), options=h.available_countries(), selected=data.get('cc'), attrs={'data-module':'autocomplete', 'data-module':'load_country_info'})}}
+      {% if action == 'new' %}
+
+    <select id="cc" name="cc" data-module='load_country_info'>
+      {% for country in h.available_countries() %}
+        <option value="{{ country.value }}" id="{{ country.value }}" {% if country.value == selected %} selected{% endif %}>{{ country.text or country.value }}</option>
+      {% endfor %}
+    </select>
+
+    {{ form.select('cc', id='cc', label=_('Select Country Code'), options=h.available_countries(), selected=data.get('cc'),
+            attrs={'data-module':'autocomplete'} ) }}
+
     {% else %}
         <!--<h2>Country code: {{ data.get('cc') }}{{ form.hidden('cc', data.get('cc')) }}</h2>-->
         <h2>ELIXIR node: {{ data.get('title') }}{{ form.hidden('cc', data.get('title')) }}</h2>
