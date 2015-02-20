@@ -19,7 +19,8 @@
                 <option value="{{ country.value }}"
                     id="{{ country.value }}"
                     {% if country.value == selected %} selected{% endif %}
-                    data-module-countryname="{{country.name}}"
+                    data-module-country_name="{{country.name}}"
+                    data-module-display_name="{{country.name}}"
                     >
                 {{ country.text or country.value }}
                 </option>
@@ -27,28 +28,22 @@
             </select>
         </div>
     </div>
-    {{ form.input('country_name', label=_('Country Name'), id='country_name') }}
-            {#{ form.select('cc', id='cc', label=_('Select Country Code'), options=h.available_countries(), selected=data.get('cc'),
-            attrs={'data-module':'autocomplete'} ) }#}
+        {{ form.input('display_name', label=_('Display Name'), id='display_name', value=data.get('display_name')) }}
+        {{ form.input('name', label=_('Slug'), id='name', value=data.get('name')) }}
+        {{ form.input('title', label=_('Title'), id='title', value=data.get('title')) }}
     <img id="flag" src="" class="img-circle" style="max-height:100px; float:right; position:relative; margin-bottom: 100px">
   {% else %}
         <!--<h2>Country code: {{ data.get('cc') }}{{ form.hidden('cc', data.get('cc')) }}</h2>-->
-        <h2>ELIXIR node: {{ data.get('title') }}{{ form.hidden('cc', data.get('title')) }}</h2>
+        <h2>ELIXIR node: {{ data.get('title') }}</h2>
         <img id="flag" src="/images/node_flags/{{ data.cc }}.png" class="img-circle" style="max-height:60px">
-
+        {{ form.input('display_name', label=_('Display Name'), id='display_name', value=data.get('display_name')) }}
+        {{ form.input('name', label=_('Slug'), id='name', value=data.get('name')) }}
+        {{ form.input('title', label=_('Title'), id='title', value=data.get('title')) }}
   {% endif %}
+
 <br><br><br><br><br><br><br><br>
     {# Perhaps these should be moved into the controller? #}
-    {% set attrs = {'data-module': 'slug-preview-target'} %}
-    {% set prefix = h.url_for('read-node', id='') %}
-    {% set domain = h.url_for('read-node', id='', qualified=true) %}
-    {% set domain = domain|replace("http://", "")|replace("https://", "") %}
-    {% set attrs = {'data-module': 'slug-preview-slug', 'data-module-prefix': domain, 'data-module-placeholder': '<node>'} %}
-    {{ form.prepend('name', label=_('URL'), prepend=prefix, id='field-url', placeholder=_('my-node'), value=data.name, error=errors.name, attrs=attrs, is_required=true) }}
-
     {{ form.markdown('description', label=_('Description'), id='field-description', placeholder=_('A little information about this node...'), value=data.description, error=errors.description) }}
-
-    {{ data.image_url }}
 
     {{ form.input('hon', label=_('Head of node'), id='hon', placeholder=('Name of the head of node'), value=data.hon, classes=['control-full']) }}
     {{ form.input('trc', label=_('Training coordinator'), id='trc', placeholder=('Name of the training coordinator'), value=data.trc, classes=['control-full']) }}

@@ -100,7 +100,7 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         toolkit.add_template_directory(config, 'templates')
         toolkit.add_public_directory(config, 'public')
         toolkit.add_resource('fantastic', 'tess')
-        
+
         # set the title
         config['ckan.site_title'] = "TeSS Demo"
 
@@ -227,7 +227,7 @@ def available_countries():
         if not cc in cc_in_use:
              #output in format - [{'name':2010, 'value': 2010},{'name': 2011, 'value': 2011}]
              #to use the form macro form.select(...).
-            display_name = country_codes.get(cc) + ' (' + cc + ')'
+            display_name = country_codes.get(cc)
             available_codes.append({'text':display_name, 'value':cc, 'name':country_codes.get(cc)})
     return available_codes
 
@@ -334,11 +334,6 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
                        'trc':default_validators
                        })
         return schema
-
-    def setup_template_variables(self, context, dict):
-        if not dict.has_key('cc'):
-            dict['cc'] = 'Error'
-        return dict
 
     def db_to_form_schema(self):
         print 'updating schema'
