@@ -185,21 +185,17 @@ def file_exist(file_name):
     return os.path.exists(template_dir + "/" + file_name)
 
 def get_all_nodes():
-    nodes = toolkit.get_action("group_list")(
-    data_dict={'all_fields':True, 'include_extras':True, 'type':'node'})
-    if len(nodes) > 0:
-        return nodes
-    else:
-        return None
+    nodes = toolkit.get_action("group_list")(data_dict={'all_fields':True, 'include_extras':True, 'type':'node'})
+    return nodes
 
 def node_domain():
     return 'http://127.0.0.1:5000/node'
 
 def key_to_title(key):
-    lookup = { 'trc': 'Training Co-ordinator',
-                     'tec': 'Technical Co-ordinator',
-                     'hon': 'Head of Node',
-                     'cc': 'Country Code'}
+    lookup = { 'trc': 'Training coordinator',
+                     'tec': 'Technical coordinator',
+                     'hon': 'Head of node',
+                     'cc': 'Country code'}
     return lookup.get(key)
 
 def open_country_codes():

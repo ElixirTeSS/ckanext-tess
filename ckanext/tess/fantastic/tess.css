@@ -398,3 +398,22 @@ hr.style-one {
     right: 5px;
     margin-top: -8px;
 }
+.form-horizontal .control-label {
+  width: 150px;
+}
+@media (min-width: 768px) {
+  .form-horizontal .controls {
+    margin-left: 160px;
+  }
+}
+@media (min-width: 980px) {
+  .form-horizontal .info-block {
+    padding: 6px 0 6px 10px;
+  }
+  .form-horizontal .info-inline {
+    float: right;
+    width: 265px;
+    margin-top: 0;
+    padding-bottom: 0;
+  }
+}
