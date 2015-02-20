@@ -202,8 +202,7 @@ def key_to_title(key):
                      'cc': 'Country Code'}
     return lookup.get(key)
 
-
-def available_countries():
+def open_country_codes():
     here = os.path.dirname(__file__)
     file = os.path.join(here,'countries.json')
     with open(file) as data_file:
@@ -211,6 +210,14 @@ def available_countries():
             country_codes = json.load(data_file)
         except Exception, e:
             country_codes = {}
+    return country_codes
+
+def lookup_country_code(country_code):
+    country_codes = open_country_codes()
+    return country_codes[country_code]
+
+def available_countries():
+    country_codes = open_country_codes()
     nodes = get_all_nodes()
     cc_in_use = []
     for node in nodes:
@@ -225,7 +232,7 @@ def available_countries():
              #output in format - [{'name':2010, 'value': 2010},{'name': 2011, 'value': 2011}]
              #to use the form macro form.select(...).
             display_name = cc + ' (' + country_codes.get(cc) + ')'
-            available_codes.append({'name':display_name, 'value':cc})
+            available_codes.append({'text':display_name, 'value':cc})
     return available_codes
 
 def get_extras(node):
