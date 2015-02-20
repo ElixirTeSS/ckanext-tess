@@ -10,23 +10,34 @@
 
   {% block basic_fields %}
 
-      {% if action == 'new' %}
-
-    <select id="cc" name="cc" data-module='load_country_info'>
-      {% for country in h.available_countries() %}
-        <option value="{{ country.value }}" id="{{ country.value }}" {% if country.value == selected %} selected{% endif %}>{{ country.text or country.value }}</option>
-      {% endfor %}
-    </select>
-
-    {{ form.select('cc', id='cc', label=_('Select Country Code'), options=h.available_countries(), selected=data.get('cc'),
-            attrs={'data-module':'autocomplete'} ) }}
-
-    {% else %}
+  {% if action == 'new' %}
+    <div class="control-group">
+      <label class="control-label">{{ _('Country Codes') }}</label>
+        <div class="controls">
+            <select id="cc" name="cc" data-module='load_country_info'>
+                {% for country in h.available_countries() %}
+                <option value="{{ country.value }}"
+                    id="{{ country.value }}"
+                    {% if country.value == selected %} selected{% endif %}
+                    data-module-countryname="{{country.name}}"
+                    >
+                {{ country.text or country.value }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    {{ form.input('country_name', label=_('Country Name'), id='country_name') }}
+            {#{ form.select('cc', id='cc', label=_('Select Country Code'), options=h.available_countries(), selected=data.get('cc'),
+            attrs={'data-module':'autocomplete'} ) }#}
+    <img id="flag" src="" class="img-circle" style="max-height:100px; float:right; position:relative; margin-bottom: 100px">
+  {% else %}
         <!--<h2>Country code: {{ data.get('cc') }}{{ form.hidden('cc', data.get('cc')) }}</h2>-->
         <h2>ELIXIR node: {{ data.get('title') }}{{ form.hidden('cc', data.get('title')) }}</h2>
-        <img src="/images/node_flags/{{ data.cc }}.png" class="img-circle" style="max-height:60px">
-    {% endif %}
+        <img id="flag" src="/images/node_flags/{{ data.cc }}.png" class="img-circle" style="max-height:60px">
 
+  {% endif %}
+<br><br><br><br><br><br><br><br>
     {# Perhaps these should be moved into the controller? #}
     {% set attrs = {'data-module': 'slug-preview-target'} %}
     {% set prefix = h.url_for('read-node', id='') %}

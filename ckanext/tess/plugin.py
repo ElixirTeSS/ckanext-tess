@@ -227,8 +227,8 @@ def available_countries():
         if not cc in cc_in_use:
              #output in format - [{'name':2010, 'value': 2010},{'name': 2011, 'value': 2011}]
              #to use the form macro form.select(...).
-            display_name = cc + ' (' + country_codes.get(cc) + ')'
-            available_codes.append({'text':display_name, 'value':cc})
+            display_name = country_codes.get(cc) + ' (' + cc + ')'
+            available_codes.append({'text':display_name, 'value':cc, 'name':country_codes.get(cc)})
     return available_codes
 
 def get_extras(node):
