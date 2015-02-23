@@ -1,11 +1,11 @@
 {#
-If there's a country name, and code with a file of the same name - load it
-If there's no custom file or cc, pass the name to node_template which will render a blank looking node template.
+If there is a country name (node that title is also the country name) and a country code with a file of the same name - load it.
+If there is no custom file or country code, pass the name to node_template which will render a blank looking node template.
 #}
 
 {% set node_name = c.group_dict['title'] %}
-{% if c.group_dict.has_key('cc'): %}
-    {% set country_code = c.group_dict['cc'] %}
+{% if c.group_dict.has_key('country_code'): %}
+    {% set country_code = c.group_dict['country_code'] %}
     {% set node_name = c.group_dict['title'] %}
     {% set custom_file_path = 'nodes/' + country_code + ".html" %}
     {% set has_custom = h.file_exist(custom_file_path) %}

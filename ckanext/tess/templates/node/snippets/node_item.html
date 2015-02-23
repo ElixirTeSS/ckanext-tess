@@ -18,8 +18,8 @@ Example:
 {% set url = h.url_for(node.type ~ '_read', action='read', id=node.name) %}
 <li class="media-item">
   {% block image %}
-    {% if node.cc: %}
-        <img src="/images/node_flags/{{node.cc}}.png">
+    {% if node.country_code: %}
+        <img src="/images/node_flags/{{node.country_code}}.png">
     {% else %}
         <img src="{{ node.image_display_url or h.url_for_static('/images/empty.gif') }}" alt="{{ node.name }}" class="media-image">
     {% endif %}

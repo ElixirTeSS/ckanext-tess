@@ -11,11 +11,12 @@
   {% block basic_fields %}
 
   {% if action == 'new' %}
-    <div class="control-group">
-      <label class="control-label">{{ _('Country Codes') }}</label>
+  <img id="flag" src="" class="img-circle" style="max-width:120px; float:right; position:relative;">
+  <div class="control-group control-medium" style="float: left;">
+      <label class="control-label">{{ _('Country') }}</label>
         <div class="controls">
-            <select id="cc" name="cc" data-module='load_country_info'>
-                {% for country in h.available_countries() %}
+            <select id="country_code" name="country_code" data-module='load_country_info'>
+                {% for country in h.get_available_countries() %}
                 <option value="{{ country.value }}"
                     id="{{ country.value }}"
                     {% if country.value == selected %} selected{% endif %}
@@ -28,26 +29,27 @@
             </select>
         </div>
     </div>
-        {{ form.input('display_name', label=_('Display Name'), id='display_name', value=data.get('display_name')) }}
-        {{ form.input('name', label=_('Slug'), id='name', value=data.get('name')) }}
-        {{ form.input('title', label=_('Title'), id='title', value=data.get('title')) }}
-    <img id="flag" src="" class="img-circle" style="max-height:100px; float:right; position:relative; margin-bottom: 100px">
+    <div style="float: left;">
+       {{ form.input('display_name', label=_('Display name'), id='display_name', value=data.get('display_name'), classes=['control-medium']) }}
+        {{ form.input('name', label=_('Slug'), id='name', value=data.get('name'), classes=['control-medium']) }}
+        {{ form.input('title', label=_('Title'), id='title', value=data.get('title'), classes=['control-medium']) }}
+    </div>
+    <div style="clear: both;"></div>
   {% else %}
-        <!--<h2>Country code: {{ data.get('cc') }}{{ form.hidden('cc', data.get('cc')) }}</h2>-->
+        <!--<h2>Country code: {{ data.get('country_code') }}{{ form.hidden('country_code', data.get('country_code')) }}</h2>-->
         <h2>ELIXIR node: {{ data.get('title') }}</h2>
-        <img id="flag" src="/images/node_flags/{{ data.cc }}.png" class="img-circle" style="max-height:60px">
-        {{ form.input('display_name', label=_('Display Name'), id='display_name', value=data.get('display_name')) }}
+        <img id="flag" src="/images/node_flags/{{ data.country_code}}.png" class="img-circle" style="max-height:60px;">
+        {{ form.input('display_name', label=_('Display name'), id='display_name', value=data.get('display_name')) }}
         {{ form.input('name', label=_('Slug'), id='name', value=data.get('name')) }}
         {{ form.input('title', label=_('Title'), id='title', value=data.get('title')) }}
   {% endif %}
 
-<br><br><br><br><br><br><br><br>
     {# Perhaps these should be moved into the controller? #}
     {{ form.markdown('description', label=_('Description'), id='field-description', placeholder=_('A little information about this node...'), value=data.description, error=errors.description) }}
 
-    {{ form.input('hon', label=_('Head of node'), id='hon', placeholder=('Name of the head of node'), value=data.hon, classes=['control-full']) }}
-    {{ form.input('trc', label=_('Training coordinator'), id='trc', placeholder=('Name of the training coordinator'), value=data.trc, classes=['control-full']) }}
-    {{ form.input('tec', label=_('Technical coordinator'), id='tec', placeholder=('Name of the technical coordinator'), value=data.tec, classes=['control-full']) }}
+    {{ form.input('hon', label=_('Head of node'), id='hon', placeholder=('Name of the head of node'), value=data.hon, classes=['control-medium']) }}
+    {{ form.input('trc', label=_('Training coordinator'), id='trc', placeholder=('Name of the training coordinator'), value=data.trc, classes=['control-medium']) }}
+    {{ form.input('tec', label=_('Technical coordinator'), id='tec', placeholder=('Name of the technical coordinator'), value=data.tec, classes=['control-medium']) }}
 
     {% set is_upload = data.image_url and not data.image_url.startswith('http') %}
     {% set is_url = data.image_url and data.image_url.startswith('http') %}

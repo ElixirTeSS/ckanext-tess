@@ -3,7 +3,7 @@
 ckan.module('load_country_info', function ($, _) {
   return {
     initialize: function () {
-        var selected = $('#cc option:selected');
+        var selected = $('#country_code option:selected');
         var selected_country_code = selected.attr('id');
         var selected_country_name = selected.attr('data-module-country_name');
         console.log('country code: ' + selected_country_code);
@@ -29,7 +29,7 @@ ckan.module('load_country_info', function ($, _) {
         this.el.on('change', this._onChange);
     },
     _onChange: function(event) {
-        var selected = $('#cc option:selected');
+        var selected = $('#country_code option:selected');
         var selected_country_code = selected.attr('id');
         var selected_country_name = selected.attr('data-module-country_name');
 

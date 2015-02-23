@@ -6,6 +6,7 @@ import ckan.plugins.toolkit as toolkit
 import ckan.plugins as plugins
 import ckan.lib.helpers as h
 import os
+import operator
 
 from ckan.lib.plugins import DefaultGroupForm
 
@@ -23,7 +24,6 @@ def node_materials(node):
 def node_organizations(node):
     return None
 
-    
 def elixir_nodes():
     create_elixir_nodes()
 
@@ -102,7 +102,7 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         toolkit.add_resource('fantastic', 'tess')
 
         # set the title
-        config['ckan.site_title'] = "TeSS Demo"
+        config['ckan.site_title'] = "TeSS Portal"
 
         # set the logo
     	config['ckan.site_logo'] = 'images/TeSSLogo-small.png'
@@ -195,41 +195,129 @@ def key_to_title(key):
     lookup = { 'trc': 'Training coordinator',
                      'tec': 'Technical coordinator',
                      'hon': 'Head of node',
-                     'cc': 'Country code'}
+                     'country_code': 'Country code',
+                     'country_name': 'Country name'}
     return lookup.get(key)
 
-def open_country_codes():
-    here = os.path.dirname(__file__)
-    file = os.path.join(here,'countries.json')
-    with open(file) as data_file:
-        try:
-            country_codes = json.load(data_file)
-        except Exception, e:
-            country_codes = {}
-    return country_codes
+# Global variable to hold country code -> country name map
+countries_map = None
+# Global variable to hold country name -> country code map
+transposed_countries_map = None
 
-def lookup_country_code(country_code):
-    country_codes = open_country_codes()
-    return country_codes[country_code]
+def get_countries_map():
+    '''
+    :return: A country code -> country name map
+    '''
+    global countries_map # uses global variable
+    if countries_map is None:
+        here = os.path.dirname(__file__)
+        # json file containing country code -> country name map
+        file = os.path.join(here,'countries-for-elixir.json')
+        with open(file) as data_file:
+            try:
+                countries_map = json.load(data_file)
+            except Exception, e:
+                print e
+                countries_map = {}
+    return countries_map
 
-def available_countries():
-    country_codes = open_country_codes()
+def get_transposed_countries_map():
+    '''
+    :return: A country name -> country code map
+    '''
+    global transposed_countries_map # uses global variable
+    if transposed_countries_map is None:
+        countries_map = get_countries_map() # local variable
+        transposed_countries_map = {v: k for k, v in countries_map.items()}
+    return transposed_countries_map
+
+def get_country_name_for_code(country_code):
+    '''
+    :param country_code:
+    :return: The name of a country given its country code.
+    '''
+    if country_code is None or country_code.strip() == "":
+        return ""
+    countries_map = get_countries_map() # country code -> country name hash
+    return countries_map[country_code]
+
+def get_country_code_for_name(country_name):
+    '''
+    :param country_name:
+    :return: The code of a country given its name.
+    '''
+    print 'country name ', country_name
+    if country_name is None or country_name.strip() == "":
+        return ""
+    transposed_countries_map = get_transposed_countries_map() # country name -> country code hash
+    print 'transposed_countries_map', transposed_countries_map
+    return transposed_countries_map[country_name]
+
+def get_available_country_codes():
+    '''
+    :return: A list of available country codes not yet taken up by ELIXIR nodes
+    '''
+    countries_map = get_countries_map() # country code -> country name hash
     nodes = get_all_nodes()
-    cc_in_use = []
+    country_codes_in_use = []
     for node in nodes:
         try:
             extras = node.get('extras')
-            cc_in_use.append(extras['key' == 'cc'].get('value', None))
+            country_codes_in_use.append(extras['key' == 'country_code'].get('value', None))
         except Exception, e:
-            cc_in_use
-    available_codes = []
-    for cc in country_codes.keys():
-        if not cc in cc_in_use:
+            print e
+            country_codes_in_use
+    available_country_codes = []
+    for country_code in countries_map.keys():
+        if not country_code in country_code_in_use:
              #output in format - [{'name':2010, 'value': 2010},{'name': 2011, 'value': 2011}]
              #to use the form macro form.select(...).
-            display_name = country_codes.get(cc)
-            available_codes.append({'text':display_name, 'value':cc, 'name':country_codes.get(cc)})
-    return available_codes
+            display_name = country_code + ' (' + countries_map.get(country_code) + ')'
+            available_country_codes.append({'text':display_name, 'value':country_code})
+    return available_country_codes
+
+def get_available_country_names():
+    '''
+    :return: A list of available country codes not yet taken up by ELIXIR nodes
+    '''
+    countries_map = get_countries_map()
+    nodes = get_all_nodes()
+    country_names_in_use = []
+    for node in nodes:
+        country_names_in_use.append(node['title'])
+    available_country_names = []
+    for country_name in countries_map.values():
+        if not country_name in country_names_in_use:
+             #output in format - [{'name':2010, 'value': 2010},{'name': 2011, 'value': 2011}]
+             #to use the form macro form.select(...).
+            available_country_names.append({'text':country_name, 'value':country_name})
+            available_country_names.append(country_name)
+    return available_country_names
+
+def get_available_countries():
+    '''
+    :return: A list of dictionaries {'text': country_name, 'value': country_code_for node, 'name': country_name} of countries
+    that have not already been taken by existing nodes.
+    '''
+    countries = get_countries_map()
+    nodes = get_all_nodes()
+    country_codes_in_use = []
+    for node in nodes:
+        try:
+            extras = node.get('extras')
+            country_codes_in_use.append(extras['key' == 'country_code'].get('value', None))
+        except Exception, e:
+            print e
+            country_codes_in_use
+    available_countries = []
+    for country_code in countries.keys():
+        if not country_code in country_codes_in_use:
+             #output in format - [{'name':2010, 'value': 2010},{'name': 2011, 'value': 2011}]
+             #to use the form macro form.select(...).
+            display_name = countries.get(country_code)
+            available_countries.append({'text':display_name, 'value':country_code, 'name':display_name})
+    available_countries.sort(key=lambda x: x['name']) #sort the list based on country name
+    return available_countries
 
 def get_extras(node):
     extras = node.get('extras')
@@ -250,7 +338,11 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
                 'get_all_nodes': get_all_nodes,
                 'node_domain': node_domain,
                 'key_to_title': key_to_title,
-                'available_countries': available_countries,
+                'get_available_country_codes': get_available_country_codes,
+                'get_available_country_names': get_available_country_names,
+                'get_country_code_for_name': get_country_code_for_name,
+                'get_country_name_for_code': get_country_name_for_code,
+                'get_available_countries': get_available_countries,
                 'get_extras': get_extras,
         }
 
@@ -265,7 +357,7 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
         return map
 
     def is_fallback(self):
-        return False    
+        return False
 
     def group_types(self):
         return ['node']
@@ -328,7 +420,7 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
 
         default_validators = [_ignore_missing, _convert_to_extras]
         schema.update({
-                       'cc': [_convert_to_extras],
+                       'country_code': [_convert_to_extras],
                        'hon':default_validators,
                        'tec':default_validators,
                        'trc':default_validators
@@ -346,7 +438,7 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
 
         default_validators = [_convert_from_extras, _ignore_missing]
         schema.update({
-                       'cc':default_validators,
+                       'country_code':default_validators,
                        'hon':default_validators,
                        'tec':default_validators,
                        'trc':default_validators
