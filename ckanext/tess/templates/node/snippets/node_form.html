@@ -30,18 +30,14 @@
         </div>
     </div>
     <div style="float: left;">
-       {{ form.input('display_name', label=_('Display name'), id='display_name', value=data.get('display_name'), classes=['control-medium']) }}
-        {{ form.input('name', label=_('Slug'), id='name', value=data.get('name'), classes=['control-medium']) }}
-        {{ form.input('title', label=_('Title'), id='title', value=data.get('title'), classes=['control-medium']) }}
+       {{ form.input('name', label=_('Slug'), id='name', value=data.get('name'), classes=['control-medium'], attrs={'readonly':'readonly'}) }}
     </div>
     <div style="clear: both;"></div>
   {% else %}
         <!--<h2>Country code: {{ data.get('country_code') }}{{ form.hidden('country_code', data.get('country_code')) }}</h2>-->
         <h2>ELIXIR node: {{ data.get('title') }}</h2>
         <img id="flag" src="/images/node_flags/{{ data.country_code}}.png" class="img-circle" style="max-height:60px;">
-        {{ form.input('display_name', label=_('Display name'), id='display_name', value=data.get('display_name')) }}
-        {{ form.input('name', label=_('Slug'), id='name', value=data.get('name')) }}
-        {{ form.input('title', label=_('Title'), id='title', value=data.get('title')) }}
+        {{ form.input('name', label=_('Slug'), id='name', value=data.get('name'), attrs={'readonly':'readonly'} ) }}
   {% endif %}
 
     {# Perhaps these should be moved into the controller? #}

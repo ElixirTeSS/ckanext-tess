@@ -15,10 +15,9 @@ ckan.module('load_country_info', function ($, _) {
                       new RegExp('-+', 'g')];
         $.each(this.regexToHyphen, function(idx,regex) { slug = slug.replace(regex, '-'); });
         slug = slug.toLowerCase();
-        //console.log(slug);
-        $('#title').val(selected_country_name);
+        console.log(slug);
+        console.log(selected_country_name);
         $('#name').val(slug);
-        $('#display_name').val(selected_country_name);
         $('#flag').attr('src', "/images/node_flags/" + selected_country_code + ".png");
 
 
@@ -42,10 +41,7 @@ ckan.module('load_country_info', function ($, _) {
                       new RegExp('-+', 'g')];
         $.each(this.regexToHyphen, function(idx,regex) { slug = slug.replace(regex, '-'); });
         slug = slug.toLowerCase();
-        //console.log(slug);
-        $('#title').val(selected_country_name);
         $('#name').val(slug);
-        $('#display_name').val(selected_country_name);
         $('#flag').attr('src', "/images/node_flags/" + selected_country_code + ".png");
     }
   };
