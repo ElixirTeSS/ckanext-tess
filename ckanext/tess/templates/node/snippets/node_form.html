@@ -31,6 +31,7 @@
     </div>
     <div style="float: left;">
        {{ form.input('name', label=_('Slug'), id='name', value=data.get('name'), classes=['control-medium'], attrs={'readonly':'readonly'}) }}
+        {{ form.input('title', label=_('Title'), id='title', value=data.get('title'), attrs={'readonly':'readonly'} ) }}
     </div>
     <div style="clear: both;"></div>
   {% else %}
@@ -38,6 +39,8 @@
         <h2>ELIXIR node: {{ data.get('title') }}</h2>
         <img id="flag" src="/images/node_flags/{{ data.country_code}}.png" class="img-circle" style="max-height:60px;">
         {{ form.input('name', label=_('Slug'), id='name', value=data.get('name'), attrs={'readonly':'readonly'} ) }}
+        {{ form.input('title', label=_('Title'), id='title', value=data.get('title'), attrs={'readonly':'readonly'} ) }}
+
   {% endif %}
 
     {# Perhaps these should be moved into the controller? #}
