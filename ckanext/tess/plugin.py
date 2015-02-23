@@ -111,6 +111,7 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         #                '<link rel="stylesheet" href="/css/tess.css" type="text/css"> '
 
     def before_map(self, map):
+        map.connect('nodes', '/nodes', controller='ckanext.tess.controller:SpecialRouteController', action='nodes')
         map.connect('workflows', '/workflows', controller='ckanext.tess.controller:SpecialRouteController', action='workflows')
         map.connect('events', '/events', controller='ckanext.tess.controller:SpecialRouteController', action='events')
         return map
