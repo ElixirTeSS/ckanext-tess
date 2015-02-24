@@ -24,7 +24,11 @@ you risk reversing the Entropy of the Universe and destroying us all. You've bee
 {% block node_heading %}
 <div class="row-fluid">
     <div class="span12">
-        <h1 class="page-heading" style="text-align:center">{{ node_name }}</h1>
+        <h1 class="page-heading" style="text-align:center">{{ node.get('display_name') }}</h1>
+        {% set cc = node.get('country_code') %}
+        {% if cc : %}
+            <img src="/images/node_flags/{{ cc }}.png"/>
+        {% endif %}
         <h3 style="text-align:center">{{ node.get('description') }}</h3>
     </div>
 </div>
