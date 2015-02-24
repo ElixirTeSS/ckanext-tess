@@ -12,18 +12,18 @@
 
   {% if action == 'new' %}
   <img id="flag" src="" class="img-circle" style="max-width:120px; float:right; position:relative;">
-  <div class="control-group control-medium" style="float: left;">
-      <label class="control-label">{{ _('Country') }}</label>
+    <div class="control-group control-medium" style="float: left;">
+        <label class="control-label"><span title="This field is required" class="control-required">*</span> {{ _('Country') }}</label>
         <div class="controls">
             <select id="country_code" name="country_code" data-module='load_country_info'>
                 {% for country in h.get_available_countries() %}
                 <option value="{{ country.value }}"
-                    id="{{ country.value }}"
-                    {% if country.value == selected %} selected{% endif %}
-                    data-module-country_name="{{country.name}}"
-                    data-module-display_name="{{country.name}}"
-                    >
-                {{ country.text or country.value }}
+                        id="{{ country.value }}"
+                        {% if country.value == selected %} selected{% endif %}
+                        data-module-country_name="{{country.name}}"
+                        data-module-display_name="{{country.name}}"
+                        >
+                    {{ country.text or country.value }}
                 </option>
                 {% endfor %}
             </select>
