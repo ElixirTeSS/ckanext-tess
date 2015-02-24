@@ -110,7 +110,7 @@
       {% if h.check_access('group_delete', {'id': data.id})  %}
         {% set locale = h.dump_json({'content': _('Are you sure you want to delete this node?')}) %}
         <a class="btn btn-danger pull-left"
-           href="{% url_for controller='ckanext.tess.controller:NodeController', action='delete', id=data.id %}"
+           href="{% url_for 'delete-node', id=data.id %}"
            data-module="confirm-action"
            data-module-i18n="{{ locale }}">
             {% block delete_button_text %}
