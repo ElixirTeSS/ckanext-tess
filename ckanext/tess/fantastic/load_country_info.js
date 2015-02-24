@@ -17,6 +17,7 @@ ckan.module('load_country_info', function ($, _) {
         slug = slug.toLowerCase();
         console.log(slug);
         console.log(selected_country_name);
+        $('#title').val(selected_country_name);
         $('#name').val(slug);
         $('#flag').attr('src', "/images/node_flags/" + selected_country_code + ".png");
 
@@ -41,6 +42,7 @@ ckan.module('load_country_info', function ($, _) {
                       new RegExp('-+', 'g')];
         $.each(this.regexToHyphen, function(idx,regex) { slug = slug.replace(regex, '-'); });
         slug = slug.toLowerCase();
+        $('#title').val(selected_country_name);
         $('#name').val(slug);
         $('#flag').attr('src', "/images/node_flags/" + selected_country_code + ".png");
     }
