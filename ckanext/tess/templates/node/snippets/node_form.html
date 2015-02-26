@@ -38,10 +38,11 @@
         <!--<h2>Country code: {{ data.get('country_code') }}{{ form.hidden('country_code', data.get('country_code')) }}</h2>-->
         <h2>ELIXIR node: {{ data.get('title') }}</h2>
         <img id="flag" src="/images/node_flags/{{ data.country_code}}.png" class="img-circle" style="max-height:60px;">
-        {{ form.input('name', label=_('Slug'), id='name', value=data.get('name'), attrs={'readonly':'readonly'} ) }}
-        {{ form.input('title', label=_('Title'), id='title', value=data.get('title'), attrs={'readonly':'readonly'} ) }}
+        {{ form.hidden('country_code', data.get('country_code')) }}
+        {{ form.hidden('name', data.get('name')) }}
+        {{ form.hidden('title', data.get('title')) }}
+    {% endif %}
 
-  {% endif %}
 
     {# Perhaps these should be moved into the controller? #}
     {{ form.markdown('description', label=_('Description'), id='field-description', placeholder=_('A little information about this node...'), value=data.description, error=errors.description) }}
