@@ -14,6 +14,8 @@
 <meta property="og:description" content="{{ description|forceescape|trim }}">
 {% endblock -%}
 
+
+
 {% block content_action %}
 {% if h.check_access('package_update', {'id':pkg.id }) %}
 {% link_for _('Manage'), controller='package', action='edit', id=pkg.name, class_='btn', icon='wrench' %}
@@ -46,6 +48,7 @@
 {% block secondary_help_content %}{% endblock %}
 
 {% block package_info %}
+{{pkg.get('node_id')}}
 {% snippet 'package/snippets/info.html', pkg=pkg %}
 {% endblock %}
 
@@ -57,9 +60,17 @@
 {% endblock %}
 
 {% block package_elixir_node %}
+{% set node_id = pkg.get('node_id') %}
+{% if node_id %}
+    {% snippet "snippets/node.html", node=h.get_node(node_id) %}
+{% else %}
+    {% snippet "snippets/new_node_prompt.html" %}
+{% endif %}
+
 {% if pkg.elixir_node and pkg.elixir_node|length >= 1 %}
 {# Looks like a list of nodes is returned but we only ever have 0 or 1 nodes #}
 {% set elixir_node = pkg.elixir_node[0] %}
+
 {% snippet "snippets/elixir_node.html", elixir_node=elixir_node, has_context_title=true %}
 {% endif %}
 {% endblock %}

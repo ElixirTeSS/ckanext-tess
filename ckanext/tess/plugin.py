@@ -4,6 +4,7 @@
 import json as json
 import ckan.plugins.toolkit as toolkit
 import ckan.plugins as plugins
+from pylons import c
 import ckan.lib.helpers as h
 import os
 import operator
@@ -24,9 +25,22 @@ def node_materials(node):
 def node_organizations(node):
     return None
 
+def all_nodes():
+    data = {'type': 'node', 'all_fields': True}
+    return toolkit.get_action('group_list')({}, data)
+
+def all_node_name_and_ids():
+    a = []
+    for nodes in all_nodes():
+        a.append([nodes.get('display_name'), nodes.get('name')])
+    return a
+
+def get_node(node_id):
+    data = {'id': node_id}
+    return toolkit.get_action('group_show')({}, data)
+
 def elixir_nodes():
     create_elixir_nodes()
-
     try:
         tag_list = toolkit.get_action('tag_list')
         elixir_nodes = tag_list(data_dict={'vocabulary_id': 'elixir_nodes'})
@@ -101,6 +115,7 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         toolkit.add_public_directory(config, 'public')
         toolkit.add_resource('fantastic', 'tess')
 
+
         # set the title
         config['ckan.site_title'] = "TeSS Portal"
 
@@ -120,39 +135,41 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         facets_dict['vocab_elixir_nodes'] = plugins.toolkit._('ELIXIR Nodes')
         return facets_dict
 
+    def setup_template_variables(self, context, data_dict):
+        c.hello = 'HI'
+
     def get_helpers(self):
         return {'elixir_nodes': elixir_nodes,
                 'get_node_list': node_list,
                 'get_node_materials': node_materials,
                 'get_node_organizations': node_organizations,
                 'tess_elixir_nodes': elixir_nodes, 'tess_reorder_dataset_facets': reorder_dataset_facets,
-                'read_news_iann': iann_news
-                }
+                'read_news_iann': iann_news,
+                'all_nodes': all_nodes,
+                'all_node_name_and_ids': all_node_name_and_ids,
+                'get_node': get_node,
+        }
 
     def _modify_package_schema(self, schema):
         schema.update({
-            'custom_text': [toolkit.get_validator('ignore_missing'),
-                            toolkit.get_converter('convert_to_extras')]
-        })
-        schema.update({
             'elixir_node': [
                 toolkit.get_validator('ignore_missing'),
-                toolkit.get_converter('convert_to_tags')('elixir_nodes')
-            ]
+                toolkit.get_converter('convert_to_tags')('elixir_nodes')],
+            'node_id': [
+                toolkit.get_converter('convert_to_extras'),
+                toolkit.get_validator('ignore_missing')]
         })
         return schema
 
     def show_package_schema(self):
         schema = super(TeSSPlugin, self).show_package_schema()
-        schema.update({
-            'custom_text': [toolkit.get_converter('convert_from_extras'),
-                            toolkit.get_validator('ignore_missing')]
-        })
-
         schema['tags']['__extras'].append(toolkit.get_converter('free_tags_only'))
         schema.update({
             'elixir_node': [
                 toolkit.get_converter('convert_from_tags')('elixir_nodes'),
+                toolkit.get_validator('ignore_missing')],
+            'node_id': [
+                toolkit.get_converter('convert_from_extras'),
                 toolkit.get_validator('ignore_missing')]
             })
         return schema

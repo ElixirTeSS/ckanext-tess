@@ -26,12 +26,32 @@
                 <option value="" {% if not elixir_node %} selected="selected" {% endif %}>{{ _('None') }}</option>
                 {% for elixir_node in h.tess_elixir_nodes() %}
                 <option value="{{ elixir_node }}"
-                {% if elixir_node in data.get('elixir_node', []) %}selected="selected"{% endif %}>{{ elixir_node }}
+                    {% if elixir_node in data.get('elixir_node', []) %}selected="selected"{% endif %}>{{ elixir_node }}
                 </option>
                 {% endfor %}
             </select>
         </div>
     </div>
+
+    <div class="control-group">
+        <label class="control-label" for="field-elixir_node">{{ _("(group) Node") }}</label>
+        <div class="controls">
+            <select id="field-node_id" name="node_id" data-module="autocomplete">
+                {% for node in h.all_node_name_and_ids() %}
+                    <option value={{node[1]}}
+                            {% if data.get('node_id') == node[1] %}
+                                selected="selected"
+                            {% endif %}>
+                        {{ node[0] }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <!--option value="{{ elixir_node }}"
+    {% if elixir_node in data.get('node_name', []) %}selected="selected"{% endif %}>{{ elixir_node }}
+    </option-->
 
 {% block package_basic_fields_tags %}
   {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/tag/autocomplete?incomplete=?'} %}
