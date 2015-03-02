@@ -1,0 +1,44 @@
+<!--div class="content"-->
+{% block about %}
+{% block header_site_navigation %}
+    <nav class="section navigation">
+    <div class="dropdown" style="padding-left:20px;padding-top:10px;">
+     <a href="#" class="button image dropdown-toggle" data-toggle="dropdown">
+         Nodes
+         <i class="icon-chevron-down"></i>
+      </a>
+      <ul class="user-dropdown-menu dropdown-menu pull-left" role="menu">
+        <li><a href="/node_old/hub.html">The Hub</a></li>
+          {% for node in h.get_all_nodes(): %}
+            {% set url = h.url_for(node.type ~ '_read', action='read', id=node.name) %}
+            <li><a href="{{url}}">{{node.display_name }}</a></li>
+          {% endfor %}
+      </ul>
+   </div>
+   </nav>
+{% endblock %}
+{% endblock %}
+
+<!--
+        <li><a href="/node_old/hub.html">The Hub</a></li>
+        <li><a href="/node_old/BE.html">Belgium</a></li>
+        <li><a href="/node_old/CZ.html">Czech Republic</a></li>
+        <li><a href="/node_old/DK.html">Denmark</a></li>
+        <li><a href="/node_old/EMBL-EBI.html">EMBL-EBI</a></li>
+        <li><a href="/node_old/EE.html">Estonia</a></li>
+        <li><a href="/node_old/FI.html">Finland</a></li>
+        <li><a href="/node_old/FR.html">France</a></li>
+        <li><a href="/node_old/GR.html">Greece</a></li>
+        <li><a href="/node_old/IL.html">Israel</a></li>
+        <li><a href="/node_old/IT.html">Italy</a></li>
+        <li><a href="/node_old/NL.html">Netherlands</a></li>
+        <li><a href="/node_old/NO.html">Norway</a></li>
+        <li><a href="/node_old/PT.html">Portugal</a></li>
+        <li><a href="/node_old/SI.html">Slovenia</a></li>
+        <li><a href="/node_old/ES.html">Spain</a></li>
+        <li><a href="/node_old/SE.html">Sweden</a></li>
+        <li><a href="/node_old/CH.html">Switzerland</a></li>
+        <li><a href="/node_old/GB.html">UK</a></li>
+ -->
+
+

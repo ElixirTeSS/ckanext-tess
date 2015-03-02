@@ -1,6 +1,9 @@
-{% set node_name = 'Greece' %}
-{% set country_code = 'GR' %}
-{% extends "nodes/snippets/node_template.html" %}
+{% set node_name = 'Czech Republic' %}
+{% set country_code = 'CZ' %}
+{% set trc = None %}
+{% set tec = None %}
+{% set hon = None %}
+{% extends "node_old/snippets/node_template.html", node_name=node_name, country_code=country_code, hon=hon, trc=trc, tec=tec %}
 
 {#
 Override blocks from the nodes_template.html here to add your own custom configuration.

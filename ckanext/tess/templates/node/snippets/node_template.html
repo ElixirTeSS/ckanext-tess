@@ -6,66 +6,61 @@ you risk reversing the Entropy of the Universe and destroying us all. You've bee
 {% extends "page.html" %}
 
 {% block subtitle %}
-    {{ node_name }}
+    {{ node.get('display_name') }}
 {% endblock %}
 
 {% block breadcrumb_content %}
-<li>{% link_for _('Nodes'), controller='ckanext.tess.controller:NodeController', action='index' %}</li>
-<!--<li class="active">{% link_for _(node_name), controller='ckanext.tess.controller:SpecialRouteController', action='nodes'  %}</li>-->
-<li class="active"><a href="">{{ node_name }}</a></li>
-<!--<li class="active">{{ node_name }}</li>-->
-
+<li><a href="{% url_for 'node' %}">{{ _('Nodes') }}</a></li>
+<li class="active"><a href="">{{ node.get('display_name') }}</a></li>
 {% endblock %}
 
 {% block primary %}
 {% link_for _('Manage'), controller='ckanext.tess.controller:NodeController', action='edit', id=c.group_dict.name, class_='btn right', icon='wrench' %}
-{% snippet "nodes/snippets/helper.html" %}
+{% snippet "node/snippets/node_list_dropdown.html" %}
 
 {% block node_heading %}
 <div class="row-fluid">
     <div class="span12">
         <h1 class="page-heading" style="text-align:center">{{ node.get('display_name') }}</h1>
-        {% set cc = node.get('country_code') %}
-        {% if cc : %}
-            <img src="/images/node_flags/{{ cc }}.png"/>
+        {% set country_code = node.get('country_code') %}
+        {% if country_code : %}
+            <img src="/images/node_flags/{{ country_code }}.png"/>
         {% endif %}
         <h3 style="text-align:center">{{ node.get('description') }}</h3>
     </div>
 </div>
 {% endblock %}
 
-
-
 <div class="module-content">
     <ul class="media-grid masonry" data-module="media-grid">
 
         {% block news %}
         <li class="media-item masonry-brick node-brick">
-            {% snippet "nodes/snippets/news_for_node.html", node=node_name %}
+            {% snippet "node/snippets/news_for_node.html", node=node %}
         </li>
         {% endblock %}
 
         {% block organizations %}
         <li class="media-item masonry-brick node-brick">
-            {% snippet "nodes/snippets/organizations_for_node.html", node=node_name %}
+            {% snippet "node/snippets/members_for_node.html", node=node %}
         </li>
         {% endblock %}
 
         {% block materials %}
         <li class="media-item masonry-brick node-brick">
-            {% snippet "nodes/snippets/materials_for_node.html", node=node_name %}
+            {% snippet "node/snippets/materials_for_node.html", node=node %}
         </li>
         {% endblock %}
 
         {% block events %}
         <li class="media-item masonry-brick node-brick">
-            {% snippet "nodes/snippets/events_for_node.html", node=node_name %}
+            {% snippet "node/snippets/events_for_node.html", node=node %}
         </li>
         {% endblock %}
 
         {% block staff %}
         <li class="media-item masonry-brick node-brick">
-            {% snippet "nodes/snippets/staff_for_node.html", node=node %}
+            {% snippet "node/snippets/staff_for_node.html", node=node %}
         </li>
         {% endblock %}
 
