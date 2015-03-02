@@ -1,6 +1,9 @@
 {% set node_name = 'United Kingdom' %}
 {% set country_code = 'GB' %}
-{% extends "nodes/snippets/node_template.html" %}
+{% set trc = Rita %}
+{% set tec = Manny %}
+{% set hon = Chris %}
+{% extends "node_old/snippets/node_template.html", node_name=node_name, country_code=country_code, hon=hon, trc=trc, tec=tec %}
 
 {#
 Override blocks from the nodes_template.html here to add your own custom configuration.

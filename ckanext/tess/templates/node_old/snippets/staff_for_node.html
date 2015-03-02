@@ -1,0 +1,19 @@
+<h2>Staff</h2>
+<hr/>
+
+{% if trc or tec or hon %}
+    <p class="module-content">
+    {% if hon %}
+        <b>Head of node:</b> {{ hon }} <br>
+    {% endif %}
+    {% if trc %}
+        <b>Training coordinator:</b> {{ trc }} <br>
+    {% endif %}
+    {% if tec %}
+        <b>Technical coordinator:</b> {{ tec }}
+    {% endif %}
+    </p>
+{% else %}
+    <p class="module-content empty">No staff found for this node</p>
+{% endif %}
+

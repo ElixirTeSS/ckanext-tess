@@ -1,25 +1,23 @@
 {#
-If there is a country name (node that title is also the country name) and a country code with a file of the same name - load it.
-If there is no custom file or country code, pass the name to node_template which will render a blank looking node template.
+If there is a country name (note that node title is actually the country name) and a country code with a file of the same name - load it.
+If there is no custom file or country code, pass the name to node_template which will render node page.
 #}
 
 {% set node_name = c.group_dict['title'] %}
 {% if c.group_dict.has_key('country_code'): %}
     {% set country_code = c.group_dict['country_code'] %}
     {% set node_name = c.group_dict['title'] %}
-    {% set custom_file_path = 'nodes/' + country_code + ".html" %}
+    {% set custom_file_path = 'node/' + country_code + ".html" %}
     {% set has_custom = h.file_exist(custom_file_path) %}
     {{ country_code }}
     {{c.group_dict}}
     {% if has_custom == True: %}
         {% snippet custom_file_path, node=c.group_dict %}
     {% else: %}
-        {% snippet "nodes/snippets/node_template.html", node=c.group_dict %}
+        {% snippet "node/snippets/node_template.html", node=c.group_dict %}
     {% endif %}
 {% else: %}
-    {% snippet "nodes/snippets/node_template.html", node=c.group_dict %}
-    {# This could load the edit page for the node and say 'make sure you have a country code and node name' #}
-    {#% snippet "node/edit_base.html", node=c.group_dict %#}
+    <p class="module-content empty">No such country</p>
 {% endif %}
 
 

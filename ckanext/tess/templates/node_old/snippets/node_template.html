@@ -1,0 +1,76 @@
+{# node_name and country_code must be set from the page that extends this template.
+If you do not set node_name to be a valid Elixir Node name like 'United Kingdom' or 'Switzerland'
+you risk reversing the Entropy of the Universe and destroying us all. You've been warned!
+#}
+
+{% extends "page.html" %}
+
+{% block subtitle %}
+    {{ node_name }}
+{% endblock %}
+
+{% block breadcrumb_content %}
+<li>{% link_for _('Nodes'), controller='ckanext.tess.controller:NodeController', action='index' %}</li>
+<!--<li class="active">{% link_for _(node_name), controller='ckanext.tess.controller:SpecialRouteController', action='node_old'  %}</li>-->
+<li class="active"><a href="">{{ node_name }}</a></li>
+<!--<li class="active">{{ node_name }}</li>-->
+
+{% endblock %}
+
+{% block primary %}
+{% link_for _('Manage'), controller='ckanext.tess.controller:NodeController', action='edit', id=c.group_dict.name, class_='btn right', icon='wrench' %}
+{% snippet "node_old/snippets/helper.html" %}
+
+{% block node_heading %}
+<div class="row-fluid">
+    <div class="span12">
+        <h1 class="page-heading" style="text-align:center">{{ node_name }}</h1>
+        {% if country_code : %}
+            <img src="/images/node_flags/{{ country_code }}.png"/>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+
+
+<div class="module-content">
+    <ul class="media-grid masonry" data-module="media-grid">
+
+        {% block news %}
+        <li class="media-item masonry-brick node-brick">
+            {% snippet "node_old/snippets/news_for_node.html", node=node_name %}
+        </li>
+        {% endblock %}
+
+        {% block organizations %}
+        <li class="media-item masonry-brick node-brick">
+            {% snippet "node_old/snippets/organizations_for_node.html", node=node_name %}
+        </li>
+        {% endblock %}
+
+        {% block materials %}
+        <li class="media-item masonry-brick node-brick">
+            {% snippet "node_old/snippets/materials_for_node.html", node=node_name %}
+        </li>
+        {% endblock %}
+
+        {% block events %}
+        <li class="media-item masonry-brick node-brick">
+            {% snippet "node_old/snippets/events_for_node.html", node=node_name %}
+        </li>
+        {% endblock %}
+
+        {% block staff %}
+        <li class="media-item masonry-brick node-brick">
+            {% snippet "node_old/snippets/staff_for_node.html", hon=hon, tec=tec, trc=trc %}
+        </li>
+        {% endblock %}
+
+    </ul>
+</div>
+
+{% endblock %}
+
+{% block secondary %}
+{% endblock %}

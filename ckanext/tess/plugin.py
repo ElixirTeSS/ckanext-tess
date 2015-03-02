@@ -111,9 +111,9 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         #                '<link rel="stylesheet" href="/css/tess.css" type="text/css"> '
 
     def before_map(self, map):
-        map.connect('nodes', '/nodes', controller='ckanext.tess.controller:SpecialRouteController', action='nodes')
-        map.connect('workflows', '/workflows', controller='ckanext.tess.controller:SpecialRouteController', action='workflows')
-        map.connect('events', '/events', controller='ckanext.tess.controller:SpecialRouteController', action='events')
+        map.connect('node_old', '/node_old', controller='ckanext.tess.controller:SpecialRouteController', action='node_old')
+        map.connect('workflow', '/workflow', controller='ckanext.tess.controller:SpecialRouteController', action='workflows')
+        map.connect('event', '/event', controller='ckanext.tess.controller:SpecialRouteController', action='events')
         return map
 
     def dataset_facets(self, facets_dict, package_type):
@@ -255,7 +255,7 @@ def get_country_code_for_name(country_name):
 
 def get_available_country_codes():
     '''
-    :return: A list of available country codes not yet taken up by ELIXIR nodes
+    :return: A list of available country codes not yet taken up by ELIXIR node_old
     '''
     countries_map = get_countries_map() # country code -> country name hash
     nodes = get_all_nodes()
@@ -278,7 +278,7 @@ def get_available_country_codes():
 
 def get_available_country_names():
     '''
-    :return: A list of available country codes not yet taken up by ELIXIR nodes
+    :return: A list of available country codes not yet taken up by ELIXIR node_old
     '''
     countries_map = get_countries_map()
     nodes = get_all_nodes()
@@ -297,7 +297,7 @@ def get_available_country_names():
 def get_available_countries():
     '''
     :return: A list of dictionaries {'text': country_name, 'value': country_code_for node, 'name': country_name} of countries
-    that have not already been taken by existing nodes.
+    that have not already been taken by existing node_old.
     '''
     countries = get_countries_map()
     nodes = get_all_nodes()

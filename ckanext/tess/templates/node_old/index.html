@@ -9,11 +9,11 @@ you risk reversing the Entropy of the Universe and destroying us all. You've bee
 {% block subtitle %}{{ _('Nodes') }}{% endblock %}
 
 {% block breadcrumb_content %}
-<li class="active"><a href="/nodes">Nodes</a></li>
+<li class="active"><a href="/node_old">Nodes</a></li>
 {% endblock %}
 
 {% block primary %}
-{# snippet "nodes/snippets/helper.html" #}
+{# snippet "node_old/snippets/helper.html" #}
 
 <div class="primary span9">
     <section class="module">
@@ -30,7 +30,7 @@ you risk reversing the Entropy of the Universe and destroying us all. You've bee
         <div class="row-fluid">
             <div class="span11-nodes">
                 <div class="span3-hub" style="padding-bottom: 0px;">
-                    <a href="/nodes/hub.html">
+                    <a href="/node_old/hub.html">
                         <img src="/images/ELIXIR_logo.png" class="img-circle" style="max-height:120px">
                         <h3 style="margin-bottom: 0px;">The Hub</h3>
                     </a>
@@ -81,27 +81,27 @@ you risk reversing the Entropy of the Universe and destroying us all. You've bee
         {% for index in range(0,nodes|length,3): %}
         <div class="row-fluid">
             <div class="span11-nodes">
-                {% snippet "nodes/snippets/node_info_new.html",
+                {% snippet "node_old/snippets/node_info_new.html",
                 name = nodes[index].name,
                 flag = "/images/node_flags/" ~ nodes[index].country_code ~ ".png",
-                page = "/nodes/" ~ nodes[index].country_code ~ ".html",
+                page = "/node_old/" ~ nodes[index].country_code ~ ".html",
                 hon = nodes[index].hon,
                 trc = nodes[index].trc,
                 tc = nodes[index].tc %}
                 {% if index + 1 < nodes|length: %}
-                {% snippet "nodes/snippets/node_info_new.html",
+                {% snippet "node_old/snippets/node_info_new.html",
                 name = nodes[index+1].name,
                 flag = "/images/node_flags/" ~ nodes[index+1].country_code ~ ".png",
-                page = "/nodes/" ~ nodes[index+1].country_code ~ ".html",
+                page = "/node_old/" ~ nodes[index+1].country_code ~ ".html",
                 hon = nodes[index+1].hon,
                 trc = nodes[index+1].trc,
                 tc = nodes[index+1].tc %}
                 {% endif %}
                 {% if index + 2 < nodes|length: %}
-                {% snippet "nodes/snippets/node_info_new.html", name=nodes[index+2].name,
+                {% snippet "node_old/snippets/node_info_new.html", name=nodes[index+2].name,
                 name = nodes[index+2].name,
                 flag = "/images/node_flags/" ~ nodes[index+2].country_code ~ ".png",
-                page = "/nodes/" ~ nodes[index+2].country_code ~ ".html",
+                page = "/node_old/" ~ nodes[index+2].country_code ~ ".html",
                 hon = nodes[index+2].hon,
                 trc = nodes[index+2].trc,
                 tc = nodes[index+2].tc %}
@@ -114,5 +114,5 @@ you risk reversing the Entropy of the Universe and destroying us all. You've bee
 {% endblock %}
 
 {% block secondary_content %}
-    {% snippet "nodes/snippets/nodes_list.html", nodes = nodes %}
+    {% snippet "node_old/snippets/nodes_list.html", nodes = nodes %}
 {% endblock %}
