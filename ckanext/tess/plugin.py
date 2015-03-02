@@ -14,9 +14,7 @@ def node_list():
     return elixir_nodes()
 
 def node_materials(node):
-    print "node: ", node
     datasets = toolkit.get_action("package_search")(data_dict={'fq':node.get('display_name'), 'facet.field':['elixir_nodes']})
-    print "dataset[0]", datasets['results'][0]
     return datasets['results']
 
 def node_organizations(node):
