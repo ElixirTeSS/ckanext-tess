@@ -22,9 +22,9 @@ you risk reversing the Entropy of the Universe and destroying us all. You've bee
 <div class="row-fluid">
     <div class="span12">
         <h1 class="page-heading" style="text-align:center">{{ node.get('display_name') }}</h1>
-        {% set cc = node.get('country_code') %}
-        {% if cc : %}
-            <img src="/images/node_flags/{{ cc }}.png"/>
+        {% set country_code = node.get('country_code') %}
+        {% if country_code : %}
+            <img src="/images/node_flags/{{ country_code }}.png"/>
         {% endif %}
         <h3 style="text-align:center">{{ node.get('description') }}</h3>
     </div>
@@ -36,25 +36,25 @@ you risk reversing the Entropy of the Universe and destroying us all. You've bee
 
         {% block news %}
         <li class="media-item masonry-brick node-brick">
-            {% snippet "node/snippets/news_for_node.html", node=node_name %}
+            {% snippet "node/snippets/news_for_node.html", node=node %}
         </li>
         {% endblock %}
 
         {% block organizations %}
         <li class="media-item masonry-brick node-brick">
-            {% snippet "node/snippets/members_for_node.html", node=node_name %}
+            {% snippet "node/snippets/members_for_node.html", node=node %}
         </li>
         {% endblock %}
 
         {% block materials %}
         <li class="media-item masonry-brick node-brick">
-            {% snippet "node/snippets/materials_for_node.html", node=node_name %}
+            {% snippet "node/snippets/materials_for_node.html", node=node %}
         </li>
         {% endblock %}
 
         {% block events %}
         <li class="media-item masonry-brick node-brick">
-            {% snippet "node/snippets/events_for_node.html", node=node_name %}
+            {% snippet "node/snippets/events_for_node.html", node=node %}
         </li>
         {% endblock %}
 
