@@ -9,7 +9,7 @@
               {% elif title.lower().startswith('groups') %}
                 {% set title = 'Packages' %}
               {% endif %}
-              {% if title.lower().startswith('elixir') %}
+              {% if title.lower().startswith('node') %}
                 <i class="icon-medium icon-elixir"></i>
               {% else %}
                 <i class="icon-medium icon-filter"></i>
@@ -33,6 +33,9 @@
                   {% for item in items %}
                     {% set href = h.remove_url_param(name, item.name, extras=extras, alternative_url=alternative_url) if item.active else h.add_url_param(new_params={name: item.name}, extras=extras, alternative_url=alternative_url) %}
                     {% set label = label_function(item) if label_function else item.display_name %}
+                    {% if title.lower().startswith('node'): %}
+                        {% set label = h.display_name_of_node(item.display_name) %}
+                    {% endif %}
                     {% set label_truncated = h.truncate(label, 22) if not label_function else label %}
                     {% set count = count_label(item['count']) if count_label else ('(%d)' % item['count']) %}
                       <li class="{{ nav_item_class or 'nav-item' }}{% if item.active %} active{% endif %}">

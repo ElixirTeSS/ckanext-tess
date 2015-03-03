@@ -11,29 +11,49 @@ import operator
 
 from ckan.lib.plugins import DefaultGroupForm
 
+
+def reorder_dataset_facets(facet_keys, facet_values):
+    ''' Helper function that reorders 2 input lists so that
+        our 'ELIXIR Nodes' facet/filter (using key 'vocab_elixir_nodes') is the second in the list (if there are more than 2 facets).
+        Input parameters:
+        facet_keys is list of facet dictionary keys;
+        facet_values is list of facet dictionary values
+        Both lists must be of the same length.
+
+    '''
+    index = facet_keys.index("node_id") if "node_id" in facet_keys else None
+    if (index is not None and index > 1 and len(facet_keys) > 2):
+        facet_keys[1], facet_keys[index] = facet_keys[index], facet_keys[1]
+        facet_values[1], facet_values[index] = facet_values[index], facet_values[1]
+    return facet_keys, facet_values
+
+# Return the iann specific news. This could be replaced with a general news function taking
+# the news source as an argument.
+def iann_news():
+  try:
+    with open ("/tmp/iann.txt", "r") as myfile:
+      data = myfile.read()
+  except Exception, e:
+    print "iann_news: " + str(e)
+    data = "<p>No events found!</p>"
+  return plugins.toolkit.literal(data)
+
+
+
+#===============================================
+#|||||        OLD NODE STUFF              ||||||
+#===============================================
 def node_list():
     return elixir_nodes()
 
 def node_materials(node):
-    datasets = toolkit.get_action("package_search")(data_dict={'fq':node.get('display_name'), 'facet.field':['elixir_nodes']})
+    datasets = toolkit.get_action("package_search") \
+        (data_dict={'fq': node.get('display_name'),
+                'facet.field': ['elixir_nodes']})
     return datasets['results']
 
 def node_organizations(node):
     return None
-
-def all_nodes():
-    data = {'type': 'node', 'all_fields': True}
-    return toolkit.get_action('group_list')({}, data)
-
-def all_node_name_and_ids():
-    a = []
-    for nodes in all_nodes():
-        a.append([nodes.get('display_name'), nodes.get('name')])
-    return a
-
-def get_node(node_id):
-    data = {'id': node_id}
-    return toolkit.get_action('group_show')({}, data)
 
 def elixir_nodes():
     create_elixir_nodes()
@@ -59,31 +79,34 @@ def create_elixir_nodes():
            data = {'name': tag, 'vocabulary_id': vocab['id']}
            toolkit.get_action('tag_create')(context, data)
 
-def reorder_dataset_facets(facet_keys, facet_values):
-    ''' Helper function that reorders 2 input lists so that
-        our 'ELIXIR Nodes' facet/filter (using key 'vocab_elixir_nodes') is the second in the list (if there are more than 2 facets).
-        Input parameters:
-        facet_keys is list of facet dictionary keys;
-        facet_values is list of facet dictionary values
-        Both lists must be of the same length.
 
-    '''
-    index = facet_keys.index("vocab_elixir_nodes") if "vocab_elixir_nodes" in facet_keys else None
-    if (index is not None and index > 1 and len(facet_keys) > 2):
-        facet_keys[1], facet_keys[index] = facet_keys[index], facet_keys[1]
-        facet_values[1], facet_values[index] = facet_values[index], facet_values[1]
-    return facet_keys, facet_values
+#===============================================
+#|||||        NEW NODE STUFF              ||||||
+#===============================================
 
-# Return the iann specific news. This could be replaced with a general news function taking
-# the news source as an argument.
-def iann_news():
-  try:
-    with open ("/tmp/iann.txt", "r") as myfile:
-      data = myfile.read()
-  except Exception, e:
-    print "iann_news: " + str(e)
-    data = "<p>No events found!</p>"
-  return plugins.toolkit.literal(data)
+def all_nodes():
+    data = {'type': 'node', 'all_fields': True}
+    return toolkit.get_action('group_list')({}, data)
+
+#returns something like:   [{'United Kingdom', 'united-kingdom'},
+#                         {'EMBL-EBI', 'embl-ebi'}]
+
+def all_node_name_and_ids():
+    a = []
+    for nodes in all_nodes():
+        a.append([nodes.get('display_name'), nodes.get('name')])
+    return a
+
+def get_node(node_id):
+    data = {'id': node_id}
+    return toolkit.get_action('group_show')({}, data)
+
+def display_name_of_node(node_id):
+    node = get_node(node_id)
+    if node.get('display_name'):
+        return node.get('display_name')
+    else:
+        return node_id.replace('-', ' ').title()
 
 
 ######################
@@ -129,10 +152,11 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
 
     def dataset_facets(self, facets_dict, package_type):
         facets_dict['vocab_elixir_nodes'] = plugins.toolkit._('ELIXIR Nodes')
+        facets_dict['node_id'] = 'Nodes'
         return facets_dict
 
     def setup_template_variables(self, context, data_dict):
-        c.hello = 'HI'
+        c.filterable_nodes = 'HI'
 
     def get_helpers(self):
         return {'elixir_nodes': elixir_nodes,
@@ -144,6 +168,7 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                 'all_nodes': all_nodes,
                 'all_node_name_and_ids': all_node_name_and_ids,
                 'get_node': get_node,
+                'display_name_of_node': display_name_of_node,
         }
 
     def _modify_package_schema(self, schema):
@@ -190,6 +215,10 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         # registers itself as the default (above).
         return []
 
+#=====================================================
+#|||||              NODE STUFF                    ||||
+#=====================================================
+
 def file_exist(file_name):
     here = os.path.dirname(__file__)
     rootdir = os.path.dirname(os.path.dirname(here))
@@ -198,7 +227,10 @@ def file_exist(file_name):
     return os.path.exists(template_dir + "/" + file_name)
 
 def get_all_nodes():
-    nodes = toolkit.get_action("group_list")(data_dict={'all_fields':True, 'include_extras':True, 'type':'node'})
+    nodes = toolkit.get_action("group_list")\
+        (data_dict={'all_fields': True,
+                    'include_extras': True,
+                    'type': 'node'})
     return nodes
 
 def node_domain():
@@ -303,7 +335,8 @@ def get_available_country_names():
         if not country_name in country_names_in_use:
              #output in format - [{'name':2010, 'value': 2010},{'name': 2011, 'value': 2011}]
              #to use the form macro form.select(...).
-            available_country_names.append({'text':country_name, 'value':country_name})
+            available_country_names.append({'text': country_name,
+                                            'value': country_name})
             available_country_names.append(country_name)
     return available_country_names
 
@@ -435,9 +468,9 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
         default_validators = [_ignore_missing, _convert_to_extras]
         schema.update({
                        'country_code': [_convert_to_extras],
-                       'hon':default_validators,
-                       'tec':default_validators,
-                       'trc':default_validators
+                       'hon': default_validators,
+                       'tec': default_validators,
+                       'trc': default_validators
                        })
         return schema
 
@@ -452,9 +485,9 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
 
         default_validators = [_convert_from_extras, _ignore_missing]
         schema.update({
-                       'country_code':default_validators,
-                       'hon':default_validators,
-                       'tec':default_validators,
-                       'trc':default_validators
+                       'country_code': default_validators,
+                       'hon': default_validators,
+                       'tec': default_validators,
+                       'trc': default_validators
                        })
         return schema

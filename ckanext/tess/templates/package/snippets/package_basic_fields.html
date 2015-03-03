@@ -37,6 +37,7 @@
         <label class="control-label" for="field-elixir_node">{{ _("(group) Node") }}</label>
         <div class="controls">
             <select id="field-node_id" name="node_id" data-module="autocomplete">
+                <option value="" selected="selected">None</option>
                 {% for node in h.all_node_name_and_ids() %}
                     <option value={{node[1]}}
                             {% if data.get('node_id') == node[1] %}
