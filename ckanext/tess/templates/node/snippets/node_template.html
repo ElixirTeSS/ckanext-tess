@@ -15,21 +15,28 @@ you risk reversing the Entropy of the Universe and destroying us all. You've bee
 {% endblock %}
 
 {% block primary %}
-{% link_for _('Manage'), controller='ckanext.tess.controller:NodeController', action='edit', id=c.group_dict.name, class_='btn right', icon='wrench' %}
-{% snippet "node/snippets/node_list_dropdown.html" %}
+
+<header class="module-content page-header">
+        {% snippet "node/snippets/node_list_dropdown.html" %}
+        <div class="content_action" style="float: right; padding-bottom: 10px;">
+            {% link_for _('Manage'), controller='ckanext.tess.controller:NodeController', action='edit', id=c.group_dict.name, class_='btn right', icon='wrench' %}
+        </div>
+</header>
 
 {% block node_heading %}
+{% set country_code = node.get('country_code') %}
 <div class="row-fluid">
-    <div class="span12">
-        <h1 class="page-heading" style="text-align:center">{{ node.get('display_name') }}</h1>
-        {% set country_code = node.get('country_code') %}
         {% if country_code : %}
-            <img src="/images/node_flags/{{ country_code }}.png"/>
+            <div>
+                <img src="/images/node_flags/{{ country_code }}.png" class="img-circle" style="max-height: 60px; max-width: 200px; float: left; padding-left: 10px;"/>
+            </div>
         {% endif %}
+        <h1 class="page-heading" style="text-align:center">{{ node.get('display_name') }}</h1>
         <h3 style="text-align:center">{{ node.get('description') }}</h3>
-    </div>
 </div>
 {% endblock %}
+
+<div style="clear:both;"></div>
 
 <div class="module-content">
     <ul class="media-grid masonry" data-module="media-grid">
