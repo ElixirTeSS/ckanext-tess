@@ -19,6 +19,7 @@
   {{ form.markdown('notes', id='field-notes', label=_('Description'), placeholder=_('eg. Some useful notes about the data'), value=data.notes, error=errors.notes) }}
 {% endblock %}
 
+    <!-- Old node stuff
     <div class="control-group">
         <label class="control-label" for="field-elixir_node">{{ _("ELIXIR Node") }}</label>
         <div class="controls">
@@ -32,14 +33,15 @@
             </select>
         </div>
     </div>
+    -->
 
     <div class="control-group">
-        <label class="control-label" for="field-elixir_node">{{ _("(group) Node") }}</label>
+        <label class="control-label" for="field-elixir_node">{{ _("ELIXIR Node") }}</label>
         <div class="controls">
             <select id="field-node_id" name="node_id" data-module="autocomplete">
                 <option value="" selected="selected">None</option>
                 {% for node in h.all_node_name_and_ids() %}
-                    <option value={{node[1]}}
+                    <option value="{{node[1]}}"
                             {% if data.get('node_id') == node[1] %}
                                 selected="selected"
                             {% endif %}>
