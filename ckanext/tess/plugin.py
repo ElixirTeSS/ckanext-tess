@@ -139,7 +139,7 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         config['ckan.site_title'] = "TeSS Portal"
 
         # set the logo
-    	config['ckan.site_logo'] = 'images/TeSSLogo-small.png'
+        config['ckan.site_logo'] = 'images/TeSSLogo-small.png'
 
         #config['ckan.template_head_end'] = config.get('ckan.template_head_end', '') +\
         #                '<link rel="stylesheet" href="/css/tess.css" type="text/css"> '
@@ -169,7 +169,7 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                 'all_node_name_and_ids': all_node_name_and_ids,
                 'get_node': get_node,
                 'display_name_of_node': display_name_of_node,
-        }
+                }
 
     def _modify_package_schema(self, schema):
         schema.update({
@@ -177,8 +177,8 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                 toolkit.get_validator('ignore_missing'),
                 toolkit.get_converter('convert_to_tags')('elixir_nodes')],
             'node_id': [
-                toolkit.get_converter('convert_to_extras'),
-                toolkit.get_validator('ignore_missing')]
+                toolkit.get_validator('ignore_missing'),
+                toolkit.get_converter('convert_to_extras')]
         })
         return schema
 
@@ -192,7 +192,7 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
             'node_id': [
                 toolkit.get_converter('convert_from_extras'),
                 toolkit.get_validator('ignore_missing')]
-            })
+        })
         return schema
 
     def create_package_schema(self):
