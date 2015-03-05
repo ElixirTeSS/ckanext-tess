@@ -399,11 +399,11 @@ hr.style-one {
     margin-top: -8px;
 }
 .form-horizontal .control-label {
-  width: 175px;
+  width: 200px;
 }
 @media (min-width: 768px) {
   .form-horizontal .controls {
-    margin-left: 185px;
+    margin-left: 210px;
   }
 }
 @media (min-width: 980px) {

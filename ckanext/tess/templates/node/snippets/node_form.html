@@ -9,6 +9,7 @@
 <!--<li class="active"><a href="">Manage</a></li>-->
 <!--{% endblock %}-->
 
+{% if not action == 'new' %}
 {% block page_heading %}
 <div class="module-content page-header">
         <div style="float: left; padding: 10px;">
@@ -19,7 +20,7 @@
         </div>
 </div>
 {% endblock %}
-
+{% endif %}
 
 <form class="dataset-form form-horizontal" method="post" data-module="basic-form" enctype="multipart/form-data">
   {% block error_summary %}
@@ -49,7 +50,7 @@
     </div>
     <div style="float: left;">
        {{ form.input('name', label=_('Slug'), id='name', value=data.get('name'), classes=['control-medium'], attrs={'readonly':'readonly'}) }}
-        {{ form.input('title', label=_('Title'), id='title', value=data.get('title'), attrs={'readonly':'readonly'} ) }}
+        {{ form.input('title', label=_('Title'), id='title', value=data.get('title'), classes=['control-medium'], attrs={'readonly':'readonly'} ) }}
     </div>
     <div style="clear: both;"></div>
   {% else %}
@@ -64,9 +65,14 @@
     {# Perhaps these should be moved into the controller? #}
     {{ form.markdown('description', label=_('Description'), id='field-description', placeholder=_('A little information about this node...'), value=data.description, error=errors.description) }}
 
+    {{ form.input('home_page', label=_('Home page'), id='home_page', placeholder=("URL of the node's home page"), value=data.home_page, classes=['control-medium']) }}
+
     {{ form.input('hon', label=_('Head of node'), id='hon', placeholder=('Name of the head of node'), value=data.hon, classes=['control-medium']) }}
+    {{ form.input('hon_email', label=_("Head of node's email"), id='hon_email', placeholder=('Email address of the head of node'), value=data.hon_email, classes=['control-medium']) }}
     {{ form.input('trc', label=_('Training coordinator'), id='trc', placeholder=('Name of the training coordinator'), value=data.trc, classes=['control-medium']) }}
+    {{ form.input('trc_email', label=_("Training coordinator's email"), id='trc_email', placeholder=('Email address of the training coordinator'), value=data.trc_email, classes=['control-medium']) }}
     {{ form.input('tec', label=_('Technical coordinator'), id='tec', placeholder=('Name of the technical coordinator'), value=data.tec, classes=['control-medium']) }}
+    {{ form.input('tec_email', label=_("Technical coordinator's email"), id='tec_email', placeholder=('Email address of the technical coordinator'), value=data.tec_email, classes=['control-medium']) }}
 
     {% set is_upload = data.image_url and not data.image_url.startswith('http') %}
     {% set is_url = data.image_url and data.image_url.startswith('http') %}

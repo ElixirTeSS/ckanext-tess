@@ -463,14 +463,18 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
         _convert_to_extras = toolkit.get_converter('convert_to_extras')
         _ignore_missing = toolkit.get_validator('ignore_missing')
 
-
         default_validators = [_ignore_missing, _convert_to_extras]
         schema.update({
-                       'country_code': [_convert_to_extras],
-                       'hon': default_validators,
-                       'tec': default_validators,
-                       'trc': default_validators
-                       })
+            'country_code': [_convert_to_extras],
+            'home_page': default_validators,
+            'hon': default_validators,
+            'hon_email': default_validators,
+            'tec': default_validators,
+            'tec_email': default_validators,
+            'trc': default_validators,
+            'trc_email': default_validators,
+            'image_urls': default_validators
+                      })
         return schema
 
     def db_to_form_schema(self):
@@ -484,9 +488,14 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
 
         default_validators = [_convert_from_extras, _ignore_missing]
         schema.update({
-                       'country_code': default_validators,
-                       'hon': default_validators,
-                       'tec': default_validators,
-                       'trc': default_validators
-                       })
+            'country_code': default_validators,
+            'home_page': default_validators,
+            'hon': default_validators,
+            'hon_email': default_validators,
+            'tec': default_validators,
+            'tec_email': default_validators,
+            'trc': default_validators,
+            'trc_email': default_validators,
+            'image_urls': default_validators
+        })
         return schema
