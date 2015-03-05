@@ -9,7 +9,7 @@
               {% elif title.lower().startswith('groups') %}
                 {% set title = 'Packages' %}
               {% endif %}
-              {% if title.lower().startswith('node') %}
+              {% if title == 'ELIXIR Nodes' %}
                 <i class="icon-medium icon-elixir"></i>
               {% else %}
                 <i class="icon-medium icon-filter"></i>
@@ -33,7 +33,7 @@
                   {% for item in items %}
                     {% set href = h.remove_url_param(name, item.name, extras=extras, alternative_url=alternative_url) if item.active else h.add_url_param(new_params={name: item.name}, extras=extras, alternative_url=alternative_url) %}
                     {% set label = label_function(item) if label_function else item.display_name %}
-                    {% if title.lower().startswith('node'): %}
+                    {% if title == ('ELIXIR Nodes'): %}
                         {% set label = h.display_name_of_node(item.display_name) %}
                     {% endif %}
                     {% set label_truncated = h.truncate(label, 22) if not label_function else label %}
@@ -57,7 +57,12 @@
                 {% endif %}
               </p>
             {% else %}
-              <p class="module-content empty">{{ _('There are no {facet_type} that match this search').format(facet_type=title.lower()) }}</p>
+                {% if title == 'ELIXIR Nodes': %}
+                    {% set facet_type = 'ELIXIR nodes' %}
+                {% else %}
+                    {% set facet_type = title.lower() %}
+                {% endif %}
+              <p class="module-content empty">There are no {{facet_type}} that match this search</p>
             {% endif %}
             {% endwith %}
           {% endblock %}

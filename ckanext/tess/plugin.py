@@ -14,7 +14,7 @@ from ckan.lib.plugins import DefaultGroupForm
 
 def reorder_dataset_facets(facet_keys, facet_values):
     ''' Helper function that reorders 2 input lists so that
-        our 'ELIXIR Nodes' facet/filter (using key 'vocab_elixir_nodes') is the second in the list (if there are more than 2 facets).
+        our 'ELIXIR Nodes' facet/filter (using key 'node_id') is the second in the list (if there are more than 2 facets).
         Input parameters:
         facet_keys is list of facet dictionary keys;
         facet_values is list of facet dictionary values
@@ -151,8 +151,7 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         return map
 
     def dataset_facets(self, facets_dict, package_type):
-        facets_dict['vocab_elixir_nodes'] = plugins.toolkit._('ELIXIR Nodes')
-        facets_dict['node_id'] = 'Nodes'
+        facets_dict['node_id'] = 'ELIXIR Nodes'
         return facets_dict
 
     def setup_template_variables(self, context, data_dict):

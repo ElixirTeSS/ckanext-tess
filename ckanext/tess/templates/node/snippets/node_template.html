@@ -15,21 +15,39 @@ you risk reversing the Entropy of the Universe and destroying us all. You've bee
 {% endblock %}
 
 {% block primary %}
-{% link_for _('Manage'), controller='ckanext.tess.controller:NodeController', action='edit', id=c.group_dict.name, class_='btn right', icon='wrench' %}
-{% snippet "node/snippets/node_list_dropdown.html" %}
+{% set country_code = node.get('country_code') %}
+<header class="module-content page-header" style="padding:20px; margin: 0px;">
+        <div style="float: left; padding: 20px;">
+            {% snippet "node/snippets/node_list_dropdown.html" %}
+        </div>
+        <div style="float: left; padding-left: 10px;">
+            {% if country_code : %}
+                <img id="flag" src="/images/node_flags/{{ country_code }}.png" class="img-circle" style="max-height: 60px;"/>
+            {% endif %}
+        </div>
+        <div style="float: left; width: 60%;">
+            <h1 class="page-heading" style="text-align:center">{{ node.get('display_name') }}</h1>
+        </div>
+        <div class="content_action" style="float: right; margin: 0px;">
+            {% link_for _('Manage'), controller='ckanext.tess.controller:NodeController', action='edit', id=c.group_dict.name, class_='btn right', icon='wrench' %}
+        </div>
+</header>
 
 {% block node_heading %}
-<div class="row-fluid">
-    <div class="span12">
-        <h1 class="page-heading" style="text-align:center">{{ node.get('display_name') }}</h1>
-        {% set country_code = node.get('country_code') %}
-        {% if country_code : %}
-            <img src="/images/node_flags/{{ country_code }}.png"/>
-        {% endif %}
-        <h3 style="text-align:center">{{ node.get('description') }}</h3>
-    </div>
+{% if node.get('description'): %}
+<div class="row-fluid" style="padding: 10px 20px;">
+    <h3>Description</h3>
+        {{ node.get('description') }}
 </div>
+{% endif %}
+{% if node.get('home_page'): %}
+<div class="row-fluid" style="padding: 10px;">
+    <h3>Home page</h3>
+        {{ node.get('home_page') }}
+</div>
+{% endif %}
 {% endblock %}
+<div style="clear:both;"></div>
 
 <div class="module-content">
     <ul class="media-grid masonry" data-module="media-grid">

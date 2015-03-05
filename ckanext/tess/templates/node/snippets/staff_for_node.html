@@ -1,22 +1,32 @@
 <h2>Staff</h2>
 <hr/>
 
-{% set trc = node.has_key('trc') %}
-{% set tec = node.has_key('tec') %}
-{% set hon = node.has_key('hon') %}
+{% set hon = node.get('hon') %}
+{% set trc = node.get('trc') %}
+{% set tec = node.get('tec') %}
+
 {% if trc or tec or hon %}
-    <p class="module-content">
+<p class="module-content" style="padding: 0px; margin: 0px;">
+    <b>Head of node:</b>
     {% if hon %}
-        <b>Head of node:</b> {{node.get('hon')}} <br>
+        <p class="empty" style="padding: 0px; margin: 0px;">{{node.get('hon')}}</p>
+    {% else %}
+        <p class="empty" style="padding: 0px; margin: 0px;">None</p>
     {% endif %}
+    <b>Training coordinator:</b><br>
     {% if trc %}
-        <b>Training coordinator:</b> {{node.get('trc')}} <br>
+        <p class="empty" style="padding: 0px; margin: 0px;">{{node.get('trc')}}</p>
+    {% else %}
+        <p class="empty" style="padding: 0px; margin: 0px;">None</p>
     {% endif %}
+    <b>Technical coordinator:</b><br>
     {% if tec %}
-        <b>Technical coordinator:</b> {{node.get('tec')}}
+        <p class="empty" style="padding: 0px; margin: 0px;">{{node.get('tec')}}</p>
+    {% else %}
+        <p class="empty" style="padding: 0px; margin: 0px;">None</p>
     {% endif %}
-    </p>
+</p>
 {% else %}
-    <p class="module-content empty">No staff found for this node</p>
+    <p class="module-content empty" style="padding: 0px; margin: 0px;">No staff found for this node</p>
 {% endif %}
 
