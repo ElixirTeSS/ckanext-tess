@@ -1,6 +1,24 @@
+
 {% import 'macros/form.html' as form %}
 
 {% resource 'tess/load_country_info.js' %}
+
+<!--{% block breadcrumb_content %}-->
+<!--<li><a href="{% url_for 'node' %}">{{ _('Nodes') }}</a></li>-->
+<!--<li><a href="">{{ data.get('display_name') }}</a></li>-->
+<!--<li class="active"><a href="">Manage</a></li>-->
+<!--{% endblock %}-->
+
+{% block page_heading %}
+<div class="module-content page-header">
+        <div style="float: left; padding: 10px;">
+            <img src="/images/node_flags/{{ data.country_code}}.png" class="img-circle" style="max-height:60px;">
+        </div>
+        <div style="float: left; width: 60%;">
+            <h1 class="page-heading" style="text-align:center">{{data.get('title')}}</h1>
+        </div>
+</div>
+{% endblock %}
 
 
 <form class="dataset-form form-horizontal" method="post" data-module="basic-form" enctype="multipart/form-data">
@@ -35,9 +53,8 @@
     </div>
     <div style="clear: both;"></div>
   {% else %}
-        <!--<h2>Country code: {{ data.get('country_code') }}{{ form.hidden('country_code', data.get('country_code')) }}</h2>-->
-        <h2>ELIXIR node: {{ data.get('title') }}</h2>
-        <img id="flag" src="/images/node_flags/{{ data.country_code}}.png" class="img-circle" style="max-height:60px;">
+        <!--<h2>ELIXIR Node: {{ data.get('title') }}</h2>-->
+        <!--<img id="flag" src="/images/node_flags/{{ data.country_code}}.png" class="img-circle" style="max-height:60px;">-->
         {{ form.hidden('country_code', data.get('country_code')) }}
         {{ form.hidden('name', data.get('name')) }}
         {{ form.hidden('title', data.get('title')) }}
