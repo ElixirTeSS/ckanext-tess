@@ -1,6 +1,19 @@
 {% extends "node/snippets/node_template.html" %}
 
-{# Override node_template blocks here for custom configuration #}
+{# Override node_template blocks here for custom configuration
+
+{% block news %}
+{% endblock %}
+
+{% block events %}
+{% endblock %}
+
+{% block staff %}
+{% endblock %}
+
+{% block organizations %}
+{% endblock %}
+#}
 
 {% block node_heading %}
 <div class="row-fluid">
@@ -32,22 +45,4 @@
         </div>
     </div>
 </div>
-{% endblock %}
-
-{% block news %}
-<li style="position: absolute; top: 0px; left: 0px; height:800px; width: 280px; border: 1px solid #DDD;" class="media-item masonry-brick">
-    <h2>News</h2>
-    <hr/>
-    <a class="twitter-timeline" href="https://twitter.com/emblebi" data-widget-id="559760117273747456">Tweets by @emblebi</a>
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-</li>
-{% endblock %}
-
-{% block events %}
-{% endblock %}
-
-{% block staff %}
-{% endblock %}
-
-{% block organizations %}
 {% endblock %}

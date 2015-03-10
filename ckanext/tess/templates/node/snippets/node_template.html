@@ -48,9 +48,15 @@
     <ul class="media-grid masonry" data-module="media-grid">
 
         {% block news %}
-        <li class="media-item masonry-brick node-brick">
-            {% snippet "node/snippets/news_for_node.html", node=node %}
-        </li>
+        {% if node.get('twitter') %}
+            <li class="media-item masonry-brick node-brick" style="height:700px">
+                {% snippet "node/snippets/news_for_node.html", node=node %}
+            </li>
+        {% else %}
+            <li class="media-item masonry-brick node-brick">
+                {% snippet "node/snippets/news_for_node.html", node=node %}
+            </li>
+        {% endif %}
         {% endblock %}
 
         {% block organizations %}
