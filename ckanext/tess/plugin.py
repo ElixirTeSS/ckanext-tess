@@ -473,8 +473,9 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
             'tec_email': default_validators,
             'trc': default_validators,
             'trc_email': default_validators,
-            'image_urls': default_validators
-                      })
+            'image_urls': default_validators,
+            'twitter': default_validators
+        })
         return schema
 
     def db_to_form_schema(self):
@@ -496,6 +497,7 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
             'tec_email': default_validators,
             'trc': default_validators,
             'trc_email': default_validators,
-            'image_urls': default_validators
+            'image_urls': default_validators,
+            'twitter': default_validators
         })
         return schema
