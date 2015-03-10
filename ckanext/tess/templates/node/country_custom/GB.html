@@ -5,20 +5,25 @@ Override blocks from the nodes_template.html here to add your own custom configu
 The blocks are listed below. Move them out of this comment bracket to override.
 {% block materials %}
 {% endblock %}
-{% block events %}
-{% endblock %}
+
 {% block related_orgs %}
 {% endblock %}
 {% block news %}
 {% endblock %}
-
 #}
 
+{% block events %}
+<li class="media-item masonry-brick node-brick">
+    <h2>Events</h2>
+    <hr/>
+    <iframe frameborder="0" height="600" scrolling="no" src="https://www.google.com/calendar/embed?title=ELIXIR%20UK&amp;showCalendars=0&amp;showTz=0&amp;mode=AGENDA&amp;height=300&amp;wkst=2&amp;bgcolor=%23ffffff&amp;src=elixir.node.uk%40gmail.com&amp;color=%232952A3&amp;ctz=Europe%2FLondon" width="250"></iframe>
+    </li>
+{% endblock %}
 
 {% block node_heading %}
 <div class="row-fluid">
     <div class="span3">
-        <h3 style="text-align:center"><a href="http://elixir-uk.org">{{ node_name }}</a></h3>
+        <h3 style="text-align:center"><a href="http://elixir-uk.org">{{ node.get('display_name') }}</a></h3>
     </div>
     <!--<div class="span2">-->
     <!--<a href="http://elixir-uk.org">-->
