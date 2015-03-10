@@ -1,9 +1,4 @@
-{% set node_name = 'United Kingdom' %}
-{% set country_code = 'GB' %}
-{% set trc = Rita %}
-{% set tec = Manny %}
-{% set hon = Chris %}
-{% extends "node_old/snippets/node_template.html", node_name=node_name, country_code=country_code, hon=hon, trc=trc, tec=tec %}
+{% extends "node/snippets/node_template.html" %}
 
 {#
 Override blocks from the nodes_template.html here to add your own custom configuration.
@@ -52,17 +47,6 @@ The blocks are listed below. Move them out of this comment bracket to override.
 </div>
 {% endblock %}
 
-{% block news %}
-<li style="position: absolute; top: 0px; left: 0px; width: 280px; border: 1px solid #DDD;" class="media-item masonry-brick">
-    <h2>News</h2>
-    <hr/>
-    <div>
-        <a class="twitter-timeline" href="https://twitter.com/ElixirNodeUk" data-widget-id="559708972698308608">Tweets by @ElixirNodeUk</a>
-    </div>
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-</li>
-{% endblock %}
-
 {% block organizations %}
 <li style="position: absolute; top: 0px; left: 0px; width: 280px; border: 1px solid #DDD;" class="media-item masonry-brick">
     <h2>Member institutions</h2>
@@ -106,7 +90,14 @@ The blocks are listed below. Move them out of this comment bracket to override.
 {% block events %}
 {% endblock %}
 
-{% block materials %}
+
+{% block news %}
+<li style="position: relative; top: 0px; left: 0px; width: 280px; height:700px; border: 1px solid #DDD;" class="media-item masonry-brick">
+    <h2>News</h2>
+    <hr/>
+    <div>
+        <a class="twitter-timeline" href="https://twitter.com/ElixirNodeUk" data-widget-id="559708972698308608">Tweets by @ElixirNodeUk</a>
+    </div>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</li>
 {% endblock %}
-
-
