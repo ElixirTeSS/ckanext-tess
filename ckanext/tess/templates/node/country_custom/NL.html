@@ -1,5 +1,3 @@
-{% set node_name = 'Netherlands' %}
-{% set country_code = 'NL' %}
 {% extends "node/snippets/node_template.html" %}
 
 {#
@@ -16,7 +14,7 @@ The blocks are listed below. Move them out of this comment bracket to override.
 {% block node_heading %}
 <div class="row-fluid">
     <div class="span3">
-        <h3 style="text-align:center"><a href="http://elixir-uk.org">{{ node_name }}</a></h3>
+        <h3 style="text-align:center"><a href="http://elixir-uk.org">{{ node.get('display_name') }}</a></h3>
     </div>
     <div class="span2">
         <a href="http://www.dtls.nl/elixir-nl/elixir-nl-2/>
@@ -47,7 +45,7 @@ The blocks are listed below. Move them out of this comment bracket to override.
 {% endblock %}
 
 {% block organizations %}
-<li style="position: absolute; top: 0px; left: 0px; width: 280px; border: 1px solid #DDD;" class="media-item masonry-brick">
+<li class="media-item masonry-brick node-brick">
     <h2>Member Institutions</h2>
     <hr/>
     <div style="margin-left:auto; margin-right:auto; width:90%">
@@ -59,7 +57,7 @@ The blocks are listed below. Move them out of this comment bracket to override.
 
 
 {% block staff %}
-<li style="position: absolute; top: 0px; left: 0px; width: 280px; border: 1px solid #DDD;" class="media-item masonry-brick">
+<li class="media-item masonry-brick node-brick">
     <h2>Staff</h2>
     <hr/>
     <h4>Head of node</h4>
