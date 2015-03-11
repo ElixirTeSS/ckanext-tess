@@ -9,8 +9,6 @@ If there is no custom file or country code, pass the name to node_template which
     {% set node_name = c.group_dict['title'] %}
     {% set custom_file_path = 'node/custom/' + country_code + ".html" %}
     {% set has_custom = h.file_exist(custom_file_path) %}
-    {{ country_code }}
-    {{c.group_dict}}
     {% if has_custom == True: %}
         {% snippet custom_file_path, node=c.group_dict %}
     {% else: %}
