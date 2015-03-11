@@ -28,6 +28,6 @@ setup(
         # myplugin=ckanext.tess.plugin:PluginClass
         tess=ckanext.tess.plugin:TeSSPlugin
         node=ckanext.tess.plugin:NodePlugin
-        node=ckanext.tess.controller:NodeController
+        node_controller=ckanext.tess.plugin:NodeController
     ''',
 )
