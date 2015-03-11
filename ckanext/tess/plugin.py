@@ -473,7 +473,7 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
             'tec_email': default_validators,
             'trc': default_validators,
             'trc_email': default_validators,
-            'image_urls': default_validators,
+            'carousel_images': default_validators,
             'twitter': default_validators
         })
         return schema
@@ -497,7 +497,7 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
             'tec_email': default_validators,
             'trc': default_validators,
             'trc_email': default_validators,
-            'image_urls': default_validators,
+            'carousel_images': default_validators,
             'twitter': default_validators
         })
         return schema

@@ -73,11 +73,28 @@
     {{ form.input('trc_email', label=_("Training coordinator's email"), id='trc_email', placeholder=('Email address of the training coordinator'), value=data.trc_email, classes=['control-medium']) }}
     {{ form.input('tec', label=_('Technical coordinator'), id='tec', placeholder=('Name of the technical coordinator'), value=data.tec, classes=['control-medium']) }}
     {{ form.input('tec_email', label=_("Technical coordinator's email"), id='tec_email', placeholder=('Email address of the technical coordinator'), value=data.tec_email, classes=['control-medium']) }}
-    {{ form.input('twitter', label=_("Twitter Handle"), id='twitter', placeholder=('Handle of the nodes twitter feed e.g @ElixirNodeUK'), value=data.twitter, classes=['control-medium']) }}
+    {{ form.input('twitter', label=_("Twitter handle"), id='twitter', placeholder=("Handle of the node's twitter feed e.g @ElixirNodeUK"), value=data.twitter, classes=['control-medium']) }}
 
-    {% set is_upload = data.image_url and not data.image_url.startswith('http') %}
-    {% set is_url = data.image_url and data.image_url.startswith('http') %}
-    {{ form.image_upload(data, errors, is_upload_enabled=h.uploads_enabled(), is_url=is_url, is_upload=is_upload) }}
+    <div class='controls'><p>Add up to three images for the node page's carousel.</p></div>
+    data.carousel_images {{data.carousel_images}}
+    {% set carousel_images = data.carousel_images %}
+    {% if not carousel_images: %}
+    length: {{carousel_images|length}}
+        {% for i in range(3) %} 
+            {% if carousel_images|length > i %}
+                {% set data = carousel_images[i] %}
+            {% else %}
+                {% set data = None %}
+            {% endif %}
+            {% set is_upload = data and not data.startswith('http') %}
+             {% set is_url = data and data.startswith('http') %} 
+            {{ form.image_upload_list(data, errors, field_url='carousel_images', url_label="Carousel image URL", is_upload_enabled=h.uploads_enabled(), is_url=is_url, is_upload=is_upload) }} 
+        {% endfor %}
+    {% else %}
+        {% for i in range(3) %} 
+            {{ form.image_upload_list(None, errors, field_url='carousel_images', url_label="Carousel image URL", is_upload_enabled=h.uploads_enabled(), is_url=is_url, is_upload=is_upload) }} 
+        {% endfor %}
+    {% endif %}
 
     {% if data.id and h.check_access('group_delete', {'id': data.id}) and data.state != 'active' %}
     <div class="control-group">
