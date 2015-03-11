@@ -8,7 +8,7 @@
          <i class="icon-chevron-down"></i>
       </a>
       <ul class="user-dropdown-menu dropdown-menu pull-left" role="menu">
-        <li><a href="/node_old/hub.html">The Hub</a></li>
+        <li><a href="/node/custom/hub.html">The Hub</a></li>
           {% for node in h.get_all_nodes(): %}
             {% set url = h.url_for(node.type ~ '_read', action='read', id=node.name) %}
             <li><a href="{{url}}">{{node.display_name }}</a></li>

@@ -256,7 +256,7 @@ def get_countries_map():
     if countries_map is None:
         here = os.path.dirname(__file__)
         # json file containing country code -> country name map
-        file = os.path.join(here,'countries-for-elixir.json')
+        file = os.path.join(here,'countries-elixir.json')
         with open(file) as data_file:
             try:
                 countries_map = json.load(data_file)

@@ -1,15 +1,29 @@
 <div class="module module-narrow module-shallow">
-  <h2 class="module-heading">
-    <i class="icon-info-sign"></i>
-    {{ _('What are ELIXIR nodes?') }}
-  </h2>
-  <div class="module-content">
-    {% trans %}
-      <p>
-          ELIXIR is a pan-European research infrastructure.
-          It consists of the Hub and a number of ELIXIR nodes. Each participating node has a head of node, a training co-ordinator, and a technical co-ordinator.
-          You can add a new node here if your country has signed the declaration to join ELIXIR. Please be very thorough with the information you provide.
-      </p>
-    {% endtrans %}
-  </div>
+    <h2 class="module-heading">
+        <i class="icon-info-sign"></i>
+        {{ _('What are ELIXIR nodes?') }}
+    </h2>
+    <div class="module-content">
+        {% trans %}
+        <p>
+            ELIXIR is a pan-European research infrastructure.
+            It consists of <a href="/node/custom/hub.html">the Hub</a> and a number of ELIXIR nodes. Each participating node has a head of node, a training co-ordinator, and a technical co-ordinator.
+            You can add a new node here if your country has signed the declaration to join ELIXIR. Please be very thorough with the information you provide.
+        </p>
+        {% endtrans %}
+    </div>
+    <hr style="margin: 0px;">
+    <nav>
+        <ul class="unstyled nav nav-simple nav-facet-no-icon">
+            <li class="nav-item">
+                <a href="/node/custom/hub.html" title="">
+                    <span>The Hub</span>
+                </a>
+            </li>
+            {% for node in h.get_all_nodes(): %}
+            {% set url = h.url_for(node.type ~ '_read', action='read', id=node.name) %}
+            <li class="nav-item"><a href="{{url}}"><span>{{node.display_name}}</span></a></li>
+            {% endfor %}
+        </ul>
+    </nav>
 </div>

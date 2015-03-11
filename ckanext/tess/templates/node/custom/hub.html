@@ -10,11 +10,14 @@
 {% block subtitle %}{{ _('Nodes') }}{% endblock %}
 
 {% block breadcrumb_content %}
-<li class="active"><a href="/node_old">Nodes</a></li>
+<li><a href="/node">Nodes</a></li>
+<li class="active"><a href="/node/custom/hub.html">The Hub</a></li>
 {% endblock %}
 
 {% block primary %}
-  {% snippet "node_old/snippets/helper.html" %}
+<div style="float: left; padding: 20px;">
+    {% snippet "node/snippets/node_list_dropdown.html" %}
+</div>
 <div class="row-fluid">
     <div class="offset1 span10 module-content box" style="border: 1px solid #DDD; padding-bottom: 20px;">
         <div class="span6 col1">
