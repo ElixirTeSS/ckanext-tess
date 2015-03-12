@@ -147,6 +147,17 @@ body {
   padding-bottom: 10px;
   margin-bottom: 10px;
 }
+.dataset-content {
+    max-width: 85%;
+    display: inline-block;
+}
+
+.dataset-content-provider-logo {
+    max-width: 10%;
+    max-height: 45px;
+    float: right;
+}
+
 .dataset-heading {
   font-size: 14px;
 }

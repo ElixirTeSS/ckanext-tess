@@ -1,0 +1,26 @@
+{% ckan_extends %}
+
+{#
+This customization:
+- Adds the  content provider logo (10% width)
+- Makes dataset-content div 80% width (in tess.css)
+- Keeps all other blocks the same by calling super()
+#}
+
+{% block content %}
+    <div class="dataset-content">
+        {% block heading %}
+            {{ super() }}
+        {% endblock %}
+        {% block banner %}
+            {{ super() }}
+        {% endblock %}
+        {% block notes %}
+            {{ super() }}
+        {% endblock %}
+    </div>
+    <a href="{{ h.url_for(controller='organization', action='read', id=package.organization.name) }}">
+        <img src="{{package.organization.image_url}}" class="dataset-content-provider-logo" alt="{{package.organization.name}}"/>
+    </a>
+{% endblock %}
+
