@@ -30,7 +30,7 @@
   {% block basic_fields %}
 
   {% if action == 'new' %}
-  <img id="flag" src="" class="img-circle" style="max-width:120px; float:right; position:relative;">
+  <img id="flag" src="" class="img-circle" style="max-width:100px; float:right; position:relative;">
     <div class="control-group control-medium" style="float: left;">
         <label class="control-label"><span title="This field is required" class="control-required">*</span> {{ _('Country') }}</label>
         <div class="controls">
@@ -76,19 +76,20 @@
     {{ form.input('twitter', label=_("Twitter handle"), id='twitter', placeholder=("Handle of the node's twitter feed e.g @ElixirNodeUK"), value=data.twitter, classes=['control-medium']) }}
 
     <div class='controls'><p>Add up to three images for the node page's carousel.</p></div>
-    data.carousel_images {{data.carousel_images}}
-    {% set carousel_images = data.carousel_images %}
-    {% if not carousel_images: %}
-    length: {{carousel_images|length}}
+    {% set carousel_images = ((data.carousel_images|replace('{',''))|replace('}','')).split(',') %}
+    {% if carousel_images: %}
+        carousel_images: {{carousel_images}}<br>
+        carousel_images length: {{carousel_images|length}}<br>
         {% for i in range(3) %} 
             {% if carousel_images|length > i %}
-                {% set data = carousel_images[i] %}
+                {% set carousel_image = carousel_images[i] %}
             {% else %}
-                {% set data = None %}
+                {% set carousel_image = None %}
             {% endif %}
-            {% set is_upload = data and not data.startswith('http') %}
-             {% set is_url = data and data.startswith('http') %} 
-            {{ form.image_upload_list(data, errors, field_url='carousel_images', url_label="Carousel image URL", is_upload_enabled=h.uploads_enabled(), is_url=is_url, is_upload=is_upload) }} 
+    carousel_image: {{carousel_image}}
+            {% set is_upload = carousel_image and not carousel_image.startswith('http') %}
+             {% set is_url = carousel_image and carousel_image.startswith('http') %} 
+            {{ form.image_upload_list(carousel_image, errors, field_url='carousel_images', url_label="Carousel image URL", is_upload_enabled=h.uploads_enabled(), is_url=is_url, is_upload=is_upload) }} 
         {% endfor %}
     {% else %}
         {% for i in range(3) %} 
