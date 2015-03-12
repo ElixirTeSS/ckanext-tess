@@ -469,11 +469,16 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
             'home_page': default_validators,
             'hon': default_validators,
             'hon_email': default_validators,
+            'hon_image': default_validators,
             'tec': default_validators,
             'tec_email': default_validators,
+            'tec_image': default_validators,
             'trc': default_validators,
             'trc_email': default_validators,
-            'image_urls': default_validators,
+            'trc_image': default_validators,
+            'carousel_image_1': default_validators,
+            'carousel_image_2': default_validators,
+            'carousel_image_3': default_validators,
             'twitter': default_validators
         })
         return schema
@@ -493,11 +498,16 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
             'home_page': default_validators,
             'hon': default_validators,
             'hon_email': default_validators,
+            'hon_image': default_validators,
             'tec': default_validators,
             'tec_email': default_validators,
+            'tec_image': default_validators,
             'trc': default_validators,
             'trc_email': default_validators,
-            'image_urls': default_validators,
+            'trc_image': default_validators,
+            'carousel_image_1': default_validators,
+            'carousel_image_2': default_validators,
+            'carousel_image_3': default_validators,
             'twitter': default_validators
         })
         return schema
