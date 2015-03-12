@@ -2,7 +2,6 @@
 If there is a country name (note that node title is actually the country name) and a country code with a file of the same name - load it.
 If there is no custom file or country code, pass the name to node_template which will render node page.
 #}
-{{c.group_dict}}
 {% set node_name = c.group_dict['title'] %}
 {% if c.group_dict.has_key('country_code'): %}
     {% set country_code = c.group_dict['country_code'] %}
