@@ -38,7 +38,7 @@
                 {% for country in h.get_available_countries() %}
                 <option value="{{ country.value }}"
                         id="{{ country.value }}"
-                        {% if country.value == selected %} selected{% endif %}
+                        {% if country.text == data.get('title') %} selected{% endif %}
                         data-module-country_name="{{country.name}}"
                         data-module-display_name="{{country.name}}"
                         >
@@ -54,8 +54,6 @@
     </div>
     <div style="clear: both;"></div>
   {% else %}
-        <!--<h2>ELIXIR Node: {{ data.get('title') }}</h2>-->
-        <!--<img id="flag" src="/images/node_flags/{{ data.country_code}}.png" class="img-circle" style="max-height:60px;">-->
         {{ form.hidden('country_code', data.get('country_code')) }}
         {{ form.hidden('name', data.get('name')) }}
         {{ form.hidden('title', data.get('title')) }}
