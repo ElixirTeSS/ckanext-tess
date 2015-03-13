@@ -1,0 +1,52 @@
+{% extends "page.html" %}
+
+
+{% block subtitle %}{{ _('Block Process This Mother') }}{% endblock %}
+
+{% block breadcrumb_content %}
+  <li class="active">{% link_for _('Node Administration'), controller='ckanext.tess.controller:NodeController',
+      action='bulk_process_materials' %}</li>
+{% endblock %}
+
+{% block secondary_content %}
+  <div class="module module-narrow module-shallow">
+    <h2 class="module-heading">
+        <i class="icon-info-sign"></i>
+        {{ _('Bulk Process Training Materials') }}
+    </h2>
+    <div class="module-content">
+        {% trans %}
+        <p>
+            You can attribute Training Materials to a node by selecting the choosing the appropriate option in the table provided.
+            Be warned though, this will not help you with any serious life problems.
+        </p>
+        {% endtrans %}
+    </div>
+      </div>
+{% endblock %}
+
+
+
+{% block primary_content  %}
+{% set nodes = h.get_all_node_names() %}
+{% set training_mats = h.get_all_material_names_and_ids() %}
+
+<table>
+    <th>Name</th>
+    {% for node in nodes %}
+        <th>{{node}}</th>
+    {% endfor %}
+{% for material in training_mats %}
+    <tr>
+        <td>{{material}}</td>
+
+
+    </tr>
+
+{% endfor %}
+</table>
+
+
+get all training materials
+    display name - node_list
+{% endblock %}

@@ -232,6 +232,19 @@ def get_all_nodes():
                     'type': 'node'})
     return nodes
 
+def get_all_node_names():
+    nodes = toolkit.get_action("group_list")\
+        (data_dict={'all_fields': False,
+                    'include_extras': False,
+                    'type': 'node'})
+    return nodes
+
+def get_all_material_names_and_ids():
+    mats = toolkit.get_action("package_list")\
+        (data_dict={'all_fields': False})
+    return mats
+
+
 def node_domain():
     return 'http://127.0.0.1:5000/node'
 
@@ -381,6 +394,8 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
         return {
                 'file_exist':file_exist,
                 'get_all_nodes': get_all_nodes,
+                'get_all_node_names': get_all_node_names,
+                'get_all_material_names_and_ids': get_all_material_names_and_ids,
                 'node_domain': node_domain,
                 'key_to_title': key_to_title,
                 'get_available_country_codes': get_available_country_codes,
@@ -397,6 +412,7 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
         map.connect('edit-node', '/node/edit/{id}', controller='ckanext.tess.controller:NodeController', action='edit')
         map.connect('read-node', '/node/{id}', controller='ckanext.tess.controller:NodeController', action='read')
         map.connect('delete-node', '/node/delete/{id}', controller='ckanext.tess.controller:NodeController', action='delete')
+        map.connect('bulk-process', '/nodes/process', controller='ckanext.tess.controller:NodeController', action='bulk_process_materials')
         return map
 
     def after_map(self, map):
@@ -422,6 +438,9 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
 
     def edit_template(self):
         return 'node/edit.html'
+
+    def bulk_process_template(self):
+        return 'node/bulk_process.html'
 
     def form_to_db_schema_options(self, options):
         ''' This allows us to select different schemas for different
