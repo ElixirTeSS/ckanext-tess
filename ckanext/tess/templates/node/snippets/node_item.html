@@ -29,30 +29,30 @@ Example:
 
   {% endblock %}
   {% block node_info %}
-    <p>
-        <b>Head of node:</b><br>
-        {% if node.hon: %}
-            {{node.hon}}
-        {% else %}
-            <span class="empty">None</span>
-        {% endif %}
-    </p>
+    <!--<p>-->
+        <!--<b>Head of node:</b><br>-->
+        <!--{% if node.hon: %}-->
+            <!--{{node.hon}}-->
+        <!--{% else %}-->
+            <!--<span class="empty">None</span>-->
+        <!--{% endif %}-->
+    <!--</p>-->
     <p>
         <b>Training coordinator:</b><br>
         {% if node.trc: %}
-            {{node.trc}}
+            {{node.trc}}<br>
         {% else %}
-            <span class="empty">None</span>
+            <span class="empty">None</span><br>
         {% endif %}
-    </p>
-        <p>
-        <b>Technical coordinator:</b><br>
-        {% if node.tec: %}
-            {{node.tec}}
-        {% else %}
-            <span class="empty">None</span>
-        {% endif %}
-    </p>
+    <!--</p>-->
+        <!--<p>-->
+        <!--<b>Technical coordinator:</b><br>-->
+        <!--{% if node.tec: %}-->
+            <!--{{node.tec}}-->
+        <!--{% else %}-->
+            <!--<span class="empty">None</span>-->
+        <!--{% endif %}-->
+    <!--</p>-->
   {% endblock %}
   <!--{% block description %}-->
     <!--{% if node.description %}-->
