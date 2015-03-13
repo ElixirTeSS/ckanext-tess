@@ -1,30 +1,29 @@
 <h2>Staff</h2>
 <hr/>
 
-{% set hon = node.get('hon') %}
+<!--{% set hon = node.get('hon') %}-->
 {% set trc = node.get('trc') %}
-{% set tec = node.get('tec') %}
-
-{% if trc or tec or hon %}
+<!--{% set tec = node.get('tec') %}-->
+{% if trc %}
 <p class="module-content" style="padding: 0px; margin: 0px;">
-    <b>Head of node:</b>
-    {% if hon %}
-        <p class="empty" style="padding: 0px; margin: 0px;">{{node.get('hon')}}</p>
-    {% else %}
-        <p class="empty" style="padding: 0px; margin: 0px;">None</p>
-    {% endif %}
+    <!--<b>Head of node:</b>-->
+    <!--{% if hon %}-->
+        <!--<p class="empty" style="padding: 0px; margin: 0px;">{{node.get('hon')}}</p>-->
+    <!--{% else %}-->
+        <!--<p class="empty" style="padding: 0px; margin: 0px;">None</p>-->
+    <!--{% endif %}-->
     <b>Training coordinator:</b><br>
     {% if trc %}
         <p class="empty" style="padding: 0px; margin: 0px;">{{node.get('trc')}}</p>
     {% else %}
         <p class="empty" style="padding: 0px; margin: 0px;">None</p>
     {% endif %}
-    <b>Technical coordinator:</b><br>
-    {% if tec %}
-        <p class="empty" style="padding: 0px; margin: 0px;">{{node.get('tec')}}</p>
-    {% else %}
-        <p class="empty" style="padding: 0px; margin: 0px;">None</p>
-    {% endif %}
+    <!--<b>Technical coordinator:</b><br>-->
+    <!--{% if tec %}-->
+        <!--<p class="empty" style="padding: 0px; margin: 0px;">{{node.get('tec')}}</p>-->
+    <!--{% else %}-->
+        <!--<p class="empty" style="padding: 0px; margin: 0px;">None</p>-->
+    <!--{% endif %}-->
 </p>
 {% else %}
     <p class="module-content empty" style="padding: 0px; margin: 0px;">No staff found for this node</p>

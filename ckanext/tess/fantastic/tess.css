@@ -412,6 +412,9 @@ hr.style-one {
 .form-horizontal .control-label {
   width: 210px;
 }
+.form-actions .action-info {
+    width: 40%;
+}
 @media (min-width: 768px) {
   .form-horizontal .controls {
     margin-left: 220px;
@@ -423,7 +426,7 @@ hr.style-one {
   }
   .form-horizontal .info-inline {
     float: right;
-    width: 265px;
+    width: 215px;
     margin-top: 0;
     padding-bottom: 0;
   }
