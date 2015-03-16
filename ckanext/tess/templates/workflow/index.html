@@ -18,7 +18,28 @@
 {% snippet 'snippets/search_form.html', type='workflow', query=c.q, sorting_selected=c.sort_by_selected, count=c.page.item_count, placeholder=_('Search workflows...'), show_empty=request.params, no_bottom_border=true if c.page.items %}
 
 <p>
-  <img src="/images/training-workflow.png" alt="Training workflow" style="border:1px solid black"> 
+  {% set new_link = h.url_for(controller='group', action='new') %}
+  <img src="/images/training-workflow.png" width="800" height="500" alt="Workflow" usemap="workflow">
+    <map name="workflow">
+        <area shape="rect"    coords="10,80,75,160" href="{{new_link}}" alt="Query Sequence and Variation Data">
+        <!--green box -->
+        <area shape="rect" coords="120,100,185,160" href="{{new_link}}" alt="Known Structure in PDB">
+        <area shape="rect" coords="200,100,275,160" href="{{new_link}}" alt="Structure Analysis and model Quality">
+        <!-- blue box -->
+        <area shape="rect" coords="120,220,185,285" href="{{new_link}}" alt="Close relative homology modelling">
+        <area shape="rect" coords="120,310,185,375" href="{{new_link}}" alt="Remote relative Structure Prediction">
+        <!-- pink box -->
+        <area shape="rect" coords="375,100,460,160" href="{{new_link}}" alt="Active Site">
+        <area shape="rect" coords="375,170,460,230" href="{{new_link}}" alt="Binding Site">
+        <area shape="rect" coords="375,240,460,310" href="{{new_link}}" alt="Interfaces">
+        <area shape="rect" coords="375,320,460,375" href="{{new_link}}" alt="Post-translational modifications">
+        <area shape="rect" coords="375,385,460,450" href="{{new_link}}" alt="Conserved Sites">
+        <!-- Prximity of Genetic variation to annotated sites bit -->
+        <area shape="rect" coords="500,100,575,160" href="{{new_link}}" alt="Visualization">
+        <!-- Impact ASsessment Bit -->
+        <area shape="rect" coords="575,225,650,300" href="{{new_link}}" alt="Structure Based Analysis of Impact">
+        <area shape="rect" coords="575,360,650,425" href="{{new_link}}" alt="Sequence Based Analysis of Impact">
+    </map>
 </p>
 <p>
   <img src="/images/training-workflow2.png" alt="Training workflow expanded" style="border:1px solid black"> 
