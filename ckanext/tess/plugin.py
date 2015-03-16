@@ -8,7 +8,7 @@ from pylons import c
 import ckan.lib.helpers as h
 import os
 import operator
-
+from ckan.logic import NotFound
 from ckan.lib.plugins import DefaultGroupForm
 
 
@@ -64,11 +64,16 @@ def all_node_name_and_ids():
 
 def get_node(node_id):
     data = {'id': node_id}
-    return toolkit.get_action('group_show')({}, data)
+    try:
+        return toolkit.get_action('group_show')({}, data)
+    except NotFound:
+        return None
 
 def display_name_of_node(node_id):
     node = get_node(node_id)
-    if node.get('display_name'):
+    if not node:
+        return None
+    elif node.get('display_name'):
         return node.get('display_name')
     else:
         return node_id.replace('-', ' ').title()
