@@ -13,8 +13,12 @@ class SpecialRouteController(HomeController):
     def workflows(self):
         return base.render('workflow/index.html')
 
+
 class NodeController(group.GroupController):
     group_type = 'node'
 
     def _guess_group_type(self, expecting_name=False):
         return 'node'
+
+    def bulk_process_materials(self):
+        return base.render('node/bulk_process_materials.html')
