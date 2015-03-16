@@ -351,6 +351,7 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
     plugins.implements(plugins.IGroupForm, inherit=True)
     plugins.implements(plugins.IRoutes, inherit=True)
     plugins.implements(plugins.ITemplateHelpers, inherit=True)
+    plugins.implements(plugins.interfaces.IMapper, inherit=True)
 
     def get_helpers(self):
         return {
@@ -403,6 +404,10 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
 
     def bulk_process_template(self):
         return 'node/bulk_process.html'
+
+    def after_delete(mapper, connection, instance):
+        print 'instance deleted: '
+        return
 
     def form_to_db_schema_options(self, options):
         ''' This allows us to select different schemas for different
@@ -477,9 +482,9 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
         schema.update({
             'country_code': default_validators,
             'home_page': default_validators,
-            # 'hon': default_validators,
-            # 'hon_email': default_validators,
-            # 'hon_image': default_validators,
+            'hon': default_validators,
+            'hon_email': default_validators,
+            'hon_image': default_validators,
             # 'tec': default_validators,
             # 'tec_email': default_validators,
             # 'tec_image': default_validators,

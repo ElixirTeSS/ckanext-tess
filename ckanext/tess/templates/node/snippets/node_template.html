@@ -10,7 +10,7 @@
 {% endblock %}
 {% block primary %}
 {% set country_code = node.get('country_code') %}
-<header class="module-content page-header" style="padding:20px; margin: 0px;">
+<header class="module-content page-header" style="padding:10px; margin: 0px;">
         <div style="float: left; padding: 20px;">
             {% snippet "node/snippets/node_list_dropdown.html" %}
         </div>
@@ -20,7 +20,12 @@
             {% endif %}
         </div>
         <div style="float: left; width: 60%;">
-            <h1 class="page-heading" style="text-align:center">{{ node.get('display_name') }}</h1>
+            <h1 class="page-heading" style="text-align:center">
+                {{ node.get('display_name') }}
+                {% if node.state == 'deleted' %}
+                [{{ _('Deleted') }}]
+                {% endif %}
+            </h1>
         </div>
         <div class="content_action" style="float: right; margin: 0px;">
             {% link_for _('Manage'), controller='ckanext.tess.controller:NodeController', action='edit', id=c.group_dict.name, class_='btn right', icon='wrench' %}
