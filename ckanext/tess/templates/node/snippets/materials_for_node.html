@@ -12,6 +12,10 @@ hub - True if we're on the hub page and we need to have the header for each sect
         {% snippet 'snippets/package_item.html', package=training_material %}
     {% endfor %}
     </ul>
+    <br>
+
+    <i><a href="{{  h.url_for(controller='package', action='search', node_id=node.get('name')) }}"
+       >All materials by the {{node.get('display_name')}} node </a></i>
 {% else %}
     <p class="module-content empty" style="padding: 0px; margin: 0px;">No training materials found for this node</p>
 {% endif %}
