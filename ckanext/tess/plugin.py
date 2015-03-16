@@ -45,7 +45,8 @@ def iann_news():
 
 def node_materials(node):
     datasets = toolkit.get_action("package_search") \
-        (data_dict={'fq':'node_id:'+node.get('name')})
+        (data_dict={'fq':'node_id:'+node.get('name')
+        })
     return datasets['results']
 
 def all_nodes():
