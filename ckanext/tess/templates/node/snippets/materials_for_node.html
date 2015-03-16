@@ -9,6 +9,7 @@ hub - True if we're on the hub page and we need to have the header for each sect
 {% set count = training_materials|length %}
 {% if count > 0 %}
     {% if count > 5 %}
+        {% set trimmed = True %}
         {% set training_materials = training_materials[:5] %}
     {% endif %}
 
@@ -18,10 +19,13 @@ hub - True if we're on the hub page and we need to have the header for each sect
     {% endfor %}
     </ul>
     <br>
-
+    {% if trimmed %}
     <i>Displaying {{training_materials|length}} of {{count}} Materials.<br>
         <a href="{{  h.url_for(controller='package', action='search', node_id=node.get('name')) }}"
        >Click to see all materials</a></i>
+    {% else %}
+        <i>Displaying all {{training_materials|length}} Material(s).<br></i>
+    {% endif %}
 {% else %}
     <p class="module-content empty" style="padding: 0px; margin: 0px;">No training materials found for this node</p>
 {% endif %}
