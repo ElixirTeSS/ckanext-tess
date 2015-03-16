@@ -39,50 +39,15 @@ def iann_news():
   return plugins.toolkit.literal(data)
 
 
-
-#===============================================
-#|||||        OLD NODE STUFF              ||||||
-#===============================================
-def node_list():
-    return elixir_nodes()
-
-def node_materials(node):
-    datasets = toolkit.get_action("package_search") \
-        (data_dict={'fq': node.get('display_name'),
-                'facet.field': ['elixir_nodes']})
-    return datasets['results']
-
-def node_organizations(node):
-    return None
-
-def elixir_nodes():
-    create_elixir_nodes()
-    try:
-        tag_list = toolkit.get_action('tag_list')
-        elixir_nodes = tag_list(data_dict={'vocabulary_id': 'elixir_nodes'})
-        return elixir_nodes
-    except toolkit.ObjectNotFound:
-        return None
-
-def create_elixir_nodes():
-    user = toolkit.get_action('get_site_user')({'ignore_auth': True}, {})
-    context = {'user': user['name']}
-    try:
-       data = {'id': 'elixir_nodes'}
-       toolkit.get_action('vocabulary_show')(context, data)
-    except toolkit.ObjectNotFound:
-       data = {'name': 'elixir_nodes'}
-       vocab = toolkit.get_action('vocabulary_create')(context, data)
-       for tag in (u'United Kingdom', u'Netherlands', u'Switzerland', u'Sweden', u'Finland',
-                   u'Portugal', u'Estonia', u'Israel', u'Norway', u'Denmark', u'EBI', 'Czech Republic',
-                   u'Belgium', u'Slovenia', u'France', u'Greece', u'Italy', u'Spain'):
-           data = {'name': tag, 'vocabulary_id': vocab['id']}
-           toolkit.get_action('tag_create')(context, data)
-
-
 #===============================================
 #|||||        NEW NODE STUFF              ||||||
 #===============================================
+
+def node_materials(node):
+    datasets = toolkit.get_action("package_search") \
+        (data_dict={'fq':'node_id:'+node.get('name')
+        })
+    return datasets['results']
 
 def all_nodes():
     data = {'type': 'node', 'all_fields': True}
@@ -158,11 +123,8 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         c.filterable_nodes = 'HI'
 
     def get_helpers(self):
-        return {'elixir_nodes': elixir_nodes,
-                'get_node_list': node_list,
-                'get_node_materials': node_materials,
-                'get_node_organizations': node_organizations,
-                'tess_elixir_nodes': elixir_nodes, 'tess_reorder_dataset_facets': reorder_dataset_facets,
+        return {'get_node_materials': node_materials,
+                'tess_reorder_dataset_facets': reorder_dataset_facets,
                 'read_news_iann': iann_news,
                 'all_nodes': all_nodes,
                 'all_node_name_and_ids': all_node_name_and_ids,
