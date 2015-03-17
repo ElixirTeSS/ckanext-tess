@@ -29,5 +29,7 @@ setup(
         tess=ckanext.tess.plugin:TeSSPlugin
         node=ckanext.tess.plugin:NodePlugin
         node_controller=ckanext.tess.plugin:NodeController
+        admin=ckanext.tess.admin:AdminPlugin
+        admin_controller=ckanext.tess.admin:AdminController
     ''',
 )

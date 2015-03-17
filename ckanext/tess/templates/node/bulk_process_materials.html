@@ -1,52 +1,40 @@
 {% extends "page.html" %}
 
 
-{% block subtitle %}{{ _('Block Process This Mother') }}{% endblock %}
+{% block subtitle %}{{ _('Block Process') }}{% endblock %}
 
 {% block breadcrumb_content %}
   <li class="active">{% link_for _('Node Administration'), controller='ckanext.tess.controller:NodeController',
       action='bulk_process_materials' %}</li>
 {% endblock %}
 
-{% block secondary_content %}
-  <div class="module module-narrow module-shallow">
-    <h2 class="module-heading">
-        <i class="icon-info-sign"></i>
-        {{ _('Bulk Process Training Materials') }}
-    </h2>
-    <div class="module-content">
-        {% trans %}
-        <p>
-            You can attribute Training Materials to a node by selecting the choosing the appropriate option in the table provided.
-            Be warned though, this will not help you with any serious life problems.
-        </p>
-        {% endtrans %}
-    </div>
-      </div>
-{% endblock %}
 
-
-
-{% block primary_content  %}
+{% block content  %}
 {% set nodes = h.get_all_node_names() %}
 {% set training_mats = h.get_all_material_names_and_ids() %}
 
+<form class="dataset-form form-horizontal" method="post" action="/admin/nodes/save" data-module="basic-form" enctype="multipart/form-data">
 <table>
     <th>Name</th>
     {% for node in nodes %}
-        <th>{{node}}</th>
+    <th>{{node.title()}}</th>
     {% endfor %}
-{% for material in training_mats %}
+    {% for material in training_mats %}
     <tr>
-        <td>{{material}}</td>
+        {% set url = h.url_for(controller='package', action='read', id=material.get('name')) %}
+        <td>{{h.link_to(material.get('title'), url )}}</td>
 
-
+        {% for node in nodes %}
+            {% if material.get('node_id') == node %}
+                <td><input type="radio" name="{{material.get('name')}}" value="{{node}}" checked></td>
+            {% else %}
+                <td><input type="radio" name="{{material.get('name')}}" value="{{node}}"></td>
+            {% endif %}
+        {% endfor %}
     </tr>
+    {% endfor %}
 
-{% endfor %}
-</table>
-
-
-get all training materials
-    display name - node_list
+    </table>
+    <button class="btn btn-primary" name="save" type="submit">{% block save_text %}{{ _('Save') }}{% endblock %}</button>
+</form>
 {% endblock %}

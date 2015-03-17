@@ -8,7 +8,7 @@ from pylons import c
 import ckan.lib.helpers as h
 import os
 import operator
-from ckan.logic import NotFound
+
 from ckan.lib.plugins import DefaultGroupForm
 
 
@@ -64,16 +64,11 @@ def all_node_name_and_ids():
 
 def get_node(node_id):
     data = {'id': node_id}
-    try:
-        return toolkit.get_action('group_show')({}, data)
-    except NotFound:
-        return None
+    return toolkit.get_action('group_show')({}, data)
 
 def display_name_of_node(node_id):
     node = get_node(node_id)
-    if not node:
-        return None
-    elif node.get('display_name'):
+    if node.get('display_name'):
         return node.get('display_name')
     else:
         return node_id.replace('-', ' ').title()
@@ -206,12 +201,6 @@ def get_all_node_names():
                     'type': 'node'})
     return nodes
 
-def get_all_material_names_and_ids():
-    mats = toolkit.get_action("package_list")\
-        (data_dict={'all_fields': False})
-    return mats
-
-
 def node_domain():
     return 'http://127.0.0.1:5000/node'
 
@@ -330,9 +319,7 @@ def get_available_countries():
     for node in nodes:
         try:
             extras = node.get('extras')
-            for extra in extras:
-                if extra['key'] == 'country_code':
-                    country_codes_in_use.append(extra['value'])
+            country_codes_in_use.append(extras['key' == 'country_code'].get('value', None))
         except Exception, e:
             print e
             country_codes_in_use
@@ -365,7 +352,6 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
                 'file_exist':file_exist,
                 'get_all_nodes': get_all_nodes,
                 'get_all_node_names': get_all_node_names,
-                'get_all_material_names_and_ids': get_all_material_names_and_ids,
                 'node_domain': node_domain,
                 'key_to_title': key_to_title,
                 'get_available_country_codes': get_available_country_codes,
@@ -382,7 +368,6 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
         map.connect('edit-node', '/node/edit/{id}', controller='ckanext.tess.controller:NodeController', action='edit')
         map.connect('read-node', '/node/{id}', controller='ckanext.tess.controller:NodeController', action='read')
         map.connect('delete-node', '/node/delete/{id}', controller='ckanext.tess.controller:NodeController', action='delete')
-        map.connect('bulk-process', '/nodes/process', controller='ckanext.tess.controller:NodeController', action='bulk_process_materials')
         return map
 
     def after_map(self, map):
