@@ -163,7 +163,6 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
         return schema
 
 
-
 class NodeController(group.GroupController):
     group_type = 'node'
 
@@ -210,6 +209,7 @@ def all_node_name_and_ids():
 def get_node(node_id):
     data = {'id': node_id}
     return toolkit.get_action('group_show')({}, data)
+
 
 def display_name_of_node(node_id):
     node = get_node(node_id)

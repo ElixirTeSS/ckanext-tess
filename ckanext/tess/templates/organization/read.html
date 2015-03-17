@@ -1,4 +1,4 @@
-{% ckan_extends %}
+{% extends "organization/read_base.html" %}
 
 {% block page_primary_action %}
   {% if h.check_access('package_create', {'owner_org': c.group_dict.id}) %}
