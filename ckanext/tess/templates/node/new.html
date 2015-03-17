@@ -5,8 +5,8 @@
 {# block breadcrumb_link %}{{ h.nav_link(_('Create node'), controller='node', action='edit', id=c.organization.name) }}{% endblock #}
 
 {% block breadcrumb_content %}
-  <li>{% link_for _('Nodes'), controller='ckanext.tess.controller:NodeController', action='index' %}</li>
-  <li class="active">{% link_for 'Create node', controller='ckanext.tess.controller:NodeController', action='new' %}</li>
+  <li>{% link_for _('Nodes'), controller='ckanext.tess.node:NodeController', action='index' %}</li>
+  <li class="active">{% link_for 'Create node', controller='ckanext.tess.node:NodeController', action='new' %}</li>
 {% endblock %}
 
 {% block page_heading %}{{ _('Create node') }}{% endblock %}

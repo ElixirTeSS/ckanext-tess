@@ -27,9 +27,11 @@ setup(
         # Add plugins here, e.g.
         # myplugin=ckanext.tess.plugin:PluginClass
         tess=ckanext.tess.plugin:TeSSPlugin
-        node=ckanext.tess.plugin:NodePlugin
-        node_controller=ckanext.tess.plugin:NodeController
+        tess_controller=ckanext.tess.plugin:TeSSController
+        node=ckanext.tess.node:NodePlugin
+        node_controller=ckanext.tess.node:NodeController
         admin=ckanext.tess.admin:AdminPlugin
         admin_controller=ckanext.tess.admin:AdminController
+        organization=ckanext.tess.organization:OrganizationPlugin
     ''',
 )

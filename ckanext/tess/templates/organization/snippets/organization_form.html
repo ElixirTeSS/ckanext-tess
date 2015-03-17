@@ -24,6 +24,25 @@
 
     {{ form.image_upload(data, errors, is_upload_enabled=h.uploads_enabled(), is_url=is_url, is_upload=is_upload) }}
 
+    {{ form.input('homepage', label=_('Homepage'), id='field-name', placeholder=_('e.g. http://www.mygoblet.org/training-portal'), value=data.homepage, error=errors.homepage, classes=['control-full']) }}
+
+  <div class="control-group">
+        <label class="control-label" for="field-elixir_node">{{ _("Member of ELIXIR node") }}</label>
+        <div class="controls">
+            <select id="field-node_id" name="node_id" data-module="autocomplete">
+                <option value="" selected="selected">None</option>
+                {% for node in h.all_node_name_and_ids() %}
+                    <option value="{{node[1]}}"
+                            {% if data.get('node_id') == node[1] %}
+                                selected="selected"
+                            {% endif %}>
+                        {{ node[0] }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+  </div>
+
   {% endblock %}
 
   {% block custom_fields %}

@@ -31,7 +31,7 @@
             {% endif %}
         </div>
         <div class="content_action" style="float: right; margin: 0px;">
-            {% link_for _('Manage'), controller='ckanext.tess.controller:NodeController', action='edit', id=c.group_dict.name, class_='btn right', icon='wrench' %}
+            {% link_for _('Manage'), controller='ckanext.tess.node:NodeController', action='edit', id=c.group_dict.name, class_='btn right', icon='wrench' %}
         </div>
 </header>
 

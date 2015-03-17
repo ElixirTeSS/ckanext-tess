@@ -1,4 +1,4 @@
-{% set url = h.url_for(controller='ckanext.tess.controller:NodeController', action='read', id=node.get('name')) %}
+{% set url = h.url_for(controller='ckanext.tess.node:NodeController', action='read', id=node.get('name')) %}
 {% if node.get('country_code') %}
     {% set logo_link = h.url_for_static('/images/node_flags/' + node.get('country_code') + '.png') %}
 {% endif %}
