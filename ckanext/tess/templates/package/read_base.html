@@ -62,7 +62,7 @@
 {% set node_id = pkg.get('node_id') %}
 {# Check if this node still exists and has not been deleted #}
 {% if node_id and h.get_node(node_id)%}
-    {% snippet "snippets/node.html", node=h.get_node(node_id) %}
+    {% snippet "snippets/node_info.html", node=h.get_node(node_id) %}
 {% else %}
     {% snippet "snippets/new_node_prompt.html" %}
 {% endif %}
