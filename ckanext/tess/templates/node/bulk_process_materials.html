@@ -4,7 +4,7 @@
 {% block subtitle %}{{ _('Block Process') }}{% endblock %}
 
 {% block breadcrumb_content %}
-  <li class="active">{% link_for _('Node Administration'), controller='ckanext.tess.controller:NodeController',
+  <li class="active">{% link_for _('Node Administration'), controller='ckanext.tess.node:NodeController',
       action='bulk_process_materials' %}</li>
 {% endblock %}
 
