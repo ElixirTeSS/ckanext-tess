@@ -14,15 +14,27 @@
 {% set training_mats = h.get_all_material_names_and_ids() %}
 
 <form class="dataset-form form-horizontal" method="post" action="/admin/nodes/save" data-module="basic-form" enctype="multipart/form-data">
-<table>
-    <th>Name</th>
-    {% for node in nodes %}
-    <th>{{node.title()}}</th>
-    {% endfor %}
+<table class="table-condensed table-bordered table-striped table-responsive table-hover">
+    <div class="">
+        <th>Name</th>
+        <th>Content Provider</th>
+        {% for node in nodes %}
+        <th>
+            {{h.country_code_of_node(node)}}
+            {# h.display_name_of_node(node) #}
+            <br/>
+            <br/>
+        </th>
+        {% endfor %}
+    </div>
+
+
     {% for material in training_mats %}
+
     <tr>
         {% set url = h.url_for(controller='package', action='read', id=material.get('name')) %}
         <td>{{h.link_to(material.get('title'), url )}}</td>
+        <td>{{material.get('organization').get('title')}}</td>
 
         {% for node in nodes %}
             {% if material.get('node_id') == node %}

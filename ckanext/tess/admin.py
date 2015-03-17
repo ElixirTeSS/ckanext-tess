@@ -11,7 +11,7 @@ from ckan.lib.plugins import DefaultGroupForm
 
 def get_all_material_names_and_ids():
     mats = toolkit.get_action("package_search")\
-        (data_dict={'rows':5000, 'facet.field':['name', 'description']})
+        (data_dict={'rows':5000, 'sort':'alphabet asc', 'facet.field':['name', 'description']})
     return mats.get('results')
 
 

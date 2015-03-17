@@ -45,7 +45,7 @@ def iann_news():
 
 def node_materials(node):
     datasets = toolkit.get_action("package_search") \
-        (data_dict={'fq':'node_id:'+node.get('name')
+        (data_dict={'fq':'node_id:'+node.get('name'), 'rows':5000
         })
     return datasets['results']
 
@@ -73,6 +73,12 @@ def display_name_of_node(node_id):
     else:
         return node_id.replace('-', ' ').title()
 
+def country_code_of_node(node_id):
+    node = get_node(node_id)
+    if node.get('country_code'):
+        return node.get('country_code')
+    else:
+        return node_id
 
 ######################
 # Plugin starts here #
@@ -130,6 +136,7 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                 'all_node_name_and_ids': all_node_name_and_ids,
                 'get_node': get_node,
                 'display_name_of_node': display_name_of_node,
+                'country_code_of_node': country_code_of_node
                 }
 
     def _modify_package_schema(self, schema):
