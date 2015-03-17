@@ -27,6 +27,10 @@
     {{ form.errors(error_summary) }}
   {% endblock %}
 
+        {% set node_view_url = h.url_for('node_read', action='read', id=data.name) %}
+        <a class="btn" href="{{node_view_url}}" style="float:right; margin-bottom: 20px;"><i class="icon-eye-open"></i> View node</a>
+        <div style="clear:both;"></div>
+
   {% block basic_fields %}
 
   {% if action == 'new' %}
@@ -49,7 +53,8 @@
         </div>
     </div>
     <div style="float: left;">
-       {{ form.input('name', label=_('Slug'), id='name', value=data.get('name'), classes=['control-medium'], attrs={'readonly':'readonly'}) }}
+        <input id="name" name="name" value="" placeholder="" readonly="readonly" type="text" style="display:none; position: absolute;">
+       <!--{{ form.input('name', label=_('Slug'), id='name', value=data.get('name'), classes=['control-medium'], attrs={'readonly':'readonly'}) }}-->
         {{ form.input('title', label=_('Title'), id='title', value=data.get('title'), classes=['control-medium'], attrs={'readonly':'readonly'} ) }}
     </div>
     <div style="clear: both;"></div>
