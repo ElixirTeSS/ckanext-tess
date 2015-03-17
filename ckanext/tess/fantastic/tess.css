@@ -431,3 +431,8 @@ hr.style-one {
     padding-bottom: 0;
   }
 }
+.img-circle-small {
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
