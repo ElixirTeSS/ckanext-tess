@@ -13,7 +13,7 @@
 <!--{% block page_heading %}-->
 <!--<div class="module-content page-header">-->
         <!--<div style="float: left; padding: 10px;">-->
-            <!--<img src="/images/node_flags/{{ data.country_code}}.png" class="img-circle" style="max-height:60px;">-->
+            <!--<img src="/images/node_flags/{{ data.country_code}}.png" class="img-circle-small" style="max-height:60px;">-->
         <!--</div>-->
         <!--<div style="float: left; width: 60%;">-->
             <!--<h1 class="page-heading" style="text-align:center">{{data.get('title')}}</h1>-->
@@ -30,7 +30,7 @@
   {% block basic_fields %}
 
   {% if action == 'new' %}
-  <img id="flag" src="" class="img-circle" style="max-width:100px; float:right; position:relative;">
+  <img id="flag" src="" class="img-circle-small" style="max-width:100px; float:right; position:relative;">
     <div class="control-group control-medium" style="float: left;">
         <label class="control-label"><span title="This field is required" class="control-required">*</span> {{ _('Country') }}</label>
         <div class="controls">
