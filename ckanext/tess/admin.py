@@ -11,7 +11,7 @@ from ckan.lib.plugins import DefaultGroupForm
 
 def get_all_material_names_and_ids():
     mats = toolkit.get_action("package_search")\
-        (data_dict={'facet.field':['name', 'description']})
+        (data_dict={'rows':5000, 'facet.field':['name', 'description']})
     return mats.get('results')
 
 
@@ -61,4 +61,5 @@ class AdminController(HomeController):
             except:
                 print 'error'
 
-        return base.render('node/bulk_process_materials.html')
+        base.redirect(h.url_for(controller='ckanext.tess.admin:AdminController',
+                                action='bulk_process_materials'))
