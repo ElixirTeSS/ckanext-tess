@@ -20,12 +20,15 @@
             {% endif %}
         </div>
         <div style="float: left; width: 60%;">
-            <h1 class="page-heading" style="text-align:center">
+            <h1 class="page-heading" style="text-align:center; margin: 0px;">
                 {{ node.get('display_name') }}
                 {% if node.state == 'deleted' %}
                 [{{ _('Deleted') }}]
                 {% endif %}
             </h1>
+            {% if node.get('home_page'): %}
+                <div style="text-align:center"><a href="{{node.get('home_page')}}">{{node.get('home_page')}}</a></div>
+            {% endif %}
         </div>
         <div class="content_action" style="float: right; margin: 0px;">
             {% link_for _('Manage'), controller='ckanext.tess.controller:NodeController', action='edit', id=c.group_dict.name, class_='btn right', icon='wrench' %}
@@ -34,17 +37,17 @@
 
 {% block node_heading %}
 {% if node.get('description'): %}
-<div class="row-fluid" style="padding: 10px 20px;">
-    <h3>Description</h3>
+<div class="row-fluid" style="padding:20px 20px 0px 20px;">
+    <!--<h3>Description</h3>-->
         {{ node.get('description') }}
 </div>
 {% endif %}
-{% if node.get('home_page'): %}
-<div class="row-fluid" style="padding: 10px;">
-    <h3>Home page</h3>
-        {{ node.get('home_page') }}
-</div>
-{% endif %}
+<!--{% if node.get('home_page'): %}-->
+<!--<div class="row-fluid" style="padding-top:10px; padding-left: 20px;">-->
+    <!--&lt;!&ndash;<h3>Home page</h3>&ndash;&gt;-->
+        <!--{{ node.get('home_page') }}-->
+<!--</div>-->
+<!--{% endif %}-->
 {% endblock %}
 <div style="clear:both;"></div>
 
