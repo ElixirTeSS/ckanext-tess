@@ -330,7 +330,9 @@ def get_available_countries():
     for node in nodes:
         try:
             extras = node.get('extras')
-            country_codes_in_use.append(extras['key' == 'country_code'].get('value', None))
+            for extra in extras:
+                if extra['key'] == 'country_code':
+                    country_codes_in_use.append(extra['value'])
         except Exception, e:
             print e
             country_codes_in_use
