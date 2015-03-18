@@ -2,21 +2,25 @@
 <hr/>
 
 {% set staff_string = node.get('staff') %}
-{% set staff_members = h.string_to_json_object(staff_string) %}
-{% set staff_members = staff_members.get('staff') %}
-{% if staff_members: %}
-    <p class="module-content" style="padding: 0px; margin: 0px;">
-    {% for staff in staff_members %}
-        <h3>{{ staff.get('name') }}</h3>
-        {% if staff.get('email') %}
-            <b>Email Address:</b> {{staff.get('email')}} <br>
-        {% endif %}
-        {% if staff.get('role') %}
-            <b>Role:</b> {{ staff.get('role') }} <br>
-        {% endif %}
-        <hr>
-    {% endfor %}
-    </p>
+{% if staff_string %}
+    {% set staff_members = h.string_to_json_object(staff_string) %}
+    {% set staff_members = staff_members.get('staff') %}
+    {% if staff_members: %}
+        <p class="module-content" style="padding: 0px; margin: 0px;">
+        {% for staff in staff_members %}
+            <h3>{{ staff.get('name') }}</h3>
+            {% if staff.get('email') %}
+                <b>Email Address:</b> {{staff.get('email')}} <br>
+            {% endif %}
+            {% if staff.get('role') %}
+                <b>Role:</b> {{ staff.get('role') }} <br>
+            {% endif %}
+            <hr>
+        {% endfor %}
+        </p>
+    {% else %}
+        <p class="module-content empty" style="padding: 0px; margin: 0px;">No staff found for this node</p>
+    {% endif %}
 {% else %}
     <p class="module-content empty" style="padding: 0px; margin: 0px;">No staff found for this node</p>
 {% endif %}
