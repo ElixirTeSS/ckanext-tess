@@ -148,14 +148,30 @@ body {
   margin-bottom: 10px;
 }
 .dataset-content {
-    max-width: 85%;
+    max-width: 80%;
     display: inline-block;
 }
 
 .dataset-content-provider-logo {
-    max-width: 10%;
-    max-height: 45px;
+    min-height: 40%;
+    max-height: 100%;
+    margin-bottom: 5px;
+}
+
+.dataset-node-icon {
+    color: white;
+    height: 40%;
+    background-color: #F8761F;
+    padding: 5px;
+}
+
+.package-icons {
+    /* contains dataset-content-provider-logo and dataset-node-icon */
+    display: inline;
     float: right;
+    height: 35px;
+    width: 20%;
+    margin: auto;
 }
 
 .dataset-heading {
@@ -436,6 +452,13 @@ hr.style-one {
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
+}
+
+.node-admin-stats {
+    background-color: #f5f5f5;
+    padding: 40px;
+    margin: 15px 0px;
+    width: 90%;
 }
 
 .extraStaffTemplate {

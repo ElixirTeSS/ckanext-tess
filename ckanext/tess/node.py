@@ -131,7 +131,6 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
         return schema
 
     def db_to_form_schema(self):
-        print 'updating schema'
         # Import core converters and validators
         _convert_from_extras = toolkit.get_converter('convert_from_extras')
         _ignore_missing = toolkit.get_validator('ignore_missing')

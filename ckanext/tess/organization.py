@@ -15,7 +15,7 @@ class OrganizationPlugin(plugins.SingletonPlugin, DefaultOrganizationForm):
         return ['organization']
 
     def is_fallback(self):
-        return True
+        return False
 
     def form_to_db_schema_options(self, options):
         ''' This allows us to select different schemas for different
@@ -81,6 +81,7 @@ class OrganizationPlugin(plugins.SingletonPlugin, DefaultOrganizationForm):
 
 
 import ckan.controllers.organization as organization
+
 
 class OrganizationController(organization.OrganizationController):
     group_type = 'organization'

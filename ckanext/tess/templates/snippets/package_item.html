@@ -19,8 +19,16 @@ This customization:
             {{ super() }}
         {% endblock %}
     </div>
+
+    <div class="package-icons">
     <a href="{{ h.url_for(controller='organization', action='read', id=package.organization.name) }}">
         <img src="{{package.organization.image_url}}" class="dataset-content-provider-logo" alt="{{package.organization.name}}"/>
     </a>
+    {% if false %} package.node_id
+        <a href="{{ h.url_for(controller='ckanext.tess.node:NodeController', action='read', id=package.node_id) }}">
+            <div class="dataset-node-icon img-circle-small"> {{ h.country_code_of_node(package.node_id) }}</div>
+        </a>
+    {% endif %}
+    </div>
 {% endblock %}
 
