@@ -1,30 +1,22 @@
 <h2>Staff</h2>
 <hr/>
 
-<!--{% set hon = node.get('hon') %}-->
-{% set trc = node.get('trc') %}
-<!--{% set tec = node.get('tec') %}-->
-{% if trc %}
-<p class="module-content" style="padding: 0px; margin: 0px;">
-    <!--<b>Head of node:</b>-->
-    <!--{% if hon %}-->
-        <!--<p class="empty" style="padding: 0px; margin: 0px;">{{node.get('hon')}}</p>-->
-    <!--{% else %}-->
-        <!--<p class="empty" style="padding: 0px; margin: 0px;">None</p>-->
-    <!--{% endif %}-->
-    <b>Training coordinator:</b><br>
-    {% if trc %}
-        <p class="empty" style="padding: 0px; margin: 0px;">{{node.get('trc')}}</p>
-    {% else %}
-        <p class="empty" style="padding: 0px; margin: 0px;">None</p>
-    {% endif %}
-    <!--<b>Technical coordinator:</b><br>-->
-    <!--{% if tec %}-->
-        <!--<p class="empty" style="padding: 0px; margin: 0px;">{{node.get('tec')}}</p>-->
-    <!--{% else %}-->
-        <!--<p class="empty" style="padding: 0px; margin: 0px;">None</p>-->
-    <!--{% endif %}-->
-</p>
+{% set staff_string = node.get('staff') %}
+{% set staff_members = h.string_to_json_object(staff_string) %}
+{% set staff_members = staff_members.get('staff') %}
+{% if staff_members: %}
+    <p class="module-content" style="padding: 0px; margin: 0px;">
+    {% for staff in staff_members %}
+        <h3>{{ staff.get('name') }}</h3>
+        {% if staff.get('email') %}
+            <b>Email Address:</b> {{staff.get('email')}} <br>
+        {% endif %}
+        {% if staff.get('role') %}
+            <b>Role:</b> {{ staff.get('role') }} <br>
+        {% endif %}
+        <hr>
+    {% endfor %}
+    </p>
 {% else %}
     <p class="module-content empty" style="padding: 0px; margin: 0px;">No staff found for this node</p>
 {% endif %}
