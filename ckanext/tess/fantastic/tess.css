@@ -452,10 +452,13 @@ hr.style-one {
   -moz-border-radius: 4px;
   border-radius: 4px;
 }
-
-.node-admin-stats{
+.node-admin-stats {
     background-color: #f5f5f5;
     padding: 40px;
     margin: 15px 0px;
     width: 90%;
+}
+
+.extraStaffTemplate {
+    display:none;
 }
