@@ -34,7 +34,8 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
                 'all_node_name_and_ids': all_node_name_and_ids,
                 'get_node': get_node,
                 'display_name_of_node': display_name_of_node,
-                'country_code_of_node': country_code_of_node
+                'country_code_of_node': country_code_of_node,
+                'string_to_json_object': string_to_json_object
         }
 
     def before_map(self, map):
@@ -117,15 +118,10 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
         schema.update({
             'country_code': [_convert_to_extras],
             'home_page': default_validators,
-            # 'hon': default_validators,
-            # 'hon_email': default_validators,
-            # 'hon_image': default_validators,
-            'tec': default_validators,
-            'tec_email': default_validators,
-            'tec_image': default_validators,
-            # 'trc': default_validators,
-            # 'trc_email': default_validators,
-            # 'trc_image': default_validators,
+            'trc': default_validators,
+            'trc_email': default_validators,
+            'trc_image': default_validators,
+            'staff': default_validators, # in JSON format
             'carousel_image_1': default_validators,
             'carousel_image_2': default_validators,
             'carousel_image_3': default_validators,
@@ -146,15 +142,10 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
         schema.update({
             'country_code': default_validators,
             'home_page': default_validators,
-            'hon': default_validators,
-            'hon_email': default_validators,
-            'hon_image': default_validators,
-            # 'tec': default_validators,
-            # 'tec_email': default_validators,
-            # 'tec_image': default_validators,
             'trc': default_validators,
             'trc_email': default_validators,
             'trc_image': default_validators,
+            'staff': default_validators, # in JSON format
             'carousel_image_1': default_validators,
             'carousel_image_2': default_validators,
             'carousel_image_3': default_validators,
@@ -385,5 +376,11 @@ def get_extras(node):
             node[extra['key']] = extra['value']
     return node
 
-
-
+def string_to_json_object(str):
+    try:
+        obj = json.loads(str)
+        return obj
+    except Exception, e:
+        print 'Failed to convert string to JSON object: ' + str
+        print e
+        return None

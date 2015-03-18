@@ -1,7 +1,7 @@
 
 {% import 'macros/form.html' as form %}
-
 {% resource 'tess/load_country_info.js' %}
+{% resource 'tess/add_input_fields.js' %}
 
 <!--{% block breadcrumb_content %}-->
 <!--<li><a href="{% url_for 'node' %}">{{ _('Nodes') }}</a></li>-->
@@ -22,7 +22,7 @@
 <!--{% endblock %}-->
 <!--{% endif %}-->
 
-<form class="dataset-form form-horizontal" method="post" data-module="basic-form" enctype="multipart/form-data">
+<form id="node_form" class="dataset-form form-horizontal" method="post" data-module="basic-form" enctype="multipart/form-data">
   {% block error_summary %}
     {{ form.errors(error_summary) }}
   {% endblock %}
@@ -87,6 +87,28 @@
     <!--{% set is_upload = data.tec_image and not data.tec_image.startswith('http') %}-->
     <!--{% set is_url = data.tec_image and data.tec_image.startswith('http') %} -->
     <!--{{ form.image_upload(data, errors, field_url="tec_image", url_label="Technical coordinator's image", is_upload_enabled=h.uploads_enabled(), is_url=is_url, is_upload=is_upload) }} -->
+
+    <!-- Add more training staff input fields -->
+    <div class="extraStaffTemplate">
+        {{ form.input('staff_name', label=_("Member of staff's name"), id='staff_name', placeholder=("Name of the member of staff"), classes=['control-medium']) }}
+        {{ form.input('staff_email', label=_("Member of staff's email"), id='staff_name', placeholder=("Email address of the member of staff"), classes=['control-medium']) }}
+        {{ form.input('staff_role', label=_("Member of staff's role"), id='staff_name', placeholder=("Role of the member of staff"), classes=['control-medium']) }}
+        <a href="#" id="removeStaffMember" class="controls"><i class="icon-minus-sign icon-white"></i> Remove member of staff</p></a>
+    </div>
+    <div id="extraStaffContainer">
+        {% set staff_obj = h.string_to_json_object(data.staff) %}
+        {% if staff_obj and staff_obj['staff']|length > 0: %}
+            {% for staff in staff_obj['staff']%}
+            <div class="staffMember">
+                {{ form.input('staff_name', label=_("Member of staff's name"), id='staff_name', placeholder=("Name of the member of staff"), value=staff['name'], classes=['control-medium']) }}
+                {{ form.input('staff_email', label=_("Member of staff's email"), id='staff_email', placeholder=("Email address of the member of staff"), value=staff['email'], classes=['control-medium']) }}
+                {{ form.input('staff_role', label=_("Member of staff's role"), id='staff_role', placeholder=("Role of the member of staff"), value=staff['role'], classes=['control-medium']) }}
+                <a href="#" id="removeStaffMember" class="controls"><i class="icon-minus-sign icon-white"></i> Remove member of staff</p></a>
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <a href="#" id="addStaffMember"><i class="icon-plus-sign icon-white"></i> Add another member of staff</p></a>
 
     {{ form.input('twitter', label=_("Twitter handle"), id='twitter', placeholder=("Handle of the node's twitter feed, e.g @ElixirNodeUK"), value=data.twitter, classes=['control-full']) }}
 
