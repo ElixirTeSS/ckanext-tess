@@ -5,14 +5,40 @@ from pylons import c
 import ckan.lib.helpers as h
 import os
 import operator
+from ckan.controllers.home import HomeController
+from ckan.common import OrderedDict, c, g, request, _
+import ckan.lib.base as base
+import ckan.logic as logic
+import ckan.model as model
+import ckan.new_authz as new_authz
+get_action = logic.get_action
+parse_params = logic.parse_params
+redirect = base.redirect
 
 from ckan.lib.plugins import DefaultGroupForm
 
 
 def get_all_material_names_and_ids():
-    mats = toolkit.get_action("package_search")\
-        (data_dict={'rows':5000, 'sort':'alphabet asc', 'facet.field':['name', 'description']})
-    return mats.get('results')
+    c.admin = new_authz.is_sysadmin(c.user)
+    if c.admin: #get every single training material
+        try:
+            materials = toolkit.get_action("package_search")\
+                (data_dict={'rows': 5000, 'sort': 'name asc'})
+            return materials.get('results')
+        except:
+            return []
+    else: # get just the materials you've added if not admin
+        context = {'for_edit': True,
+              'auth_user_obj': c.userobj,
+              'session': model.Session,
+              'user': c.user or c.author, 'model': model}
+
+        data_dict = {'id': c.user, 'include_datasets': True}
+        try:
+            materials = get_action('user_show')(context, data_dict)
+            return materials.get('datasets')
+        except:
+            return []
 
 
 class AdminPlugin(plugins.SingletonPlugin, DefaultGroupForm):
@@ -30,18 +56,17 @@ class AdminPlugin(plugins.SingletonPlugin, DefaultGroupForm):
         map.connect('bulk-process-save', '/admin/nodes/save', controller='ckanext.tess.admin:AdminController', action='save_process')
         return map
 
-from ckan.controllers.home import HomeController
-from ckan.common import OrderedDict, c, g, request, _
-import ckan.lib.base as base
-import ckan.logic as logic
-import ckan.model as model
-get_action = logic.get_action
-parse_params = logic.parse_params
+
 
 class AdminController(HomeController):
 
     def bulk_process_materials(self):
-        return base.render('node/bulk_process_materials.html')
+        c.materials = get_all_material_names_and_ids()
+        if c.materials:
+            return base.render('node/bulk_process_materials.html')
+        else:
+            h.flash_error('Whoops! You do not have any training materials to attribute to a node. Try adding some')
+            redirect(h.url_for(controller='user', action='read', id=c.user))
 
     def save_process(self):
         datum = parse_params(request.params)
@@ -51,15 +76,16 @@ class AdminController(HomeController):
                    'for_edit': True,
                    'parent': request.params.get('parent', None)
         }
+        count = 0
         for data in datum:
             try:
                 data_dict = {'id': data, 'node_id': datum.get(data)}
                 context['allow_partial_update'] = True
-                print context
-                print data_dict
                 save = get_action('package_update')(context, data_dict)
+                if save:
+                    count = count+1
             except:
                 print 'error'
-
+        h.flash_notice('%d Training Materials updated' % count)
         base.redirect(h.url_for(controller='ckanext.tess.admin:AdminController',
                                 action='bulk_process_materials'))
