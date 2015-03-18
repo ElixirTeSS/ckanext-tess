@@ -447,11 +447,13 @@ hr.style-one {
     padding-bottom: 0;
   }
 }
+
 .img-circle-small {
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
 }
+
 .node-admin-stats {
     background-color: #f5f5f5;
     padding: 40px;
@@ -460,5 +462,9 @@ hr.style-one {
 }
 
 .extraStaffTemplate {
+    display:none;
+}
+
+.extraInstitutionsTemplate {
     display:none;
 }

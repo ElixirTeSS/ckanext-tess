@@ -118,6 +118,7 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
         schema.update({
             'country_code': [_convert_to_extras],
             'home_page': default_validators,
+            'institutions': default_validators, # string in JSON format
             'trc': default_validators,
             'trc_email': default_validators,
             'trc_image': default_validators,
@@ -141,10 +142,11 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
         schema.update({
             'country_code': default_validators,
             'home_page': default_validators,
+            'institutions': default_validators, # string in JSON format
             'trc': default_validators,
             'trc_email': default_validators,
             'trc_image': default_validators,
-            'staff': default_validators, # in JSON format
+            'staff': default_validators, # string in JSON format
             'carousel_image_1': default_validators,
             'carousel_image_2': default_validators,
             'carousel_image_3': default_validators,
@@ -376,10 +378,13 @@ def get_extras(node):
     return node
 
 def string_to_json_object(str):
-    try:
-        obj = json.loads(str)
-        return obj
-    except Exception, e:
-        print 'Failed to convert string to JSON object: ' + str
-        print e
+    if not str:
         return None
+    else:
+        try:
+            obj = json.loads(str)
+            return obj
+        except Exception, e:
+            print 'Failed to convert string to JSON object: ' + str
+            print e
+            return None
