@@ -34,28 +34,30 @@
         <div class="">
             <th>Name</th>
             <th>Content Provider</th>
+            <th>None</th>
             {% for node in nodes %}
             <th>
                 {{h.country_code_of_node(node)}}
                 {# h.display_name_of_node(node) #}
-                <br/>
-                <br/>
             </th>
             {% endfor %}
         </div>
 
 
         {% for material in c.materials %}
-        <tr>
+        <tr style="padding-bottom:15px">
             {% set url = h.url_for(controller='package', action='read', id=material.get('name')) %}
             <td>{{h.link_to(material.get('title'), url )}}</td>
 
             <td>
                 {% set organization = material.get('organization', None) %}
                 {% if organization %}
-                {{organization.get('title')}}
+                    {{ organization.get('title') }}
+                {% else %}
+                    <i>No Content Provider</i>
                 {% endif %}
             </td>
+            <td><input type="radio" name="{{material.get('name')}}" value="" checked></td>
             {% for node in nodes %}
                 {% if material.get('node_id') == node %}
                     <td><input type="radio" name="{{material.get('name')}}" value="{{node}}" checked></td>
