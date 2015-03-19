@@ -14,11 +14,12 @@ import ckan.new_authz as new_authz
 get_action = logic.get_action
 parse_params = logic.parse_params
 redirect = base.redirect
+NotFound = logic.NotFound
 
 from ckan.lib.plugins import DefaultGroupForm
 
 
-def get_all_material_names_and_ids():
+def get_all_materials_to_administer():
     c.admin = new_authz.is_sysadmin(c.user)
     if c.admin: #get every single training material
         try:
@@ -48,7 +49,7 @@ class AdminPlugin(plugins.SingletonPlugin, DefaultGroupForm):
 
     def get_helpers(self):
         return {
-            'get_all_material_names_and_ids': get_all_material_names_and_ids
+            'get_all_materials_to_administer': get_all_materials_to_administer
         }
 
     def before_map(self, map):
@@ -61,7 +62,7 @@ class AdminPlugin(plugins.SingletonPlugin, DefaultGroupForm):
 class AdminController(HomeController):
 
     def bulk_process_materials(self):
-        c.materials = get_all_material_names_and_ids()
+        c.materials = get_all_materials_to_administer()
         if c.materials:
             return base.render('node/bulk_process_materials.html')
         else:
@@ -70,22 +71,28 @@ class AdminController(HomeController):
 
     def save_process(self):
         datum = parse_params(request.params)
-        context = {'model': model, 'session': model.Session,
-                   'user': c.user or c.author,
-                   'save': 'save' in request.params,
-                   'for_edit': True,
-                   'parent': request.params.get('parent', None)
-        }
         count = 0
         for data in datum:
             try:
-                data_dict = {'id': data, 'node_id': datum.get(data)}
-                context['allow_partial_update'] = True
-                save = get_action('package_update')(context, data_dict)
-                if save:
-                    count = count+1
-            except:
-                print 'error'
+                context = {'model': model, 'session': model.Session,
+                           'user': c.user or c.author, 'for_view': True,
+                           'auth_user_obj': c.userobj}
+                existing = get_action('package_show')(context, {'id': data})
+                previous_node = existing.get('node_id', None)
+                if previous_node != datum.get(data):
+                    print "changed - %s != %s" % (previous_node, datum.get(data))
+                    data_dict = {'id': data, 'node_id': datum.get(data)}
+                    context_ = {'model': model, 'session': model.Session,
+                                'user': c.user or c.author, 'save': 'save' in request.params,
+                                'for_edit': True,
+                                'parent': request.params.get('parent', None)}
+
+                    context['allow_partial_update'] = True
+                    save = get_action('package_update')(context_, data_dict)
+                    if save:
+                        count = count+1
+            except NotFound:
+                print
         h.flash_notice('%d Training Materials updated' % count)
         base.redirect(h.url_for(controller='ckanext.tess.admin:AdminController',
                                 action='bulk_process_materials'))

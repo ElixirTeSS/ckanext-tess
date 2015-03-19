@@ -30,9 +30,13 @@
                 <div style="text-align:center"><a href="{{node.get('home_page')}}">{{node.get('home_page')}}</a></div>
             {% endif %}
         </div>
-        <div class="content_action" style="float: right; margin: 0px;">
-            {% link_for _('Manage'), controller='ckanext.tess.node:NodeController', action='edit', id=c.group_dict.name, class_='btn right', icon='wrench' %}
-        </div>
+
+    {% block content_action %}
+            {% if h.check_access('group_update', {'id': c.group_dict.id}) %}
+              {% link_for _('Manage'), controller='ckanext.tess.node:NodeController', action='edit', id=node.get('name'), class_='btn', icon='wrench' %}
+            {% endif %}
+        {% endblock %}
+
 </header>
 
 {% block node_heading %}
