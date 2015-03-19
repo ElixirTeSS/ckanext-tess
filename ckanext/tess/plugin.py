@@ -52,7 +52,7 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
 
 
         # set the title
-        config['ckan.site_title'] = "TeSS - ELIXIR's Training Portal"
+        config['ckan.site_title'] = "TeSS Training Portal"
 
         # set the logo
         config['ckan.site_logo'] = 'images/TeSSLogo-small.png'
