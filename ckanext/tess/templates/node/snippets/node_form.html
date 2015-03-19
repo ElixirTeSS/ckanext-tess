@@ -149,7 +149,7 @@
     {{ form.input('twitter', label=_("Twitter handle"), id='twitter', placeholder=("Handle of the node's twitter feed, e.g @ElixirNodeUK"), value=data.twitter, classes=['control-full']) }}
     <hr>
 
-    <div class='controls'><p>Add up to three images for the node page's carousel</p></div>
+    <div class='controls'><p>Add up to 3 images for the node page's carousel.</p></div>
     {% set carousel_images = [] %}
     {% if data.carousel_image_1: %}
         {% set carousel_images = carousel_images + [data.carousel_image_1] %}
