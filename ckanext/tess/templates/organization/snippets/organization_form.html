@@ -29,7 +29,7 @@
   <div class="control-group">
         <label class="control-label" for="field-elixir_node">{{ _("Member of ELIXIR node") }}</label>
         <div class="controls">
-            <select id="field-elixir_node" name="elixir_node" data-module="autocomplete">
+            <select id="field-elixir_node" name="node_id" data-module="autocomplete">
                 <option value="" selected="selected">None</option>
                 {% for node in h.all_node_name_and_ids() %}
                     <option value="{{node[1]}}"

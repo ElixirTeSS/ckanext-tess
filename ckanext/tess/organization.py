@@ -5,17 +5,61 @@ from pylons import c
 import ckan.lib.helpers as h
 import os
 import operator
+from ckan.common import OrderedDict, c, g, request, _
 from ckan.lib.plugins import DefaultOrganizationForm
+import ckan.logic as logic
+import ckan.model as model
+
+import ckan.lib.base as base
+render = base.render
+redirect = base.redirect
+get_action = logic.get_action
+parse_params = logic.parse_params
+
+# Node is internal name - e.g. united-kingdom
+# The params are dataset_id as key and previous node-code as value
+# For example:
+# params = {'dataset_392jekf93u93j39fes239': 'GB',
+#           'dataset_a3ij3jmdsijfdsion393u': 'ES' }
+def update_node_of_materials(node, params):
+    count = 0
+    for param in params:
+
+        old_node = params.get(param)
+        if old_node != node:
+            data_dict = {'id': param[8:], 'node_id': node}
+            context_ = {'model': model, 'session': model.Session,
+                        'user': c.user or c.author, 'save': 'save' in request.params,
+                        'for_edit': True,
+                        'parent': request.params.get('parent', None),
+                        'allow_partial_update': True }
+            save = get_action('package_update')(context_, data_dict)
+            if save:
+                count = count + 1
+    h.flash_notice("%d Materials Assigned to %s" % (count, node.title()))
 
 
 class OrganizationPlugin(plugins.SingletonPlugin, DefaultOrganizationForm):
     plugins.implements(plugins.IGroupForm, inherit=True)
+    plugins.implements(plugins.interfaces.IOrganizationController, inherit=True)
+
+    def before_view(self, pkg_dict):
+        print pkg_dict
+        params = parse_params(request.params)
+        node = params.pop('bulk_action.node_assign', None)
+        if node:
+            update_node_of_materials(node, params)
+        id = pkg_dict.get('name', None)
+        super(OrganizationPlugin, self).read(id)
+        return pkg_dict
 
     def group_types(self):
         return ['organization']
 
+
     def is_fallback(self):
         return False
+
 
     def form_to_db_schema_options(self, options):
         ''' This allows us to select different schemas for different
@@ -88,3 +132,5 @@ class OrganizationController(organization.OrganizationController):
 
     def _guess_group_type(self, expecting_name=False):
         return 'organization'
+
+

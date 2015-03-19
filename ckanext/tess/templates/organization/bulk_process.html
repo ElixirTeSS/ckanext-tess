@@ -9,11 +9,11 @@
 {% block primary_content_inner %}
   <div class="clearfix">
     <h1 class="hide-heading">{{ _('Edit training materials') }}</h1>
-    <div class="primary">
+    <div class="primary" style="width:100%">
       <h3 class="page-heading">
         {% block page_heading %}
           {%- if c.page.item_count -%}
-            {{ c.page.item_count }} datasets{{ _(" found for \"{query}\"").format(query=c.q) if c.q }}
+            {{ c.page.item_count }} training materials {{ _(" found for \"{query}\"").format(query=c.q) if c.q }}
           {%- elif request.params -%}
             {{ _('Sorry no training materials found for "{query}"').format(query=c.q) }}
           {%- else -%}
@@ -23,15 +23,24 @@
       </h3>
       {% block form %}
         {% if c.page.item_count %}
-          <form method="POST" data-module="basic-form">
+          <form method="POST" data-module="basic-form" style="width:100%">
             <table class="table table-bordered table-header table-hover table-bulk-edit table-edit-hover" data-module="table-selectable-rows">
+              {% set organization_node = h.get_node(c.group_dict.node_id) %}
               <col width="8">
+              {% if organization_node %}<col width="15">{% endif %}
               <col width="120">
               <thead>
                 <tr>
                   <th></th>
-                  <th class="table-actions">
-                    <div class="btn-group">
+                    {% if organization_node %}<th>Node Code</th>{% endif %}
+                    <th class="table-actions">
+                      <div class="btn-group">
+                      {% if organization_node %}
+                        <button name="bulk_action.node_assign" value="{{organization_node.name}}" class="btn" type="submit">
+                            <i class="icon-elixir"></i>
+                            {{ _('Assign to %s' % organization_node.display_name) }}
+                        </button>
+                      {% endif %}
                       <button name="bulk_action.public" value="public" class="btn" type="submit">
                         <i class="icon-eye-open"></i>
                         {{ _('Make public') }}
@@ -42,7 +51,7 @@
                       </button>
                     </div>
                     <div class="btn-group">
-                      <button name="bulk_action.delete" value="delete" class="btn btn-danger" type="submit">
+                      <button style="float:right" name="bulk_action.delete" value="delete" class="btn btn-danger" type="submit">
                         <i class="icon-remove"></i>
                         {{ _('Delete') }}
                       </button>
@@ -56,10 +65,19 @@
                   {% set truncate_title = truncate_title or 80 %}
                   {% set title = package.title or package.name %}
                   {% set notes = h.markdown_extract(package.notes, extract_length=truncate) %}
+                  {% set node = h.get_node(package.get('node_id')) %}
                   <tr>
-                    <td>
-                      <input type="checkbox" name="dataset_{{ package.id }}">
+                    <td style="vertical-align: middle">
+                      <input type="checkbox" name="dataset_{{ package.id }}" value="{{ node.name }}">
                     </td>
+                      {% if organization_node %}<td style="text-align: center; vertical-align: middle">
+                        {% if node %}
+                            {% if node==organization_node %}<b>{% endif %}
+                                {{ node.country_code }}
+                            {% if node==organization_node %}</b>{% endif %}
+                        {% endif %}
+                            </td>
+                      {% endif %}
                     <td class="context">
                       <a href="{% url_for controller='package', action='edit', id=package.name %}" class="edit pull-right">
                         {{ _('Edit') }}
@@ -89,24 +107,6 @@
         {% endif %}
       {% endblock %}
     </div>
-    <aside class="tertiary">
-      {% block tertiary_content %}
-
-        {% block search_form %}
-          {% set sorting = [
-            (_('Name Ascending'), 'title_string asc'),
-            (_('Name Descending'), 'title_string desc'),
-            (_('Last Modified'), 'data_modified desc') ]
-          %}
-          {% snippet 'snippets/search_form.html', type='dataset', query=c.q, sorting=sorting, sorting_selected=c.sort_by_selected, no_title=true, search_class=' ' %}
-        {% endblock %}
-
-        {#{% snippet 'snippets/simple_search.html', q=c.q, sort=c.sort_by_selected, placeholder=_('Search training materials...'), extra_sort=[(_('Last Modified'), 'data_modified asc')], input_class='search-normal', form_class='search-aside' %}#}
-        {% for facet in c.facet_titles %}
-          {{ h.snippet('snippets/facet_list.html', title=c.facet_titles[facet], name=facet, extras={'id':c.group_dict.id}) }}
-        {% endfor %}
-      {% endblock %}
-    </aside>
   </div>
   {{ c.page.pager() }}
 {% endblock %}
