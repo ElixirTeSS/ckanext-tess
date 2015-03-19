@@ -72,8 +72,22 @@
 
     <hr>
     <!-- Add member institutions -->
-    <div class='controls'><p>Add member institutions for the node</p></div>
+    <div class='controls'><p>Add member institutions for the node - either from a list of registered content providers or an institution that may not be a content provider.</p></div>
     <div class="extraInstitutionsTemplate">
+        <!--<div class="control-group">-->
+            <!--<label class="control-label" for="field-content_provider">{{ _("Content provider") }}</label>-->
+            <!--<div class="controls">-->
+                <!--<select id="field-content_provider" name="node_id" data-module="autocomplete">-->
+                    <!--<option value="" selected="selected">None</option>-->
+                        <!--{% for provider in h.all_content_provider_name_and_ids() %}-->
+                            <!--<option value="{{provider[2]}}">-->
+                            <!--{{ provider[0] }}-->
+                        <!--</option>-->
+                    <!--{% endfor %}-->
+                <!--</select>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="controls"><p>Or</p></div>-->
         {{ form.input('institution_name', label=_("Institution's name"), id='institution_name', placeholder=("Name of the institution"), classes=['control-medium']) }}
         {{ form.input('institution_home_page', label=_("Institution's home page"), id='institution_home_page', placeholder=("Home page of the institution"), classes=['control-medium']) }}
         {{ form.input('institution_image', label=_("Institution's logo"), id='institution_image', placeholder=("Logo of the institution"), classes=['control-medium']) }}
@@ -91,16 +105,17 @@
             </div>
             {% endfor %}
         {% else %}
-            <div class="institution">
-                {{ form.input('institution_name', label=_("Institution's name"), id='institution_name', placeholder=("Name of the institution"), classes=['control-medium']) }}
-                {{ form.input('institution_home_page', label=_("Institution's home page"), id='institution_home_page', placeholder=("Home page of the institution"), classes=['control-medium']) }}
-                {{ form.input('institution_image', label=_("Institution's logo"), id='institution_image', placeholder=("Logo of the institution"), classes=['control-medium']) }}
-            </div>
+            <!--<div class="institution">-->
+                <!--{{ form.input('institution_name', label=_("Institution's name"), id='institution_name', placeholder=("Name of the institution"), classes=['control-medium']) }}-->
+                <!--{{ form.input('institution_home_page', label=_("Institution's home page"), id='institution_home_page', placeholder=("Home page of the institution"), classes=['control-medium']) }}-->
+                <!--{{ form.input('institution_image', label=_("Institution's logo"), id='institution_image', placeholder=("Logo of the institution"), classes=['control-medium']) }}-->
+            <!--</div>-->
         {% endif %}
     </div>
-    <a href="#" id="addInstitution"><i class="icon-plus-sign icon-white"></i> Add another institution</p></a>
+    <a href="#" id="addInstitution"><i class="icon-plus-sign icon-white"></i> Add institution</p></a>
 
     <hr>
+    <div class='controls'><p>Add members of staff for the node.</p></div>
     {{ form.input('trc', label=_('Training coordinator'), id='trc', placeholder=('Name of the training coordinator'), value=data.trc, classes=['control-medium']) }}
     {{ form.input('trc_email', label=_("Training coordinator's email"), id='trc_email', placeholder=('Email address of the training coordinator'), value=data.trc_email, classes=['control-medium']) }}
     {% set is_upload = data.trc_image and not data.trc_image.startswith('http') %}
@@ -127,13 +142,14 @@
             {% endfor %}
         {% endif %}
     </div>
-    <a href="#" id="addStaffMember"><i class="icon-plus-sign icon-white"></i> Add another member of staff</p></a>
+    <a href="#" id="addStaffMember"><i class="icon-plus-sign icon-white"></i> Add member of staff</p></a>
     <hr>
 
+    <div class='controls'><p>Add twitter handle for tweets to appear on node's page.</p></div>
     {{ form.input('twitter', label=_("Twitter handle"), id='twitter', placeholder=("Handle of the node's twitter feed, e.g @ElixirNodeUK"), value=data.twitter, classes=['control-full']) }}
     <hr>
 
-    <div class='controls'><p>Add up to three images for the node page's carousel</p></div>
+    <div class='controls'><p>Add up to 3 images for the node page's carousel.</p></div>
     {% set carousel_images = [] %}
     {% if data.carousel_image_1: %}
         {% set carousel_images = carousel_images + [data.carousel_image_1] %}

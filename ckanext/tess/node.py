@@ -32,6 +32,7 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
                 'tess_reorder_dataset_facets': reorder_dataset_facets,
                 'all_nodes': all_nodes,
                 'all_node_name_and_ids': all_node_name_and_ids,
+                'all_content_provider_name_and_ids': all_content_provider_name_and_ids,
                 'get_node': get_node,
                 'display_name_of_node': display_name_of_node,
                 'country_code_of_node': country_code_of_node,
@@ -189,14 +190,27 @@ def all_nodes():
     data = {'type': 'node', 'all_fields': True}
     return toolkit.get_action('group_list')({}, data)
 
+def all_content_providers():
+    data = {'all_fields': True}
+    cps=toolkit.get_action('organization_list')({}, data)
+    print 'cps', cps
+    return cps
+
 #returns something like:   [{'United Kingdom', 'united-kingdom'},
 #                         {'EMBL-EBI', 'embl-ebi'}]
-
+# Hmmm, there is an actual id field (immutable) - should we not be using it instead of
+# name/slug which can be changed?
 def all_node_name_and_ids():
-    a = []
+    list = []
     for nodes in all_nodes():
-        a.append([nodes.get('display_name'), nodes.get('name')])
-    return a
+        list.append([nodes.get('display_name'), nodes.get('name'), nodes.get('id')])
+    return list
+
+def all_content_provider_name_and_ids():
+    list = []
+    for content_provider in all_content_providers():
+        list.append([content_provider.get('display_name'), content_provider.get('name'), content_provider.get('id')])
+    return list
 
 def get_node(node_id):
     data = {'id': node_id}
