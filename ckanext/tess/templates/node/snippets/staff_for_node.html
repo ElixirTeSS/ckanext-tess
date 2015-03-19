@@ -1,0 +1,42 @@
+<h2>Staff</h2>
+<hr/>
+
+{% if node.get('trc') %}
+<p class="module-content" style="padding: 0px; margin: 0px;">
+   <h3>{{ node.get('trc') }}</h3>
+    {% if node.get('trc_email') %}
+       <b>Email Address:</b> {{node.get('trc_email')}} <br>
+    {% endif %}
+    {% if node.get('trc_image') %}
+      <img src="{{ node.get('trc_image') }}" class="centered-image"><br>
+    {% endif %}
+    <b>Role:</b> Training Co-ordinator <br>
+<hr>
+</p>
+{% endif %}
+
+
+{% set staff_string = node.get('staff') %}
+{% if staff_string %}
+    {% set staff_members = h.string_to_json_object(staff_string) %}
+    {% set staff_members = staff_members.get('staff') %}
+    {% if staff_members: %}
+        <p class="module-content" style="padding: 0px; margin: 0px;">
+        {% for staff in staff_members %}
+            <h3>{{ staff.get('name') }}</h3>
+            {% if staff.get('email') %}
+                <b>Email Address:</b> {{staff.get('email')}} <br>
+            {% endif %}
+            {% if staff.get('role') %}
+                <b>Role:</b> {{ staff.get('role') }} <br>
+            {% endif %}
+            <hr>
+        {% endfor %}
+        </p>
+    {% else %}
+        <p class="module-content empty" style="padding: 0px; margin: 0px;">No staff found for this node</p>
+    {% endif %}
+{% else %}
+    <p class="module-content empty" style="padding: 0px; margin: 0px;">No staff found for this node</p>
+{% endif %}
+

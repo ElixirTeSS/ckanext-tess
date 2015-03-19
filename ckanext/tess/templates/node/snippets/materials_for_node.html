@@ -1,0 +1,31 @@
+{# parameters:
+node - the name of the node like 'United Kingdom' or 'Switzerland'
+hub - True if we're on the hub page and we need to have the header for each section display the country name
+- No need to set for other pages
+#}
+<h2>Training materials</h2>
+<hr/>
+{% set training_materials = h.get_node_materials(node) %}
+{% set count = training_materials|length %}
+{% if count > 0 %}
+    {% if count > 5 %}
+        {% set trimmed = True %}
+        {% set training_materials = training_materials[:5] %}
+    {% endif %}
+
+    <ul style="list-style: outside none none; margin-left: 5px;" >
+    {% for training_material in training_materials %}
+        {% snippet 'snippets/package_item.html', package=training_material %}
+    {% endfor %}
+    </ul>
+    <br>
+    {% if trimmed %}
+    <i>Displaying {{training_materials|length}} of {{count}} Materials.<br>
+        <a href="{{  h.url_for(controller='package', action='search', node_id=node.get('name')) }}"
+       >Click to see all materials</a></i>
+    {% else %}
+        <i>Displaying all {{training_materials|length}} Material(s).<br></i>
+    {% endif %}
+{% else %}
+    <p class="module-content empty" style="padding: 0px; margin: 0px;">No training materials found for this node</p>
+{% endif %}

@@ -1,0 +1,31 @@
+<h2>Member Institutions</h2>
+<hr/>
+
+{% set member_string = node.get('institutions') %}
+{% if member_string %}
+    {% set members = h.string_to_json_object(member_string) %}
+    {% set members = members.get('institutions') %}
+    {% if members: %}
+        <p class="module-content" style="padding: 0px; margin: 0px;">
+        {% for member in members %}
+            {% set url = None %}
+            <h3>{{ member.get('name') }}</h3>
+            {% if member.get('home_page') %}
+                {% set url = member.get('home_page') %}
+                <b>Home Page:</b> <a href="{{url}}">{{url}}</a><br>
+            {% endif %}
+            {% if member.get('image') %}
+                {% if url %}<a href="{{url}}">{% endif %}
+                <img src="{{ member.get('image') }}" class="centered-image">
+                {% if url %}</a>{% endif %}
+            {% endif %}
+            <hr>
+        {% endfor %}
+        </p>
+    {% else %}
+        <p class="module-content empty" style="padding: 0px; margin: 0px;">No Member Institutions found for this node</p>
+    {% endif %}
+{% else %}
+    <p class="module-content empty" style="padding: 0px; margin: 0px;">No Member Institutions found for this node</p>
+{% endif %}
+

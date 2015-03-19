@@ -1,0 +1,103 @@
+{% extends "page.html" %}
+
+{% block subtitle %}
+    {{ node.get('display_name') }}
+{% endblock %}
+
+{% block breadcrumb_content %}
+<li><a href="{% url_for 'node' %}">{{ _('Nodes') }}</a></li>
+<li class="active"><a href="">{{ node.get('display_name') }}</a></li>
+{% endblock %}
+{% block primary %}
+{% set country_code = node.get('country_code') %}
+<header class="module-content page-header" style="padding:10px; margin: 0px;">
+        <div style="float: left; padding: 20px;">
+            {% snippet "node/snippets/node_list_dropdown.html" %}
+        </div>
+        <div style="float: left; padding-left: 10px;">
+            {% if country_code : %}
+                <img src="/images/node_flags/{{ country_code }}.png" class="img-circle-small" style="max-height: 60px;"/>
+            {% endif %}
+        </div>
+        <div style="float: left; width: 60%;">
+            <h1 class="page-heading" style="text-align:center; margin: 0px;">
+                {{ node.get('display_name') }}
+                {% if node.state == 'deleted' %}
+                [{{ _('Deleted') }}]
+                {% endif %}
+            </h1>
+            {% if node.get('home_page'): %}
+                <div style="text-align:center"><a href="{{node.get('home_page')}}">{{node.get('home_page')}}</a></div>
+            {% endif %}
+        </div>
+
+        {% block content_action %}
+            {% if h.check_access('group_update', {'id': c.group_dict.id}) %}
+              {% link_for _('Manage'), controller='ckanext.tess.node:NodeController', action='edit', id=node.get('name'), class_='btn', icon='wrench' %}
+            {% endif %}
+        {% endblock %}
+
+</header>
+
+{% block node_heading %}
+{% if node.get('description'): %}
+<div class="row-fluid" style="padding:20px 20px 0px 20px;">
+    <!--<h3>Description</h3>-->
+        {{ node.get('description') }}
+</div>
+{% endif %}
+<!--{% if node.get('home_page'): %}-->
+<!--<div class="row-fluid" style="padding-top:10px; padding-left: 20px;">-->
+    <!--&lt;!&ndash;<h3>Home page</h3>&ndash;&gt;-->
+        <!--{{ node.get('home_page') }}-->
+<!--</div>-->
+<!--{% endif %}-->
+{% endblock %}
+<div style="clear:both;"></div>
+
+<div class="module-content">
+    <ul class="media-grid masonry" data-module="media-grid">
+
+        {% block news %}
+        {% if node.get('twitter') %}
+            <li class="media-item masonry-brick node-brick" style="height:700px">
+                {% snippet "node/snippets/news_for_node.html", node=node %}
+            </li>
+        {% else %}
+            <li class="media-item masonry-brick node-brick">
+                {% snippet "node/snippets/news_for_node.html", node=node %}
+            </li>
+        {% endif %}
+        {% endblock %}
+
+        {% block organizations %}
+        <li class="media-item masonry-brick node-brick">
+            {% snippet "node/snippets/members_for_node.html", node=node %}
+        </li>
+        {% endblock %}
+
+        {% block materials %}
+        <li class="media-item masonry-brick node-brick">
+            {% snippet "node/snippets/materials_for_node.html", node=node %}
+        </li>
+        {% endblock %}
+
+        {% block events %}
+        <li class="media-item masonry-brick node-brick">
+            {% snippet "node/snippets/events_for_node.html", node=node %}
+        </li>
+        {% endblock %}
+
+        {% block staff %}
+        <li class="media-item masonry-brick node-brick">
+            {% snippet "node/snippets/staff_for_node.html", node=node %}
+        </li>
+        {% endblock %}
+
+    </ul>
+</div>
+
+{% endblock %}
+
+{% block secondary %}
+{% endblock %}

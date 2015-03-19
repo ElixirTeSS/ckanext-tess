@@ -1,0 +1,26 @@
+{% set url = h.url_for(controller='ckanext.tess.node:NodeController', action='read', id=node.get('name')) %}
+{% if node.get('country_code') %}
+    {% set logo_link = h.url_for_static('/images/node_flags/' + node.get('country_code') + '.png') %}
+{% endif %}
+{% block info %}
+<div class="module module-narrow module-shallow context-info">
+    <h2 class="module-heading"><div class="icon-elixir"></div> {{ _('ELIXIR Node') }}</h2>
+    <section class="module-content">
+
+        {% block image %}
+            {% if logo_link %}
+            <div>
+                <a href="{{url}}">
+                   <img class="img-circle-small" src="{{logo_link}}"
+                     alt="{{ node.get('display_name') }}" style="max-height:60px;">
+                </a>
+            </div>
+            {% endif %}
+        {% endblock %}
+        <a href="{{url}}">
+            <h1 class="heading">{{ node.get('display_name') }}</h1>
+        </a>
+    </section>
+</div>
+{% endblock %}
+

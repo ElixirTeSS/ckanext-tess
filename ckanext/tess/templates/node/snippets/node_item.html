@@ -1,0 +1,77 @@
+{#
+Renders a media item for a node. This should be used in a list.
+
+node - A node dict.
+
+Example:
+
+    <ul class="media-grid">
+      {% for node in nodes %}
+        {% snippet "node/snippets/node_item.html", node=node %}
+      {% endfor %}
+    </ul>
+#}
+
+{% resource 'tess/load_country_info.js' %}
+{% set node = h.get_extras(node) %}
+
+{% set url = h.url_for(node.type ~ '_read', action='read', id=node.name) %}
+<li class="media-item">
+  {% block image %}
+    {% if node.get('country_code'): %}
+        <img src="/images/node_flags/{{node.get('country_code')}}.png" class="img-circle-small" style="max-height:60px;">
+    {% else %}
+        <img src="{{ node.image_display_url or h.url_for_static('/images/empty.gif') }}" alt="{{ node.name }}" class="media-image">
+    {% endif %}
+  {% endblock %}
+  {% block title %}
+    <h3 class="media-heading">{{ node.display_name }}</h3>
+
+  {% endblock %}
+  {% block node_info %}
+    <!--<p>-->
+        <!--<b>Head of node:</b><br>-->
+        <!--{% if node.hon: %}-->
+            <!--{{node.hon}}-->
+        <!--{% else %}-->
+            <!--<span class="empty">None</span>-->
+        <!--{% endif %}-->
+    <!--</p>-->
+    <p>
+        <b>Training coordinator:</b><br>
+        {% if node.trc: %}
+            {{node.trc}}<br>
+        {% else %}
+            <span class="empty">None</span><br>
+        {% endif %}
+    <!--</p>-->
+        <!--<p>-->
+        <!--<b>Technical coordinator:</b><br>-->
+        <!--{% if node.tec: %}-->
+            <!--{{node.tec}}-->
+        <!--{% else %}-->
+            <!--<span class="empty">None</span>-->
+        <!--{% endif %}-->
+    <!--</p>-->
+  {% endblock %}
+  <!--{% block description %}-->
+    <!--{% if node.description %}-->
+      <!--<p>{{ h.markdown_extract(node.description, extract_length=80) }}</p>-->
+    <!--{% endif %}-->
+  <!--{% endblock %}-->
+  {% block datasets %}
+    {% set training_materials = h.get_node_materials(node) %}
+    {% if training_materials|length > 0 %}
+      <strong class="count">{{ training_materials|length }} training material</strong>
+    {% else %}
+      <span class="count">{{ _('0 training materials') }}</span>
+    {% endif %}
+  {% endblock %}
+  <a href="{{ url }}" title="{{ _('View {node_name}').format(node_name=node.display_name) }}" class="media-view">
+    <span>{{ _('View {node_name}').format(node_name=node.display_name) }}</span>
+  </a>
+</li>
+
+{% if position is divisibleby 3 %}
+  <li class="clearfix js-hide"></li>
+{% endif %}

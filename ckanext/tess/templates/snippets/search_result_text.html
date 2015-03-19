@@ -34,6 +34,11 @@ Example:
   {% set text_query_none = _('No content providers found for "{query}"') %}
   {% set text_no_query = ungettext('{number} content providers found', '{number} content providers found', count) %}
   {% set text_no_query_none = _('No content providers found') %}
+{% elif type == 'node' %}
+  {% set text_query = ungettext('{number} ELIXIR node found for "{query}"', '{number} ELIXIR nodes found for "{query}"', count) %}
+  {% set text_query_none = _('No ELIXIR nodes found for "{query}"') %}
+  {% set text_no_query = ungettext('{number} ELIXIR nodes found', '{number} ELIXIR nodes found', count) %}
+  {% set text_no_query_none = _('No ELIXIR nodes found') %}
 {%- endif -%}
 
 {% if query %}

@@ -1,0 +1,76 @@
+{% extends "page.html" %}
+
+
+{% block subtitle %}{{ _('Block Process') }}{% endblock %}
+
+{% block breadcrumb_content %}
+<li class="active">{% link_for _('Node Administration'), controller='ckanext.tess.admin:AdminController',
+    action='bulk_process_materials' %}
+</li>
+{% endblock %}
+
+
+{% block main_content %}
+{% block flash %}
+{{ super() }}
+{% endblock %}
+
+{% set nodes = h.get_all_node_names() %}
+{% if not c.materials %}
+    {% block primary_content %}
+        {# should have already redirected #}
+    {% endblock %}
+{% else %}
+    <div class="node-admin-stats">
+        <h2>Node Attribution Admin Panel</h2>
+        {% if c.admin %}
+            <p>You are logged in as <b>administrator</b> so you can modify any training materials. With great power comes great responsibility!</p>
+        {% endif %}
+        <b>Displaying:</b> {{c.materials.__len__() }} Training Materials.
+    </div>
+    <form class="dataset-form form-horizontal" method="post" action="/admin/nodes/save" data-module="basic-form"
+      enctype="multipart/form-data">
+    <table class="table-condensed table-bordered table-striped table-responsive table-hover">
+        <div class="">
+            <th>Name</th>
+            <th>Content Provider</th>
+            <th>None</th>
+            {% for node in nodes %}
+            <th>
+                {{h.country_code_of_node(node)}}
+                {# h.display_name_of_node(node) #}
+            </th>
+            {% endfor %}
+        </div>
+
+
+        {% for material in c.materials %}
+        <tr style="padding-bottom:15px">
+            {% set url = h.url_for(controller='package', action='read', id=material.get('name')) %}
+            <td>{{h.link_to(material.get('title'), url )}}</td>
+
+            <td>
+                {% set organization = material.get('organization', None) %}
+                {% if organization %}
+                    {{ organization.get('title') }}
+                {% else %}
+                    <i>No Content Provider</i>
+                {% endif %}
+            </td>
+            <td><input type="radio" name="{{material.get('name')}}" value="" checked></td>
+            {% for node in nodes %}
+                {% if material.get('node_id') == node %}
+                    <td><input type="radio" name="{{material.get('name')}}" value="{{node}}" checked></td>
+                {% else %}
+                    <td><input type="radio" name="{{material.get('name')}}" value="{{node}}"></td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        {% endfor %}
+
+    </table>
+    <button class="btn btn-primary" name="save" type="submit">{% block save_text %}{{ _('Save') }}{% endblock %}
+    </button>
+</form>
+{% endif %}
+{% endblock %}

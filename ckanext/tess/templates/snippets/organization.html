@@ -3,57 +3,91 @@ Embeds a organization within the sidebar of a page.
 
 organization    - The organization dict.
 truncate - A max length for the organization description. If not provided the description
-           will be full length.
+will be full length.
 has_context_title - Boolean for whether to display a module-heading for when
-                    this snippet appears within a non-organization template
-                    (e.g. dataset page sidebar)
+this snippet appears within a non-organization template
+(e.g. dataset page sidebar)
 
 Example:
 
-    {% snippet 'snippets/organization, organization=c.group_dict %}
+{% snippet 'snippets/organization, organization=c.group_dict %}
 
 #}
 
 {% set truncate = truncate or 0 %}
 {% set url = h.url_for(controller='organization', action='read', id=organization.name) %}
 
-  {% block info %}
-  <div class="module module-narrow module-shallow context-info">
+{% block info %}
+<div class="module module-narrow module-shallow context-info">
     {% if has_context_title %}
-      <h2 class="module-heading"><i class="icon-building"></i> {{ _('Content provider') }}</h2>
+    <h2 class="module-heading"><i class="icon-building"></i> {{ _('Content Provider') }}</h2>
     {% endif %}
     <section class="module-content">
-      {% block image %}
+        {% block image %}
         <div class="image">
-          <a href="{{ url }}">
-            <img src="{{ organization.image_display_url or h.url_for_static('/base/images/placeholder-organization.png') }}" alt="{{ organization.name }}" />
-          </a>
+            <a href="{{ url }}">
+                <img src="{{ organization.image_display_url or h.url_for_static('/base/images/placeholder-organization.png') }}"
+                     alt="{{ organization.name }}"/>
+            </a>
         </div>
-      {% endblock %}
-      <h1 class="heading">{{ organization.title or organization.name }}</h1>
-      {% if organization.description %}
+        {% endblock %}
+        <h1 class="heading">{{ organization.title or organization.name }}</h1>
+        {% if organization.description %}
         <p>
-          {{ h.markdown_extract(organization.description, 180) }}
-          {% link_for _('read more'), controller='organization', action='about', id=organization.name %}
+            {{ h.markdown_extract(organization.description, 180) }}
+            {% link_for _('read more'), controller='organization', action='about', id=organization.name %}
+            {% set homepage = organization.get('homepage', None) %}
+            {% if homepage %}
+        <h3> Homepage: </h3>
+        <div style="word-break: break-all">
+            <a href="{{organization.homepage}}"> {{organization.homepage}}</a></div>
+        {% endif %}
+        {% set node_name = organization.get('node_id', None) %}
+        {% if node_name %}
+        {% set node = h.get_node(node_name) %}
+        {% set node_url = h.url_for(controller='ckanext.tess.node:NodeController', action='read', id=node_name) %}
+        {% if node.get('country_code', None) %}
+        {% set logo_link = h.url_for_static('/images/node_flags/' + node.get('country_code') + '.png') %}
+        {% endif %}
+
+        <h3> Member of ELIXIR Node:</h3>
+        {% if logo_link %}
+        <div>
+            <a href="{{ node_url }}">
+                <img class="img-circle-small" src="{{logo_link}}"
+                     alt="{{ node.get('display_name') }}" style="max-height:60px;">
+            </a>
+        </div>
+        {% endif %}
+        <a href="{{ node_url }}">
+            <h1 class="heading">{{ node.get('display_name') }}</h1>
+        </a>
+        {% endif %}
+
+
         </p>
-      {% else %}
+        {% else %}
         <p class="empty">{{ _('There is no description for this content provider') }}</p>
-      {% endif %}
-      {% if show_nums %}
+        {% endif %}
+        {% if show_nums %}
         <div class="nums">
-          <dl>
-            <dt>{{ _('Followers') }}</dt>
-            <dd>{{ h.SI_number_span(organization.num_followers) }}</dd>
-          </dl>
-          <dl>
-            <dt>{{ _('Training materials') }}</dt>
-            <dd>{{ h.SI_number_span(organization.package_count) }}</dd>
-          </dl>
+            <dl>
+                <dt>{{ _('Followers') }}</dt>
+
+                <dd>{{ h.SI_number_span(organization.get('num_followers', 0)) }}</dd>
+            </dl>
+            <dl>
+                <dt>{{ _('Training materials') }}</dt>
+                <dd>{{ h.SI_number_span(organization.get('package_count', 0)) }}</dd>
+            </dl>
         </div>
         <div class="follow_button">
-          {{ h.follow_button('group', organization.id) }}
+            {{ h.follow_button('group', organization.id) }}
         </div>
-      {% endif %}
+        {% endif %}
     </section>
-  </div>
-  {% endblock %}
+</div>
+{% endblock %}
+
+
+

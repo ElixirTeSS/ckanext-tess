@@ -1,3 +1,4 @@
 next/tess/plugin.pyc
 *.pyc
 .idea/
+ckanext_tess.egg-info/*

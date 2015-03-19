@@ -56,7 +56,12 @@
               {%- if facets.translated_fields and facets.translated_fields.has_key((field,value)) -%}
                 {{ facets.translated_fields[(field,value)] }}
               {%- else -%}
-                {{ h.list_dict_filter(search_facets_items, 'name', 'display_name', value) }}
+                {% if field == 'node_id' : %}
+                    {% set name = h.display_name_of_node(h.list_dict_filter(search_facets_items, 'name', 'display_name', value)) %}
+                {% else %}
+                    {% set name = h.list_dict_filter(search_facets_items, 'name', 'display_name', value) %}
+                {% endif %}
+                {{ name }}
               {%- endif %}
               <a href="{{ facets.remove_field(field, value) }}" class="remove" title="{{ _('Remove') }}"><i class="icon-remove"></i></a>
             </span>
