@@ -31,7 +31,7 @@
             {% endif %}
         </div>
 
-    {% block content_action %}
+        {% block content_action %}
             {% if h.check_access('group_update', {'id': c.group_dict.id}) %}
               {% link_for _('Manage'), controller='ckanext.tess.node:NodeController', action='edit', id=node.get('name'), class_='btn', icon='wrench' %}
             {% endif %}

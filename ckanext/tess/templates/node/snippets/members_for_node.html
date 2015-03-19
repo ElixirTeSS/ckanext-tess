@@ -16,7 +16,7 @@
             {% endif %}
             {% if member.get('image') %}
                 {% if url %}<a href="{{url}}">{% endif %}
-                <img src="{{ member.get('image') }}" style="max-width:100%">
+                <img src="{{ member.get('image') }}" class="centered-image">
                 {% if url %}</a>{% endif %}
             {% endif %}
             <hr>
