@@ -9,7 +9,7 @@
 {% block primary_content_inner %}
   <div class="clearfix">
     <h1 class="hide-heading">{{ _('Edit training materials') }}</h1>
-    <div class="primary" style="width:100%">
+    <div class="primary">
       <h3 class="page-heading">
         {% block page_heading %}
           {%- if c.page.item_count -%}
@@ -23,24 +23,25 @@
       </h3>
       {% block form %}
         {% if c.page.item_count %}
-          <form method="POST" data-module="basic-form" style="width:100%">
+          <form method="POST" data-module="basic-form">
             <table class="table table-bordered table-header table-hover table-bulk-edit table-edit-hover" data-module="table-selectable-rows">
               {% set organization_node = h.get_node(c.group_dict.node_id) %}
               <col width="8">
-              {% if organization_node %}<col width="15">{% endif %}
+              {% if organization_node %}<col width="18">{% endif %}
               <col width="120">
               <thead>
                 <tr>
                   <th></th>
-                    {% if organization_node %}<th>Node Code</th>{% endif %}
+                    {% if organization_node %}<th>Node</th>{% endif %}
                     <th class="table-actions">
-                      <div class="btn-group">
+
                       {% if organization_node %}
                         <button name="bulk_action.node_assign" value="{{organization_node.name}}" class="btn" type="submit">
                             <i class="icon-elixir"></i>
-                            {{ _('Assign to %s' % organization_node.display_name) }}
+                            {{ _('Assign Training Materials to %s' % organization_node.display_name) }}
                         </button>
                       {% endif %}
+                        <div class="btn-group">
                       <button name="bulk_action.public" value="public" class="btn" type="submit">
                         <i class="icon-eye-open"></i>
                         {{ _('Make public') }}
@@ -107,6 +108,25 @@
         {% endif %}
       {% endblock %}
     </div>
+      <aside class="tertiary" style="margin-left:0">
+      {% block tertiary_content %}
+
+        {% block search_form %}
+          {% set sorting = [
+            (_('Name Ascending'), 'title_string asc'),
+            (_('Name Descending'), 'title_string desc'),
+            (_('Last Modified'), 'data_modified desc') ]
+          %}
+          {% snippet 'snippets/search_form.html', type='dataset', query=c.q, sorting=sorting, sorting_selected=c.sort_by_selected, no_title=true, search_class=' ' %}
+          <br>
+        {% endblock %}
+
+        {#{% snippet 'snippets/simple_search.html', q=c.q, sort=c.sort_by_selected, placeholder=_('Search training materials...'), extra_sort=[(_('Last Modified'), 'data_modified asc')], input_class='search-normal', form_class='search-aside' %}#}
+        {% for facet in c.facet_titles %}
+          {{ h.snippet('snippets/facet_list.html', title=c.facet_titles[facet], name=facet, extras={'id':c.group_dict.id}) }}
+        {% endfor %}
+      {% endblock %}
+    </aside>
   </div>
   {{ c.page.pager() }}
 {% endblock %}

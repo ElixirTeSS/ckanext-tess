@@ -20,22 +20,25 @@ parse_params = logic.parse_params
 # The params are dataset_id as key and previous node-code as value
 # For example:
 # params = {'dataset_392jekf93u93j39fes239': 'GB',
-#           'dataset_a3ij3jmdsijfdsion393u': 'ES' }
+#           'dataset_a3ij3jmdsijfdsion393u': 'ES'
+# }
+
+
 def update_node_of_materials(node, params):
     count = 0
     for param in params:
-
-        old_node = params.get(param)
-        if old_node != node:
-            data_dict = {'id': param[8:], 'node_id': node}
-            context_ = {'model': model, 'session': model.Session,
-                        'user': c.user or c.author, 'save': 'save' in request.params,
-                        'for_edit': True,
-                        'parent': request.params.get('parent', None),
-                        'allow_partial_update': True }
-            save = get_action('package_update')(context_, data_dict)
-            if save:
-                count = count + 1
+        if param.startswith('dataset_'):
+            old_node = params.get(param)
+            if old_node != node:
+                data_dict = {'name': param[8:], 'node_id': node}
+                context_ = {'model': model, 'session': model.Session,
+                            'user': c.user or c.author, 'save': 'save' in request.params,
+                            'for_edit': True,
+                            'parent': request.params.get('parent', None),
+                            'allow_partial_update': True }
+                save = get_action('package_update')(context_, data_dict)
+                if save:
+                    count = count + 1
     h.flash_notice("%d Materials Assigned to %s" % (count, node.title()))
 
 
@@ -44,22 +47,25 @@ class OrganizationPlugin(plugins.SingletonPlugin, DefaultOrganizationForm):
     plugins.implements(plugins.interfaces.IOrganizationController, inherit=True)
 
     def before_view(self, pkg_dict):
-        print pkg_dict
         params = parse_params(request.params)
         node = params.pop('bulk_action.node_assign', None)
         if node:
             update_node_of_materials(node, params)
-        id = pkg_dict.get('name', None)
-        super(OrganizationPlugin, self).read(id)
-        return pkg_dict
+            id = pkg_dict.get('name', None)
+            # Would be good if we could call the read method here so it populates
+            # the c variables before rendering bulk_process.html as normal.
+            # Instead we redirect to the read page which isn't the right behaviour.
+            # e.g. super(OrganizationPlugin, self).read(id)
+            redirect(h.url_for(controller="organization",
+                     action="read", id=id))
+        else:
+            return pkg_dict
 
     def group_types(self):
         return ['organization']
 
-
     def is_fallback(self):
         return False
-
 
     def form_to_db_schema_options(self, options):
         ''' This allows us to select different schemas for different
