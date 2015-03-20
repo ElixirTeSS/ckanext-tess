@@ -6,6 +6,8 @@ from pylons import c
 import ckan.lib.helpers as h
 import os
 import operator
+import ckan.logic as logic
+NotFound = logic.NotFound
 
 from ckan.lib.plugins import DefaultGroupForm
 
@@ -45,6 +47,9 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
         map.connect('edit-node', '/node/edit/{id}', controller='ckanext.tess.node:NodeController', action='edit')
         map.connect('read-node', '/node/{id}', controller='ckanext.tess.node:NodeController', action='read')
         map.connect('delete-node', '/node/delete/{id}', controller='ckanext.tess.node:NodeController', action='delete')
+        map.connect('bulk_process_org', '/organization/bulk_process/{id}',
+                    controller='ckanext.tess.organization:OrganizationController',
+                    action='bulk_process')
         return map
 
     def is_fallback(self):
@@ -213,8 +218,12 @@ def all_content_provider_name_and_ids():
     return list
 
 def get_node(node_id):
-    data = {'id': node_id}
-    return toolkit.get_action('group_show')({}, data)
+    try:
+        data = {'id': node_id}
+        return toolkit.get_action('group_show')({}, data)
+    except NotFound:
+        return None
+
 
 
 def display_name_of_node(node_id):
