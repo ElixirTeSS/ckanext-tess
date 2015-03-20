@@ -38,30 +38,36 @@ Example:
             {% link_for _('read more'), controller='organization', action='about', id=organization.name %}
             {% set homepage = organization.get('homepage', None) %}
             {% if homepage %}
+
         <h3> Homepage: </h3>
+
         <div style="word-break: break-all">
             <a href="{{organization.homepage}}"> {{organization.homepage}}</a></div>
         {% endif %}
-        {% set node_name = organization.get('node_id', None) %}
-        {% if node_name %}
-        {% set node = h.get_node(node_name) %}
-        {% set node_url = h.url_for(controller='ckanext.tess.node:NodeController', action='read', id=node_name) %}
-        {% if node.get('country_code', None) %}
-        {% set logo_link = h.url_for_static('/images/node_flags/' + node.get('country_code') + '.png') %}
-        {% endif %}
 
-        <h3> Member of ELIXIR Node:</h3>
-        {% if logo_link %}
-        <div>
-            <a href="{{ node_url }}">
-                <img class="img-circle-small" src="{{logo_link}}"
-                     alt="{{ node.get('display_name') }}" style="max-height:60px;">
-            </a>
-        </div>
-        {% endif %}
-        <a href="{{ node_url }}">
-            <h1 class="heading">{{ node.get('display_name') }}</h1>
-        </a>
+        {# Content provider logo #}
+        {% if show_cp_node %}
+          {% set node_name = organization.get('node_id', None) %}
+            {% if node_name %}
+                {% set node = h.get_node(node_name) %}
+                {% set node_url = h.url_for(controller='ckanext.tess.node:NodeController', action='read', id=node_name) %}
+                {% if node.get('country_code', None) %}
+                    {% set logo_link = h.url_for_static('/images/node_flags/' + node.get('country_code') + '.png') %}
+                {% endif %}
+
+                <h3> Member of ELIXIR Node:</h3>
+                    {% if logo_link %}
+                    <div>
+                        <a href="{{ node_url }}">
+                            <img class="img-circle-small" src="{{logo_link}}"
+                                alt="{{ node.get('display_name') }}" style="max-height:60px;">
+                        </a>
+                    </div>
+                    {% endif %}
+                <a href="{{ node_url }}">
+                    <h1 class="heading">{{ node.get('display_name') }}</h1>
+                </a>
+            {% endif %}
         {% endif %}
 
 
