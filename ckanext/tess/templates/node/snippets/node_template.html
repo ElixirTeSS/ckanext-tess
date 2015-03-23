@@ -36,23 +36,12 @@
               {% link_for _('Manage'), controller='ckanext.tess.node:NodeController', action='edit', id=node.get('name'), class_='btn', icon='wrench' %}
             {% endif %}
         {% endblock %}
-
 </header>
 
 {% block node_heading %}
-{% if node.get('description'): %}
-<div class="row-fluid" style="padding:20px 20px 0px 20px;">
-    <!--<h3>Description</h3>-->
-        {{ node.get('description') }}
-</div>
-{% endif %}
-<!--{% if node.get('home_page'): %}-->
-<!--<div class="row-fluid" style="padding-top:10px; padding-left: 20px;">-->
-    <!--&lt;!&ndash;<h3>Home page</h3>&ndash;&gt;-->
-        <!--{{ node.get('home_page') }}-->
-<!--</div>-->
-<!--{% endif %}-->
+{% snippet "node/snippets/heading_for_node.html", node=node %}
 {% endblock %}
+
 <div style="clear:both;"></div>
 
 <div class="module-content">
