@@ -95,7 +95,7 @@
     </div>
     <div id="extraInstitutionsContainer">
         {% set institutions_obj = h.string_to_json_object(data.institutions) %}
-        {% if institutions_obj and institutions_obj['institutions']|length > 0: %}
+        {% if institutions_obj and institutions_obj['institutions'] and  institutions_obj['institutions']|length > 0: %}
             {% for institution in institutions_obj['institutions']%}
             <div class="institution">
                 {{ form.input('institution_name', label=_("Institution's name"), id='institution_name', placeholder=("Name of the institution"), value=institution['name'], classes=['control-medium']) }}
@@ -131,7 +131,7 @@
     </div>
     <div id="extraStaffContainer">
         {% set staff_obj = h.string_to_json_object(data.staff) %}
-        {% if staff_obj and staff_obj['staff']|length > 0: %}
+        {% if staff_obj and staff_obj['staff'] and staff_obj['staff']|length > 0: %}
             {% for staff in staff_obj['staff']%}
             <div class="staffMember">
                 {{ form.input('staff_name', label=_("Member of staff's name"), id='staff_name', placeholder=("Name of the member of staff"), value=staff['name'], classes=['control-medium']) }}
