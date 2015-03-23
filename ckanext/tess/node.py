@@ -37,6 +37,7 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
                 'all_content_provider_name_and_ids': all_content_provider_name_and_ids,
                 'get_node': get_node,
                 'display_name_of_node': display_name_of_node,
+                'carousel_images_of_node': carousel_images_of_node,
                 'country_code_of_node': country_code_of_node,
                 'string_to_json_object': string_to_json_object
         }
@@ -232,6 +233,13 @@ def display_name_of_node(node_id):
         return node.get('display_name')
     else:
         return node_id.replace('-', ' ').title()
+
+
+def carousel_images_of_node(node):
+    carousel = [node.get('carousel_image_1'), node.get('carousel_image_2'), node.get('carousel_image_3')]
+    carousel = filter(None, carousel)
+    return {'length': len(carousel) or 0, 'carousel': carousel}
+
 
 def country_code_of_node(node_id):
     node = get_node(node_id)
