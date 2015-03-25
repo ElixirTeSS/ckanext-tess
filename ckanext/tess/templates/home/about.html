@@ -148,7 +148,9 @@
             Please note that the TeSS at present is in pre-alpha state (as of 21th January 2015). Our first official alpha release is scheduled for the 30th March 2015.
         </p>
         {% endtrans %}
-        <a name="about"></a><h2>{{ _('Training Coordinators') }}</h2>
+        <a name="trainers"> </a>
+        <h2>{{ _('Training Coordinators') }}</h2>
+
         {% snippet "home/snippets/training_coordinators.html", training_coordinators=h.training_coordinators() %}
         {% endif %}
         {% endblock %}
@@ -185,6 +187,11 @@
                         <li class="nav-item">
                             <a href="#software" title="">
                                 <span>Software</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#trainers" title="">
+                                <span>Training Co-ordinators</span>
                             </a>
                         </li>
                     </ul>
