@@ -24,9 +24,15 @@ This customization:
     <a href="{{ h.url_for(controller='organization', action='read', id=package.organization.name) }}">
         <img src="{{package.organization.image_url}}" class="dataset-content-provider-logo" alt="{{package.organization.name}}"/>
     </a>
-    {% if false %} package.node_id
+    {% if package.node_id %}
         <a href="{{ h.url_for(controller='ckanext.tess.node:NodeController', action='read', id=package.node_id) }}">
-            <div class="dataset-node-icon img-circle-small"> {{ h.country_code_of_node(package.node_id) }}</div>
+            {% set country_code = h.country_code_of_node(package.node_id) %}
+            {% if country_code == 'EMBL-EBI' %}
+                {% set country_code = 'EBI' %}
+            {% elif country_code == 'GB' %}
+                {% set country_code = 'UK' %}
+            {% endif %}
+            <div class="dataset-node-icon img-circle-small"><i class="icon-elixir"></i>{{country_code}}</div>
         </a>
     {% endif %}
     </div>
