@@ -3,14 +3,22 @@
         <i class="icon-info-sign"></i>
         {{ _('What are ELIXIR nodes?') }}
     </h2>
+
     <div class="module-content">
-        {% trans %}
         <p>
             ELIXIR is a pan-European research infrastructure.
-            It consists of <a href="/node/custom/hub.html">the Hub</a> and a number of ELIXIR nodes. Each participating node has a head of node, a training co-ordinator, and a technical co-ordinator.
-            You can add a new node here if your country has signed the declaration to join ELIXIR.
+            It consists of <a href="/node/custom/hub.html">the Hub</a>, and {{c.page.item_count}} ELIXIR nodes.
         </p>
-        {% endtrans %}
+        <p>
+            Select a node to find out more about the training materials, events, news, staff, and institutions
+            associated with it.</p>
+        {% if h.check_access('group_create') %}
+            <p>
+                You can add a new node here if your country has signed the declaration to join ELIXIR.
+            </p>
+        {% endif %}
+
+        </p>
     </div>
     <hr style="margin: 0px;">
     <nav>
