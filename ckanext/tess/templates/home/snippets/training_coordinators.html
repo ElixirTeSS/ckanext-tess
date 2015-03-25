@@ -6,30 +6,17 @@ trc_email: email
 node: node-name}
 #}
 
-{% for trc in training_coordinators %}
-<div class="trc-info">
-
-    {% if trc.get('trc', None) %}
-    <div class="item">
-        Name: {{trc.get('trc')}}
-    </div>
-
-    {% endif %}
-    {% if trc.get('trc_email', None) %}
-    <div class="item">
-        E-mail: <a href="mailto:{{ trc.get('trc_email') }}">{{ trc.get('trc_email') }}</a>
-    </div>
-    {% endif %}
-    {% if false and trc.get('trc_image', None) %}
-    <div class="item">
-        <img src="{{ trc.get('trc_image') }}" class="img-circle-small" style="max-height:100px; float:right;"/>
-    </div>
-    {% endif %}
-    {% if trc.get('node', None) %}
-    <div class="item">
-        Node: {{trc.get('node', None)}}
-    </div>
-    {% endif %}
+<div class="module-content">
+    <ul class="media-grid masonry" data-module="media-grid">
+        {% for trc in training_coordinators %}
+        <li class="media-item masonry-brick node-brick">
+            {% snippet "snippets/training_coordinator.html",
+                    trc=trc.get('trc'),
+                    trc_email=trc.get('trc_email'),
+                    trc_image=trc.get('trc_image'),
+                    node=trc.get('node')
+            %}
+        </li>
+        {% endfor %}
+    </ul>
 </div>
-{% endfor %}
-

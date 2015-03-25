@@ -274,7 +274,7 @@ def training_coordinators():
             trcs.append({'trc': trc,
                          'trc_email': node.get('trc_email'),
                          'trc_image': node.get('trc_image'),
-                         'node': node.get('title')})
+                         'node': node})
     return trcs
 
 

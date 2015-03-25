@@ -1,0 +1,35 @@
+{% if trc %}
+<div class="item">
+    <b>Name:</b> {{trc}}
+</div>
+{% endif %}
+{% if trc_email %}
+<div class="item" style="word-break: break-all">
+    <b>E-mail:</b> <a href="mailto:{{ trc_email }}">{{ trc_email }}</a>
+</div>
+{% endif %}
+{% if trc_image %}
+<div class="item" style="float: left;">
+    <img src="{{ trc_image }}" class="img-circle-small centered-image" style="max-height:100px"/>
+</div>
+{% endif %}
+{% if node %}
+<div class="item" style="float: right;">
+    {% set node_url = h.url_for(controller='ckanext.tess.node:NodeController', action='read', id=node.get('name')) %}
+    {% if node.get('country_code', None) %}
+        {% set logo_link = h.url_for_static('/images/node_flags/' + node.get('country_code') + '.png') %}
+    {% endif %}
+    {% if logo_link %}
+    <span style="float:right;">
+        <a href="{{ node_url }}">
+            <img class="img-circle-small" src="{{logo_link}}" alt="{{ node.get('display_name') }}" style="max-height:30px;">
+        </a>
+    </span>
+    <br>
+    <br>
+    {% endif %}
+    <a href="{{ node_url }}">
+        <b>{{ node.get('display_name') }}</b>
+    </a>
+</div>
+{% endif %}

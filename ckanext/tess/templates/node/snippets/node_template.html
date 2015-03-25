@@ -76,7 +76,19 @@
             {% snippet "node/snippets/events_for_node.html", node=node %}
         </li>
         {% endblock %}
+        {% block training_coordinator %}
+        {% set trc = node.get('trc', None) %}
+        {% if trc %}
+        <li class="media-item masonry-brick node-brick">
+            <h2>Training Coordinator</h2>
+                {% snippet "snippets/training_coordinator.html",
+                            trc=node.get('trc', None),
+                            trc_email=node.get('trc_email', None),
+                            trc_image=node.get('trc_image', None) %}
+        </li>
+        {% endif %}
 
+        {% endblock %}
         {% block staff %}
         <li class="media-item masonry-brick node-brick">
             {% snippet "node/snippets/staff_for_node.html", node=node %}
