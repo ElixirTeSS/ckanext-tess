@@ -15,7 +15,7 @@
 {% endblock %}
 
 {% block primary_content_inner %}
-{% snippet 'snippets/search_form.html', type='workflow', query=c.q, sorting_selected=c.sort_by_selected, count=c.page.item_count, placeholder=_('Search workflows...'), show_empty=request.params, no_bottom_border=true if c.page.items %}
+{% snippet 'snippets/search_form.html', type='workflow', query=c.q, sorting_selected=c.sort_by_selected, count=1, placeholder=_('Search workflows...'), show_empty=request.params, no_bottom_border=true if c.page.items %}
 
 
 {% set stages = [
@@ -34,6 +34,7 @@
     {'name':'Sequence Based Analysis of Impact', 'id':'sequence-based-analysis-of-impact', 'coords':'575,360,650,425'}
     ]
 %}
+<span class="banner">{{_('Coming Soon')}}</span>
 <p>
     <img src="/images/training-workflow.png" width="800" height="500" alt="Workflow" usemap="workflow">
     <map name="workflow">
@@ -45,7 +46,7 @@
     </map>
 </p>
 <!--p>
-  <img src="/images/training-workflow2.png" alt="Training workflow expanded" style="border:1px solid black"> 
+  <img src="/images/training-workflow2.png" alt="Training workflow expanded" style="border:1px solid black">
 </p-->
 
 <h1 class="hide-heading">{{ _('Workflows') }}</h1>
