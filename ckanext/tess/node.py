@@ -31,6 +31,7 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
                 'get_available_countries': get_available_countries,
                 'get_extras': get_extras,
                 'get_node_materials': node_materials,
+                'training_coordinators': training_coordinators,
                 'tess_reorder_dataset_facets': reorder_dataset_facets,
                 'all_nodes': all_nodes,
                 'all_node_name_and_ids': all_node_name_and_ids,
@@ -259,8 +260,23 @@ def get_all_nodes():
     nodes = toolkit.get_action("group_list")\
         (data_dict={'all_fields': True,
                     'include_extras': True,
-                    'type': 'node'})
+                    'type': 'node', 'for_view': True})
     return nodes
+
+
+def training_coordinators():
+    node_names = get_all_node_names()
+    trcs = []
+    for node_name in node_names:
+        node = get_node(node_name)
+        trc = node.get('trc', None)
+        if trc:
+            trcs.append({'trc': trc,
+                         'trc_email': node.get('trc_email'),
+                         'trc_image': node.get('trc_image'),
+                         'node': node.get('title')})
+    return trcs
+
 
 def get_all_node_names():
     nodes = toolkit.get_action("group_list")\
