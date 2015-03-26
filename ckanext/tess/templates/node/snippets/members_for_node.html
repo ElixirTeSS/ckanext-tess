@@ -12,7 +12,7 @@
             <h3>{{ member.get('name') }}</h3>
             {% if member.get('home_page') %}
                 {% set url = member.get('home_page') %}
-                <b>Home Page:</b> <a href="{{url}}">{{url}}</a><br>
+                <b>Home page:</b> <a href="{{url}}">{{url}}</a><br>
             {% endif %}
             {% if member.get('image') %}
                 {% if url %}<a href="{{url}}">{% endif %}

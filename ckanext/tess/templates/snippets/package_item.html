@@ -16,7 +16,11 @@ This customization:
             {{ super() }}
         {% endblock %}
         {% block notes %}
-            {{ super() }}
+          {% if notes %}
+            <div>{{ notes|urlize }}</div>
+          {% else %}
+            <p class="empty">{{ _("This training material has no description") }}</p>
+          {% endif %}
         {% endblock %}
     </div>
 
