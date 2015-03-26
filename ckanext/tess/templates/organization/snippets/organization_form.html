@@ -24,7 +24,7 @@
 
     {{ form.image_upload(data, errors, is_upload_enabled=h.uploads_enabled(), is_url=is_url, is_upload=is_upload) }}
 
-    {{ form.input('homepage', label=_('Homepage'), id='field-name', placeholder=_('e.g. http://www.mygoblet.org/training-portal'), value=data.homepage, error=errors.homepage, classes=['control-full']) }}
+    {{ form.input('homepage', label=_('Home page'), id='field-name', placeholder=_('e.g. http://www.mygoblet.org/training-portal'), value=data.homepage, error=errors.homepage, classes=['control-full']) }}
 
   <div class="control-group">
         <label class="control-label" for="field-elixir_node">{{ _("Member of ELIXIR node") }}</label>
