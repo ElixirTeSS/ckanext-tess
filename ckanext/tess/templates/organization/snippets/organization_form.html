@@ -75,7 +75,7 @@
   {% block dataset_fields %}
     {% if data.packages %}
       <div class="control-group">
-        <label class="control-label">{{ _('Datasets') }}</label>
+        <label class="control-label">{{ _('Training materials') }}</label>
         <div class="controls">
           {% for dataset in data.packages %}
             <label class="checkbox" for="field-dataset-{{ loop.index0 }}">
@@ -89,7 +89,7 @@
 
     {% set dataset_name = 'packages__%s__name' % data.packages|length %}
     {% set dataset_attrs = {'data-module': 'autocomplete', 'data-module-source': '/dataset/autocomplete?q=?'} %}
-    {{ form.input(dataset_name, label=_('Add Dataset'), id="field-dataset", value=data[dataset_name], classes=['control-medium'], attrs=dataset_attrs) }}
+    {{ form.input(dataset_name, label=_('Add training materials'), id="field-dataset", value=data[dataset_name], classes=['control-medium'], attrs=dataset_attrs) }}
   {% endblock %}
   #}
 
