@@ -71,7 +71,7 @@
                   {% set node = h.get_node(package.get('node_id')) %}
                   <tr>
                     <td style="vertical-align: middle">
-                      <input type="checkbox" name="dataset_{{ package.id }}" value="{{ node.name }}">
+                      <input type="checkbox" name="dataset_{{ package.id }}" value="{{ node.name }}" style="top: -3px;">
                     </td>
                       {% if organization_node %}<td style="text-align: center;">
                         {% if node %}
