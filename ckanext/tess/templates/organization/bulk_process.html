@@ -41,7 +41,8 @@
                     <div class="btn-group">
                       {% if organization_node %}
                         <button name="bulk_action.node_assign" value="{{organization_node.name}}" class="btn" type="submit">
-                            {{ _('Assign to %s' % organization_node.display_name) }}
+                            <i class="icon-elixir"></i>
+                            {{ _('Assign to node') }}
                         </button>
                       {% endif %}
                       <button name="bulk_action.public" value="public" class="btn" type="submit">
