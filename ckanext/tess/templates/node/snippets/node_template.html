@@ -8,6 +8,7 @@
 <li><a href="{% url_for 'node' %}">{{ _('Nodes') }}</a></li>
 <li class="active"><a href="">{{ node.get('display_name') }}</a></li>
 {% endblock %}
+
 {% block primary %}
 {% set country_code = node.get('country_code') %}
 <header class="module-content page-header" style="padding:10px; margin: 0px;">

@@ -38,7 +38,9 @@
 {% endif %}
 
 {% if node.get('description'): %}
-<div class="row-fluid" style="padding:20px 20px 0px 20px;">
+<div class="row-fluid">
+    <div style="padding:20px 20px 0px 20px;">
     {{ node.get('description') }}
+    </div>
 </div>
 {% endif %}
