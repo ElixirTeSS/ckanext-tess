@@ -39,37 +39,11 @@ Example:
             {% set homepage = organization.get('homepage', None) %}
             {% if homepage %}
 
-        <h3> Homepage: </h3>
+        <h3> Home page: </h3>
 
         <div style="word-break: break-all">
             <a href="{{organization.homepage}}"> {{organization.homepage}}</a></div>
         {% endif %}
-
-        {# Content provider logo #}
-        {% if show_cp_node %}
-          {% set node_name = organization.get('node_id', None) %}
-            {% if node_name %}
-                {% set node = h.get_node(node_name) %}
-                {% set node_url = h.url_for(controller='ckanext.tess.node:NodeController', action='read', id=node_name) %}
-                {% if node.get('country_code', None) %}
-                    {% set logo_link = h.url_for_static('/images/node_flags/' + node.get('country_code') + '.png') %}
-                {% endif %}
-
-                <h3> Member of ELIXIR Node:</h3>
-                    {% if logo_link %}
-                    <div>
-                        <a href="{{ node_url }}">
-                            <img class="img-circle-small" src="{{logo_link}}"
-                                alt="{{ node.get('display_name') }}" style="max-height:60px;">
-                        </a>
-                    </div>
-                    {% endif %}
-                <a href="{{ node_url }}">
-                    <h1 class="heading">{{ node.get('display_name') }}</h1>
-                </a>
-            {% endif %}
-        {% endif %}
-
 
         </p>
         {% else %}
@@ -92,6 +66,45 @@ Example:
         </div>
         {% endif %}
     </section>
+
+        {# Content provider logo #}
+        {% if show_cp_node %}
+          {% set node_name = organization.get('node_id', None) %}
+            {% if node_name %}
+                {% set node = h.get_node(node_name) %}
+                {% set node_url = h.url_for(controller='ckanext.tess.node:NodeController', action='read', id=node_name) %}
+                {% if node.get('country_code', None) %}
+                    {% set logo_link = h.url_for_static('/images/node_flags/' + node.get('country_code') + '.png') %}
+                {% endif %}
+
+                    <section class="module module-narrow module-shallow">
+                        <h2 class="module-heading">
+                        <i class="icon-medium icon-elixir"></i>
+                        ELIXIR Node
+                        </h2>
+                        <nav>
+                            <ul class="unstyled nav-simple">
+                                <li class="nav-item" style="padding-left: 15px; padding-right: 5px;">
+                                    <div>
+                                    {% if logo_link %}
+                                        <a href="{{ node_url }}">
+                                            <img class="img-circle-small" src="{{logo_link}}"
+                                            alt="{{ node.get('display_name') }}" style="max-height:60px;">
+                                        </a> &nbsp;
+                                    {% endif %}
+                                    <a href="{{ node_url }}">
+                                       {{ node.get('display_name') }}
+                                     </a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </nav>
+                        <p class="module-footer">
+                        </p>
+                    </section>
+            {% endif %}
+        {% endif %}
+
 </div>
 {% endblock %}
 

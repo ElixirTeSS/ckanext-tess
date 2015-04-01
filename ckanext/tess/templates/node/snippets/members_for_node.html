@@ -9,10 +9,11 @@
         <p class="module-content" style="padding: 0px; margin: 0px;">
         {% for member in members %}
             {% set url = None %}
-            <h3>{{ member.get('name') }}</h3>
             {% if member.get('home_page') %}
                 {% set url = member.get('home_page') %}
-                <b>Home Page:</b> <a href="{{url}}">{{url}}</a><br>
+                 <h3><a href="{{url}}">{{ member.get('name') }}</a></h3>
+            {% else %}
+                 <h3>{{ member.get('name') }}</h3>
             {% endif %}
             {% if member.get('image') %}
                 {% if url %}<a href="{{url}}">{% endif %}
@@ -23,9 +24,9 @@
         {% endfor %}
         </p>
     {% else %}
-        <p class="module-content empty" style="padding: 0px; margin: 0px;">No Member Institutions found for this node</p>
+        <p class="module-content empty" style="padding: 0px; margin: 0px;">No member institutions found for this node</p>
     {% endif %}
 {% else %}
-    <p class="module-content empty" style="padding: 0px; margin: 0px;">No Member Institutions found for this node</p>
+    <p class="module-content empty" style="padding: 0px; margin: 0px;">No member institutions found for this node</p>
 {% endif %}
 

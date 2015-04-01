@@ -24,7 +24,7 @@
 
     {{ form.image_upload(data, errors, is_upload_enabled=h.uploads_enabled(), is_url=is_url, is_upload=is_upload) }}
 
-    {{ form.input('homepage', label=_('Homepage'), id='field-name', placeholder=_('e.g. http://www.mygoblet.org/training-portal'), value=data.homepage, error=errors.homepage, classes=['control-full']) }}
+    {{ form.input('homepage', label=_('Home page'), id='field-name', placeholder=_('e.g. http://www.mygoblet.org/training-portal'), value=data.homepage, error=errors.homepage, classes=['control-full']) }}
 
   <div class="control-group">
         <label class="control-label" for="field-elixir_node">{{ _("Member of ELIXIR node") }}</label>
@@ -75,7 +75,7 @@
   {% block dataset_fields %}
     {% if data.packages %}
       <div class="control-group">
-        <label class="control-label">{{ _('Datasets') }}</label>
+        <label class="control-label">{{ _('Training materials') }}</label>
         <div class="controls">
           {% for dataset in data.packages %}
             <label class="checkbox" for="field-dataset-{{ loop.index0 }}">
@@ -89,7 +89,7 @@
 
     {% set dataset_name = 'packages__%s__name' % data.packages|length %}
     {% set dataset_attrs = {'data-module': 'autocomplete', 'data-module-source': '/dataset/autocomplete?q=?'} %}
-    {{ form.input(dataset_name, label=_('Add Dataset'), id="field-dataset", value=data[dataset_name], classes=['control-medium'], attrs=dataset_attrs) }}
+    {{ form.input(dataset_name, label=_('Add training materials'), id="field-dataset", value=data[dataset_name], classes=['control-medium'], attrs=dataset_attrs) }}
   {% endblock %}
   #}
 

@@ -26,7 +26,7 @@ Example:
   {% endblock %}
   {% block datasets %}
     {% if organization.packages %}
-      <strong class="count">{{ ungettext('{num} Dataset', '{num} training materials', organization.packages).format(num=organization.packages) }}</strong>
+      <strong class="count">{{ ungettext('{num} training material', '{num} training materials', organization.packages).format(num=organization.packages) }}</strong>
     {% else %}
       <span class="count">{{ _('0 training materials') }}</span>
     {% endif %}
