@@ -29,5 +29,11 @@ Example:
           <p class="empty">{{ _('This dataset has no data') }}</p>
       {% endif %}
     {% endif %}
+
+    {% set events = h.related_events(pkg) %}
+
+    <b>URL</b>: {{ events[0]}}<br>
+    <b>Results</b>: {{ events[1]}}
+
     {% endblock %}
 </section>

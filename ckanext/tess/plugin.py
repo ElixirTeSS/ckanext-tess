@@ -4,12 +4,13 @@
 import json as json
 import ckan.plugins.toolkit as toolkit
 import ckan.plugins as plugins
-from pylons import c
 import ckan.lib.helpers as h
 import os
 import operator
-
+import urllib2
+from pylons import c
 from ckan.lib.plugins import DefaultGroupForm
+
 
 
 
@@ -24,7 +25,18 @@ def iann_news():
     data = "<p>No events found!</p>"
   return plugins.toolkit.literal(data)
 
-
+def related_events(criteria):
+    try:
+        html = None
+        url = 'http://iann.pro/solr/select/?q=category:event'
+        name = criteria.get('title', None)
+        if name:
+            url = ('%s%%20AND%%20title:"%s"' % (url, name))
+        res = urllib2.urlopen(url)
+        html = res.read()
+    except Exception, e:
+        print 'bummer'
+    return [url, html]
 ######################
 # Plugin starts here #
 ######################
@@ -75,7 +87,8 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
 
     def get_helpers(self):
         return {
-                'read_news_iann': iann_news
+                'read_news_iann': iann_news,
+                'related_events': related_events
                 }
 
     def _modify_package_schema(self, schema):
