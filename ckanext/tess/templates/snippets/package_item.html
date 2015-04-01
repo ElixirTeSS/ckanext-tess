@@ -21,10 +21,20 @@ This customization:
     </div>
 
     <div class="package-icons">
-    <a href="{{ h.url_for(controller='organization', action='read', id=package.organization.name) }}">
-        <img src="{{package.organization.image_url}}" class="dataset-content-provider-logo" alt="{{package.organization.name}}"/>
-    </a>
-    {% if package.node_id %}
+        {% set image_url = package.organization.image_url %}
+         {%  if image_url and not image_url.startswith('http') %}
+            {% set image_url = h.url_for_static('uploads/group/%s' % package.organization.image_url, qualified=True) %}
+         {% endif %}
+        {% if image_url %}
+            <a href="{{ h.url_for(controller='organization', action='read', id=package.organization.name) }}">
+            <img src="{{image_url}}" alt="{{ package.organization.name }}" class="media-image">
+            </a>
+        {% else %}
+            <!--a href="{{ h.url_for(controller='organization', action='read', id=package.organization.name) }}">
+            <img src="{{h.url_for_static('/base/images/placeholder-organization.png')}}" alt="{{ package.organization.name }}" class="media-image">
+            </a-->
+        {% endif %}
+    {% if package.node_id and false %}
         <a href="{{ h.url_for(controller='ckanext.tess.node:NodeController', action='read', id=package.node_id) }}">
             {% set country_code = h.country_code_of_node(package.node_id) %}
             {% if country_code == 'EMBL-EBI' %}
