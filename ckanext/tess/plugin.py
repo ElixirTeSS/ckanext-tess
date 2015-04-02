@@ -8,10 +8,10 @@ import ckan.lib.helpers as h
 import os
 import operator
 import urllib2
+import urllib
 from pylons import c
 from ckan.lib.plugins import DefaultGroupForm
-
-
+import xml.etree.ElementTree as et
 
 
 # Return the iann specific news. This could be replaced with a general news function taking
@@ -25,18 +25,39 @@ def iann_news():
     data = "<p>No events found!</p>"
   return plugins.toolkit.literal(data)
 
-def related_events(criteria):
+
+def parse_xml(xml):
+    doc = et.fromstring(xml)
+    #names = doc.findall(".//*[@name='title']")
+    docs = doc.findall('*/doc')
+    results = []
+    for doc in docs:
+        res = {'title': doc.find("*/[@name='title']").text,
+               'id': doc.find("*/[@name='id']").text,
+               'link': doc.find("*/[@name='link']").text,
+               'start': doc.find("*/[@name='start']").text
+               }
+        results.append(res)
+    return results
+
+
+def related_events(model):
     try:
-        html = None
+        xml = None
         url = 'http://iann.pro/solr/select/?q=category:event'
-        name = criteria.get('title', None)
+        name = model.get('title', None)
         if name:
-            url = ('%s%%20AND%%20title:"%s"' % (url, name))
+            split = name.replace(' ','","')
+            split = ('title:("%s","%s")' % (urllib.quote(name), split))
+            url = ('%s%%20AND%%20%s' % (url, split))
         res = urllib2.urlopen(url)
-        html = res.read()
+        res = res.read()
+        xml = parse_xml(res)
     except Exception, e:
-        print 'bummer'
-    return [url, html]
+        print 'Error loading events from iANN.pro %s' % e
+    return [url, xml]
+
+
 ######################
 # Plugin starts here #
 ######################
