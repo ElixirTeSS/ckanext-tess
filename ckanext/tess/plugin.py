@@ -54,7 +54,7 @@ def related_events(model):
         res = res.read()
         xml = parse_xml(res)
     except Exception, e:
-        print 'Error loading events from iANN.pro %s' % e
+        print 'Error loading events from iANN.pro: \n %s' % e
     return [url, xml]
 
 
@@ -97,6 +97,7 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         map.connect('node_old', '/node_old', controller='ckanext.tess.plugin:TeSSController', action='node_old')
         map.connect('workflow', '/workflow', controller='ckanext.tess.plugin:TeSSController', action='workflows')
         map.connect('event', '/event', controller='ckanext.tess.plugin:TeSSController', action='events')
+        map.connect('dataset_events', '/dataset/events/{id}', controller='ckanext.tess.plugin:TeSSController', action='add_events')
         return map
 
     def dataset_facets(self, facets_dict, package_type):
@@ -153,6 +154,9 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
 
 import ckan.lib.base as base
 from ckan.controllers.home import HomeController
+import ckan.model as model
+import ckan.logic as logic
+get_action = logic.get_action
 
 
 class TeSSController(HomeController):
@@ -165,3 +169,14 @@ class TeSSController(HomeController):
     def workflows(self):
         return base.render('workflow/index.html')
 
+    def add_events(self, id):
+        context = {'model': model, 'session': model.Session,
+                   'api_version': 3, 'for_edit': True,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj}
+        pkg_dict = get_action('package_show')(context, {'id': id})
+
+        print "\n\n\n\n\n"
+        print pkg_dict
+        c.pkg_dict = pkg_dict
+        print "\n\n\n\n\n"
+        return base.render('package/related_events.html', extra_vars={'pkg': pkg_dict})

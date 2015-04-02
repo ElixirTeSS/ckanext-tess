@@ -30,9 +30,5 @@ Example:
       {% endif %}
     {% endif %}
 
-    {% set events = h.related_events(pkg) %}
-    <b>URL</b> = {{ events[0] }}
-    {% snippet "snippets/related_events.html", events=h.related_events(pkg)[1] %}
-
     {% endblock %}
 </section>
