@@ -16,7 +16,6 @@
     <ul class="media-grid masonry" data-module="media-grid">
         {% for event in events: %}
             <li class="media-item masonry-brick node-brick">
-                <h3>Potentially Related Event</h3>
                 {% snippet "snippets/related_event.html", event=event %}<br>
             </li>
         {% endfor %}

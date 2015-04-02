@@ -1,4 +1,23 @@
+
+{% if event.get('link') %}
+    {% set link = event.pop('link') %}
+    <a href="{{link}}" target="_blank" style="word-break: break-all"><h2>{{event.pop('title') }}</h2></a>
+{% else %}
+    <h2>{{event.pop('title') }}</h2>
+{% endif %}
+
+{% if event.get('subtitle') %}
+    <b>{{event.pop('subtitle') }}</b>
+{% endif %}
+
+{% if event.get('city') and event.get('country') %}
+    <b>Place:</b> {{ event.pop('city')}}, {{ event.pop('country')}}<br>
+{% endif %}
+
+{% set id = event.pop('id') %}
 {% for k, v in event.iteritems(): %}
- <b>{{k}}</b>: {{v}}<br>
+  {% if v %}
+ <b>{{k.title()}}</b>: {{v}}<br>
+  {% endif %}
 {% endfor %}
-<a class="btn">Associate with Material</a>
+<br><a class="btn" value="{{id}}">Associate with Material</a>

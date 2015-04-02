@@ -12,7 +12,7 @@ import urllib
 from pylons import c
 from ckan.lib.plugins import DefaultGroupForm
 import xml.etree.ElementTree as et
-
+from time import gmtime, strftime
 
 # Return the iann specific news. This could be replaced with a general news function taking
 # the news source as an argument.
@@ -28,13 +28,16 @@ def iann_news():
 
 def parse_xml(xml):
     doc = et.fromstring(xml)
-    #names = doc.findall(".//*[@name='title']")
     docs = doc.findall('*/doc')
     results = []
     for doc in docs:
         res = {'title': doc.find("*/[@name='title']").text,
                'id': doc.find("*/[@name='id']").text,
                'link': doc.find("*/[@name='link']").text,
+               'subtitle': doc.find("*/[@name='subtitle']").text,
+               'venue': doc.find("*/[@name='venue']").text,
+               'country': doc.find("*/[@name='country']").text,
+               'city': doc.find("*/[@name='city']").text,
                'start': doc.find("*/[@name='start']").text
                }
         results.append(res)
@@ -44,12 +47,15 @@ def parse_xml(xml):
 def related_events(model):
     try:
         xml = None
-        url = 'http://iann.pro/solr/select/?q=category:event'
+        url = 'http://iann.pro/solr/select/?q=category:course'
         name = model.get('title', None)
         if name:
             split = name.replace(' ','","')
             split = ('title:("%s","%s")' % (urllib.quote(name), split))
-            url = ('%s%%20AND%%20%s' % (url, split))
+            today = strftime('%Y-%m-%dT00%%3A00%%3A00Z', gmtime())
+            if True: #Exclude this for past events too
+                url = ('%s%%20AND%%20%s' % (url, split))
+                url = ('%s%%20AND%%20start:[%s%%20TO%%20*]' % (url, today))
         res = urllib2.urlopen(url)
         res = res.read()
         xml = parse_xml(res)
@@ -174,9 +180,5 @@ class TeSSController(HomeController):
                    'api_version': 3, 'for_edit': True,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj}
         pkg_dict = get_action('package_show')(context, {'id': id})
-
-        print "\n\n\n\n\n"
-        print pkg_dict
         c.pkg_dict = pkg_dict
-        print "\n\n\n\n\n"
         return base.render('package/related_events.html', extra_vars={'pkg': pkg_dict})
