@@ -32,6 +32,7 @@ def parse_xml(xml):
     results = []
     for doc in docs:
         res = {'title': doc.find("*/[@name='title']").text,
+               'provider': doc.find("*/[@name='provider']").text,
                'id': doc.find("*/[@name='id']").text,
                'link': doc.find("*/[@name='link']").text,
                'subtitle': doc.find("*/[@name='subtitle']").text,
@@ -47,15 +48,18 @@ def parse_xml(xml):
 def related_events(model):
     try:
         xml = None
-        url = 'http://iann.pro/solr/select/?q=category:course'
+        original_url = 'http://iann.pro/solr/select/?q=category:course'
         name = model.get('title', None)
         if name:
             split = name.replace(' ','","')
-            split = ('title:("%s","%s")' % (urllib.quote(name), split))
-            today = strftime('%Y-%m-%dT00%%3A00%%3A00Z', gmtime())
-            if True: #Exclude this for past events too
-                url = ('%s%%20AND%%20%s' % (url, split))
-                url = ('%s%%20AND%%20start:[%s%%20TO%%20*]' % (url, today))
+            title = ('title:("%s","%s")' % (urllib.quote(name), split))
+            keywords = ('keyword:("%s")' % split)
+            parameters = ('%s OR %s' % (title, keywords))
+            if False: #Exclude this for past events too
+                today = strftime('%Y-%m-%dT00-00-00Z', gmtime())
+                date = ('start:[%s TO *]' % (today))
+                parameters = ('%s AND (%s)' % (parameters, date))
+            url = ("%s%%20AND%%20%s" % (original_url, urllib.quote(parameters)))
         res = urllib2.urlopen(url)
         res = res.read()
         xml = parse_xml(res)
