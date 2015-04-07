@@ -72,7 +72,7 @@ def construct_url(parameter):
             split = q.replace(' ', '","')
             title = ('title:("%s","%s")' % (urllib.quote(q), split))
             keywords = ('keyword:("%s")' % split)
-            parameters = ('%s AND %s OR %s' % (category, title, keywords))
+            parameters = ('%s OR %s' % (title, keywords))
             if False:  # Exclude this for past events too
                 today = strftime('%Y-%m-%dT00-00-00Z', gmtime())
                 date = ('start:[%s TO *]' % (today))
