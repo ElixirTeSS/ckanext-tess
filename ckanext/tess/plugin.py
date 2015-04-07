@@ -45,7 +45,7 @@ def parse_xml(xml):
     return results
 
 
-def events(parameter):
+def events(parameter=None):
     try:
         xml = None
         original_url = 'http://iann.pro/solr/select/?q=category:course'
