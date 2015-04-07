@@ -6,7 +6,12 @@
 {% endblock %}
 
 {% block primary_content_inner %}
-    <h2>Potential Related Events</h2>
-    {% set events = h.related_events(pkg) %}
-    {% snippet "snippets/events.html", events=events, related=pkg %}
+    <h2>Suggested Events</h2>
+    {% if c.events %}
+        {% snippet "snippets/events.html", events=c.events, related=pkg %}
+    {% else %}
+        <i>No suggested events found. You can find your event using the tools below (if it is on iAnn).</i><br>
+        {% set events_hash = h.events() %}
+        {% snippet "snippets/events.html", events=events_hash.get('events'), related=pkg, count=events_hash.get('count') %}
+    {% endif %}
 {% endblock %}

@@ -9,7 +9,7 @@ import os
 import operator
 import urllib2
 import urllib
-from pylons import c
+from ckan.common import OrderedDict, c, g, request, _
 from ckan.lib.plugins import DefaultGroupForm
 import xml.etree.ElementTree as et
 from time import gmtime, strftime
@@ -28,6 +28,13 @@ def iann_news():
 
 def parse_xml(xml):
     doc = et.fromstring(xml)
+    result_element = doc.find('result')
+    count = 0
+    try:
+        count = int(result_element.attrib.get('numFound'))
+    except Exception, e:
+        print 'Could not load result element'
+
     docs = doc.findall('*/doc')
     results = []
     for doc in docs:
@@ -42,12 +49,12 @@ def parse_xml(xml):
                'start': doc.find("*/[@name='start']").text
                }
         results.append(res)
-    return results
+    return {'count': count, 'events': results}
 
 
 def events(parameter=None):
+    results = {}
     try:
-        xml = None
         original_url = 'http://iann.pro/solr/select/?q=category:course'
         if parameter:
             split = parameter.replace(' ','","')
@@ -63,10 +70,11 @@ def events(parameter=None):
             url = original_url
         res = urllib2.urlopen(url)
         res = res.read()
-        xml = parse_xml(res)
+        results = parse_xml(res)
+        results['url'] = url
     except Exception, e:
         print 'Error loading events from iANN.pro: \n %s' % e
-    return [url, xml]
+    return results
 
 
 def related_events(model):
@@ -75,6 +83,7 @@ def related_events(model):
         return events(name)
     except Exception, e:
         print 'Model has no title attribute: \n %s' % e
+        return None
 
 
 ######################
@@ -179,11 +188,18 @@ import ckan.logic as logic
 get_action = logic.get_action
 
 
+
 class TeSSController(HomeController):
     def node_old(self):
         return base.render('node_old/index.html')
 
     def events(self):
+        q = c.q = request.params.get('q', '')
+        events_hash = events(q)
+        c.events = events_hash.get('events')
+        c.events_count = events_hash.get('count')
+        c.events_url = events_hash.get('url')
+
         return base.render('events.html')
 
     def workflows(self):
@@ -195,4 +211,10 @@ class TeSSController(HomeController):
                    'user': c.user or c.author, 'auth_user_obj': c.userobj}
         pkg_dict = get_action('package_show')(context, {'id': id})
         c.pkg_dict = pkg_dict
+        events_hash = related_events(pkg_dict)
+        if events_hash:
+            c.events = events_hash.get('events')
+            c.events_count = events_hash.get('count')
+            c.events_url = events_hash.get('url')
+
         return base.render('package/related_events.html', extra_vars={'pkg': pkg_dict})

@@ -1,13 +1,13 @@
 
 {% if event.get('link') %}
     {% set link = event.pop('link') %}
-    <a href="{{link}}" target="_blank" style="word-break: break-all"><h2>{{event.pop('title') }}</h2></a>
+    <a href="{{link}}" target="_blank" style="word-break: break-all"><h3>{{event.pop('title') }}</h3></a>
 {% else %}
-    <h2>{{event.pop('title') }}</h2>
+    <h3>{{event.pop('title') }}</h3>
 {% endif %}
 
 {% if event.get('subtitle') %}
-    <b>{{event.pop('subtitle') }}</b><br>
+    <b>{{event.pop('subtitle') }}</b>
 {% endif %}
 
 {% if event.get('city') and event.get('country') %}

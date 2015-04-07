@@ -1,9 +1,12 @@
 
+{% if c.events_count %}
+  {% set count = c.events_count %}
+{% endif %}
 
-<b>URL</b> = {{ events[0] }}
-{% set events = events[1] %}
+{% snippet 'snippets/search_form.html', type='event', query=c.q, sorting_selected=c.sort_by_selected, count=c.events_count, placeholder=_('Search Events...'), show_empty=request.params, no_bottom_border=true if c.page.items %}
+{% snippet 'snippets/events_options.html' %}
+
 {% if events %}
-
 <div class="module-content">
     <ul class="media-grid masonry" data-module="media-grid">
         {% for event in events: %}
