@@ -17,6 +17,9 @@
                 <a target="_blank" href="http://iann.pro"><img alt="iAnn" src="/images/iann_logo-32x30.png"/></a>
             </p>
             <p>
+                <h1>OPTIONS (Stubs)</h1>
+                {% snippet 'snippets/search_form.html', type='event', query=c.q, sorting_selected=c.sort_by_selected, count=1, placeholder=_('Search Events...'), show_empty=request.params, no_bottom_border=true if c.page.items %}
+                {% snippet 'snippets/events_options.html' %}
                 {% snippet "snippets/events.html", events=h.events() %}
             </p>
             <!--p class="more-link"><a target="_blank" href="http://mygoblet.org/iannviewer">More events from iAnn</a></p-->
