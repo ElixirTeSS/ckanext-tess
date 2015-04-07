@@ -1,0 +1,54 @@
+{% extends "page.html" %}
+
+{% block subtitle %}{{ _('Events') }}{% endblock %}
+
+{% block breadcrumb_content %}
+  <li class="active">{% link_for _('Events'), controller='home', action='about' %}</li>
+{% endblock %}
+
+{% block primary %}
+<div class="primary" style="width: 74%; padding-right: 10px;">
+    <section class="module">
+        {% block about %}
+        <h1 >{{ _('Events') }}</h1>
+        {% endblock %}
+        <div id="iAnnList" class="events-source">
+            <p class="events-source-title"><strong>Source:</strong>
+                <a target="_blank" href="http://iann.pro"><img alt="iAnn" src="/images/iann_logo-32x30.png"/></a>
+            </p>
+            <p>
+                {{ c.events_url }}
+                {% snippet "event/snippets/events_list.html", events=c.events %}
+            </p>
+            <!--p class="more-link"><a target="_blank" href="http://mygoblet.org/iannviewer">More events from iAnn</a></p-->
+            <hr/>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block secondary_content %}
+<div class="module module-narrow module-shallow">
+    <h2 class="module-heading">
+        <i class="icon-info-sign"></i>
+        {{ _('What are Events?') }}
+    </h2>
+    <div class="module-content">
+        <p>Events are opportunities in, much like training materials, </p>
+    </div>
+
+    <hr style="margin: 0px;">
+     <h2 class="module-heading">
+        {{ _('Categories') }}
+     </h2>
+    <nav>
+        <ul class="unstyled nav nav-simple nav-facet-no-icon">
+                {% set url = h.url_for(controller='ckanext.tess.plugin:TeSSController', action='events', rows=500, category='course') %}
+                <li class="nav-item"><a href="{{url}}"><span>Courses</span></a></li>
+                {% set url = h.url_for(controller='ckanext.tess.plugin:TeSSController', action='events', rows=500, category='event') %}
+                <li class="nav-item"><a href="{{url}}"><span>Events</span></a></li>
+        </ul>
+    </nav>
+</div>
+
+{% endblock %}

@@ -3,15 +3,15 @@
   {% set count = c.events_count %}
 {% endif %}
 
-{% snippet 'snippets/search_form.html', type='event', query=c.q, sorting_selected=c.sort_by_selected, count=c.events_count, placeholder=_('Search Events...'), show_empty=request.params, no_bottom_border=true if c.page.items %}
-{% snippet 'snippets/events_options.html' %}
+{% snippet 'snippets/search_form.html', type='event', query=c.q, sorting_selected=c.sort_by_selected, count=count, placeholder=_('Search Events...'), show_empty=request.params, no_bottom_border=true if c.page.items %}
+{% snippet 'event/snippets/events_options.html' %}
 
 {% if events %}
 <div class="module-content">
     <ul class="media-grid masonry" data-module="media-grid">
         {% for event in events: %}
             <li class="media-item masonry-brick node-brick">
-                {% snippet "snippets/related_event.html", event=event, related=related %}<br>
+                {% snippet "event/snippets/events_item.html", event=event, related=related %}<br>
             </li>
         {% endfor %}
     </ul>

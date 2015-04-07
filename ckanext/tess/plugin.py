@@ -52,22 +52,43 @@ def parse_xml(xml):
     return {'count': count, 'events': results}
 
 
-def events(parameter=None):
-    results = {}
+def construct_url(parameter):
     try:
-        original_url = 'http://iann.pro/solr/select/?q=category:course'
-        if parameter:
-            split = parameter.replace(' ','","')
-            title = ('title:("%s","%s")' % (urllib.quote(parameter), split))
+        category = parameter.get('category', None)
+        rows = parameter.get('rows', None)
+        q = parameter.get('q', None)
+
+        original_url = 'http://iann.pro/solr/select/?'
+        if not rows:
+            rows = 100
+        original_url = ('%srows=%s' % (original_url, rows))
+
+        if category:
+            original_url = ('%s&q=category:%s' % (original_url, category))
+        else:
+            original_url = ('%s&q=category:%s' % (original_url, 'course'))
+        print original_url
+        if q:
+            split = q.replace(' ', '","')
+            title = ('title:("%s","%s")' % (urllib.quote(q), split))
             keywords = ('keyword:("%s")' % split)
-            parameters = ('%s OR %s' % (title, keywords))
-            if False: #Exclude this for past events too
+            parameters = ('%s AND %s OR %s' % (category, title, keywords))
+            if False:  # Exclude this for past events too
                 today = strftime('%Y-%m-%dT00-00-00Z', gmtime())
                 date = ('start:[%s TO *]' % (today))
                 parameters = ('%s AND (%s)' % (parameters, date))
             url = ("%s%%20AND%%20%s" % (original_url, urllib.quote(parameters)))
         else:
             url = original_url
+        return url
+    except Exception, e:
+        print 'Failed to construct URL for iAnn API \n %s' % e
+
+
+def events(parameter=None):
+    results = {}
+    url = construct_url(parameter)
+    try:
         res = urllib2.urlopen(url)
         res = res.read()
         results = parse_xml(res)
@@ -194,13 +215,17 @@ class TeSSController(HomeController):
         return base.render('node_old/index.html')
 
     def events(self):
-        q = c.q = request.params.get('q', '')
-        events_hash = events(q)
+        q_params = {}
+        q_params['q'] = c.q = request.params.get('q', '')
+        q_params['category'] = request.params.get('category', '')
+        q_params['rows'] = request.params.get('rows', '')
+
+        events_hash = events(q_params)
         c.events = events_hash.get('events')
         c.events_count = events_hash.get('count')
         c.events_url = events_hash.get('url')
 
-        return base.render('events.html')
+        return base.render('event/read.html')
 
     def workflows(self):
         return base.render('workflow/index.html')
