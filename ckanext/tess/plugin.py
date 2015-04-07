@@ -45,14 +45,13 @@ def parse_xml(xml):
     return results
 
 
-def related_events(model):
+def events(parameter):
     try:
         xml = None
         original_url = 'http://iann.pro/solr/select/?q=category:course'
-        name = model.get('title', None)
-        if name:
-            split = name.replace(' ','","')
-            title = ('title:("%s","%s")' % (urllib.quote(name), split))
+        if parameter:
+            split = parameter.replace(' ','","')
+            title = ('title:("%s","%s")' % (urllib.quote(parameter), split))
             keywords = ('keyword:("%s")' % split)
             parameters = ('%s OR %s' % (title, keywords))
             if False: #Exclude this for past events too
@@ -60,12 +59,22 @@ def related_events(model):
                 date = ('start:[%s TO *]' % (today))
                 parameters = ('%s AND (%s)' % (parameters, date))
             url = ("%s%%20AND%%20%s" % (original_url, urllib.quote(parameters)))
+        else:
+            url = original_url
         res = urllib2.urlopen(url)
         res = res.read()
         xml = parse_xml(res)
     except Exception, e:
         print 'Error loading events from iANN.pro: \n %s' % e
     return [url, xml]
+
+
+def related_events(model):
+    try:
+        name = model.get('title', None)
+        return events(name)
+    except Exception, e:
+        print 'Model has no title attribute: \n %s' % e
 
 
 ######################
@@ -120,7 +129,8 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     def get_helpers(self):
         return {
                 'read_news_iann': iann_news,
-                'related_events': related_events
+                'related_events': related_events,
+                'events': events
                 }
 
     def _modify_package_schema(self, schema):

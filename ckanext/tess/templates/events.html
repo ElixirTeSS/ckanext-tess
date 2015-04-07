@@ -17,9 +17,9 @@
                 <a target="_blank" href="http://iann.pro"><img alt="iAnn" src="/images/iann_logo-32x30.png"/></a>
             </p>
             <p>
-            {{ h.read_news_iann() }}
+                {% snippet "snippets/events.html", events=h.events(None) %}
             </p>
-            <p class="more-link"><a target="_blank" href="http://mygoblet.org/iannviewer">More events from iAnn</a></p>
+            <!--p class="more-link"><a target="_blank" href="http://mygoblet.org/iannviewer">More events from iAnn</a></p-->
             <hr/>
         </div>
     </section>

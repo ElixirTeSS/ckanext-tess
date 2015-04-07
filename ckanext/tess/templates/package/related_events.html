@@ -6,22 +6,7 @@
 {% endblock %}
 
 {% block primary_content_inner %}
-
-{% set events = h.related_events(pkg) %}
-<b>URL</b> = {{ events[0] }}
-{% set events = events[1] %}
-{% if events %}
-<h2>Potential Related Events</h2>
-<div class="module-content">
-    <ul class="media-grid masonry" data-module="media-grid">
-        {% for event in events: %}
-            <li class="media-item masonry-brick node-brick">
-                {% snippet "snippets/related_event.html", event=event %}<br>
-            </li>
-        {% endfor %}
-    </ul>
-</div>
-{% endif %}
-<a href="http://iann.pro/iannviewer">Find more events</a>
-
+    <h2>Potential Related Events</h2>
+    {% set events = h.related_events(pkg) %}
+    {% snippet "snippets/events.html", events=events %}
 {% endblock %}
