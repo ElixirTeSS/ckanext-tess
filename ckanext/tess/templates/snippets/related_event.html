@@ -20,4 +20,7 @@
  <b>{{k.title()}}</b>: {{v}}<br>
   {% endif %}
 {% endfor %}
-<br><a class="btn" value="{{id}}">Associate with Material</a>
+
+{% if related %}
+    <br><a class="btn" value="{{related.id}}">Associate with Material</a>
+{% endif %}

@@ -8,7 +8,7 @@
     <ul class="media-grid masonry" data-module="media-grid">
         {% for event in events: %}
             <li class="media-item masonry-brick node-brick">
-                {% snippet "snippets/related_event.html", event=event %}<br>
+                {% snippet "snippets/related_event.html", event=event, related=related %}<br>
             </li>
         {% endfor %}
     </ul>

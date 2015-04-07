@@ -8,5 +8,5 @@
 {% block primary_content_inner %}
     <h2>Potential Related Events</h2>
     {% set events = h.related_events(pkg) %}
-    {% snippet "snippets/events.html", events=events %}
+    {% snippet "snippets/events.html", events=events, related=pkg %}
 {% endblock %}
