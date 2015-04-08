@@ -257,6 +257,7 @@ hr.style-one {
 }
 .events-source-title{
     margin: 10px;
+    float: right;
 }
 .faq-answer{
     margin-bottom: 10px;
@@ -497,4 +498,22 @@ hr.style-one {
 
 .extraInstitutionsTemplate {
     display:none;
+}
+
+.expired_event {
+    background:
+  /* On "top" */
+  repeating-linear-gradient(
+    135deg,
+    transparent,
+    transparent 10px,
+    #ccc 10px,
+    #ccc 20px
+  ),
+  /* on "bottom" */
+  linear-gradient(
+    to bottom,
+    #eee,
+    #999
+  );
 }
