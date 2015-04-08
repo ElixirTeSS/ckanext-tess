@@ -500,6 +500,26 @@ hr.style-one {
     display:none;
 }
 
+/* ORIGINAL COLOURS/
+.expired_event {
+    background:
+  /* On "top"
+    repeating-linear-gradient(
+    135deg,
+    transparent,
+    transparent 10px,
+    #ccc 10px,
+    #ccc 20px
+  ),
+  /* on "bottom"
+  linear-gradient(
+    to bottom,
+    #eee,
+    #999
+  );
+}
+*/
+
 .expired_event {
     background:
   /* On "top" */
@@ -507,13 +527,13 @@ hr.style-one {
     135deg,
     transparent,
     transparent 10px,
-    #ccc 10px,
-    #ccc 20px
+    #e1e1e1 10px,
+    #f3f3f3 20px
   ),
   /* on "bottom" */
   linear-gradient(
     to bottom,
-    #eee,
-    #999
+    #f4f4f4,
+    #eeeeee
   );
 }
