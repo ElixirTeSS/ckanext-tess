@@ -2,8 +2,27 @@
 {% if c.events_count %}
   {% set count = c.events_count %}
 {% endif %}
+{% set sorting = [ (_('Date Ascending'), 'end asc'),
+                   (_('Date Descending'), 'end desc')] %}
 
-{% snippet 'snippets/search_form.html', fields=[('category', c.category)], type=(c.category or 'event'), query=c.q, sorting_selected=c.sort_by_selected, count=count, placeholder=_('Search Events...'), show_empty=request.params, no_bottom_border=true if c.page.items %}
+{#
+Can add this to sort alphabetically. The masonic grid means they won't display in order though.
+Could do with switching to package style long bar items.
+(_('Name Ascending'), 'title asc'),
+(_('Name Descending'), 'title desc')
+#}
+
+
+{% snippet 'snippets/search_form.html',     fields=[('category', c.category)],
+                                            type=(c.category or 'event'),
+                                            query=c.q,
+                                            sorting=sorting,
+                                            sorting_selected=c.sort_by_selected,
+                                            count=count,
+                                            placeholder=_('Search Events...'),
+                                            show_empty=request.params,
+                                            no_bottom_border=true if c.page.items
+%}
 {% snippet 'event/snippets/events_options.html' %}
 
 {% if events %}
