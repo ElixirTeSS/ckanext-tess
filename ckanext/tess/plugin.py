@@ -16,6 +16,8 @@ import xml.etree.ElementTree as et
 from dateutil import parser
 import datetime
 import ckan.lib.formatters as formatters
+from time import gmtime, strftime
+
 
 # Return the iann specific news. This could be replaced with a general news function taking
 # the news source as an argument.
@@ -45,9 +47,10 @@ def parse_xml(xml):
         finish_time = parser.parse(doc.find("*/[@name='end']").text)
         start_time = start_time.replace(tzinfo=None)
         finish_time = finish_time.replace(tzinfo=None)
-        expired = True
-        if datetime.datetime.now() < finish_time:
-            expired = False
+
+        expired = False
+        if datetime.datetime.now() > finish_time:
+            expired = formatters.localised_nice_date(finish_time)
         duration = finish_time - start_time
 
 
@@ -75,6 +78,7 @@ def construct_url(parameter):
         rows = parameter.get('rows', None)
         sort = parameter.get('sort', None)
         q = parameter.get('q', None)
+        include_expired = parameter.get('include_expired', False)
 
         original_url = 'http://iann.pro/solr/select/?'
         if not rows:
@@ -89,17 +93,20 @@ def construct_url(parameter):
             original_url = ('%s&q=category:%s' % (original_url, category))
         else:
             original_url = ('%s&q=category:%s' % (original_url, 'event'))
+
+
+        if not include_expired:  # Exclude this for past events too
+            today = strftime("%Y-%m-%dT%H:%M:%SZ", gmtime())
+            date = ('start:[%s%%20TO%%20*]' % today)
+            original_url = ('%s%%20AND%%20%s' % (original_url, date))
         print original_url
+
         if q:
             split = q.replace('-', '","')
             split = split.replace(' ', '","')
             title = ('text:("%s","%s")' % (urllib.quote(q), split))
             keywords = ('keyword:("%s")' % split)
             parameters = ('%s OR %s' % (title, keywords))
-            if False:  # Exclude this for past events too
-                today = strftime('%Y-%m-%dT00-00-00Z', gmtime())
-                date = ('start:[%s TO *]' % (today))
-                parameters = ('%s AND (%s)' % (parameters, date))
             url = ("%s%%20AND%%20%s" % (original_url, urllib.quote(parameters)))
         else:
             url = original_url
@@ -243,10 +250,17 @@ class TeSSController(HomeController):
         c.category = q_params['category'] = request.params.get('category', '')
         c.rows = q_params['rows'] = request.params.get('rows', '')
         c.sort_by_selected = q_params['sort'] = request.params.get('sort', '')
+        c.page_number = q_params['page'] = request.params.get('page', '')
+        c.include_expired_events = q_params['include_expired'] = request.params.get('include_expired', False)
         events_hash = events(q_params)
+
         c.events = events_hash.get('events')
         c.events_count = events_hash.get('count')
         c.events_url = events_hash.get('url')
+        if c.events_count < c.rows:
+            c.display_count = c.events_count
+        else:
+            c.display_count = c.rows
 
         return base.render('event/read.html')
 
