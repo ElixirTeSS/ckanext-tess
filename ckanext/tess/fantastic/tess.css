@@ -44,13 +44,14 @@ Text Color #FFAC74
 /* The "navigation pills" in the masthead (the links to Datasets,
    Organizations, etc) when the user's pointer hovers over them. */
 .masthead .navigation .nav-pills li a:hover {
-  background-color: #F8761F;
+  background-color: #C95911;
   color: #EFCAB2;
 }
 /* The "active" navigation pill (for example, when you're on the /dataset page
    the "Datasets" link is active). */
 .masthead .navigation .nav-pills li.active a {
   background-color: #A74100;
+      color: #EFCAB2;
 }
 /* The "box shadow" effect that appears around the search box when it
    has the keyboard cursor's focus. */
@@ -59,11 +60,18 @@ Text Color #FFAC74
   box-shadow: inset 0px 0px 2px 0px rgba(0, 0, 0, 0.7);
 }
 
+.masthead .site-search input {
+    width: 170px;
+}
+
 .navbar .nav > li > a {
     padding: 10px 7px;
     color: #FFFFFF;
 }
-
+.navbar .nav > li {
+  font-weight: normal;
+    font-size: medium;
+}
 .account-masthead .account ul li {
     display: block;
     float: left;
