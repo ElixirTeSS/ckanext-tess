@@ -30,7 +30,10 @@
             </li>
             {% for node in h.get_all_nodes(): %}
             {% set url = h.url_for(node.type ~ '_read', action='read', id=node.name) %}
-            <li class="nav-item"><a href="{{url}}"><span>{{node.display_name}}</span></a></li>
+            {% set country_code = h.get_extras(node)['country_code'] %}
+            <li class="nav-item">
+                <a href="{{url}}"><img src="/images/node_flags/{{country_code}}-small.png">&nbsp;&nbsp;{{node.display_name}}</a>
+            </li>
             {% endfor %}
         </ul>
     </nav>
