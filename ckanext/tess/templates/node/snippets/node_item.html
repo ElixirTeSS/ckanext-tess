@@ -19,15 +19,18 @@ Example:
 <li class="media-item">
   {% block image %}
     {% if node.get('country_code'): %}
-        <img src="/images/node_flags/{{node.get('country_code')}}.png" class="img-circle-small" style="max-height:60px;">
+        <img src="/images/node_flags/{{node.get('country_code')}}-elixir.png" class="img-circle-small" style="max-height:60px;">
+        <img style="float: right;" src="/images/node_flags/{{node.get('country_code')}}-small.png">
     {% else %}
         <img src="{{ node.image_display_url or h.url_for_static('/images/empty.gif') }}" alt="{{ node.name }}" class="media-image">
     {% endif %}
   {% endblock %}
-  {% block title %}
-    <h3 class="media-heading">{{ node.display_name }}</h3>
+  <div style="clear: both;"></div>
 
-  {% endblock %}
+  <!--{% block title %}-->
+    <!--<h3 class="media-heading">{{ node.display_name }}</h3>-->
+  <!--{% endblock %}-->
+
   {% block node_info %}
     <!--<p>-->
         <!--<b>Head of node:</b><br>-->
@@ -37,7 +40,7 @@ Example:
             <!--<span class="empty">None</span>-->
         <!--{% endif %}-->
     <!--</p>-->
-    <p>
+    <p style="padding-top: 10px;">
         <b>Training coordinator:</b><br>
         {% if node.trc: %}
             {{node.trc}}<br>
@@ -62,7 +65,7 @@ Example:
   {% block datasets %}
     {% set training_materials = h.get_node_materials(node) %}
     {% if training_materials|length > 0 %}
-      <strong class="count">{{ training_materials|length }} training material</strong>
+      <strong class="count">{{ training_materials|length }} training materials</strong>
     {% else %}
       <span class="count">{{ _('0 training materials') }}</span>
     {% endif %}
