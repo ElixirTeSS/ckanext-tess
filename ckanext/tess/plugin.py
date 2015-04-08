@@ -60,16 +60,17 @@ def construct_url(parameter):
 
         original_url = 'http://iann.pro/solr/select/?'
         if not rows:
-            rows = 100
+            c.rows = rows = 10
         original_url = ('%srows=%s' % (original_url, rows))
 
         if category:
             original_url = ('%s&q=category:%s' % (original_url, category))
         else:
-            original_url = ('%s&q=category:%s' % (original_url, 'course'))
+            original_url = ('%s&q=category:%s' % (original_url, 'event'))
         print original_url
         if q:
-            split = q.replace(' ', '","')
+            split = q.replace('-', '","')
+            split = split.replace(' ', '","')
             title = ('title:("%s","%s")' % (urllib.quote(q), split))
             keywords = ('keyword:("%s")' % split)
             parameters = ('%s OR %s' % (title, keywords))
@@ -216,9 +217,9 @@ class TeSSController(HomeController):
 
     def events(self):
         q_params = {}
-        q_params['q'] = c.q = request.params.get('q', '')
-        q_params['category'] = request.params.get('category', '')
-        q_params['rows'] = request.params.get('rows', '')
+        c.q = q_params['q'] = c.q = request.params.get('q', '')
+        c.category = q_params['category'] = request.params.get('category', '')
+        c.rows = q_params['rows'] = request.params.get('rows', '')
 
         events_hash = events(q_params)
         c.events = events_hash.get('events')

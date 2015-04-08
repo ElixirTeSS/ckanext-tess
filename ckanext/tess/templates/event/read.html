@@ -25,30 +25,42 @@
         </div>
     </section>
 </div>
+    {% block page_pagination %}
+
+    {% endblock %}
 {% endblock %}
 
 {% block secondary_content %}
-<div class="module module-narrow module-shallow">
-    <h2 class="module-heading">
-        <i class="icon-info-sign"></i>
-        {{ _('What are Events?') }}
-    </h2>
-    <div class="module-content">
-        <p>Events are opportunities in, much like training materials, </p>
-    </div>
+<div class="filters">
+  <div>
+      {% block facet_list_heading %}
+        <h2 class="module-heading"><i class="icon-medium icon-filter"></i> Event Type </h2>
+      {% endblock %}
+      {% block facet_list_items %}
+        <nav>
+            <ul class="{{ nav_class or 'unstyled nav nav-simple nav-facet' }}">
+                {% set class = 'category' %}
+                {% set names = ['event', 'course', 'meeting'] %}
+                {% if c.category not in names %}
+                    {% set href = h.remove_url_param(class, extras=extras, alternative_url=alternative_url) %}
+                    {% for name in names %}
+                        {% set href = h.add_url_param(new_params={class: name}, extras=extras, alternative_url=alternative_url) %}
+                        <li class='nav-item'><a href="{{ href }}" title="{{ name }}"><span>{{ name.capitalize() }}</span></a></li>
+                    {% endfor %}
+                {% else %}
+                    {% for name in names %}
+                        {% if c.category == name %}
+                            {% set href = h.remove_url_param(class,  extras=extras, alternative_url=alternative_url) %}
+                            <li class='nav-item active'><a href="{{ href }}" title="{{ name }}"><span>{{ name.capitalize() }}</span></a></li>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </ul>
+        </nav>
+      {% endblock %}
 
-    <hr style="margin: 0px;">
-     <h2 class="module-heading">
-        {{ _('Categories') }}
-     </h2>
-    <nav>
-        <ul class="unstyled nav nav-simple nav-facet-no-icon">
-                {% set url = h.url_for(controller='ckanext.tess.plugin:TeSSController', action='events', rows=500, category='course') %}
-                <li class="nav-item"><a href="{{url}}"><span>Courses</span></a></li>
-                {% set url = h.url_for(controller='ckanext.tess.plugin:TeSSController', action='events', rows=500, category='event') %}
-                <li class="nav-item"><a href="{{url}}"><span>Events</span></a></li>
-        </ul>
-    </nav>
+  </div>
+  <a class="close no-text hide-filters"><i class="icon-remove-sign"></i><span class="text">close</span></a>
 </div>
 
 {% endblock %}

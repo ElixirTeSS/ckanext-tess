@@ -3,7 +3,7 @@
   {% set count = c.events_count %}
 {% endif %}
 
-{% snippet 'snippets/search_form.html', type='event', query=c.q, sorting_selected=c.sort_by_selected, count=count, placeholder=_('Search Events...'), show_empty=request.params, no_bottom_border=true if c.page.items %}
+{% snippet 'snippets/search_form.html', fields=[('category', c.category)], type=(c.category or 'event'), query=c.q, sorting_selected=c.sort_by_selected, count=count, placeholder=_('Search Events...'), show_empty=request.params, no_bottom_border=true if c.page.items %}
 {% snippet 'event/snippets/events_options.html' %}
 
 {% if events %}

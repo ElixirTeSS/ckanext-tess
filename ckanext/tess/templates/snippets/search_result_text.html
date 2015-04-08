@@ -35,6 +35,20 @@ Example:
   {% set text_no_query = ungettext('{number} events found', '{number} events found', count) %}
   {% set text_no_query_none = _('No events found') %}
 
+{% elif type == 'course' %}
+  {% set text_query = ungettext('{number} courses found for "{query}"', '{number} courses found for "{query}"', count) %}
+  {% set text_query_none = _('No courses found for "{query}"') %}
+  {% set text_no_query = ungettext('{number} courses found', '{number} courses found', count) %}
+  {% set text_no_query_none = _('No courses found') %}
+
+
+{% elif type == 'meeting' %}
+  {% set text_query = ungettext('{number} meetings found for "{query}"', '{number} meetings found for "{query}"', count) %}
+  {% set text_query_none = _('No meetings found for "{query}"') %}
+  {% set text_no_query = ungettext('{number} meetings found', '{number} meetings found', count) %}
+  {% set text_no_query_none = _('No meetings found') %}
+
+
 {% elif type == 'organization' %}
   {% set text_query = ungettext('{number} content provider found for "{query}"', '{number} content providers found for "{query}"', count) %}
   {% set text_query_none = _('No content providers found for "{query}"') %}
