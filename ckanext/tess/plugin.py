@@ -137,7 +137,7 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         config['ckan.site_title'] = "TeSS Training Portal"
 
         # set the logo
-        config['ckan.site_logo'] = 'images/TeSSLogo-small.png'
+        config['ckan.site_logo'] = 'images/ELIXIR_TeSS_logo-small.png'
 
         #config['ckan.template_head_end'] = config.get('ckan.template_head_end', '') +\
         #                '<link rel="stylesheet" href="/css/tess.css" type="text/css"> '

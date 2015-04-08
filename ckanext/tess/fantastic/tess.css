@@ -8,21 +8,22 @@ Text Color #FFAC74
    ===================================================== */
 
 .account-masthead {
-    background-color: #F8761F;
+    background-color: #333333;
+    border-bottom: 1px solid #EEEEEE;
 }
 /* The "bubble" containing the number of new notifications. */
 .account-masthead .account .notifications a span {
-  background-color: #FFAC74;
+  background-color: #F8761F;
 }
 /* The text and icons in the user account info. */
 .account-masthead .account ul li a {
-  color: #A24200;
+  color: #FFFFFF;
 }
 /* The user account info text and icons, when the user's pointer is hovering
    over them. */
 .account-masthead .account ul li a:hover {
-  color: #F8761F;
-  background-color: #FFAC74;
+  color: #EFCAB2;
+  background-color: #A74100;
 }
 
 
@@ -31,7 +32,8 @@ Text Color #FFAC74
    ======================================================================== */
 
 .masthead {
-  background-color:#F3CDB4;
+  background-color: #F8761F;
+  background: #F8761F url("../../../base/images/bg.png");
 }
 
 .masthead .content {
@@ -43,12 +45,12 @@ Text Color #FFAC74
    Organizations, etc) when the user's pointer hovers over them. */
 .masthead .navigation .nav-pills li a:hover {
   background-color: #F8761F;
-  color: white;
+  color: #EFCAB2;
 }
 /* The "active" navigation pill (for example, when you're on the /dataset page
    the "Datasets" link is active). */
 .masthead .navigation .nav-pills li.active a {
-  background-color: #F8761F;
+  background-color: #A74100;
 }
 /* The "box shadow" effect that appears around the search box when it
    has the keyboard cursor's focus. */
@@ -59,7 +61,13 @@ Text Color #FFAC74
 
 .navbar .nav > li > a {
     padding: 10px 7px;
-    color: #A24200;
+    color: #FFFFFF;
+}
+
+.account-masthead .account ul li {
+    display: block;
+    float: left;
+    border-left: 1px dotted #D4D4D4;
 }
 
 /* ===========================================
@@ -164,7 +172,7 @@ body {
     max-height: 300px;
 }
 .dataset-node-icon {
-    color: darkorange;
+    color: #F8761F;
     height: 35px;
     max-width: 10%
     background-color: white;
