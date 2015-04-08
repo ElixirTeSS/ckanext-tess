@@ -9,15 +9,10 @@
 {% block primary %}
 <div class="primary" style="width: 74%; padding-right: 10px;">
     <section class="module">
-        {% block about %}
-        <h1 >{{ _('Events') }}</h1>
-        {% endblock %}
         <div id="iAnnList" class="events-source">
-            <p class="events-source-title"><strong>Source:</strong>
-                <a target="_blank" href="http://iann.pro"><img alt="iAnn" src="/images/iann_logo-32x30.png"/></a>
-            </p>
+
             <p>
-                {{ c.events_url }}
+                {#{ c.events_url }#}
                 {% snippet "event/snippets/events_list.html", events=c.events %}
             </p>
             <!--p class="more-link"><a target="_blank" href="http://mygoblet.org/iannviewer">More events from iAnn</a></p-->
@@ -61,6 +56,7 @@
 
   </div>
   <a class="close no-text hide-filters"><i class="icon-remove-sign"></i><span class="text">close</span></a>
+
 </div>
 
 {% endblock %}
