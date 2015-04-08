@@ -2,9 +2,9 @@
 
 {% if c.include_expired_events %}
     {% set href = h.remove_url_param('include_expired', extras=extras, alternative_url=alternative_url) %}
-    <li class='nav-item link'><a href="{{ href }}" title="expired"><span>(Exclude past events?)</span></a></li>
+    <a href="{{ href }}" title="expired"> Exclude past events? </a>
 {% else %}
     {% set href = h.add_url_param(new_params={'include_expired': true}, extras=extras, alternative_url=alternative_url) %}
-    <li class='nav-item link'><a href="{{ href }}" title="expired"><span>(Include past events?)</span></a></li>
+    <a href="{{ href }}" title="expired"> Include past events? </a>
 {% endif %}
 
