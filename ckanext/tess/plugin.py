@@ -12,7 +12,10 @@ import urllib
 from ckan.common import OrderedDict, c, g, request, _
 from ckan.lib.plugins import DefaultGroupForm
 import xml.etree.ElementTree as et
-from time import gmtime, strftime
+
+from dateutil import parser
+import datetime
+import ckan.lib.formatters as formatters
 
 # Return the iann specific news. This could be replaced with a general news function taking
 # the news source as an argument.
@@ -38,6 +41,16 @@ def parse_xml(xml):
     docs = doc.findall('*/doc')
     results = []
     for doc in docs:
+        start_time = parser.parse(doc.find("*/[@name='start']").text)
+        finish_time = parser.parse(doc.find("*/[@name='end']").text)
+        start_time = start_time.replace(tzinfo=None)
+        finish_time = finish_time.replace(tzinfo=None)
+        expired = True
+        if datetime.datetime.now() < finish_time:
+            expired = False
+        duration = finish_time - start_time
+
+
         res = {'title': doc.find("*/[@name='title']").text,
                'provider': doc.find("*/[@name='provider']").text,
                'id': doc.find("*/[@name='id']").text,
@@ -46,7 +59,11 @@ def parse_xml(xml):
                'venue': doc.find("*/[@name='venue']").text,
                'country': doc.find("*/[@name='country']").text,
                'city': doc.find("*/[@name='city']").text,
-               'start': doc.find("*/[@name='start']").text
+               'starts': formatters.localised_nice_date(start_time, show_date=True),#, with_hours=True),
+               'ends': formatters.localised_nice_date(finish_time, show_date=True),#, with_hours=True), - Most of these are 00:00
+               'expired': expired,
+               'duration': duration
+               #'start': strptime(doc.find("*/[@name='start']", '%Y-%m-%dT%h-%m-%sZ').text)
                }
         results.append(res)
     return {'count': count, 'events': results}
@@ -56,12 +73,17 @@ def construct_url(parameter):
     try:
         category = parameter.get('category', None)
         rows = parameter.get('rows', None)
+        sort = parameter.get('sort', None)
         q = parameter.get('q', None)
 
         original_url = 'http://iann.pro/solr/select/?'
         if not rows:
             c.rows = rows = 10
         original_url = ('%srows=%s' % (original_url, rows))
+
+        if sort:
+            attr, dir = sort.split(' ') # e.g end asc or title asc
+            original_url = ('%s&sort=%s%%20%s' % (original_url, attr, dir))
 
         if category:
             original_url = ('%s&q=category:%s' % (original_url, category))
@@ -71,7 +93,7 @@ def construct_url(parameter):
         if q:
             split = q.replace('-', '","')
             split = split.replace(' ', '","')
-            title = ('title:("%s","%s")' % (urllib.quote(q), split))
+            title = ('text:("%s","%s")' % (urllib.quote(q), split))
             keywords = ('keyword:("%s")' % split)
             parameters = ('%s OR %s' % (title, keywords))
             if False:  # Exclude this for past events too
@@ -220,7 +242,7 @@ class TeSSController(HomeController):
         c.q = q_params['q'] = c.q = request.params.get('q', '')
         c.category = q_params['category'] = request.params.get('category', '')
         c.rows = q_params['rows'] = request.params.get('rows', '')
-
+        c.sort_by_selected = q_params['sort'] = request.params.get('sort', '')
         events_hash = events(q_params)
         c.events = events_hash.get('events')
         c.events_count = events_hash.get('count')
