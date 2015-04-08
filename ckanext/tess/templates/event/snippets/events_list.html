@@ -26,6 +26,7 @@ Could do with switching to package style long bar items.
 {% snippet 'event/snippets/events_options.html' %}
 <!--h1>Displaying {{c.display_count}} Events</h1-->
 {% if events %}
+{{ c.events_url }}
 <div class="module-content">
     <ul class="media-grid masonry" data-module="media-grid">
         {% for event in events: %}

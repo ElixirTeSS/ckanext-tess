@@ -75,19 +75,21 @@ def parse_xml(xml):
 def construct_url(parameter):
     try:
         category = parameter.get('category', None)
-        rows = parameter.get('rows', None)
+        rows = parameter.get('rows', 10)
         sort = parameter.get('sort', None)
         q = parameter.get('q', None)
         include_expired = parameter.get('include_expired', False)
+        page = int(parameter.get('page', 0))
 
         original_url = 'http://iann.pro/solr/select/?'
-        if not rows:
-            c.rows = rows = 10
         original_url = ('%srows=%s' % (original_url, rows))
 
         if sort:
             attr, dir = sort.split(' ') # e.g end asc or title asc
             original_url = ('%s&sort=%s%%20%s' % (original_url, attr, dir))
+
+        if page:
+            original_url = ('%s&start=%s' % (original_url, str(page*rows-rows)))
 
         if category:
             original_url = ('%s&q=category:%s' % (original_url, category))
@@ -99,7 +101,7 @@ def construct_url(parameter):
             today = strftime("%Y-%m-%dT%H:%M:%SZ", gmtime())
             date = ('start:[%s%%20TO%%20*]' % today)
             original_url = ('%s%%20AND%%20%s' % (original_url, date))
-        print original_url
+
 
         if q:
             split = q.replace('-', '","')
@@ -236,9 +238,18 @@ import ckan.lib.base as base
 from ckan.controllers.home import HomeController
 import ckan.model as model
 import ckan.logic as logic
+from urllib import urlencode
+
 get_action = logic.get_action
 
 
+def pager_url(q=None, page=None):
+    params = list([(k, v) for k, v in request.params.items()
+                         if k != 'page'])
+    params.append(('page', page))
+    url = h.url_for(controller='ckanext.tess.plugin:TeSSController', action='events')
+    url = url + u'?' + urlencode(params)
+    return url
 
 class TeSSController(HomeController):
     def node_old(self):
@@ -246,21 +257,26 @@ class TeSSController(HomeController):
 
     def events(self):
         q_params = {}
+        print request.url
         c.q = q_params['q'] = c.q = request.params.get('q', '')
         c.category = q_params['category'] = request.params.get('category', '')
-        c.rows = q_params['rows'] = request.params.get('rows', '')
+        c.rows = q_params['rows'] = request.params.get('rows', 10)
         c.sort_by_selected = q_params['sort'] = request.params.get('sort', '')
-        c.page_number = q_params['page'] = request.params.get('page', '')
+        c.page_number = q_params['page'] = int(request.params.get('page', 0))
         c.include_expired_events = q_params['include_expired'] = request.params.get('include_expired', False)
         events_hash = events(q_params)
 
         c.events = events_hash.get('events')
         c.events_count = events_hash.get('count')
         c.events_url = events_hash.get('url')
-        if c.events_count < c.rows:
-            c.display_count = c.events_count
-        else:
-            c.display_count = c.rows
+        c.page = h.Page(
+                collection=c.events,
+                page=c.page_number,
+                url=pager_url,
+                item_count=c.events_count,
+                items_per_page=c.rows
+        )
+
 
         return base.render('event/read.html')
 

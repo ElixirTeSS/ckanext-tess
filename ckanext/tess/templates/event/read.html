@@ -15,14 +15,13 @@
                 {#{ c.events_url }#}
                 {% snippet "event/snippets/events_list.html", events=c.events %}
             </p>
-            <!--p class="more-link"><a target="_blank" href="http://mygoblet.org/iannviewer">More events from iAnn</a></p-->
             <hr/>
+            {% block page_pagination %}
+                {{ c.page.pager() }}
+            {% endblock %}
         </div>
     </section>
 </div>
-    {% block page_pagination %}
-
-    {% endblock %}
 {% endblock %}
 
 {% block secondary_content %}
