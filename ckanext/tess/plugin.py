@@ -31,6 +31,19 @@ def iann_news():
   return plugins.toolkit.literal(data)
 
 
+def countries_filter():
+    here = os.path.dirname(__file__)
+    # json file containing country code -> country name map for member and observer countries
+    file = os.path.join(here,'countries-elixir-flat.json')
+    with open(file) as data_file:
+        try:
+            countries_map = json.load(data_file)
+        except Exception, e:
+            print e
+            countries_map = {}
+    return countries_map
+
+
 def parse_xml(xml):
     doc = et.fromstring(xml)
     result_element = doc.find('result')
@@ -75,6 +88,7 @@ def parse_xml(xml):
 def construct_url(parameter):
     try:
         category = parameter.get('category', None)
+        country = parameter.get('country', None)
         rows = parameter.get('rows', 10)
         sort = parameter.get('sort', None)
         q = parameter.get('q', None)
@@ -102,7 +116,9 @@ def construct_url(parameter):
             date = ('start:[%s%%20TO%%20*]' % today)
             original_url = ('%s%%20AND%%20%s' % (original_url, date))
 
-
+        if country:
+            original_url = ('%s%%20AND%%20country:"%s"' % (original_url, urllib.quote(country)))
+        print original_url
         if q:
             split = q.replace('-', '","')
             split = split.replace(' ', '","')
@@ -190,6 +206,7 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
 
     def get_helpers(self):
         return {
+                'countries_filter': countries_filter,
                 'read_news_iann': iann_news,
                 'related_events': related_events,
                 'events': events
@@ -260,21 +277,28 @@ class TeSSController(HomeController):
         print request.url
         c.q = q_params['q'] = c.q = request.params.get('q', '')
         c.category = q_params['category'] = request.params.get('category', '')
+        c.country = q_params['country'] = request.params.get('country', '')
         c.rows = q_params['rows'] = request.params.get('rows', 10)
         c.sort_by_selected = q_params['sort'] = request.params.get('sort', '')
         c.page_number = q_params['page'] = int(request.params.get('page', 0))
         c.include_expired_events = q_params['include_expired'] = request.params.get('include_expired', False)
         events_hash = events(q_params)
+        filters = {}
+        if not c.filters:
+            filters['category'] = ['event', 'course', 'meeting']
+            filters['country'] = countries_filter().values()
+        c.filters = filters
+        c.active_filters = {'category': c.category, 'country': c.country}
 
         c.events = events_hash.get('events')
         c.events_count = events_hash.get('count')
         c.events_url = events_hash.get('url')
         c.page = h.Page(
-                collection=c.events,
-                page=c.page_number,
-                url=pager_url,
-                item_count=c.events_count,
-                items_per_page=c.rows
+            collection=c.events,
+            page=c.page_number,
+            url=pager_url,
+            item_count=c.events_count,
+            items_per_page=c.rows
         )
 
 

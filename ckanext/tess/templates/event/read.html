@@ -25,37 +25,7 @@
 {% endblock %}
 
 {% block secondary_content %}
-<div class="filters">
-  <div>
-      {% block facet_list_heading %}
-        <h2 class="module-heading"><i class="icon-medium icon-filter"></i> Event Type </h2>
-      {% endblock %}
-      {% block facet_list_items %}
-        <nav>
-            <ul class="{{ nav_class or 'unstyled nav nav-simple nav-facet' }}">
-                {% set class = 'category' %}
-                {% set names = ['event', 'course', 'meeting'] %}
-                {% if c.category not in names %}
-                    {% set href = h.remove_url_param(class, extras=extras, alternative_url=alternative_url) %}
-                    {% for name in names %}
-                        {% set href = h.add_url_param(new_params={class: name}, extras=extras, alternative_url=alternative_url) %}
-                        <li class='nav-item'><a href="{{ href }}" title="{{ name }}"><span>{{ name.capitalize() }}</span></a></li>
-                    {% endfor %}
-                {% else %}
-                    {% for name in names %}
-                        {% if c.category == name %}
-                            {% set href = h.remove_url_param(class,  extras=extras, alternative_url=alternative_url) %}
-                            <li class='nav-item active'><a href="{{ href }}" title="{{ name }}"><span>{{ name.capitalize() }}</span></a></li>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-            </ul>
-        </nav>
-      {% endblock %}
 
-  </div>
-  <a class="close no-text hide-filters"><i class="icon-remove-sign"></i><span class="text">close</span></a>
-
-</div>
+    {% snippet "event/snippets/filters.html" %}
 
 {% endblock %}
