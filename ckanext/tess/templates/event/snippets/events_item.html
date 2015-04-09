@@ -1,16 +1,13 @@
 {% set expired = event.pop('expired', None) %}
-{% if expired %}
-    <div style="background-color: #f8f8ff">
-{% endif %}
 {% if event.get('link') %}
     {% set link = event.pop('link') %}
     <a href="{{link}}" target="_blank"><h3>{{event.pop('title') }}</h3></a>
 {% else %}
-    <h3>{{event.pop('title') }}</h3>
+    <h3>{{event.pop('title') }}</h3><br>
 {% endif %}
 
 {% if event.get('subtitle') %}
-    <b>{{event.pop('subtitle') }}</b>
+    <i>{{event.pop('subtitle') }}</i><br>
 {% endif %}
 
 {% if event.get('city') and event.get('country') %}
@@ -36,6 +33,5 @@
 {% endif %}
 
 {% if expired %}
-        <h4 style="color: rgb(176, 0, 0); text-align: center">[This event happened {{expired}}]</h4><br>
-    </div>
+        <h4 style="color: rgb(176, 0, 0); text-align: center">[This event happened {{expired}}]</h4>
 {% endif %}

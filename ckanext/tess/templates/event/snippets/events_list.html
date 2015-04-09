@@ -13,7 +13,7 @@ Could do with switching to package style long bar items.
 #}
 
 
-{% snippet 'snippets/search_form.html',     fields=[('category', c.category)],
+{% snippet 'snippets/search_form.html',     fields=[('category', c.category), ('include_expired', c.include_expired_events)],
                                             type=(c.category or 'event'),
                                             query=c.q,
                                             sorting=sorting,
@@ -26,17 +26,22 @@ Could do with switching to package style long bar items.
 {% snippet 'event/snippets/events_options.html' %}
 <!--h1>Displaying {{c.display_count}} Events</h1-->
 {% if events %}
+{{ c.events_url }}
 <div class="module-content">
     <ul class="media-grid masonry" data-module="media-grid">
         {% for event in events: %}
-            <li class="media-item masonry-brick node-brick">
+                {% if event.get('expired', False) %}
+                    <li class="media-item masonry-brick node-brick expired_event">
+                {% else %}
+                    <li class="media-item masonry-brick node-brick">
+                {% endif %}
                 {% snippet "event/snippets/events_item.html", event=event, related=related %}<br>
-            </li>
+                </li>
         {% endfor %}
     </ul>
 </div>
 {% endif %}
-
-
-<a href="http://iann.pro/iannviewer">Find more events</a>
-
+<p class="events-source-title"><strong>Source:</strong>
+<a target="_blank" href="http://iann.pro"><img alt="iAnn" src="/images/iann_logo-32x30.png"/>
+</a>
+</p>
