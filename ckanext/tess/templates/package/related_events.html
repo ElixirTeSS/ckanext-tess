@@ -7,7 +7,19 @@
 
 {% block subtitle %}{{ _('Events') }}{% endblock %}
 
+
 {% block primary_content_inner %}
+    {% block suggested_events %}
+
+        {% if c.suggested_events.get('count') > 0 %}
+            <div id='suggested-events' class="suggested-events">
+                <h2>Suggested Events</h2>
+                    {% snippet "event/snippets/events_list.html", events=c.suggested_events.get('events', None), related=True %}
+
+            </div>
+        {% endif %}
+    {% endblock %}
+
     {% block events_search_form %}
         {% set sorting = [ (_('Date Ascending'), 'end asc'),
                            (_('Date Descending'), 'end desc')] %}

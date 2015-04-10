@@ -75,7 +75,6 @@ def parse_xml(xml):
                'venue': doc.find("*/[@name='venue']").text,
                'country': doc.find("*/[@name='country']").text,
                'city': doc.find("*/[@name='city']").text,
-
                'starts': formatters.localised_nice_date(start_time, show_date=True),#, with_hours=True),
                'ends': formatters.localised_nice_date(finish_time, show_date=True),#, with_hours=True), - Most of these are 00:00
                'expired': expired,
@@ -123,9 +122,7 @@ def construct_url(parameter):
         if q:
             split = q.replace('-', '","')
             split = split.replace(' ', '","')
-            title = ('text:("%s","%s")' % (urllib.quote(q), split))
-            keywords = ('keyword:("%s")' % split)
-            parameters = ('%s OR %s' % (title, keywords))
+            parameters = ('text:("%s","%s")' % (urllib.quote(q), split))
             url = ("%s%%20AND%%20%s" % (original_url, urllib.quote(parameters)))
         else:
             url = original_url
@@ -322,5 +319,12 @@ class TeSSController(HomeController):
                    'user': c.user or c.author, 'auth_user_obj': c.userobj}
         pkg_dict = get_action('package_show')(context, {'id': id})
         c.pkg_dict = pkg_dict
+        params = {}
+        params['q'] = pkg_dict.get('title')
+        c.suggested_events = events(params)
+
+
         setup_events()
+
+
         return base.render('package/related_events.html')
