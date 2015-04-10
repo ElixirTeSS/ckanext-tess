@@ -1,10 +1,9 @@
+{#
+related - True or False - Used when loading events as a tab in manage a training material
+#}
 
-{% if c.events_count %}
-  {% set count = c.events_count %}
-{% endif %}
 {% set sorting = [ (_('Date Ascending'), 'end asc'),
                    (_('Date Descending'), 'end desc')] %}
-
 {#
 Can add this to sort alphabetically. The masonic grid means they won't display in order though.
 Could do with switching to package style long bar items.
@@ -18,15 +17,17 @@ Could do with switching to package style long bar items.
                                             query=c.q,
                                             sorting=sorting,
                                             sorting_selected=c.sort_by_selected,
-                                            count=count,
+                                            count=c.events_count,
                                             placeholder=_('Search Events...'),
                                             show_empty=request.params,
                                             no_bottom_border=true if c.page.items
 %}
-{% snippet 'event/snippets/events_options.html' %}
+{% if not related %}
+    {% snippet "event/snippets/events_options.html" %}
+{% endif %}
+
 <!--h1>Displaying {{c.display_count}} Events</h1-->
 {% if events %}
-{{ c.events_url }}
 <div class="module-content">
     <ul class="media-grid masonry" data-module="media-grid">
         {% for event in events: %}
