@@ -6,11 +6,16 @@
   <li class="active">{% link_for _('Events'), controller='home', action='about' %}</li>
 {% endblock %}
 
+{% block secondary_content %}
+    {% snippet "event/snippets/helper.html" %}
+    {% snippet "event/snippets/filters.html" %}
+{% endblock %}
+
 {% block primary %}
 <div class="primary" style="width: 74%; padding-right: 10px;">
     <section class="module">
         <div id="iAnnList" class="events-source">
-
+            {% link_for _('Add Event'), controller='ckanext.tess.plugin:TeSSController', action='report_event', class_="btn btn-primary", icon="plus-sign-alt", target="_blank"%}
             <p>
                 {#{ c.events_url }#}
                 {% snippet "event/snippets/events_list.html", events=c.events %}
@@ -22,10 +27,4 @@
         </div>
     </section>
 </div>
-{% endblock %}
-
-{% block secondary_content %}
-
-    {% snippet "event/snippets/filters.html" %}
-
 {% endblock %}

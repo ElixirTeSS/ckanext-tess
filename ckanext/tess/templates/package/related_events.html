@@ -2,16 +2,30 @@
 
 
 {% block secondary_content %}
-  Help: Associate events to this training material from the suggestions{# snippet 'package/snippets/info.html', pkg=pkg, hide_follow_button=true #}
+  {% snippet "event/snippets/helper.html" %}
+  {#% snippet "event/snippets/filters.html" %#}
 {% endblock %}
 
-{% block primary_content_inner %}
-    <h2>Suggested Events</h2>
-    {% if c.events %}
-        {% snippet "event/snippets/events_list.html", events=c.events, related=pkg %}
-    {% else %}
-        <i>No suggested events found. You can find your event using the tools below (if it is on iAnn).</i><br>
-        {% set events_hash = h.events() %}
-        {% snippet "event/snippets/events_list.html", events=events_hash.get('events'), related=pkg, count=events_hash.get('count') %}
-    {% endif %}
+{% block subtitle %}{{ _('Events') }}{% endblock %}
+
+{% block breadcrumb_content %}
+  <li class="active">{% link_for _('Events'), controller='home', action='about' %}</li>
+{% endblock %}
+
+{% block primary %}
+<div class="primary" style="width: 74%; padding-right: 10px;">
+    <section class="module">
+        <div id="iAnnList" class="events-source">
+            {% link_for _('Add Event'), controller='ckanext.tess.plugin:TeSSController', action='report_event', class_="btn btn-primary", icon="plus-sign-alt" %}
+            <p>
+                {#{ c.events_url }#}
+                {% snippet "event/snippets/events_list.html", events=c.events, related=True %}
+            </p>
+            <hr/>
+            {% block page_pagination %}
+                {{ c.page.pager() }}
+            {% endblock %}
+        </div>
+    </section>
+</div>
 {% endblock %}
