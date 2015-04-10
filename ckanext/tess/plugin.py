@@ -75,6 +75,7 @@ def parse_xml(xml):
                'venue': doc.find("*/[@name='venue']").text,
                'country': doc.find("*/[@name='country']").text,
                'city': doc.find("*/[@name='city']").text,
+
                'starts': formatters.localised_nice_date(start_time, show_date=True),#, with_hours=True),
                'ends': formatters.localised_nice_date(finish_time, show_date=True),#, with_hours=True), - Most of these are 00:00
                'expired': expired,
@@ -89,7 +90,7 @@ def construct_url(parameter):
     try:
         category = parameter.get('category', None)
         country = parameter.get('country', None)
-        rows = parameter.get('rows', 10)
+        rows = parameter.get('rows', 15)
         sort = parameter.get('sort', None)
         q = parameter.get('q', None)
         include_expired = parameter.get('include_expired', False)
@@ -194,7 +195,7 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         map.connect('node_old', '/node_old', controller='ckanext.tess.plugin:TeSSController', action='node_old')
         map.connect('workflow', '/workflow', controller='ckanext.tess.plugin:TeSSController', action='workflows')
         map.connect('event', '/event', controller='ckanext.tess.plugin:TeSSController', action='events')
-        map.connect('dataset_events', '/dataset/events/{id}', controller='ckanext.tess.plugin:TeSSController', action='add_events')
+        map.connect('dataset_events', '/dataset/events/{id}', controller='ckanext.tess.plugin:TeSSController', action='add_events', ckan_icon='calendar')
         map.connect('report_event', '/event/new', controller='ckanext.tess.plugin:TeSSController', action='report_event')
         return map
 
@@ -276,7 +277,7 @@ def setup_events():
     c.q = q_params['q'] = c.q = request.params.get('q', '')
     c.category = q_params['category'] = request.params.get('category', '')
     c.country = q_params['country'] = request.params.get('country', '')
-    c.rows = q_params['rows'] = request.params.get('rows', 10)
+    c.rows = q_params['rows'] = request.params.get('rows', 15)
     c.sort_by_selected = q_params['sort'] = request.params.get('sort', '')
     c.page_number = q_params['page'] = int(request.params.get('page', 0))
     c.include_expired_events = q_params['include_expired'] = request.params.get('include_expired', False)
