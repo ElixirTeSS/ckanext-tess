@@ -195,6 +195,7 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         map.connect('workflow', '/workflow', controller='ckanext.tess.plugin:TeSSController', action='workflows')
         map.connect('event', '/event', controller='ckanext.tess.plugin:TeSSController', action='events')
         map.connect('dataset_events', '/dataset/events/{id}', controller='ckanext.tess.plugin:TeSSController', action='add_events')
+        map.connect('report_event', '/event/new', controller='ckanext.tess.plugin:TeSSController', action='report_event')
         return map
 
     def dataset_facets(self, facets_dict, package_type):
@@ -268,44 +269,51 @@ def pager_url(q=None, page=None):
     url = url + u'?' + urlencode(params)
     return url
 
+
+def setup_events():
+    q_params = {}
+    print request.url
+    c.q = q_params['q'] = c.q = request.params.get('q', '')
+    c.category = q_params['category'] = request.params.get('category', '')
+    c.country = q_params['country'] = request.params.get('country', '')
+    c.rows = q_params['rows'] = request.params.get('rows', 10)
+    c.sort_by_selected = q_params['sort'] = request.params.get('sort', '')
+    c.page_number = q_params['page'] = int(request.params.get('page', 0))
+    c.include_expired_events = q_params['include_expired'] = request.params.get('include_expired', False)
+    events_hash = events(q_params)
+    filters = {}
+    if not c.filters:
+        filters['category'] = ['event', 'course', 'meeting']
+        filters['country'] = countries_filter().values()
+    c.filters = filters
+    c.active_filters = {'category': c.category, 'country': c.country}
+
+    c.events = events_hash.get('events')
+    c.events_count = events_hash.get('count')
+    c.events_url = events_hash.get('url')
+    c.page = h.Page(
+        collection=c.events,
+        page=c.page_number,
+        url=pager_url,
+        item_count=c.events_count,
+        items_per_page=c.rows
+    )
+
+
 class TeSSController(HomeController):
     def node_old(self):
         return base.render('node_old/index.html')
 
     def events(self):
-        q_params = {}
-        print request.url
-        c.q = q_params['q'] = c.q = request.params.get('q', '')
-        c.category = q_params['category'] = request.params.get('category', '')
-        c.country = q_params['country'] = request.params.get('country', '')
-        c.rows = q_params['rows'] = request.params.get('rows', 10)
-        c.sort_by_selected = q_params['sort'] = request.params.get('sort', '')
-        c.page_number = q_params['page'] = int(request.params.get('page', 0))
-        c.include_expired_events = q_params['include_expired'] = request.params.get('include_expired', False)
-        events_hash = events(q_params)
-        filters = {}
-        if not c.filters:
-            filters['category'] = ['event', 'course', 'meeting']
-            filters['country'] = countries_filter().values()
-        c.filters = filters
-        c.active_filters = {'category': c.category, 'country': c.country}
-
-        c.events = events_hash.get('events')
-        c.events_count = events_hash.get('count')
-        c.events_url = events_hash.get('url')
-        c.page = h.Page(
-            collection=c.events,
-            page=c.page_number,
-            url=pager_url,
-            item_count=c.events_count,
-            items_per_page=c.rows
-        )
-
-
+        setup_events()
         return base.render('event/read.html')
 
     def workflows(self):
         return base.render('workflow/index.html')
+
+    def report_event(self):
+        # Bit pointless having a link to here to redirect externally; but we can track that as a statistic
+        return base.redirect('http://iann.pro/report-event')
 
     def add_events(self, id):
         context = {'model': model, 'session': model.Session,
@@ -313,10 +321,5 @@ class TeSSController(HomeController):
                    'user': c.user or c.author, 'auth_user_obj': c.userobj}
         pkg_dict = get_action('package_show')(context, {'id': id})
         c.pkg_dict = pkg_dict
-        events_hash = related_events(pkg_dict)
-        if events_hash:
-            c.events = events_hash.get('events')
-            c.events_count = events_hash.get('count')
-            c.events_url = events_hash.get('url')
-
-        return base.render('package/related_events.html', extra_vars={'pkg': pkg_dict})
+        setup_events()
+        return base.render('package/related_events.html')
