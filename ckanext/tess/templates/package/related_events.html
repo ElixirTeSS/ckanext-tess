@@ -7,10 +7,6 @@
 
 {% block subtitle %}{{ _('Events') }}{% endblock %}
 
-{% block breadcrumb_content %}
-  <li class="active">{% link_for _('Events'), controller='home', action='about' %}</li>
-{% endblock %}
-
 {% block primary_content_inner %}
     {% block events_search_form %}
         {% set sorting = [ (_('Date Ascending'), 'end asc'),
