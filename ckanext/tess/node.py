@@ -229,12 +229,13 @@ def get_node(node_id):
 
 
 def display_name_of_node(node_id):
-    node = get_node(node_id)
-    if node.get('display_name'):
-        return node.get('display_name')
+    if node:
+        if node.get('display_name'):
+            return node.get('display_name')
+        else:
+            return node_id.replace('-', ' ').title()
     else:
-        return node_id.replace('-', ' ').title()
-
+        return "None"
 
 def carousel_images_of_node(node):
     carousel = [node.get('carousel_image_1'), node.get('carousel_image_2'), node.get('carousel_image_3')]
