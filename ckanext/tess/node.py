@@ -309,11 +309,11 @@ def get_countries_map():
     global countries_map # uses global variable
     if countries_map is None:
         here = os.path.dirname(__file__)
-        # json file containing country code -> country name map
+        # json file containing country code -> country name map for member and observer countries
         file = os.path.join(here,'countries-elixir.json')
         with open(file) as data_file:
             try:
-                countries_map = json.load(data_file)
+                countries_map = json.load(data_file)['members']
             except Exception, e:
                 print e
                 countries_map = {}

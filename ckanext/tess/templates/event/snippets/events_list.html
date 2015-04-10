@@ -1,0 +1,17 @@
+{#
+Display events. Requires many global c values. Checkout ckanext-tess plugin.py#Events.
+
+related - True or False - Used when loading events as a tab in manage a training material
+#}
+
+{% block events_list %}
+<ul class="media-grid" data-module="media-grid ">
+	{% block events_list_inner %}
+            {% for event in events: %}
+                {% snippet "event/snippets/events_item.html", event=event, related=related, position=loop.index %}
+            {% endfor %}
+  {% endblock %}
+</ul>
+{% endblock %}
+
+

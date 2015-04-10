@@ -8,21 +8,22 @@ Text Color #FFAC74
    ===================================================== */
 
 .account-masthead {
-    background-color: #F8761F;
+    background-color: #333333;
+    border-bottom: 1px solid #EEEEEE;
 }
 /* The "bubble" containing the number of new notifications. */
 .account-masthead .account .notifications a span {
-  background-color: #FFAC74;
+  background-color: #F8761F;
 }
 /* The text and icons in the user account info. */
 .account-masthead .account ul li a {
-  color: #A24200;
+  color: #FFFFFF;
 }
 /* The user account info text and icons, when the user's pointer is hovering
    over them. */
 .account-masthead .account ul li a:hover {
-  color: #F8761F;
-  background-color: #FFAC74;
+  color: #EFCAB2;
+  background-color: #A74100;
 }
 
 
@@ -31,7 +32,8 @@ Text Color #FFAC74
    ======================================================================== */
 
 .masthead {
-  background-color:#F3CDB4;
+  background-color: #F8761F;
+  background: #F8761F url("../../../base/images/bg.png");
 }
 
 .masthead .content {
@@ -42,13 +44,14 @@ Text Color #FFAC74
 /* The "navigation pills" in the masthead (the links to Datasets,
    Organizations, etc) when the user's pointer hovers over them. */
 .masthead .navigation .nav-pills li a:hover {
-  background-color: #F8761F;
-  color: white;
+  background-color: #C95911;
+  color: #EFCAB2;
 }
 /* The "active" navigation pill (for example, when you're on the /dataset page
    the "Datasets" link is active). */
 .masthead .navigation .nav-pills li.active a {
-  background-color: #F8761F;
+  background-color: #A74100;
+      color: #EFCAB2;
 }
 /* The "box shadow" effect that appears around the search box when it
    has the keyboard cursor's focus. */
@@ -57,9 +60,22 @@ Text Color #FFAC74
   box-shadow: inset 0px 0px 2px 0px rgba(0, 0, 0, 0.7);
 }
 
+.masthead .site-search input {
+    width: 170px;
+}
+
 .navbar .nav > li > a {
     padding: 10px 7px;
-    color: #A24200;
+    color: #FFFFFF;
+}
+.navbar .nav > li {
+  font-weight: normal;
+    font-size: medium;
+}
+.account-masthead .account ul li {
+    display: block;
+    float: left;
+    border-left: 1px dotted #D4D4D4;
 }
 
 /* ===========================================
@@ -164,7 +180,7 @@ body {
     max-height: 300px;
 }
 .dataset-node-icon {
-    color: darkorange;
+    color: #F8761F;
     height: 35px;
     max-width: 10%
     background-color: white;
@@ -249,6 +265,7 @@ hr.style-one {
 }
 .events-source-title{
     margin: 10px;
+    float: right;
 }
 .faq-answer{
     margin-bottom: 10px;
@@ -359,7 +376,7 @@ hr.style-one {
 .icon-elixir {
     width:16px;
     height:16px;
-    background-image: url('/images/icon-elixir.png');
+    background-image: url('/images/ELIXIR-icon-orange-16x16.png');
     margin:0;
     padding:0;
     float:left;
@@ -489,4 +506,42 @@ hr.style-one {
 
 .extraInstitutionsTemplate {
     display:none;
+}
+
+/* ORIGINAL COLOURS/
+.expired_event {
+    background:
+  /* On "top"
+    repeating-linear-gradient(
+    135deg,
+    transparent,
+    transparent 10px,
+    #ccc 10px,
+    #ccc 20px
+  ),
+  /* on "bottom"
+  linear-gradient(
+    to bottom,
+    #eee,
+    #999
+  );
+}
+*/
+
+.expired_event {
+    background:
+  /* On "top" */
+  repeating-linear-gradient(
+    135deg,
+    transparent,
+    transparent 10px,
+    #e1e1e1 10px,
+    #f3f3f3 20px
+  ),
+  /* on "bottom" */
+  linear-gradient(
+    to bottom,
+    #f4f4f4,
+    #eeeeee
+  );
 }

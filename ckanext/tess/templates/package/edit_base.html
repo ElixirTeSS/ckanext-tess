@@ -3,3 +3,9 @@
 {% block content_action %}
   {% link_for _('View training material'), controller='package', action='read', id=pkg.name, class_='btn', icon='eye-open' %}
 {% endblock %}
+
+{% block content_primary_nav %}
+  {{ h.build_nav_icon('dataset_edit', _('Edit metadata'), id=pkg.name) }}
+  {{ h.build_nav_icon('dataset_resources', _('Resources'), id=pkg.name) }}
+  {{ h.build_nav_icon('dataset_events', _('Events'), id=pkg.name) }}
+{% endblock %}

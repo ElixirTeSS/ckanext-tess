@@ -8,10 +8,15 @@ import ckan.lib.helpers as h
 import os
 import operator
 import urllib2
-from pylons import c
+import urllib
+from ckan.common import OrderedDict, c, g, request, _
 from ckan.lib.plugins import DefaultGroupForm
+import xml.etree.ElementTree as et
 
-
+from dateutil import parser
+import datetime
+import ckan.lib.formatters as formatters
+from time import gmtime, strftime
 
 
 # Return the iann specific news. This could be replaced with a general news function taking
@@ -25,18 +30,132 @@ def iann_news():
     data = "<p>No events found!</p>"
   return plugins.toolkit.literal(data)
 
-def related_events(criteria):
+
+def countries_filter():
+    here = os.path.dirname(__file__)
+    # json file containing country code -> country name map for member and observer countries
+    file = os.path.join(here,'countries-elixir-flat.json')
+    with open(file) as data_file:
+        try:
+            countries_map = json.load(data_file)
+        except Exception, e:
+            print e
+            countries_map = {}
+    return countries_map
+
+
+def parse_xml(xml):
+    doc = et.fromstring(xml)
+    result_element = doc.find('result')
+    count = 0
     try:
-        html = None
-        url = 'http://iann.pro/solr/select/?q=category:event'
-        name = criteria.get('title', None)
-        if name:
-            url = ('%s%%20AND%%20title:"%s"' % (url, name))
-        res = urllib2.urlopen(url)
-        html = res.read()
+        count = int(result_element.attrib.get('numFound'))
     except Exception, e:
-        print 'bummer'
-    return [url, html]
+        print 'Could not load result element'
+
+    docs = doc.findall('*/doc')
+    results = []
+    for doc in docs:
+        start_time = parser.parse(doc.find("*/[@name='start']").text)
+        finish_time = parser.parse(doc.find("*/[@name='end']").text)
+        start_time = start_time.replace(tzinfo=None)
+        finish_time = finish_time.replace(tzinfo=None)
+
+        expired = False
+        if datetime.datetime.now() > finish_time:
+            expired = formatters.localised_nice_date(finish_time)
+        duration = finish_time - start_time
+
+
+        res = {'title': doc.find("*/[@name='title']").text,
+               'provider': doc.find("*/[@name='provider']").text,
+               'id': doc.find("*/[@name='id']").text,
+               'link': doc.find("*/[@name='link']").text,
+               'subtitle': doc.find("*/[@name='subtitle']").text,
+               'venue': doc.find("*/[@name='venue']").text,
+               'country': doc.find("*/[@name='country']").text,
+               'city': doc.find("*/[@name='city']").text,
+
+               'starts': formatters.localised_nice_date(start_time, show_date=True),#, with_hours=True),
+               'ends': formatters.localised_nice_date(finish_time, show_date=True),#, with_hours=True), - Most of these are 00:00
+               'expired': expired,
+               'duration': duration
+               #'start': strptime(doc.find("*/[@name='start']", '%Y-%m-%dT%h-%m-%sZ').text)
+               }
+        results.append(res)
+    return {'count': count, 'events': results}
+
+
+def construct_url(parameter):
+    try:
+        category = parameter.get('category', None)
+        country = parameter.get('country', None)
+        rows = parameter.get('rows', 15)
+        sort = parameter.get('sort', None)
+        q = parameter.get('q', None)
+        include_expired = parameter.get('include_expired', False)
+        page = int(parameter.get('page', 0))
+
+        original_url = 'http://iann.pro/solr/select/?'
+        original_url = ('%srows=%s' % (original_url, rows))
+
+        if sort:
+            attr, dir = sort.split(' ') # e.g end asc or title asc
+            original_url = ('%s&sort=%s%%20%s' % (original_url, attr, dir))
+
+        if page:
+            original_url = ('%s&start=%s' % (original_url, str(page*rows-rows)))
+
+        if category:
+            original_url = ('%s&q=category:%s' % (original_url, category))
+        else:
+            original_url = ('%s&q=category:%s' % (original_url, 'event'))
+
+
+        if not include_expired:  # Exclude this for past events too
+            today = strftime("%Y-%m-%dT%H:%M:%SZ", gmtime())
+            date = ('start:[%s%%20TO%%20*]' % today)
+            original_url = ('%s%%20AND%%20%s' % (original_url, date))
+
+        if country:
+            original_url = ('%s%%20AND%%20country:"%s"' % (original_url, urllib.quote(country)))
+        print original_url
+        if q:
+            split = q.replace('-', '","')
+            split = split.replace(' ', '","')
+            title = ('text:("%s","%s")' % (urllib.quote(q), split))
+            keywords = ('keyword:("%s")' % split)
+            parameters = ('%s OR %s' % (title, keywords))
+            url = ("%s%%20AND%%20%s" % (original_url, urllib.quote(parameters)))
+        else:
+            url = original_url
+        return url
+    except Exception, e:
+        print 'Failed to construct URL for iAnn API \n %s' % e
+
+
+def events(parameter=None):
+    results = {}
+    url = construct_url(parameter)
+    try:
+        res = urllib2.urlopen(url)
+        res = res.read()
+        results = parse_xml(res)
+        results['url'] = url
+    except Exception, e:
+        print 'Error loading events from iANN.pro: \n %s' % e
+    return results
+
+
+def related_events(model):
+    try:
+        name = model.get('title', None)
+        return events(name)
+    except Exception, e:
+        print 'Model has no title attribute: \n %s' % e
+        return None
+
+
 ######################
 # Plugin starts here #
 ######################
@@ -67,7 +186,7 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         config['ckan.site_title'] = "TeSS Training Portal"
 
         # set the logo
-        config['ckan.site_logo'] = 'images/TeSSLogo-small.png'
+        config['ckan.site_logo'] = 'images/ELIXIR_TeSS_logo_white-small.png'
 
         #config['ckan.template_head_end'] = config.get('ckan.template_head_end', '') +\
         #                '<link rel="stylesheet" href="/css/tess.css" type="text/css"> '
@@ -76,6 +195,8 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         map.connect('node_old', '/node_old', controller='ckanext.tess.plugin:TeSSController', action='node_old')
         map.connect('workflow', '/workflow', controller='ckanext.tess.plugin:TeSSController', action='workflows')
         map.connect('event', '/event', controller='ckanext.tess.plugin:TeSSController', action='events')
+        map.connect('dataset_events', '/dataset/events/{id}', controller='ckanext.tess.plugin:TeSSController', action='add_events', ckan_icon='calendar')
+        map.connect('report_event', '/event/new', controller='ckanext.tess.plugin:TeSSController', action='report_event')
         return map
 
     def dataset_facets(self, facets_dict, package_type):
@@ -87,8 +208,10 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
 
     def get_helpers(self):
         return {
+                'countries_filter': countries_filter,
                 'read_news_iann': iann_news,
-                'related_events': related_events
+                'related_events': related_events,
+                'events': events
                 }
 
     def _modify_package_schema(self, schema):
@@ -132,6 +255,50 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
 
 import ckan.lib.base as base
 from ckan.controllers.home import HomeController
+import ckan.model as model
+import ckan.logic as logic
+from urllib import urlencode
+
+get_action = logic.get_action
+
+
+def pager_url(q=None, page=None):
+    params = list([(k, v) for k, v in request.params.items()
+                         if k != 'page'])
+    params.append(('page', page))
+    url = h.url_for(controller='ckanext.tess.plugin:TeSSController', action='events')
+    url = url + u'?' + urlencode(params)
+    return url
+
+
+def setup_events():
+    q_params = {}
+    print request.url
+    c.q = q_params['q'] = c.q = request.params.get('q', '')
+    c.category = q_params['category'] = request.params.get('category', '')
+    c.country = q_params['country'] = request.params.get('country', '')
+    c.rows = q_params['rows'] = request.params.get('rows', 15)
+    c.sort_by_selected = q_params['sort'] = request.params.get('sort', '')
+    c.page_number = q_params['page'] = int(request.params.get('page', 0))
+    c.include_expired_events = q_params['include_expired'] = request.params.get('include_expired', False)
+    events_hash = events(q_params)
+    filters = {}
+    if not c.filters:
+        filters['category'] = ['event', 'course', 'meeting']
+        filters['country'] = countries_filter().values()
+    c.filters = filters
+    c.active_filters = {'category': c.category, 'country': c.country}
+
+    c.events = events_hash.get('events')
+    c.events_count = events_hash.get('count')
+    c.events_url = events_hash.get('url')
+    c.page = h.Page(
+        collection=c.events,
+        page=c.page_number,
+        url=pager_url,
+        item_count=c.events_count,
+        items_per_page=c.rows
+    )
 
 
 class TeSSController(HomeController):
@@ -139,8 +306,21 @@ class TeSSController(HomeController):
         return base.render('node_old/index.html')
 
     def events(self):
-        return base.render('events.html')
+        setup_events()
+        return base.render('event/read.html')
 
     def workflows(self):
         return base.render('workflow/index.html')
 
+    def report_event(self):
+        # Bit pointless having a link to here to redirect externally; but we can track that as a statistic
+        return base.redirect('http://iann.pro/report-event')
+
+    def add_events(self, id):
+        context = {'model': model, 'session': model.Session,
+                   'api_version': 3, 'for_edit': True,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj}
+        pkg_dict = get_action('package_show')(context, {'id': id})
+        c.pkg_dict = pkg_dict
+        setup_events()
+        return base.render('package/related_events.html')

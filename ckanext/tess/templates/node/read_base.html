@@ -20,9 +20,9 @@
             {% set node_link = h.url_for(c.group_dict.type ~ '_read', action='read', id=c.group_dict.name) %}
             {% set country_code = c.group_dict.country_code %}
           <a href="{{node_link}}">
-            <img class="img-circle-small" src="/images/node_flags/{{country_code}}.png" alt="{{c.group_dict.display_name}}">
+            <img src="/images/node_flags/{{country_code}}-small.png" alt="{{c.group_dict.display_name}}">
           </a>
-          <h1 class="heading">{{c.group_dict.display_name}}</h1>
+          <!--<h1 class="heading">{{c.group_dict.display_name}}</h1>-->
         </div>
     </div>
 </div>

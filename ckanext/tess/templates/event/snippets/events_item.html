@@ -1,0 +1,73 @@
+{#
+Event - Event dict - see plugin.py
+Related - Whether we want a button to associate this object with something
+#}
+
+{% block item %}
+    {% block expired %}
+        {% if event.get('expired', False) %}
+            {# Want 2 in a row? add to class - masonry-brick node-brick #}
+            <li class="media-item expired_event">
+        {% else %}
+            <li class="media-item">
+        {% endif %}
+    {% endblock %}
+    {% set expired = event.pop('expired', None) %}
+
+    {% block heading %}
+        {% if event.get('link') %}
+            {% set link = event.pop('link') %}
+            <a href="{{link}}" target="_blank"><h3 class="media-heading">{{event.pop('title') }}</h3></a>
+        {% else %}
+            <h3 class="media-heading">{{event.pop('title') }}</h3><br>
+        {% endif %}
+    {% endblock %}
+
+    {% block subtitle %}
+        {% if event.get('subtitle') %}
+            <i>{{event.pop('subtitle') }}</i><br>
+        {% endif %}
+    {% endblock %}
+
+    {% block venue %}
+        {% if event.get('venue') %}
+            <b>Venue:</b> {{ event.pop('venue')}}
+        {% endif %}
+    {% endblock %}
+
+    {% block location %}
+        {% if event.get('city') and event.get('country') %}
+            <b>Place:</b> {{ event.pop('city')}}, {{ event.pop('country')}}<br>
+        {% endif %}
+    {% endblock %}
+
+    {% block date %}
+        {% if event.get('starts') %}
+            <b>Starts:</b> {{ event.pop('starts')}}<br>
+        {% endif %}
+        {% if event.get('ends') %}
+            <b>Finish:</b> {{ event.pop('ends')}}<br>
+        {% endif %}
+    {% endblock %}
+
+    {% block etc %}
+        {% set id = event.pop('id') %}
+        {% for k, v in event.iteritems(): %}
+            {% if v %}
+                <b>{{k.title()}}</b>: {{v}}<br>
+            {% endif %}
+        {% endfor %}
+    {% endblock %}
+
+    {% if related %}
+        <br><a class="btn" value="{{related.id}}">Associate with Material</a>
+    {% endif %}
+
+    {% if expired %}
+        <h4 style="color: rgb(176, 0, 0); text-align: center">[This event happened {{expired}}]</h4>
+    {% endif %}
+</li>
+{% endblock %}
+{% if position is divisibleby 3 %}
+  <li class="clearfix js-hide"></li>
+{% endif %}
