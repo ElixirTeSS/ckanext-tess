@@ -1,12 +1,11 @@
 
 <div class="filters">
-  <a class="close no-text hide-filters"><i class="icon-remove-sign"></i><span class="text">close</span></a>
     <div>
         {% block facet_list_items %}
         {% for name, options in c.filters.iteritems() %}
 
-        {% block facet_list_heading %}{% endblock %}
         <h2 class="module-heading"><i class="icon-medium icon-filter"></i> {{name.capitalize() }}</h2>
+
         <nav>
             <ul class="{{ nav_class or 'unstyled nav nav-simple nav-facet' }}">
                 {% if not c.active_filters[name] %} <!--c.category not in names -->
@@ -16,13 +15,12 @@
                     {% endfor %}
                 {% else %}
                     {% set href = h.remove_url_param(name) %}
-                    <li class='nav-item active'><a href="{{ href }}" title="{{ c.active_filters[name] }}"><span>{{ c.active_filters[name].capitalize() }}</span></a></li><br>
+                    <li class='nav-item active'><a href="{{ href }}" title="{{ c.active_filters[name] }}"><span>{{ c.active_filters[name].capitalize() }}</span></a></li>
                 {% endif %}
             </ul>
         </nav>
+        <p class="module-footer"></p><br>
         {% endfor %}
         {% endblock %}
     </div>
-    <a class="close no-text hide-filters"><i class="icon-remove-sign"></i><span class="text">close</span></a>
-
 </div>
