@@ -11,11 +11,11 @@
             <ul class="{{ nav_class or 'unstyled nav nav-simple nav-facet' }}">
                 {% if not c.active_filters[name] %} <!--c.category not in names -->
                     {% for val in options %}
-                        {% set href = h.add_url_param(new_params={name: val}, extras=extras, alternative_url=alternative_url) %}
+                        {% set href = h.add_url_param(new_params={name: val}) %}
                         <li class='nav-item'><a href="{{ href }}" title="{{ val }}"><span>{{ val.capitalize() }}</span></a></li>
                     {% endfor %}
                 {% else %}
-                    {% set href = h.remove_url_param(name, extras=extras, alternative_url=alternative_url) %}
+                    {% set href = h.remove_url_param(name) %}
                     <li class='nav-item active'><a href="{{ href }}" title="{{ c.active_filters[name] }}"><span>{{ c.active_filters[name].capitalize() }}</span></a></li><br>
                 {% endif %}
             </ul>
