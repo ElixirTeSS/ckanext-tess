@@ -2,10 +2,17 @@
 
 {% if c.include_expired_events %}
     {% set href = h.remove_url_param('include_expired', extras=extras, alternative_url=alternative_url) %}
-    <a href="{{ href }}" title="expired"> Exclude past events? </a>
+    {% set text = 'Exclude past events' %}
 {% else %}
     {% set href = h.add_url_param(new_params={'include_expired': true}, extras=extras, alternative_url=alternative_url) %}
-    <a href="{{ href }}" title="expired"> Include past events? </a>
+    {% set text = 'Include past events' %}
 {% endif %}
-<br>
-<br>
+{% block past_events %}
+<div class="event-options">
+    <a href="{{ href }}" title="expired">
+        <span class="btn btn-default">
+            <i class="icon-time"> {{text}}</i>
+        </span>
+    </a>
+</div><hr>
+{% endblock %}
