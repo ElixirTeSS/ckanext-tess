@@ -528,6 +528,12 @@ hr.style-one {
 }
 */
 
+.event-options {
+    float: right;
+    margin-left: 15px;
+    margin-top: -18px;
+}
+
 .expired_event {
     background:
   /* On "top" */
