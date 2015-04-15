@@ -33,5 +33,7 @@ setup(
         admin=ckanext.tess.admin:AdminPlugin
         admin_controller=ckanext.tess.admin:AdminController
         organization=ckanext.tess.organization:OrganizationPlugin
+        workflow=ckanext.tess.workflow:WorkflowPlugin
+        workflow_controller=ckanext.tess.workflow:WorkflowController
     ''',
 )

@@ -190,7 +190,7 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
 
     def before_map(self, map):
         map.connect('node_old', '/node_old', controller='ckanext.tess.plugin:TeSSController', action='node_old')
-        map.connect('workflow', '/workflow', controller='ckanext.tess.plugin:TeSSController', action='workflows')
+
         map.connect('event', '/event', controller='ckanext.tess.plugin:TeSSController', action='events')
         map.connect('dataset_events', '/dataset/events/{id}', controller='ckanext.tess.plugin:TeSSController', action='add_events', ckan_icon='calendar')
         map.connect('report_event', '/event/new', controller='ckanext.tess.plugin:TeSSController', action='report_event')
@@ -305,9 +305,6 @@ class TeSSController(HomeController):
     def events(self):
         setup_events()
         return base.render('event/read.html')
-
-    def workflows(self):
-        return base.render('workflow/index.html')
 
     def report_event(self):
         # Bit pointless having a link to here to redirect externally; but we can track that as a statistic
