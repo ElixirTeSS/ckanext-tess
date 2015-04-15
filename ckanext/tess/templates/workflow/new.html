@@ -10,19 +10,10 @@
 
 
 {% block primary_content %}
-<br><br><br><br><br><br><br><br>
-<span style="text-align: center"><i> Workspace Here</i></span>
-<br><br><br><br><br><br><br><br>
+    {% snippet 'workflow/snippets/workspace.html' %}
 {% endblock %}
 
 
-{% block secondary_content %}<div class="module module-narrow module-shallow">
-    <h2 class="module-heading">
-        <i class="icon-cog"></i>
-        {{ _('Workflows') }}
-    </h2>
-    <div class="module-content">
-        <I>Library of Components Here</I>
-    </div>
-</div>
+{% block secondary_content %}
+    {% snippet 'workflow/snippets/workspace_components.html' %}
 {% endblock %}
