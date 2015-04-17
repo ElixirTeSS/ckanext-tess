@@ -246,6 +246,8 @@ Do not allow adding new vertices: .connection-wrap { pointer-events: none; }
    display: inline-block;
    background: transparent;
    overflow: hidden;
+    height: 800px;
+    width: 100%;
 }
 #paper svg {
    background: transparent;
