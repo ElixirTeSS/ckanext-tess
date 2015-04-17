@@ -1,37 +1,36 @@
-    var graph = new joint.dia.Graph;
-    var paper = new joint.dia.Paper({ el: $('#paper'), width: 650, height: 400, gridSize: 1, model: graph });
 
-        var x_pos = 80;
-        var y_pos = 80;
+
+    var graph = new joint.dia.Graph;
+    var paper = new joint.dia.Paper({ el: $('#paper'), width: 650, height: 800, gridSize: 1, model: graph });
+
+    var x_pos = 80;
+    var y_pos = 80;
+
         // Create a custom element.
         // ------------------------
 
    joint.shapes.html = {};
-   joint.shapes.html.Element = joint.shapes.basic.Rect.extend({
+   joint.shapes.html.Element = joint.shapes.devs.Model.extend({
     defaults: joint.util.deepSupplement({
-        type: 'html.Element',
-            attrs: {
-                rect: { stroke: 'none', 'fill-opacity': 0}
-            }
-        }, joint.shapes.basic.Rect.prototype.defaults)
+        type: 'html.Element'
+        }, joint.shapes.devs.Model.prototype.defaults)
     });
 
         // Create a custom view for that element that displays an HTML div above it.
         // -------------------------------------------------------------------------
 
-    joint.shapes.html.ElementView = joint.dia.ElementView.extend({
+    joint.shapes.html.ElementView = joint.shapes.devs.ModelView.extend({
         template: [
             '<div class="html-element">',
                 '<button class="delete icon-remove"></button>',
                 '<button class="clone icon-copy"></button>',
-                '<input type="text" value="Stage Name" />',
                 '<span></span>', '<br/>',
                 '<select><option>--</option><option>Analysis</option><option>Visualization</option>' +
                 '<option>-- Chromatogram Visualization</option><option>-- Map Drawing</option><option>-- Microarray Data Rendering</option>' +
                 '<option>Deposition</option>' +
                 '<option>Query and Retrieval</option><option>Utility Operation</option>',
                 '</select>',
-                '<input type="text" value="Description" />',
+                '<input type="text" value="Description" id="description-input" />',
                 '</div>'
                 ].join(''),
 
@@ -39,6 +38,7 @@
                 _.bindAll(this, 'updateBox');
                 joint.dia.ElementView.prototype.initialize.apply(this, arguments);
 
+                this['clone_count'] = 0;
                 this.$box = $(_.template(this.template)());
                 // Prevent paper from handling pointerdown.
                 this.$box.find('input,select').on('mousedown click', function(evt) { evt.stopPropagation(); });
@@ -75,14 +75,18 @@
                 this.$box.find('label').text(this.model.get('label'));
                 this.$box.find('span').text(this.model.get('select'));
                 this.$box.css({ width: bbox.width, height: bbox.height, left: bbox.x, top: bbox.y, transform: 'rotate(' + (this.model.get('angle') || 0) + 'deg)' });
+                $('#description').text(this.model.get('input'));
+                $('#dropdown').text(this.model.get('select'));
             },
             removeBox: function(evt) {
                 console.log(this.$box);
                 this.$box.remove();
             },
             cloneBox: function(evt, model) {
-                var clone = this.model.clone('options.deep === true').translate(20,20);
-                clone.toFront(3);
+                this['clone_count'] +=1 ;
+                var cc = this['clone_count'];
+                var clone = this.model.clone('options.deep === true').toFront().translate(cc*20,cc*20);
+                clone.toFront();
                 console.log('maybe cloned ' + JSON.stringify(clone));
                 graph.addCells([clone]);
                 this.$box.clone();

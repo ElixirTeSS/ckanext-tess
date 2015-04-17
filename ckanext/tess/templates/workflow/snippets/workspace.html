@@ -24,12 +24,17 @@
     $(document).ready(function () {
         $('#add-new-button').click(function() {
             var el1 = new joint.shapes.html.Element({
+                    inPorts: ['in1','in2'],
+                    outPorts: ['out'],
                 position: {x: x_pos, y: y_pos},
                 size: { width: 170, height: 100 },
                 select: 'operation',
-                inPorts: ['in1', 'in2'],
-                outPorts: ['out1']
-
+                attrs: {
+                    '.label': {text: 'Model', 'ref-x': .4, 'ref-y': .2},
+                    rect: {fill: '#2ECC71'},
+                    '.inPorts circle': {fill: '#16A085'},
+                    '.outPorts circle': {fill: '#E74C3C'}
+                }
             });
             console.log();
             el1.toFront();
@@ -37,33 +42,14 @@
             y_pos = y_pos+20;
             graph.addCell(el1);
             $('.workflow-options').show();
+            $('.stage-panel').show();
         }),
 
-                $('#save-button').click(function() {
-                    alert('Saves the workflow in TeSS');
+        $('#save-button').click(function() {
+            alert('Saves the workflow in TeSS');
         }),
-                $('#download-button').click(function() {
-                    alert('Downloads the workflow as JSON, Common Workflow Description, RO etc');
+        $('#download-button').click(function() {
+            alert('Downloads the workflow as JSON, Common Workflow Description, RO etc');
         })
-
-
-
-        /*  LOADED FROM TRAINING_WORKFLOWS.JS
-            var graph - new joint.dia.Graph;
-            var paper - new joint.dia.Paper({ el: $('#paper'), width: 650, height: 400, gridSize: 1, model: graph });
-       */
-
-        // Create JointJS elements and add them to the graph as usual.
-        // -----------------------------------------------------------
-
-/*      var el1 = new joint.shapes.html.Element({ position: { x: 80, y: 80 }, size: { width: 170, height: 100 }, select: 'operation' });
-        var el2 = new joint.shapes.html.Element({ position: { x: 370, y: 160 }, size: { width: 170, height: 100 }, select: 'operation' });
-        var l = new joint.dia.Link({
-            source: { id: el1.id },
-            target: { id: el2.id },
-            attrs: { '.connection': { 'stroke-width': 5, stroke: '#34495E' } }
-        });
-
-        graph.addCells([el1, el2, l]);*/
     });
 </script>

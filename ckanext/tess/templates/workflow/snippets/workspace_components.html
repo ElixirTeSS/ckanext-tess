@@ -1,21 +1,45 @@
 <div class="module module-narrow module-shallow">
     <h2 class="module-heading">
-        <i class="icon-cog"></i>
+        <i class="icon-info-sign"></i>
         {{ _('Workflows') }}
     </h2>
+
     <div class="module-content">
-            {% trans %}
-            Add a new workflow stage by clicking the button below.<br>
-            Connect workflow stages together by drag-and-dropping arrows, assign them categories, and write descriptions
-            <br><br>
-            {% endtrans %}
+        {% trans %}
+        Add a new workflow stage by clicking the button below.<br>
+        Connect workflow stages together by drag-and-dropping arrows, assign them categories, and write descriptions
+        <br><br>
+        {% endtrans %}
         <div id="legend" style="border: thick;">
             <div id="add-new-button" class="btn btn-primary">
                 <i class="icon-plus-sign-alt">
                     Add New Stage
                 </i>
             </div>
-        </div>
-
+        </div><br>
     </div>
+
+
+
+
+    <h2 class="module-heading">
+        <i class="icon-cog"></i>
+        {{ _('Selected Attribute') }}
+    </h2>
+    <div class="module-content">
+        <div class="stage-panel" style="display:none;">
+            <b>EDAM Operation:</b><div id="dropdown"></div><br>
+            <b>Description:</b><div id="description"></div><br>
+            <b># Inputs:</b><div id="inputs">
+            <select style="width:100%">
+                <option>1</option>
+                <option selected>2</option>
+                <option>3</option>
+                <option>4</option>
+            </select>
+        </div>
+        </div>
+    </div>
+
+
 </div>
