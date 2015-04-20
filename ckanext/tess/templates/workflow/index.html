@@ -1,60 +1,36 @@
 {% extends "page.html" %}
-
 {% block subtitle %}{{ _('Workflows') }}{% endblock %}
 
 {% block breadcrumb_content %}
 <li class="active">{% link_for _('Workflows'), controller='group', action='index' %}</li>
 {% endblock %}
 
-{% block page_header %}{% endblock %}
-
-{% block page_primary_action %}
-{% if h.check_access('group_create') %}
-{% link_for _('Add workflow'), controller='ckanext.tess.workflow:WorkflowController', action='new', class_='btn btn-primary', icon='plus-sign-alt' %}
-
-{% endif %}
-{% endblock %}
 
 {% block primary_content_inner %}
-{% snippet 'snippets/search_form.html', type='workflow', query=c.q, sorting_selected=c.sort_by_selected, count=1, placeholder=_('Search workflows...'), show_empty=request.params, no_bottom_border=true if c.page.items %}
 
+{% resource 'tess/workflows.js' %}
 
-{% set stages = [
-    {'name':'Query Sequence and Variation Data', 'id':'query-sequence-and-variation-data', 'coords':'10,80,75,160'},
-    {'name':'Known Structure in PDB', 'id':'known-structure-in-pdb', 'coords':'120,100,185,160'},
-    {'name':'Structure Analysis and model Quality', 'id':'structure-analysis-and-model-quality', 'coords':'200,100,275,160'},
-    {'name':'Close relative homology modelling', 'id':'close-relative---homology-modelling', 'coords':'120,220,185,285'},
-    {'name':'Remote relative Structure Prediction', 'id':'remote-relative---structure-prediction', 'coords':'120,310,185,375'},
-    {'name':'Active Site', 'id':'active-site', 'coords':'375,100,460,160'},
-    {'name':'Binding Site', 'id':'binding-site', 'coords':'375,170,460,230'},
-    {'name':'Interfaces', 'id':'interfaces', 'coords':'375,240,460,310'},
-    {'name':'Post-translational modifications', 'id':'post-translational-modifications', 'coords':'375,320,460,375'},
-    {'name':'Conserved Sites', 'id':'conserved-sites', 'coords':'375,385,460,450'},
-    {'name':'Visualization', 'id':'visualization', 'coords':'500,100,575,160'},
-    {'name':'Structure Based Analysis of Impact', 'id':'structure-based-analysis-of-impact', 'coords':'575,225,650,300'},
-    {'name':'Sequence Based Analysis of Impact', 'id':'sequence-based-analysis-of-impact', 'coords':'575,360,650,425'}
-    ]
-%}
-<span class="banner">{{_('Coming Soon')}}</span>
-<p>
-    <img src="/images/training-workflow.png" width="800" height="500" alt="Workflow" usemap="workflow">
-    <map name="workflow">
-        {% for stage in stages %}
-            <area shape="rect" coords="{{stage['coords']}}"
-                  href="{{h.url_for('group' ~ '_read', action='read', id=stage['id']) }}"
-                  alt="{{stage['name']}}">
-        {% endfor %}
-    </map>
-</p>
-<!--p>
-  <img src="/images/training-workflow2.png" alt="Training workflow expanded" style="border:1px solid black">
-</p-->
-
-<h1 class="hide-heading">{{ _('Workflows') }}</h1>
-{% block groups_search_form %}
-{% endblock %}
+<script src="http://cytoscape.github.io/cytoscape.js/api/cytoscape.js-latest/cytoscape.js"></script>
+<link href="/style.css" rel="stylesheet" type="text/css" />
+<div id="cy"></div>
 {% endblock %}
 
 {% block secondary_content %}
 {% snippet "workflow/snippets/helper.html" %}
 {% endblock %}
+
+
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+<!--<link href="style.css" rel="stylesheet" />-->
+<!--<meta charset=utf-8 />-->
+<!--<title>Cytoscape.js initialisation</title>-->
+<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery-min.js"></script>-->
+<!--<script src="http://cytoscape.github.io/cytoscape.js/api/cytoscape.js-latest/cytoscape.js"></script>-->
+<!--<script src="http://localhost:5000/code.js"></script>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div id="cy"></div>-->
+<!--</body>-->
+<!--</html>-->

@@ -1,5 +1,5 @@
+{% resource 'tess/workflows.js' %}
 {% extends "page.html" %}
-
 
 {% block subtitle %}{{ _('Workflows') }}{% endblock %}
 
@@ -8,11 +8,14 @@
 / <li>{% link_for _('New'), controller='ckanext.tess.workflow:WorkflowController', action='new' %}</li>
 {% endblock %}
 
-
 {% block primary_content %}
+<script src='http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js'></script>
+<script src='http://cytoscape.github.io/cytoscape.js/api/cytoscape.js-latest/cytoscape.min.js'></script>
 <br><br><br><br><br><br><br><br>
-<span style="text-align: center"><i> Workspace Here</i></span>
-<br><br><br><br><br><br><br><br>
+<span style="text-align: center"><i>Workspace Here</i></span>
+<div id="cy"></div>
+
+<br>
 {% endblock %}
 
 
@@ -22,7 +25,7 @@
         {{ _('Workflows') }}
     </h2>
     <div class="module-content">
-        <I>Library of Components Here</I>
+        <I>Workflow Components Here</I>
     </div>
 </div>
 {% endblock %}
