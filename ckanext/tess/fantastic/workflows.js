@@ -224,6 +224,5 @@ $(function(){ // on dom ready
         //    });
         //}
     });
-    cy.toobar();
 
 }); // on dom ready
