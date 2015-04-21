@@ -22,7 +22,7 @@ $(function () {
                                 }
                             },
                             bubbleToCore: false,
-                            tooltip: 'Zoom In',
+                            tooltip: 'Zoom in',
                             action: [performZoomIn]
                         },
                         {
@@ -38,7 +38,7 @@ $(function () {
                                 }
                             },
                             bubbleToCore: false,
-                            tooltip: 'Zoom Out',
+                            tooltip: 'Zoom out',
                             action: [performZoomOut]
                         }
                     ],
@@ -53,7 +53,7 @@ $(function () {
                                 }
                             },
                             bubbleToCore: true,
-                            tooltip: 'Pan Right',
+                            tooltip: 'Pan right',
                             action: [performPanRight]
                         },
                         {
@@ -79,7 +79,7 @@ $(function () {
                                 }
                             },
                             bubbleToCore: true,
-                            tooltip: 'Pan Left',
+                            tooltip: 'Pan left',
                             action: [performPanLeft]
                         },
                         {
@@ -92,14 +92,14 @@ $(function () {
                                 }
                             },
                             bubbleToCore: true,
-                            tooltip: 'Pan Up',
+                            tooltip: 'Pan up',
                             action: [performPanUp]
                         }
                     ],
                     [
                         {
                             icon: 'fa fa-plus',
-                            event: ['tap'],
+                            event: ['click'],
                             selector: 'cy',
                             options: {
                                 clazz: 'node-person'
@@ -108,39 +108,39 @@ $(function () {
                             tooltip: 'Add node',
                             action: [addPersonToGraph]
                         },
-                        {
-                            icon: 'fa fa-home',
-                            event: ['tap'],
-                            selector: 'cy',
-                            options: {
-                                clazz: 'node-home'
-                            },
-                            bubbleToCore: false,
-                            tooltip: 'House',
-                            action: [addHouseToGraph]
-                        },
-                        {
-                            icon: 'fa fa-building-o',
-                            event: ['tap'],
-                            selector: 'cy',
-                            options: {
-                                clazz: 'node-business'
-                            },
-                            bubbleToCore: false,
-                            tooltip: 'Business',
-                            action: [addBusinessToGraph]
-                        },
-                        {
-                            icon: 'fa fa-truck',
-                            event: ['tap'],
-                            selector: 'cy',
-                            options: {
-                                clazz: 'node-automobile'
-                            },
-                            bubbleToCore: false,
-                            tooltip: 'Automobile',
-                            action: [addAutoToGraph]
-                        }
+                        //{
+                        //    icon: 'fa fa-home',
+                        //    event: ['tap'],
+                        //    selector: 'cy',
+                        //    options: {
+                        //        clazz: 'node-home'
+                        //    },
+                        //    bubbleToCore: false,
+                        //    tooltip: 'House',
+                        //    action: [addHouseToGraph]
+                        //},
+                        //{
+                        //    icon: 'fa fa-building-o',
+                        //    event: ['tap'],
+                        //    selector: 'cy',
+                        //    options: {
+                        //        clazz: 'node-business'
+                        //    },
+                        //    bubbleToCore: false,
+                        //    tooltip: 'Business',
+                        //    action: [addBusinessToGraph]
+                        //},
+                        //{
+                        //    icon: 'fa fa-truck',
+                        //    event: ['tap'],
+                        //    selector: 'cy',
+                        //    options: {
+                        //        clazz: 'node-automobile'
+                        //    },
+                        //    bubbleToCore: false,
+                        //    tooltip: 'Automobile',
+                        //    action: [addAutoToGraph]
+                        //}
                     ],
                     [
                         {
@@ -148,7 +148,7 @@ $(function () {
                             event: ['tap'],
                             selector: 'node',
                             bubbleToCore: false,
-                            tooltip: 'Link',
+                            tooltip: 'Link nodes',
                             action: [performLink]
                         }
                     ],
@@ -158,11 +158,20 @@ $(function () {
                             event: ['tap'],
                             selector: 'edge,node',
                             bubbleToCore: false,
-                            tooltip: 'Remove Node/Edge',
+                            tooltip: 'Remove node/arrow',
                             action: [performRemove]
                         }
+                    ],
+                    [
+                        {
+                            icon: 'fa fa-save',
+                            event: ['tap'],
+                            selector: 'cy',
+                            bubbleToCore: true,
+                            tooltip: 'Remove node/arrow',
+                            action: [performSave]
+                        }
                     ]
-
                 ],
                 appendTools: false
             });
@@ -311,4 +320,13 @@ $(function () {
         cy.remove(e.cyTarget);
     }
     //#endregion
+
+    //#Save graph
+    function performSave(e) {
+        //if (!e.data.canPerform(e, performSave)) {
+        //    return;
+        //}
+        alert('Workflow saved');
+        //cy.remove(e.cyTarget);
+    }
 });
