@@ -165,11 +165,11 @@ $(function () {
                     [
                         {
                             icon: 'fa fa-save',
-                            event: ['tap'],
-                            selector: 'cy',
+                            event: ['click'],
+                            selector: 'tool-5-0',
                             bubbleToCore: true,
-                            tooltip: 'Remove node/arrow',
-                            action: [performSave]
+                            tooltip: 'Save workflow',
+                            action: [/*performSave*/]
                         }
                     ]
                 ],
