@@ -39,8 +39,7 @@
             }
             /* cytoscape graph */
             .cy {
-                min-height: 500px;
-                max-height: 1000px;
+                height: 900px;
                 width: 650px;
                 background-color: #f9f9f9;
             }
