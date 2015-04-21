@@ -161,17 +161,17 @@ $(function () {
                             tooltip: 'Remove node/arrow',
                             action: [performRemove]
                         }
-                    ],
-                    [
-                        {
-                            icon: 'fa fa-save',
-                            event: ['click'],
-                            selector: 'tool-5-0',
-                            bubbleToCore: true,
-                            tooltip: 'Save workflow',
-                            action: [/*performSave*/]
-                        }
-                    ]
+                    ]//,
+                    //[
+                    //    {
+                    //        icon: 'fa fa-save',
+                    //        event: ['click'],
+                    //        selector: 'tool-5-0',
+                    //        bubbleToCore: true,
+                    //        tooltip: 'Save workflow',
+                    //        action: [/*performSave*/]
+                    //    }
+                    //]
                 ],
                 appendTools: false
             });
@@ -225,7 +225,8 @@ $(function () {
             ],
             edges: [
                 { data: { id: 'ad', source: 'a', target: 'd' } },
-                { data: { id: 'eb', source: 'e', target: 'b' } }
+                { data: { id: 'eb', source: 'e', target: 'b' } },
+                { data: { id: 'ac', source: 'a', target: 'c' } },
 
             ]
         },
