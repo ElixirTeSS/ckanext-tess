@@ -1,36 +1,30 @@
 {% extends "page.html" %}
+
 {% block subtitle %}{{ _('Workflows') }}{% endblock %}
 
 {% block breadcrumb_content %}
 <li class="active">{% link_for _('Workflows'), controller='group', action='index' %}</li>
 {% endblock %}
 
+{% block page_header %}{% endblock %}
+
+{% block primary_content %}
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script type="text/javascript" src="http://cytoscape.github.io/cytoscape.js/api/cytoscape.js-latest/cytoscape.js"></script>
+<script type="text/javascript" src="https://rawgit.com/bdparrish/cytoscape.js-toolbar/master/cytoscape-toolbar.js"></script>
+<!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>-->
+<link type="text/css" href="/workflows-cytoscape.css" rel="stylesheet"/>
+<link type="text/css" href="/font-awesome-4.0.3/css/font-awesome.css" rel="stylesheet"/>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+{% resource 'tess/workflows-cytoscape-toolbar.js' %}
 
 {% block primary_content_inner %}
-
-{% resource 'tess/workflows.js' %}
-
-<script src="http://cytoscape.github.io/cytoscape.js/api/cytoscape.js-latest/cytoscape.js"></script>
-<link href="/style.css" rel="stylesheet" type="text/css" />
-<div id="cy"></div>
+<p>&nbsp;</p>
+<div id="cy" class="cy col-md-7 col-md-offset-1"></div>
+{% endblock %}
 {% endblock %}
 
 {% block secondary_content %}
 {% snippet "workflow/snippets/helper.html" %}
 {% endblock %}
-
-
-<!--<!DOCTYPE html>-->
-<!--<html>-->
-<!--<head>-->
-<!--<link href="style.css" rel="stylesheet" />-->
-<!--<meta charset=utf-8 />-->
-<!--<title>Cytoscape.js initialisation</title>-->
-<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery-min.js"></script>-->
-<!--<script src="http://cytoscape.github.io/cytoscape.js/api/cytoscape.js-latest/cytoscape.js"></script>-->
-<!--<script src="http://localhost:5000/code.js"></script>-->
-<!--</head>-->
-<!--<body>-->
-<!--<div id="cy"></div>-->
-<!--</body>-->
-<!--</html>-->
