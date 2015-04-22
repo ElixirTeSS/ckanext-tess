@@ -25093,8 +25093,8 @@ joint.shapes.devs.Atomic = joint.shapes.devs.Model.extend({
         }
 
     }, joint.shapes.devs.Model.prototype.defaults)
-
-});
+}
+);
 
 joint.shapes.devs.Coupled = joint.shapes.devs.Model.extend({
 

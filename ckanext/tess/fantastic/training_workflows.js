@@ -10,6 +10,10 @@
         // ------------------------
 
    joint.shapes.html = {};
+    console.log(joint.util.deepSupplement({
+        type: 'html.Element'
+        }));
+
    joint.shapes.html.Element = joint.shapes.devs.Model.extend({
     defaults: joint.util.deepSupplement({
         type: 'html.Element'
