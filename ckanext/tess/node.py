@@ -124,6 +124,7 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
 
         default_validators = [_ignore_missing, _convert_to_extras]
         schema.update({
+            'member_status': [_convert_to_extras], #true or false
             'country_code': [_convert_to_extras],
             'home_page': default_validators,
             'institutions': default_validators, # string in JSON format
@@ -148,6 +149,7 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
 
         default_validators = [_convert_from_extras, _ignore_missing]
         schema.update({
+            'member_status': default_validators, #true or false
             'country_code': default_validators,
             'home_page': default_validators,
             'institutions': default_validators, # string in JSON format
@@ -200,7 +202,6 @@ def all_nodes():
 def all_content_providers():
     data = {'all_fields': True}
     cps=toolkit.get_action('organization_list')({}, data)
-    print 'cps', cps
     return cps
 
 #returns something like:   [{'United Kingdom', 'united-kingdom'},
@@ -263,6 +264,7 @@ def get_all_nodes():
         (data_dict={'all_fields': True,
                     'include_extras': True,
                     'type': 'node', 'for_view': True})
+
     return nodes
 
 

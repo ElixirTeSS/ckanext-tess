@@ -63,8 +63,8 @@ $('#node_form').submit(function(){ //listen for submit event
     $('.institution').each(function(i, obj) {
         var institutionJSONObject = new Object();
         institutionJSONObject.name = $(this).find("input[name='institution_name']").val();
-        institutionJSONObject.home_page = $(this).find("input[name='institution_home_page']").val();
-        institutionJSONObject.image = $(this).find("input[name='institution_image']").val();
+        institutionJSONObject.home_page = check_url_schema($(this).find("input[name='institution_home_page']").val());
+        institutionJSONObject.image = check_url_schema($(this).find("input[name='institution_image']").val());
         // Add institution but only if at least name is not empty
         if (institutionJSONObject.name != '')
             allInstitutionsJSONObject.institutions.push(institutionJSONObject);
@@ -85,3 +85,12 @@ $('#node_form').submit(function(){ //listen for submit event
         value: allInstitutionsJSONString
     }).appendTo($(this));
 });
+
+function check_url_schema(url){
+
+    var new_url = url.trim();
+    if (new_url.toLowerCase().indexOf("http") != 0){
+        new_url = 'http://' + new_url;
+    }
+    return new_url;
+}
