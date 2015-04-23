@@ -24,6 +24,13 @@
     {% set is_upload = data.image_url and not data.image_url.startswith('http') %}
     {% set is_url = data.image_url and data.image_url.startswith('http') %}
 
+
+    <div class='controls'>
+           <span class="info-block info-block-small" style="padding-left: 0px;">
+          <i class="icon-info-sign"></i>
+          If you are providing a link to an image, make sure the URL starts with http(s)://
+        </span>
+    </div>
     {{ form.image_upload(data, errors, is_upload_enabled=h.uploads_enabled(), is_url=is_url, is_upload=is_upload) }}
 
     {{ form.input('homepage', label=_('Home page'), id='field-homepage', placeholder=_('e.g. http://www.mygoblet.org/training-portal'), value=data.homepage, error=errors.homepage, classes=['control-full']) }}
