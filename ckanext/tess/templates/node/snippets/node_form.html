@@ -2,6 +2,7 @@
 {% import 'macros/form.html' as form %}
 {% resource 'tess/load_country_info.js' %}
 {% resource 'tess/add_input_fields.js' %}
+{% resource 'tess/verify_url.js' %}
 
 <!--{% block breadcrumb_content %}-->
 <!--<li><a href="{% url_for 'node' %}">{{ _('Nodes') }}</a></li>-->
@@ -243,7 +244,7 @@
             {% endblock %}</a>
       {% endif %}
     {% endblock %}
-    <button class="btn btn-primary" name="save" type="submit">{% block save_text %}{{ _('Save node') }}{% endblock %}</button>
+    <button class="btn btn-primary" name="save" type="submit" onclick="return check_url_starts_with_http('home_page');">{% block save_text %}{{ _('Save node') }}{% endblock %}</button>
   </div>
 
 </form>
