@@ -203,7 +203,6 @@ def all_nodes():
 def all_content_providers():
     data = {'all_fields': True}
     cps=toolkit.get_action('organization_list')({}, data)
-    print 'cps', cps
     return cps
 
 #returns something like:   [{'United Kingdom', 'united-kingdom'},

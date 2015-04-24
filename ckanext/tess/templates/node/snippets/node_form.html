@@ -2,6 +2,7 @@
 {% import 'macros/form.html' as form %}
 {% resource 'tess/load_country_info.js' %}
 {% resource 'tess/add_input_fields.js' %}
+{% resource 'tess/verify_url.js' %}
 
 <!--{% block breadcrumb_content %}-->
 <!--<li><a href="{% url_for 'node' %}">{{ _('Nodes') }}</a></li>-->
@@ -151,7 +152,14 @@
     {{ form.input('twitter', label=_("Twitter handle"), id='twitter', placeholder=("Handle of the node's twitter feed, e.g @ElixirNodeUK"), value=data.twitter, classes=['control-full']) }}
     <hr>
 
-    <div class='controls'><p>Add up to 3 images for the node page's carousel.</p></div>
+    <div class='controls'>
+        Add up to 3 images for the node page's carousel.
+        <span class="info-block info-block-small" style="padding-left: 0px;">
+          <i class="icon-info-sign"></i>
+          If you are providing links to images, make sure the URLs start with http(s)://
+        </span>
+    </div>
+
     {% set carousel_images = [] %}
     {% if data.carousel_image_1: %}
         {% set carousel_images = carousel_images + [data.carousel_image_1] %}
@@ -245,7 +253,7 @@
             {% endblock %}</a>
       {% endif %}
     {% endblock %}
-    <button class="btn btn-primary" name="save" type="submit">{% block save_text %}{{ _('Save node') }}{% endblock %}</button>
+    <button class="btn btn-primary" name="save" type="submit" onclick="return check_url_starts_with_http('home_page');">{% block save_text %}{{ _('Save node') }}{% endblock %}</button>
   </div>
 
 </form>
