@@ -21,6 +21,7 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
         return {
                 'file_exist':file_exist,
                 'get_all_nodes': get_all_nodes,
+                'get_nodes_grouped_by_status': get_nodes_grouped_by_status,
                 'get_all_node_names': get_all_node_names,
                 'node_domain': node_domain,
                 'key_to_title': key_to_title,
@@ -221,6 +222,7 @@ def all_content_provider_name_and_ids():
         list.append([content_provider.get('display_name'), content_provider.get('name'), content_provider.get('id')])
     return list
 
+
 def get_node(node_id):
     try:
         data = {'id': node_id}
@@ -260,13 +262,32 @@ def file_exist(file_name):
                                   'tess', 'templates')
     return os.path.exists(template_dir + "/" + file_name)
 
+
 def get_all_nodes():
     nodes = toolkit.get_action("group_list")\
         (data_dict={'all_fields': True,
                     'include_extras': True,
                     'type': 'node', 'for_view': True})
-
     return nodes
+
+
+def get_nodes_grouped_by_status():
+    member_nodes = []
+    observer_nodes = []
+    interested_nodes = []
+
+    for node in get_all_nodes():
+        status = get_extras(node).get('member_status', None)
+        if status == 'Member':
+            member_nodes.append(node)
+        elif status == 'Observer':
+            observer_nodes.append(node)
+        else:
+            interested_nodes.append(node)
+
+    return {'member_nodes': member_nodes,
+            'observer_nodes': observer_nodes,
+            'interested_nodes': interested_nodes}
 
 
 def training_coordinators():
@@ -290,8 +311,10 @@ def get_all_node_names():
                     'type': 'node'})
     return nodes
 
+
 def node_domain():
     return 'http://127.0.0.1:5000/node'
+
 
 def key_to_title(key):
     lookup = { 'trc': 'Training coordinator',
@@ -305,6 +328,7 @@ def key_to_title(key):
 countries_map = None
 # Global variable to hold country name -> country code map
 transposed_countries_map = None
+
 
 def get_countries_map():
     '''
