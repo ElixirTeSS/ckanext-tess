@@ -44,6 +44,21 @@ def countries_filter():
     return countries_map
 
 
+def topics_filters():
+    try:
+        res = urllib2.urlopen('http://iann.pro/solr/select?q=*:*&facet=true&facet.field=field&rows=0')
+        res = res.read()
+        print res
+        doc = et.fromstring(res)
+        fields = doc.findall("./lst/lst/lst/int")
+        topics = []
+        for field in fields:
+            topics.append(field.attrib['name']) #+ ' (' + field.text + ')')
+        return topics
+    except Exception, e:
+        print 'Could not load topics filters'
+        return []
+
 def parse_xml(xml):
     doc = et.fromstring(xml)
     result_element = doc.find('result')
@@ -88,6 +103,7 @@ def parse_xml(xml):
 def construct_url(parameter):
     try:
         category = parameter.get('category', None)
+        topics = parameter.get('topics', None)
         country = parameter.get('country', None)
         rows = parameter.get('rows', 15)
         sort = parameter.get('sort', None)
@@ -118,6 +134,10 @@ def construct_url(parameter):
 
         if country:
             original_url = ('%s%%20AND%%20country:"%s"' % (original_url, urllib.quote(country)))
+
+        if topics:
+            original_url = ('%s%%20AND%%20field:"%s"' % (original_url, urllib.quote(topics)))
+
         print original_url
         if q:
             split = q.replace('-', '","')
@@ -151,6 +171,8 @@ def related_events(model):
     except Exception, e:
         print 'Model has no title attribute: \n %s' % e
         return None
+
+
 
 
 ######################
@@ -274,6 +296,7 @@ def setup_events():
     c.q = q_params['q'] = c.q = request.params.get('q', '')
     c.category = q_params['category'] = request.params.get('category', '')
     c.country = q_params['country'] = request.params.get('country', '')
+    c.topics = q_params['topics'] = request.params.get('topics', '')
     c.rows = q_params['rows'] = request.params.get('rows', 15)
     c.sort_by_selected = q_params['sort'] = request.params.get('sort', '')
     c.page_number = q_params['page'] = int(request.params.get('page', 0))
@@ -282,9 +305,10 @@ def setup_events():
     filters = {}
     if not c.filters:
         filters['category'] = ['event', 'course', 'meeting']
+        filters['topics'] = topics_filters()
         filters['country'] = countries_filter().values()
     c.filters = filters
-    c.active_filters = {'category': c.category, 'country': c.country}
+    c.active_filters = {'category': c.category, 'topics': c.topics, 'country': c.country}
 
     c.events = events_hash.get('events')
     c.events_count = events_hash.get('count')
