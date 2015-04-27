@@ -31,33 +31,48 @@ def iann_news():
   return plugins.toolkit.literal(data)
 
 
-def countries_filter():
-    here = os.path.dirname(__file__)
-    # json file containing country code -> country name map for member and observer countries
-    file = os.path.join(here,'countries-elixir-flat.json')
-    with open(file) as data_file:
-        try:
-            countries_map = json.load(data_file)
-        except Exception, e:
-            print e
-            countries_map = {}
-    return countries_map
-
-
-def topics_filters():
+def get_filters_for(field):
     try:
-        res = urllib2.urlopen('http://iann.pro/solr/select?q=*:*&facet=true&facet.field=field&rows=0')
+        url = construct_url('http://iann.pro/solr/select?facet=true&facet.field=%s&rows=0' % field)
+        res = urllib2.urlopen(url)
         res = res.read()
-        print res
         doc = et.fromstring(res)
         fields = doc.findall("./lst/lst/lst/int")
-        topics = []
+        field_list = []
         for field in fields:
-            topics.append(field.attrib['name']) #+ ' (' + field.text + ')')
-        return topics
+            if field.text != '0' and field.attrib['name']:
+                hash_val = {'name': field.attrib['name'], 'count': field.text}
+                field_list.append(hash_val) #+ ' (' + field.text + ')')
+        return field_list
     except Exception, e:
-        print 'Could not load topics filters'
+        print 'Could not load country filters'
         return []
+
+
+def country_filters():
+    return get_filters_for('country')
+    # For list of ELIXIR countries:
+    #here = os.path.dirname(__file__)
+    # json file containing country code -> country name map for member and observer countries
+    #file = os.path.join(here,'countries-elixir-flat.json')
+    #with open(file) as data_file:
+    #    try:
+    #        # For list of ELIXIR countries:
+    #        # countries_map = json.load(data_file)
+    #    except Exception, e:
+    #        print e
+    #        countries_map = []
+    #return countries_map
+
+
+def topic_filters():
+    return get_filters_for('field')
+
+def provider_filters():
+    return get_filters_for('provider')
+
+def category_filters():
+    return get_filters_for('category')
 
 def parse_xml(xml):
     doc = et.fromstring(xml)
@@ -100,49 +115,50 @@ def parse_xml(xml):
     return {'count': count, 'events': results}
 
 
-def construct_url(parameter):
+def construct_url(original_url):
     try:
-        category = parameter.get('category', None)
-        topics = parameter.get('topics', None)
-        country = parameter.get('country', None)
-        rows = parameter.get('rows', 15)
-        sort = parameter.get('sort', None)
-        q = parameter.get('q', None)
-        include_expired = parameter.get('include_expired', False)
-        page = int(parameter.get('page', 0))
+#        category = c.category
+#        topics = parameter.get('topic', None)
+#        providers = parameter.get('provider', None)
+#        country = parameter.get('country', None)
+#        rows = parameter.get('rows', 15)
+#        sort = parameter.get('sort', None)
+#        q = parameter.get('q', None)
+#        include_expired = parameter.get('include_expired', False)
+#        page = int(parameter.get('page', 0))
 
-        original_url = 'http://iann.pro/solr/select/?'
-        original_url = ('%srows=%s' % (original_url, rows))
-
-        if sort:
-            attr, dir = sort.split(' ') # e.g end asc or title asc
+        if c.sort:
+            attr, dir = c.sort.split(' ') # e.g end asc or title asc
             original_url = ('%s&sort=%s%%20%s' % (original_url, attr, dir))
 
-        if page:
-            original_url = ('%s&start=%s' % (original_url, str(page*rows-rows)))
+        if c.page:
+            original_url = ('%s&start=%s' % (original_url, str(c.page*c.rows-c.rows)))
 
-        if category:
-            original_url = ('%s&q=category:%s' % (original_url, category))
+        if c.category:
+            original_url = ('%s&q=category:%s' % (original_url, c.category))
         else:
             original_url = ('%s&q=category:%s' % (original_url, 'event'))
 
 
-        if not include_expired:  # Exclude this for past events too
+        if not c.include_expired_events:  # Exclude this for past events too
             today = strftime("%Y-%m-%dT%H:%M:%SZ", gmtime())
             date = ('start:[%s%%20TO%%20*]' % today)
             original_url = ('%s%%20AND%%20%s' % (original_url, date))
 
-        if country:
-            original_url = ('%s%%20AND%%20country:"%s"' % (original_url, urllib.quote(country)))
+        if c.country:
+            original_url = ('%s%%20AND%%20country:"%s"' % (original_url, urllib.quote(c.country)))
 
-        if topics:
-            original_url = ('%s%%20AND%%20field:"%s"' % (original_url, urllib.quote(topics)))
+        if c.topic:
+            original_url = ('%s%%20AND%%20field:"%s"' % (original_url, urllib.quote(c.topic)))
+
+        if c.provider:
+            original_url = ('%s%%20AND%%20provider:"%s"' % (original_url, urllib.quote(c.provider)))
 
         print original_url
-        if q:
-            split = q.replace('-', '","')
+        if c.q:
+            split = c.q.replace('-', '","')
             split = split.replace(' ', '","')
-            parameters = ('text:("%s","%s")' % (urllib.quote(q), split))
+            parameters = ('text:("%s","%s")' % (urllib.quote(c.q), split))
             url = ("%s%%20AND%%20%s" % (original_url, urllib.quote(parameters)))
         else:
             url = original_url
@@ -151,9 +167,10 @@ def construct_url(parameter):
         print 'Failed to construct URL for iAnn API \n %s' % e
 
 
-def events(parameter=None):
+def events():
     results = {}
-    url = construct_url(parameter)
+    original_url = 'http://iann.pro/solr/select/?&rows=%s' % c.rows
+    url = construct_url(original_url)
     try:
         res = urllib2.urlopen(url)
         res = res.read()
@@ -172,6 +189,11 @@ def related_events(model):
         print 'Model has no title attribute: \n %s' % e
         return None
 
+
+
+
+def has_more_options( options):
+    return len(options) > 10
 
 
 
@@ -225,9 +247,10 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     def setup_template_variables(self, context, data_dict):
         c.filterable_nodes = 'HI'
 
+
     def get_helpers(self):
         return {
-                'countries_filter': countries_filter,
+                'has_more_options': has_more_options,
                 'read_news_iann': iann_news,
                 'related_events': related_events,
                 'events': events
@@ -296,23 +319,25 @@ def setup_events():
     c.q = q_params['q'] = c.q = request.params.get('q', '')
     c.category = q_params['category'] = request.params.get('category', '')
     c.country = q_params['country'] = request.params.get('country', '')
-    c.topics = q_params['topics'] = request.params.get('topics', '')
+    c.topic = q_params['topic'] = request.params.get('topic', '')
+    c.provider = q_params['provider'] = request.params.get('provider', '')
     c.rows = q_params['rows'] = request.params.get('rows', 15)
     c.sort_by_selected = q_params['sort'] = request.params.get('sort', '')
     c.page_number = q_params['page'] = int(request.params.get('page', 0))
     c.include_expired_events = q_params['include_expired'] = request.params.get('include_expired', False)
-    events_hash = events(q_params)
+    events_hash = events()
     filters = {}
     if not c.filters:
-        filters['category'] = ['event', 'course', 'meeting']
-        filters['topics'] = topics_filters()
-        filters['country'] = countries_filter().values()
+        filters['category'] = category_filters()
+        filters['topic'] = topic_filters()
+        filters['provider'] = provider_filters()
+        filters['country'] = country_filters()
     c.filters = filters
-    c.active_filters = {'category': c.category, 'topics': c.topics, 'country': c.country}
+    c.active_filters = {'category': c.category, 'topic': c.topic, 'country': c.country, 'provider': c.provider}
 
-    c.events = events_hash.get('events')
-    c.events_count = events_hash.get('count')
-    c.events_url = events_hash.get('url')
+    c.events = events_hash.get('events', None)
+    c.events_count = events_hash.get('count', None)
+    c.events_url = events_hash.get('url', None)
     c.page = h.Page(
         collection=c.events,
         page=c.page_number,
