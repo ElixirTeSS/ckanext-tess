@@ -46,8 +46,9 @@ $(function(){ // on dom ready
                 { data: { id: 'b' } },
                 { data: { id: 'c', parent: 'b' } },
                 { data: { id: 'd' } },
-                { data: { id: 'e' } },
-                { data: { id: 'f', parent: 'e' } }
+                { data: { id: 'e', parent: 'g' } },
+                { data: { id: 'f', parent: 'e' } },
+                { data: { id: 'g' } }
             ],
             edges: [
                 { data: { id: 'ad', source: 'a', target: 'd' } },

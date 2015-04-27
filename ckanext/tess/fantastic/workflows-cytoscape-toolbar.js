@@ -181,7 +181,7 @@ $(function () {
             {
                 selector: 'node',
                 css: {
-                    'content': 'data(id)',
+                    'content': 'data(name)',
                     'text-valign': 'center',
                     'text-halign': 'center'
                 }
@@ -200,35 +200,43 @@ $(function () {
             {
                 selector: 'edge',
                 css: {
-                    'target-arrow-shape': 'triangle'
+                    'target-arrow-shape': 'triangle',
+                    'content': 'data(name)'
                 }
             },
             {
                 selector: ':selected',
                 css: {
-                    'background-color': 'green',
-                    'line-color': 'green',
-                    'target-arrow-color': 'green',
-                    'source-arrow-color': 'green'
+                    'background-color': 'blue',
+                    'line-color': 'blue',
+                    'target-arrow-color': 'blue',
+                    'source-arrow-color': 'blue'
                 }
             }
         ],
 
         elements: {
             nodes: [
-                { data: { id: 'a', parent: 'b' } },
-                { data: { id: 'b' } },
-                { data: { id: 'c', parent: 'b' } },
-                { data: { id: 'd' } },
-                { data: { id: 'e' } },
-                { data: { id: 'f', parent: 'e' } }
-            ],
+                { data: { id: 'a', name: 'Query sequence and variation data'} },
+                { data: { id: 'b', name: 'Known structure in pdb?', parent: 'd' } },
+                { data: { id: 'c', name: 'Structure analysis and model quality', parent: 'd' } },
+                { data: { id: 'd', name: 'Obtain structural data' } },
+                { data: { id: 'e', name: 'Close relative - homology modelling', parent: 'g' } },
+                { data: { id: 'f', name: 'Remote relative - structure prediction', parent: 'g' } },
+                { data: { id: 'g' } },
+                { data: { id: 'h', name: 'Structure annotation' } },
+                { data: { id: 'i0', name: 'Active site', parent: 'h' } },
+                { data: { id: 'i1', name: 'Binding sites', parent: 'h' } },
+                { data: { id: 'i2', name: 'Interfaces', parent: 'h' } },
+                { data: { id: 'i3', name: 'Post translational modifications', parent: 'h' } },
+                { data: { id: 'i4', name: 'Conserved sites', parent: 'h' } }
+          ],
             edges: [
-                { data: { id: 'ad', source: 'a', target: 'd' } },
-                { data: { id: 'eb', source: 'e', target: 'b' } },
-                { data: { id: 'ac', source: 'a', target: 'c' } },
-
-            ]
+                { data: { id: 'ad', source: 'a', target: 'd', name: 'blah' } },
+                { data: { id: 'bc', source: 'b', target: 'c' } },
+                { data: { id: 'ef', source: 'e', target: 'f' } },
+                { data: { id: 'dg', source: 'd', target: 'g' } },
+          ]
         },
         layout: {
             name: 'cose',
@@ -236,6 +244,24 @@ $(function () {
         }
 
     });
+
+    var workflow = {
+            nodes: [
+                { data: { id: 'a', parent: 'b' } },
+                { data: { id: 'b' } },
+                { data: { id: 'c', parent: 'b' } },
+                { data: { id: 'd' } },
+                { data: { id: 'e', parent: 'g' } },
+                { data: { id: 'f', parent: 'e' } },
+                { data: { id: 'g' } },
+            ],
+            edges: [
+                { data: { id: 'ad', source: 'a', target: 'd' } },
+                { data: { id: 'eb', source: 'e', target: 'b' } },
+                { data: { id: 'ac', source: 'a', target: 'c' } },
+
+            ]
+        };
 
     //#region node tools
     function addPersonToGraph(e) {
@@ -330,4 +356,9 @@ $(function () {
         alert('Workflow saved');
         //cy.remove(e.cyTarget);
     }
+});
+
+$('#show-json').click(function(){
+    $( "#dialog-div").text(JSON.stringify(window.cy.json()));
+    $( "#dialog-div" ).dialog({autoOpen : false, modal : true, show : "blind", hide : "blind"});
 });

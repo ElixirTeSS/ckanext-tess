@@ -1,18 +1,15 @@
 {% extends "page.html" %}
 
-{% block subtitle %}{{ _('Workflows') }}{% endblock %}
+{% block subtitle %}{{ _('Sequence Analysis Workflow') }}{% endblock %}
 
 {% block breadcrumb_content %}
-<li class="active">{% link_for _('Workflows'), controller='group', action='index' %}</li>
+<li class="active">{% link_for _('Sequence Analysis Workflow'), controller='group', action='index' %}</li>
 {% endblock %}
 
 {% block page_header %}{% endblock %}
 
 
 {% block page_primary_action %}
-  {% if h.check_access('group_create') %}
-    {% link_for _('Save workflow'), controller='ckanext.tess.node:NodeController', action='new', class_='btn btn-primary', icon='save' %}
-  {% endif %}
 {% endblock %}
 
 {% block primary_content_inner %}
