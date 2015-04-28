@@ -301,7 +301,7 @@ def setup_events():
     c.country = q_params['country'] = request.params.get('country', '')
     c.topic = q_params['topic'] = request.params.get('topic', '')
     c.provider = q_params['provider'] = request.params.get('provider', '')
-    c.rows = q_params['rows'] = request.params.get('rows', 15)
+    c.rows = q_params['rows'] = request.params.get('rows', 25)
     c.sort_by_selected = q_params['sort'] = request.params.get('sort', '')
     c.page_number = q_params['page'] = int(request.params.get('page', 0))
     c.include_expired_events = q_params['include_expired'] = request.params.get('include_expired', False)
