@@ -25,14 +25,13 @@
         <ul class="unstyled nav nav-simple nav-facet-no-icon">
 
             {% set grouped_nodes = h.get_nodes_grouped_by_status() %}
-                <li class="nav-item">
-                    <b></b>Members</li></b>
-                </li>
-                <li class="nav-item">
+
+            <h2 class="module-heading"> Members </h2>
+             <li class="nav-item">
                 <a href="/node/custom/hub.html" title="">
                     <span>The Hub</span>
                 </a>
-                </li>
+             </li>
             {% for node in grouped_nodes['member_nodes']: %}
                 {% set url = h.url_for(node.type ~ '_read', action='read', id=node.name) %}
                 {% set country_code = h.get_extras(node)['country_code'] %}
@@ -40,9 +39,8 @@
                     <a href="{{url}}"><img src="/images/node_flags/{{country_code}}-small.png">&nbsp;&nbsp;{{node.display_name}}</a>
                 </li>
             {% endfor %}
-                <li class="nav-item">
-                    <b></b>Observers</li></b>
-                </li>
+
+            <h2 class="module-heading"> Observers </h2>
             {% for node in grouped_nodes['observer_nodes']: %}
                 {% set url = h.url_for(node.type ~ '_read', action='read', id=node.name) %}
                 {% set country_code = h.get_extras(node)['country_code'] %}
@@ -50,7 +48,7 @@
                     <a href="{{url}}"><img src="/images/node_flags/{{country_code}}-small.png">&nbsp;&nbsp;{{node.display_name}}</a>
                 </li>
             {% endfor %}
-                <li class="nav-item">
+            <!--    <li class="nav-item">
                     <b></b>Interested</li></b>
                 </li>
             {% for node in grouped_nodes['interested_nodes']: %}
@@ -59,7 +57,7 @@
                 <li class="nav-item">
                     <a href="{{url}}"><img src="/images/node_flags/{{country_code}}-small.png">&nbsp;&nbsp;{{node.display_name}}</a>
                 </li>
-            {% endfor %}
+            {% endfor %}-->
         </ul>
     </nav>
 </div>
