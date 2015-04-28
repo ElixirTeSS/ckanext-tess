@@ -39,23 +39,47 @@ def iann_news():
   return plugins.toolkit.literal(data)
 
 
-def get_filters_for(field):
+def get_filters_for(field_name):
     try:
-        url = construct_url('http://iann.pro/solr/select?facet=true&facet.field=%s&rows=0' % field)
-        res = urllib2.urlopen(url)
-        res = res.read()
-        doc = et.fromstring(res)
-        fields = doc.findall("./lst/lst/lst/int")
-        field_list = []
-        for field in fields:
-            if field.text != '0' and field.attrib['name']:
-                hash_val = {'name': field.attrib['name'], 'count': field.text}
-                field_list.append(hash_val) #+ ' (' + field.text + ')')
-        return field_list
+        #TODO; Only load 10 filters unless parameter _provider_limit=1000 - provider_limit is calling solr # filters times. Need to minimize
+        if not c.active_filters.get(field_name, None): # Don't bother if the filter is already active
+            url = construct_url('http://iann.pro/solr/select?facet=true&facet.field=%s&rows=0' % field_name)
+            res = urllib2.urlopen(url)
+            res = res.read()
+            doc = et.fromstring(res)
+            fields = doc.findall("./lst/lst/lst/int")
+            field_list = []
+            for field in fields:
+                if field.text != '0' and field.attrib['name']:
+                    if field_name == 'provider':
+                        name = proper_name(field_name, field.attrib['name'])
+                    else:
+                        name = field.attrib['name'].title()
+                    hash_val = {'name': name, 'count': field.text}
+                    field_list.append(hash_val)
+            return field_list
+        else:
+            return [{'name': field_name}, {'count': 0}]
     except Exception, e:
-        print 'Could not load country filters'
+        print 'Could not load country filters \n %s' % e
         return []
 
+# Bit of a hack here - Because providers have acronyms/funny mixtures of cases - we query each provider
+# asking for 1 result back, parsing it and using that value as the filter name.
+def proper_name(field, name):
+    try:
+        url = ('http://iann.pro/solr/select?q=%s:%s&rows=1' % (field, urllib.quote(name)))
+        res = urllib2.urlopen(url)
+        doc = et.fromstring(res.read())
+        docs = doc.findall('*/doc')
+        provider_name = name.title()
+        for doc in docs:
+            if doc.find("*/[@name='provider']").text:
+                provider_name = doc.find("*/[@name='provider']").text
+        return provider_name
+    except Exception, e:
+        print 'Error loading the correct provider names \n %s' % e
+        return name
 
 #def country_filters():
 
@@ -306,6 +330,7 @@ def setup_events():
     c.page_number = q_params['page'] = int(request.params.get('page', 0))
     c.include_expired_events = q_params['include_expired'] = request.params.get('include_expired', False)
     events_hash = events()
+    c.active_filters = {'category': c.category, 'topic': c.topic, 'country': c.country, 'provider': c.provider}
     filters = {}
     if not c.filters:
         filters['category'] = get_filters_for('category')
@@ -313,7 +338,6 @@ def setup_events():
         filters['provider'] = get_filters_for('provider')
         filters['country'] = get_filters_for('country')
     c.filters = filters
-    c.active_filters = {'category': c.category, 'topic': c.topic, 'country': c.country, 'provider': c.provider}
 
     c.events = events_hash.get('events', None)
     c.events_count = events_hash.get('count', None)

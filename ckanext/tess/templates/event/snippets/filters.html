@@ -10,11 +10,11 @@
                 {% if not c.active_filters[filter_name] %} <!--c.category not in names -->
                     {% for filter in filter_options[:(h.get_param_int('_%s_limit' % filter_name))] %}
                         {% set href = h.add_url_param(new_params={filter_name: filter['name']}) %}
-                        <li class='nav-item'><a href="{{ href }}" title="{{ filter['name']}}"><span>{{ filter['name'].title() }} ({{filter['count']}}) </span></a></li>
+                        <li class='nav-item'><a href="{{ href }}" title="{{ filter['name']}}"><span>{{ filter['name']}} ({{filter['count']}}) </span></a></li>
                     {% endfor %}
                 {% else %}
                     {% set href = h.remove_url_param(filter_name) %}
-                    <li class='nav-item active'><a href="{{ href }}" title="{{ c.active_filters[filter_name] }}"><span>{{ c.active_filters[filter_name].title() }}</span></a></li>
+                    <li class='nav-item active'><a href="{{ href }}" title="{{ c.active_filters[filter_name] }}"><span>{{ c.active_filters[filter_name] }}</span></a></li>
                 {% endif %}
             </ul>
         </nav>
@@ -24,12 +24,14 @@
             {% set plural_title = filter_name + 's' %}
         {% endif %}
         <p class="module-footer">
+            {% if not c.active_filters[filter_name] %}
             {% if h.has_more_options(filter_options) %}
                 {% if h.get_param_int('_%s_limit' % filter_name) <= 10%}
                     <a href="{{ h.remove_url_param('_%s_limit' % filter_name, replace=1000) }}" class="read-more">{{ _('Show more {name}').format(name=plural_title) }}</a>
                 {% else %}
                       <a href="{{ h.remove_url_param('_%s_limit' % filter_name) }}" class="read-more">{{ _('Show less {name}').format(name=plural_title) }}</a>
                 {% endif %}
+            {% endif %}
             {% endif %}
 
         </p><br>
