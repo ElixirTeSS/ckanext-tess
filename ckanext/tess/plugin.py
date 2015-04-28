@@ -49,8 +49,8 @@ def get_filters_for(field):
         return []
 
 
-def country_filters():
-    return get_filters_for('country')
+#def country_filters():
+
     # For list of ELIXIR countries:
     #here = os.path.dirname(__file__)
     # json file containing country code -> country name map for member and observer countries
@@ -64,15 +64,6 @@ def country_filters():
     #        countries_map = []
     #return countries_map
 
-
-def topic_filters():
-    return get_filters_for('field')
-
-def provider_filters():
-    return get_filters_for('provider')
-
-def category_filters():
-    return get_filters_for('category')
 
 def parse_xml(xml):
     doc = et.fromstring(xml)
@@ -117,44 +108,27 @@ def parse_xml(xml):
 
 def construct_url(original_url):
     try:
-#        category = c.category
-#        topics = parameter.get('topic', None)
-#        providers = parameter.get('provider', None)
-#        country = parameter.get('country', None)
-#        rows = parameter.get('rows', 15)
-#        sort = parameter.get('sort', None)
-#        q = parameter.get('q', None)
-#        include_expired = parameter.get('include_expired', False)
-#        page = int(parameter.get('page', 0))
-
         if c.sort:
             attr, dir = c.sort.split(' ') # e.g end asc or title asc
             original_url = ('%s&sort=%s%%20%s' % (original_url, attr, dir))
 
         if c.page:
             original_url = ('%s&start=%s' % (original_url, str(c.page*c.rows-c.rows)))
-
         if c.category:
             original_url = ('%s&q=category:%s' % (original_url, c.category))
         else:
             original_url = ('%s&q=category:%s' % (original_url, 'event'))
-
-
         if not c.include_expired_events:  # Exclude this for past events too
             today = strftime("%Y-%m-%dT%H:%M:%SZ", gmtime())
             date = ('start:[%s%%20TO%%20*]' % today)
             original_url = ('%s%%20AND%%20%s' % (original_url, date))
-
         if c.country:
             original_url = ('%s%%20AND%%20country:"%s"' % (original_url, urllib.quote(c.country)))
-
         if c.topic:
             original_url = ('%s%%20AND%%20field:"%s"' % (original_url, urllib.quote(c.topic)))
-
         if c.provider:
             original_url = ('%s%%20AND%%20provider:"%s"' % (original_url, urllib.quote(c.provider)))
-
-        print original_url
+        #print original_url
         if c.q:
             split = c.q.replace('-', '","')
             split = split.replace(' ', '","')
@@ -189,12 +163,8 @@ def related_events(model):
         print 'Model has no title attribute: \n %s' % e
         return None
 
-
-
-
-def has_more_options( options):
+def has_more_options(options):
     return len(options) > 10
-
 
 
 ######################
@@ -328,10 +298,10 @@ def setup_events():
     events_hash = events()
     filters = {}
     if not c.filters:
-        filters['category'] = category_filters()
-        filters['topic'] = topic_filters()
-        filters['provider'] = provider_filters()
-        filters['country'] = country_filters()
+        filters['category'] = get_filters_for('category')
+        filters['topic'] = get_filters_for('field')
+        filters['provider'] = get_filters_for('provider')
+        filters['country'] = get_filters_for('country')
     c.filters = filters
     c.active_filters = {'category': c.category, 'topic': c.topic, 'country': c.country, 'provider': c.provider}
 
