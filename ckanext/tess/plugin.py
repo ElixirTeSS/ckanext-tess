@@ -230,7 +230,6 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     def get_helpers(self):
         return {
                 'get_tess_version' : get_tess_version,
-                'countries_filter': countries_filter,
                 'has_more_options': has_more_options,
                 'read_news_iann': iann_news,
                 'related_events': related_events,
