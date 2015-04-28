@@ -20,7 +20,7 @@ Example:
   {% block image %}
     {% if node.get('member_status') == 'Observer': %}
     {% block banner %}
-        <span class="node-banner">Observer Node</span>
+        <span class="node-status-banner">Observer Node</span>
     {% endblock %}
     {% endif %}
     {% if node.get('country_code'): %}

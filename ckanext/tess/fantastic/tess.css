@@ -557,7 +557,7 @@ hr.style-one {
   );
 }
 
-.node-banner {
+.node-status-banner {
 	border-bottom: 20px solid orangered;
 	border-left: 20px solid transparent;
 	border-right: 20px solid transparent;
