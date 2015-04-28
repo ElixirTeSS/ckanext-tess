@@ -23,6 +23,9 @@
                 {% endif %}
             {% endif %}
         </div>
+        {% if node.member_status != 'Member' %}
+            <h2 style="margin-left:130px">[{{ _('Observer Node') }}]</h2>
+        {% endif %}
         {% if node.state == 'deleted' %}
         <div style="float: left; width: 60%;">
             <h1 class="page-heading" style="text-align:center; margin: 0px;">
