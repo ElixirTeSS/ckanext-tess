@@ -12,12 +12,20 @@ import urllib
 from ckan.common import OrderedDict, c, g, request, _
 from ckan.lib.plugins import DefaultGroupForm
 import xml.etree.ElementTree as et
+import pylons.config as configuration
 
 from dateutil import parser
 import datetime
 import ckan.lib.formatters as formatters
 from time import gmtime, strftime
 
+
+def get_tess_version():
+    '''Return the value of 'version' parameter from the setyp.py config file.
+    :rtype: string
+
+        '''
+    return configuration.get('ckanext.tess.version', 'N/A')
 
 # Return the iann specific news. This could be replaced with a general news function taking
 # the news source as an argument.
@@ -200,12 +208,13 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         toolkit.add_public_directory(config, 'public')
         toolkit.add_resource('fantastic', 'tess')
 
-
         # set the title
         config['ckan.site_title'] = "TeSS Training Portal"
 
         # set the logo
         config['ckan.site_logo'] = 'images/ELIXIR_TeSS_logo_white-small.png'
+
+        config['ckanext.tess.version'] = '0.9.1-alpha'
 
         #config['ckan.template_head_end'] = config.get('ckan.template_head_end', '') +\
         #                '<link rel="stylesheet" href="/css/tess.css" type="text/css"> '
@@ -227,6 +236,7 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
 
     def get_helpers(self):
         return {
+                'get_tess_version' : get_tess_version,
                 'countries_filter': countries_filter,
                 'read_news_iann': iann_news,
                 'related_events': related_events,
