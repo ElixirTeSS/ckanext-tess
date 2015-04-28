@@ -12,7 +12,8 @@
 {% block page_primary_action %}
   {% if h.check_access('group_create') %}
     {% link_for _('Save workflow'), controller='ckanext.tess.node:NodeController', action='new', id="blah", class_='btn btn-primary', icon='save' %}
-  <button type="button" id="show-json" >Click Me!</button>
+  <button type="button" id="show-wf" >Show workflow!</button>
+  <button type="button" id="load-wf" >Load workflow!</button>
   {% endif %}
 {% endblock %}
 
@@ -29,9 +30,18 @@
 <!--<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">-->
 {% resource 'tess/workflows-cytoscape-toolbar.js' %}
 
-<script>
-</script>
+{% set workflow = h.read_workflow_file('public/workflows/structural-bioinformatics-wf4.json') %}
+{% set workflow2 = h.read_workflow_file('public/workflows/example.json') %}
+<div id="wf" style="display: none;">{{workflow|safe}}</div>
 <div id="cy" style="float: right;" class="cy col-md-7 col-md-offset-1"></div>
+<script>
+    $(document).ready(function(){
+        wf = {{ workflow|safe }};
+        //alert(JSON.stringify(wf));
+        //alert(JSON.stringify(wf['elements']));
+        drawGraph(wf['elements']);
+    });
+</script>
 {% endblock %}
 
 {% block secondary_content %}

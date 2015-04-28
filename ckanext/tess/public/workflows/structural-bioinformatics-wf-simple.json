@@ -1,0 +1,197 @@
+{
+   "elements": {
+      "nodes": [
+         {
+            "data": {
+               "id": "a",
+               "name": "Query sequence and variation data"
+            }
+         },
+         {
+            "data": {
+               "id": "b",
+               "name": "Known structure in pdb?",
+               "parent": "d"
+            }
+         },
+         {
+            "data": {
+               "id": "c",
+               "name": "Structure analysis and model quality",
+               "parent": "d"
+            }
+         },
+         {
+            "data": {
+               "id": "d",
+               "name": "Obtain structural data"
+            }
+         },
+         {
+            "data": {
+               "id": "e",
+               "name": "Close relative - homology modelling",
+               "parent": "g"
+            }
+         },
+         {
+            "data": {
+               "id": "f",
+               "name": "Remote relative - structure prediction",
+               "parent": "g"
+            }
+         },
+         {
+            "data": {
+               "id": "g"
+            }
+         },
+         {
+            "data": {
+               "id": "h",
+               "name": "Structure annotation"
+            }
+         },
+         {
+            "data": {
+               "id": "i0",
+               "name": "Active site",
+               "parent": "h"
+            }
+         },
+         {
+            "data": {
+               "id": "i1",
+               "name": "Binding sites",
+               "parent": "h"
+            }
+         },
+         {
+            "data": {
+               "id": "i2",
+               "name": "Interfaces",
+               "parent": "h"
+            }
+         },
+         {
+            "data": {
+               "id": "i3",
+               "name": "Post translational modifications",
+               "parent": "h"
+            }
+         },
+         {
+            "data": {
+               "id": "i4",
+               "name": "Conserved sites",
+               "parent": "h"
+            }
+         },
+         {
+            "data": {
+               "id": "j",
+               "name": "Proximity of genetic variation to annotated sites"
+            }
+         },
+         {
+            "data": {
+               "id": "j1",
+               "name": "Visualization",
+               "parent": "j"
+            }
+         },
+         {
+            "data": {
+               "id": "k",
+               "name": "Impact assessment"
+            }
+         },
+         {
+            "data": {
+               "id": "k1",
+               "name": "Structure based analysis of impact",
+               "parent": "k"
+            }
+         },
+         {
+            "data": {
+               "id": "k2",
+               "name": "Sequence based analysis of impact",
+               "parent": "k"
+            }
+         }
+      ],
+      "edges": [
+         {
+            "data": {
+               "id": "ad",
+               "source": "a",
+               "target": "d"
+            }
+         },
+         {
+            "data": {
+               "id": "bc",
+               "source": "b",
+               "target": "c"
+            }
+         },
+         {
+            "data": {
+               "id": "ef",
+               "source": "e",
+               "target": "f"
+            }
+         },
+         {
+            "data": {
+               "id": "dg",
+               "source": "d",
+               "target": "g"
+            }
+         },
+         {
+            "data": {
+               "id": "dh",
+               "source": "d",
+               "target": "h"
+            }
+         },
+         {
+            "data": {
+               "id": "gd",
+               "source": "g",
+               "target": "d"
+            }
+         },
+         {
+            "data": {
+               "id": "hj",
+               "source": "h",
+               "target": "j"
+            }
+         },
+         {
+            "data": {
+               "id": "jk",
+               "source": "j",
+               "target": "k"
+            }
+         },
+         {
+            "data": {
+               "id": "k1k2",
+               "source": "k1",
+               "target": "k2"
+            }
+         },
+         {
+            "data": {
+               "id": "kj",
+               "source": "k",
+               "target": "j"
+            }
+         }
+      ]
+   }
+}
