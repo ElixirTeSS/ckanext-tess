@@ -4,7 +4,6 @@ import ckan.plugins as plugins
 import ckan.lib.base as base
 import ckan.logic as logic
 import os
-import yaml as yaml
 get_action = logic.get_action
 parse_params = logic.parse_params
 redirect = base.redirect
