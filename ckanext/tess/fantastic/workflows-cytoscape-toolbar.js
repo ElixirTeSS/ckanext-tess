@@ -214,7 +214,6 @@ function drawGraph(workflow) {
             if (element['group'] == 'nodes') {
                 $("#workflow_element_info").html('<ul class="items">' +
                 '<li><b>Name:</b><br>' + (typeof element['data']['name'] === "undefined" ? undefined : element['data']['name']) + '</li><hr style="margin: 0px;">' +
-                '<li><b>Short name:</b><br>' + ( typeof element['data']['short_name'] === "undefined" ? undefined : element['data']['short_name']) + '</li><hr style="margin: 0px;">' +
                 '<li><b>Colour:</b><br>' + (typeof element['data']['background-color'] === "undefined" ? default_node_colour : element['data']['background-color']) + '</li><hr style="margin: 0px;">' +
                 '<li><b>Training material:</b><br>' + (typeof element['data']['training-material'] === "undefined" ? undefined : element['data']['training-material']) + '</li>' +
                 '</ul>');
@@ -222,7 +221,6 @@ function drawGraph(workflow) {
             else if (element['group'] == 'edges'){
                 $("#workflow_element_info").html('<ul class="items">' +
                 '<li><b>Name:</b><br>' + (typeof element['data']['name'] === "undefined" ? undefined : element['data']['name']) + '</li><hr style="margin: 0px;">' +
-                '<li><b>Short name:</b><br>' + ( typeof element['data']['short_name'] === "undefined" ? undefined : element['data']['short_name']) + '</li><hr style="margin: 0px;">' +
                 '<li><b>Colour:</b><br>' + (typeof element['data']['background-color'] === "undefined" ? default_edge_colour : element['data']['background-color']) + '</li>' +
                 '</ul>');
             }
