@@ -3,32 +3,53 @@
         <i class="icon-info-sign"></i>
         {{ _('Creating workflows') }}
     </h2>
+
     <div id="instructions" style="padding: 0 5px;" class="module-content col-md-4">
-        <ul id="adding-nodes-links">
-            <h4>Adding nodes and links</h4>
-            <li>Click on <i class="fa fa-plus"></i> in the toolbar to select the <em>Add node</em> tool</li>
-            <li>Create nodes on the graph by clicking on points in the diagram
-                while <i class="fa fa-plus"></i> is 'on'</li>
-            <li>Click on <i class="fa fa-link"></i> in the toolbar to select the <em>Link tool</em></li>
-            <li>While the <i class="fa fa-link"></i> tool is 'on', click on
-                the nodes in the graph: the first node you select will be the source of the link,
-                the second will be the target</li>
+        <ul>    <div class="panel-heading" role="tab" id="heading-adding-nodes-links">
+            <h4 class="panel-title"><a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse-adding-nodes-links" aria-expanded="false"
+                                       aria-controls="collapse-adding-nodes-links">Adding nodes and links</a></h4>
+        </div>
         </ul>
-        <hr>
-        <ul id="deleting-nodes-links">
-            <h4>Deleting nodes and links</h4>
-            <li>Click on <i class="fa fa-trash-o"></i> in the toolbar to select the <em>Remove node</em> tool</li>
-            <li>Delete nodes or links by selecting them in the diagram</li>
+        <div id="collapse-adding-nodes-links" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-adding-nodes-links">
+            <ul id="adding-nodes-links">
+                <li>Click on <i class="fa fa-plus"></i> in the toolbar to select the <em>Add node</em> tool</li>
+                <li>Create nodes on the graph by clicking on points in the diagram
+                    while <i class="fa fa-plus"></i> is 'on'</li>
+                <li>Click on <i class="fa fa-link"></i> in the toolbar to select the <em>Link tool</em></li>
+                <li>While the <i class="fa fa-link"></i> tool is 'on', click on
+                    the nodes in the graph: the first node you select will be the source of the link,
+                    the second will be the target</li>
+            </ul>
+        </div>
+        <hr style="margin:0px 0px;">
+        <ul>
+            <div class="panel-heading" role="tab" id="heading-deleting-nodes-links">
+                <h4 class="panel-title"><a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse-deleting-nodes-links" aria-expanded="false"
+                                           aria-controls="collapse-deleting-nodes-links">Deleting nodes and links</a></h4>
+            </div>
         </ul>
-        <hr>
-        <ul id="zoom-pan">
-            <h4>Zooming and panning</h4>
-            <li>Select <i class="fa fa-arrow-right"></i> tool from the toolbar
-                (click and hold to get other panning options to appear) then
-                click anywhere on the diagram to pan in the selected direction</li>
-            <li>Select the <i class="fa fa-search-plus"></i> <em>Zoom in</em> tool from the toolbar
-                (click and hold to get the <i class="fa fa-search-minus"></i> <em>Zoom out</em> option to appear),
-                then click anywhere on the diagram to apply the zoom</li>
+        <div id="collapse-deleting-nodes-links" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-deleting-nodes-links">
+            <ul id="deleting-nodes-links">
+                <li>Click on <i class="fa fa-trash-o"></i> in the toolbar to select the <em>Remove node</em> tool</li>
+                <li>Delete nodes or links by selecting them in the diagram</li>
+            </ul>
+        </div>
+        <hr style="margin:0px 0px;">
+        <ul>
+            <div class="panel-heading" role="tab" id="heading-zoom-pan">
+                <h4 class="panel-title"><a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse-zoom-pan" aria-expanded="false"
+                                           aria-controls="collapse-zoom-pan">Zooming and panning</a></h4>
+            </div>
         </ul>
+        <div id="collapse-zoom-pan" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-zoom-pan">
+            <ul id="zoom-pan">
+                <li>Select <i class="fa fa-arrow-right"></i> tool from the toolbar
+                    (click and hold to get other panning options to appear) then
+                    click anywhere on the diagram to pan in the selected direction</li>
+                <li>Select the <i class="fa fa-search-plus"></i> <em>Zoom in</em> tool from the toolbar
+                    (click and hold to get the <i class="fa fa-search-minus"></i> <em>Zoom out</em> option to appear),
+                    then click anywhere on the diagram to apply the zoom</li>
+            </ul>
+        </div>
     </div>
 </div>
