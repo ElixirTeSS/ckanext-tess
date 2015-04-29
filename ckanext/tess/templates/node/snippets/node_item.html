@@ -18,6 +18,11 @@ Example:
 {% set url = h.url_for(node.type ~ '_read', action='read', id=node.name) %}
 <li class="media-item">
   {% block image %}
+    {% if node.get('member_status') == 'Observer': %}
+    {% block banner %}
+        <span class="node-status-banner">Observer Node</span>
+    {% endblock %}
+    {% endif %}
     {% if node.get('country_code'): %}
         <img src="/images/node_flags/{{node.get('country_code')}}-elixir.png" class="img-circle-small" style="max-height:60px;">
         <img style="float: right;" src="/images/node_flags/{{node.get('country_code')}}-small.png">

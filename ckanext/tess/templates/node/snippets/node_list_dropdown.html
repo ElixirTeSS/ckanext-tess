@@ -9,9 +9,9 @@
       </a>
       <ul class="user-dropdown-menu dropdown-menu pull-left" role="menu">
         <li><a href="/node/custom/hub.html">The Hub</a></li>
-          {% for node in h.get_all_nodes(): %}
-            {% set url = h.url_for(node.type ~ '_read', action='read', id=node.name) %}
-            <li><a href="{{url}}">{{node.display_name }}</a></li>
+          {% for node in h.all_node_name_and_ids(): %}
+            {% set url = h.url_for('node' ~ '_read', action='read', id=node[1]) %}
+            <li><a href="{{url}}">{{node[0] }}</a></li>
           {% endfor %}
       </ul>
    </div>

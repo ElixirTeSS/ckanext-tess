@@ -12,12 +12,20 @@ import urllib
 from ckan.common import OrderedDict, c, g, request, _
 from ckan.lib.plugins import DefaultGroupForm
 import xml.etree.ElementTree as et
+import pylons.config as configuration
 
 from dateutil import parser
 import datetime
 import ckan.lib.formatters as formatters
 from time import gmtime, strftime
 
+
+def get_tess_version():
+    '''Return the value of 'version' parameter from the setyp.py config file.
+    :rtype: string
+
+        '''
+    return configuration.get('ckanext.tess.version', 'N/A')
 
 # Return the iann specific news. This could be replaced with a general news function taking
 # the news source as an argument.
@@ -31,17 +39,62 @@ def iann_news():
   return plugins.toolkit.literal(data)
 
 
-def countries_filter():
-    here = os.path.dirname(__file__)
+def get_filters_for(field_name):
+    try:
+        #TODO; Only load 10 filters unless parameter _provider_limit=1000 - provider_limit is calling solr # filters times. Need to minimize
+        if not c.active_filters.get(field_name, None): # Don't bother if the filter is already active
+            url = construct_url('http://iann.pro/solr/select?facet=true&facet.field=%s&rows=0' % field_name)
+            res = urllib2.urlopen(url)
+            res = res.read()
+            doc = et.fromstring(res)
+            fields = doc.findall("./lst/lst/lst/int")
+            field_list = []
+            for field in fields:
+                if field.text != '0' and field.attrib['name']:
+                    if field_name == 'provider':
+                        name = proper_name(field_name, field.attrib['name'])
+                    else:
+                        name = field.attrib['name'].title()
+                    hash_val = {'name': name, 'count': field.text}
+                    field_list.append(hash_val)
+            return field_list
+        else:
+            return [{'name': field_name}, {'count': 0}]
+    except Exception, e:
+        print 'Could not load country filters \n %s' % e
+        return []
+
+# Bit of a hack here - Because providers have acronyms/funny mixtures of cases - we query each provider
+# asking for 1 result back, parsing it and using that value as the filter name.
+def proper_name(field, name):
+    try:
+        url = ('http://iann.pro/solr/select?q=%s:%s&rows=1' % (field, urllib.quote(name)))
+        res = urllib2.urlopen(url)
+        doc = et.fromstring(res.read())
+        docs = doc.findall('*/doc')
+        provider_name = name.title()
+        for doc in docs:
+            if doc.find("*/[@name='provider']").text:
+                provider_name = doc.find("*/[@name='provider']").text
+        return provider_name
+    except Exception, e:
+        print 'Error loading the correct provider names \n %s' % e
+        return name
+
+#def country_filters():
+
+    # For list of ELIXIR countries:
+    #here = os.path.dirname(__file__)
     # json file containing country code -> country name map for member and observer countries
-    file = os.path.join(here,'countries-elixir-flat.json')
-    with open(file) as data_file:
-        try:
-            countries_map = json.load(data_file)
-        except Exception, e:
-            print e
-            countries_map = {}
-    return countries_map
+    #file = os.path.join(here,'countries-elixir-flat.json')
+    #with open(file) as data_file:
+    #    try:
+    #        # For list of ELIXIR countries:
+    #        # countries_map = json.load(data_file)
+    #    except Exception, e:
+    #        print e
+    #        countries_map = []
+    #return countries_map
 
 
 def parse_xml(xml):
@@ -85,44 +138,33 @@ def parse_xml(xml):
     return {'count': count, 'events': results}
 
 
-def construct_url(parameter):
+def construct_url(original_url):
     try:
-        category = parameter.get('category', None)
-        country = parameter.get('country', None)
-        rows = parameter.get('rows', 15)
-        sort = parameter.get('sort', None)
-        q = parameter.get('q', None)
-        include_expired = parameter.get('include_expired', False)
-        page = int(parameter.get('page', 0))
-
-        original_url = 'http://iann.pro/solr/select/?'
-        original_url = ('%srows=%s' % (original_url, rows))
-
-        if sort:
-            attr, dir = sort.split(' ') # e.g end asc or title asc
+        if c.sort:
+            attr, dir = c.sort.split(' ') # e.g end asc or title asc
             original_url = ('%s&sort=%s%%20%s' % (original_url, attr, dir))
 
-        if page:
-            original_url = ('%s&start=%s' % (original_url, str(page*rows-rows)))
-
-        if category:
-            original_url = ('%s&q=category:%s' % (original_url, category))
+        if c.page:
+            original_url = ('%s&start=%s' % (original_url, str(c.page*c.rows-c.rows)))
+        if c.category:
+            original_url = ('%s&q=category:%s' % (original_url, c.category))
         else:
             original_url = ('%s&q=category:%s' % (original_url, 'event'))
-
-
-        if not include_expired:  # Exclude this for past events too
+        if not c.include_expired_events:  # Exclude this for past events too
             today = strftime("%Y-%m-%dT%H:%M:%SZ", gmtime())
             date = ('start:[%s%%20TO%%20*]' % today)
             original_url = ('%s%%20AND%%20%s' % (original_url, date))
-
-        if country:
-            original_url = ('%s%%20AND%%20country:"%s"' % (original_url, urllib.quote(country)))
-        print original_url
-        if q:
-            split = q.replace('-', '","')
+        if c.country:
+            original_url = ('%s%%20AND%%20country:"%s"' % (original_url, urllib.quote(c.country)))
+        if c.topic:
+            original_url = ('%s%%20AND%%20field:"%s"' % (original_url, urllib.quote(c.topic)))
+        if c.provider:
+            original_url = ('%s%%20AND%%20provider:"%s"' % (original_url, urllib.quote(c.provider)))
+        #print original_url
+        if c.q:
+            split = c.q.replace('-', '","')
             split = split.replace(' ', '","')
-            parameters = ('text:("%s","%s")' % (urllib.quote(q), split))
+            parameters = ('text:("%s","%s")' % (urllib.quote(c.q), split))
             url = ("%s%%20AND%%20%s" % (original_url, urllib.quote(parameters)))
         else:
             url = original_url
@@ -131,9 +173,10 @@ def construct_url(parameter):
         print 'Failed to construct URL for iAnn API \n %s' % e
 
 
-def events(parameter=None):
+def events():
     results = {}
-    url = construct_url(parameter)
+    original_url = 'http://iann.pro/solr/select/?&rows=%s' % c.rows
+    url = construct_url(original_url)
     try:
         res = urllib2.urlopen(url)
         res = res.read()
@@ -151,6 +194,9 @@ def related_events(model):
     except Exception, e:
         print 'Model has no title attribute: \n %s' % e
         return None
+
+def has_more_options(options):
+    return len(options) > 10
 
 
 ######################
@@ -178,12 +224,13 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         toolkit.add_public_directory(config, 'public')
         toolkit.add_resource('fantastic', 'tess')
 
-
         # set the title
         config['ckan.site_title'] = "TeSS Training Portal"
 
         # set the logo
         config['ckan.site_logo'] = 'images/ELIXIR_TeSS_logo_white-small.png'
+
+        config['ckanext.tess.version'] = '0.9.1-alpha'
 
         #config['ckan.template_head_end'] = config.get('ckan.template_head_end', '') +\
         #                '<link rel="stylesheet" href="/css/tess.css" type="text/css"> '
@@ -203,9 +250,11 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     def setup_template_variables(self, context, data_dict):
         c.filterable_nodes = 'HI'
 
+
     def get_helpers(self):
         return {
-                'countries_filter': countries_filter,
+                'get_tess_version' : get_tess_version,
+                'has_more_options': has_more_options,
                 'read_news_iann': iann_news,
                 'related_events': related_events,
                 'events': events
@@ -274,21 +323,25 @@ def setup_events():
     c.q = q_params['q'] = c.q = request.params.get('q', '')
     c.category = q_params['category'] = request.params.get('category', '')
     c.country = q_params['country'] = request.params.get('country', '')
-    c.rows = q_params['rows'] = request.params.get('rows', 15)
+    c.topic = q_params['topic'] = request.params.get('topic', '')
+    c.provider = q_params['provider'] = request.params.get('provider', '')
+    c.rows = q_params['rows'] = request.params.get('rows', 25)
     c.sort_by_selected = q_params['sort'] = request.params.get('sort', '')
     c.page_number = q_params['page'] = int(request.params.get('page', 0))
     c.include_expired_events = q_params['include_expired'] = request.params.get('include_expired', False)
-    events_hash = events(q_params)
+    events_hash = events()
+    c.active_filters = {'category': c.category, 'topic': c.topic, 'country': c.country, 'provider': c.provider}
     filters = {}
     if not c.filters:
-        filters['category'] = ['event', 'course', 'meeting']
-        filters['country'] = countries_filter().values()
+        filters['category'] = get_filters_for('category')
+        filters['topic'] = get_filters_for('field')
+        filters['provider'] = get_filters_for('provider')
+        filters['country'] = get_filters_for('country')
     c.filters = filters
-    c.active_filters = {'category': c.category, 'country': c.country}
 
-    c.events = events_hash.get('events')
-    c.events_count = events_hash.get('count')
-    c.events_url = events_hash.get('url')
+    c.events = events_hash.get('events', None)
+    c.events_count = events_hash.get('count', None)
+    c.events_url = events_hash.get('url', None)
     c.page = h.Page(
         collection=c.events,
         page=c.page_number,

@@ -557,6 +557,7 @@ hr.style-one {
   );
 }
 
+<<<<<<< HEAD
 div.workflow_element_info{
 	background-color:white;
 	border:1px solid lightgray;
@@ -574,4 +575,28 @@ div.workflow_element_info ul.items{
 	margin:0px;
     padding: 0px;
     list-style-type: none;
+}
+.node-status-banner {
+	border-bottom: 20px solid orangered;
+	border-left: 20px solid transparent;
+	border-right: 20px solid transparent;
+	height: 0;
+    display: block;
+    min-width: 50%;
+    left: 99px;
+    top: 37px;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+    -webkit-transform-origin: center center;
+    -moz-transform-origin: center center;
+    -ms-transform-origin: center center;
+    -o-transform-origin: center center;
+    transform-origin: center center;
+    position: absolute;
+    color: #ffffff;
+    font-size: 11px;
+    text-align: center;
 }
