@@ -26,7 +26,7 @@ def read_workflow_file(relative_file_path):
     except Exception, e:
         print "Error reading workflow file " + file
         print e
-    print workflow
+    # print workflow
     return workflow
 
 class WorkflowPlugin(plugins.SingletonPlugin, DefaultGroupForm):

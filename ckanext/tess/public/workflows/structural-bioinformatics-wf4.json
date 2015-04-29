@@ -28,8 +28,8 @@
           "parent": "d"
         },
         "position": {
-          "x": 135.87540836562,
-          "y": -56.050566556081
+          "x": 140.54021073977,
+          "y": -46.720961807775
         },
         "group": "nodes",
         "removed": false,
@@ -47,8 +47,8 @@
           "parent": "d"
         },
         "position": {
-          "x": 199.77671135285,
-          "y": -18.471054748114
+          "x": 183.91638328073,
+          "y": 7.6518385471441
         },
         "group": "nodes",
         "removed": false,
@@ -65,8 +65,8 @@
           "name": "Obtain structural data"
         },
         "position": {
-          "x": 167.82605985923,
-          "y": -37.260810652097
+          "x": 162.22829701025,
+          "y": -19.534561630315
         },
         "group": "nodes",
         "removed": false,
@@ -84,7 +84,7 @@
           "parent": "g"
         },
         "position": {
-          "x": 220.89570472354,
+          "x": 194.77281142828,
           "y": 94.58790731567
         },
         "group": "nodes",
@@ -103,7 +103,7 @@
           "parent": "g"
         },
         "position": {
-          "x": 182.68973553187,
+          "x": 156.56684223661,
           "y": 142.02907917546
         },
         "group": "nodes",
@@ -120,7 +120,7 @@
           "id": "g"
         },
         "position": {
-          "x": 201.7927201277,
+          "x": 175.66982683245,
           "y": 118.30849324556
         },
         "group": "nodes",
@@ -138,8 +138,8 @@
           "name": "Structure annotation"
         },
         "position": {
-          "x": 485.01153554913,
-          "y": -44.475391989172
+          "x": 454.4214581081,
+          "y": -72.961540734396
         },
         "group": "nodes",
         "removed": false,
@@ -157,8 +157,8 @@
           "parent": "h"
         },
         "position": {
-          "x": 454.33788428429,
-          "y": 32.091571770085
+          "x": 415.73993174648,
+          "y": 6.4043044493542
         },
         "group": "nodes",
         "removed": false,
@@ -176,8 +176,8 @@
           "parent": "h"
         },
         "position": {
-          "x": 485.68851918547,
-          "y": -45.443221009801
+          "x": 450.82240854698,
+          "y": -71.130488330534
         },
         "group": "nodes",
         "removed": false,
@@ -195,8 +195,8 @@
           "parent": "h"
         },
         "position": {
-          "x": 522.37133225924,
-          "y": -121.04235574843
+          "x": 493.10298446973,
+          "y": -152.32738591815
         },
         "group": "nodes",
         "removed": false,
@@ -214,8 +214,8 @@
           "parent": "h"
         },
         "position": {
-          "x": 562.38372485216,
-          "y": -7.328774796595
+          "x": 437.95340862993,
+          "y": -31.150121167667
         },
         "group": "nodes",
         "removed": false,
@@ -233,8 +233,8 @@
           "parent": "h"
         },
         "position": {
-          "x": 407.63934624609,
-          "y": -75.625795211259
+          "x": 465.13632261583,
+          "y": -112.50858822996
         },
         "group": "nodes",
         "removed": false,
@@ -251,8 +251,8 @@
           "name": "Proximity of genetic variation to annotated sites"
         },
         "position": {
-          "x": 451.84230938531,
-          "y": 219.46419590486
+          "x": 461.17191413362,
+          "y": 156.95584409121
         },
         "group": "nodes",
         "removed": false,
@@ -270,8 +270,8 @@
           "parent": "j"
         },
         "position": {
-          "x": 451.84230938531,
-          "y": 219.46419590486
+          "x": 461.17191413362,
+          "y": 156.95584409121
         },
         "group": "nodes",
         "removed": false,
@@ -288,8 +288,8 @@
           "name": "Impact assessment"
         },
         "position": {
-          "x": 328.39422576521,
-          "y": 385.84985033915
+          "x": 355.45007953529,
+          "y": 312.14597282752
         },
         "group": "nodes",
         "removed": false,
@@ -307,8 +307,8 @@
           "parent": "k"
         },
         "position": {
-          "x": 309.75693361209,
-          "y": 410.40937464289
+          "x": 336.81278738218,
+          "y": 336.70549713127
         },
         "group": "nodes",
         "removed": false,
@@ -326,8 +326,8 @@
           "parent": "k"
         },
         "position": {
-          "x": 347.03151791832,
-          "y": 361.2903260354
+          "x": 374.08737168841,
+          "y": 287.58644852378
         },
         "group": "nodes",
         "removed": false,
@@ -521,5 +521,72 @@
         "classes": ""
       }
     ]
+  },
+  "style": [
+    {
+      "selector": "node",
+      "css": {
+        "shape": "roundrectangle",
+        "content": "data(name)",
+        "background-color": "#9FBD6E",
+        "text-valign": "center",
+        "text-halign": "center",
+        "width": "150px",
+        "height": "30px",
+        "font-size": "11px"
+      }
+    },
+    {
+      "selector": "$node > node",
+      "css": {
+        "shape": "roundrectangle",
+        "padding-top": "10px",
+        "font-weight": "bold",
+        "padding-left": "10px",
+        "padding-bottom": "10px",
+        "padding-right": "10px",
+        "text-valign": "top",
+        "text-halign": "center",
+        "width": "auto",
+        "height": "auto",
+        "font-size": "13px"
+      }
+    },
+    {
+      "selector": "edge",
+      "css": {
+        "target-arrow-shape": "triangle",
+        "content": "data(name)"
+      }
+    },
+    {
+      "selector": ":selected",
+      "css": {
+        "background-color": "#115F78",
+        "line-color": "#115F78",
+        "target-arrow-color": "#115F78",
+        "source-arrow-color": "#115F78"
+      }
+    }
+  ],
+  "zoomingEnabled": true,
+  "userZoomingEnabled": true,
+  "zoom": 1.0718567688321,
+  "minZoom": 1.0e-50,
+  "maxZoom": 1.0e+50,
+  "panningEnabled": true,
+  "userPanningEnabled": true,
+  "pan": {
+    "x": -49.531150823785,
+    "y": 305.9309750627
+  },
+  "boxSelectionEnabled": false,
+  "layout": {
+    "name": "preset",
+    "padding": 5
+  },
+  "renderer": {
+    "name": "canvas"
   }
 }
+

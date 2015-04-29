@@ -1,4 +1,10 @@
 //https://github.com/bdparrish/cytoscape.js-toolbar
+var default_node_width = 150;
+var default_node_height = 30;
+var default_font_size = 11;
+var default_edge_colour = '#848383';
+var default_selected_colour = '#115F78';
+
 
     function drawGraph(workflow) {
         var cy = window.cy = cytoscape({
@@ -138,47 +144,68 @@
                 {
                     selector: 'node',
                     css: {
-                        'content': 'data(name)',
+                        'shape': 'roundrectangle',
+                        'content': 'data(short_name)',
+                        'background-color': '#9FBD6E',
                         'text-valign': 'center',
-                        'text-halign': 'center'
+                        'text-halign': 'center',
+                        'width':default_node_width,
+                        'height':default_node_height,
+                        'font-size':default_font_size
                     }
                 },
                 {
                     selector: '$node > node',
                     css: {
+                        'shape': 'roundrectangle',
                         'padding-top': '10px',
+                        'font-weight': 'bold',
                         'padding-left': '10px',
                         'padding-bottom': '10px',
                         'padding-right': '10px',
                         'text-valign': 'top',
-                        'text-halign': 'center'
+                        'text-halign': 'center',
+                        'width': 'auto',
+                        'height': 'auto',
+                        'font-size': default_font_size + 2
                     }
                 },
                 {
                     selector: 'edge',
                     css: {
                         'target-arrow-shape': 'triangle',
-                        'content': 'data(name)'
+                        'content': 'data(name)',
+                        'line-color': default_edge_colour,
+                        'source-arrow-color': default_edge_colour,
+                        'target-arrow-color': default_edge_colour
                     }
                 },
                 {
                     selector: ':selected',
                     css: {
-                        'background-color': 'blue',
-                        'line-color': 'blue',
-                        'target-arrow-color': 'blue',
-                        'source-arrow-color': 'blue'
+                        'background-color': default_selected_colour,
+                        'line-color': default_selected_colour,
+                        'target-arrow-color': default_selected_colour,
+                        'source-arrow-color': default_selected_colour
                     }
                 }
             ],
 
-            elements: workflow,
+            elements: [],
             layout: {
-                name: 'cose',
+                name: 'preset',
                 padding: 5
             }
 
         });
+
+        var nodes = (workflow['elements']['nodes']);
+        for (var i = 0; i < nodes.length; i++) {
+            if (typeof nodes[i]["data"]["name"] !== 'undefined') {
+                nodes[i]["data"]["short_name"] = truncateString(nodes[i]["data"]["name"], 30);
+            }
+        }
+        cy.load(workflow['elements']);
 
         //#region node tools
         function addPersonToGraph(e) {
@@ -267,30 +294,34 @@
     }
 
     /////////////////////////////////////////////////////
+
     $('#show-wf').click(function(){
         $( "#dialog-div").text(JSON.stringify(window.cy.json()));
-        $( "#dialog-div" ).dialog({autoOpen : false, modal : true, show : "blind", hide : "blind"});
+        $( "#dialog-div" ).dialog('open');
     });
+    //
+    //$('#load-wf').click(function(){
+    //    workflow = {
+    //        nodes: [
+    //            { data: { id: 'a', parent: 'b', name: 'a' } },
+    //            { data: { id: 'b', name: 'b' } },
+    //            { data: { id: 'c', parent: 'b', name: 'c' } },
+    //            { data: { id: 'd', name: 'd' } },
+    //            { data: { id: 'e', parent: 'g', name: 'e' } },
+    //            { data: { id: 'f', parent: 'e', name: 'f' } },
+    //            { data: { id: 'g', name: 'g' } }
+    //        ],
+    //        edges: [
+    //            { data: { id: 'ad', source: 'a', target: 'd' } },
+    //            { data: { id: 'eb', source: 'e', target: 'b' } }
+    //
+    //        ]
+    //    };
+    //    drawGraph(workflow);
+    //});
 
-    $('#load-wf').click(function(){
-        workflow = {
-            nodes: [
-                { data: { id: 'a', parent: 'b', name: 'a' } },
-                { data: { id: 'b', name: 'b' } },
-                { data: { id: 'c', parent: 'b', name: 'c' } },
-                { data: { id: 'd', name: 'd' } },
-                { data: { id: 'e', parent: 'g', name: 'e' } },
-                { data: { id: 'f', parent: 'e', name: 'f' } },
-                { data: { id: 'g', name: 'g' } }
-            ],
-            edges: [
-                { data: { id: 'ad', source: 'a', target: 'd' } },
-                { data: { id: 'eb', source: 'e', target: 'b' } }
-
-            ]
-        };
-        drawGraph(workflow);
-    });
-
+function truncateString(str, length) {
+    return str.length > length ? str.substring(0, length - 3) + '...' : str
+}
 
 
