@@ -2,6 +2,7 @@
 var default_node_width = 150;
 var default_node_height = 30;
 var default_font_size = 11;
+var default_node_colour = '#9FBD6E';
 var default_edge_colour = '#848383';
 var default_selected_colour = '#115F78';
 
@@ -146,7 +147,7 @@ function drawGraph(workflow) {
                 css: {
                     'shape': 'roundrectangle',
                     'content': 'data(short_name)',
-                    'background-color': '#9FBD6E',
+                    'background-color': default_node_colour,
                     'text-valign': 'center',
                     'text-halign': 'center',
                     'width':default_node_width,
@@ -191,7 +192,7 @@ function drawGraph(workflow) {
             }
         ],
 
-        elements: [],
+        elements: workflow['elements'],
         layout: {
             name: 'preset',
             padding: 5
@@ -199,99 +200,129 @@ function drawGraph(workflow) {
 
     });
 
-    //var nodes = (workflow['elements']['nodes']);
-    //for (var i = 0; i < nodes.length; i++) {
-    //    if (typeof nodes[i]["data"]["name"] !== 'undefined') {
-    //        nodes[i]["data"]["short_name"] = truncateString(nodes[i]["data"]["name"], 30);
-    //    }
-    //}
-    cy.load(workflow['elements']);
+    cy.on('tap', function(event){
+        // cyTarget holds a reference to the originator
+        // of the event (core or element)
+        var evtTarget = event.cyTarget;
 
-    //#region node tools
-    function addPersonToGraph(e) {
-        addObject(e, addPersonToGraph);
-    }
-
-    function addHouseToGraph(e) {
-        addObject(e, addHouseToGraph);
-    }
-
-    function addBusinessToGraph(e) {
-        addObject(e, addBusinessToGraph);
-    }
-
-    function addAutoToGraph(e) {
-        addObject(e, addAutoToGraph);
-    }
-
-    function addAssetToGraph(e) {
-        addObject(e, addAssetToGraph);
-    }
-
-    function addObject(e, action) {
-        if (!e.data.canPerform(e, action)) {
-            return;
-        }
-
-        var toolIndexes = e.data.data.selectedTool;
-        var tool = e.data.data.options.tools[toolIndexes[0]][toolIndexes[1]];
-
-        var object = {
-            group: 'nodes',
-            data: {
-                name: tool.options.text
-            },
-            position: {
-                x: e.cyPosition.x,
-                y: e.cyPosition.y
-            }
-        }
-
-        e.cy.add(object).addClass('tool-node').addClass(tool.options.clazz);
-    }
-    //#endregion
-
-    //#region linking
-    var src;
-    function performLink(e) {
-        if (!e.data.canPerform(e, performLink)) {
-            return;
-        }
-
-        if (src) {
-            tgt = e.cyTarget;
-
-            e.cy.add({
-                group: "edges",
-                data: {
-                    source: src.id(),
-                    target: tgt.id()
-                }
-            });
-
-            src.removeClass('selected-node');
-            src = undefined;
+        if( evtTarget === cy ){
+            // Tap on a background
+            clearPropertyEditor();
         } else {
-            src = e.cyTarget;
-            src.addClass('selected-node');
+            var element = cy.getElementById(evtTarget.id()).json(); // Get wf element with this id
+            //alert(JSON.stringify(element));
+            if (element['group'] == 'nodes') {
+                $("#workflow_element_info").html('<ul class="items">' +
+                '<li><b>Name:</b><br>' + (typeof element['data']['name'] === "undefined" ? undefined : element['data']['name']) + '</li><hr style="margin: 0px;">' +
+                '<li><b>Short name:</b><br>' + ( typeof element['data']['short_name'] === "undefined" ? undefined : element['data']['short_name']) + '</li><hr style="margin: 0px;">' +
+                '<li><b>Colour:</b><br>' + (typeof element['data']['background-color'] === "undefined" ? default_node_colour : element['data']['background-color']) + '</li><hr style="margin: 0px;">' +
+                '<li><b>Training material:</b><br>' + (typeof element['data']['training-material'] === "undefined" ? undefined : element['data']['training-material']) + '</li>' +
+                '</ul>');
+            }
+            else if (element['group'] == 'edges'){
+                $("#workflow_element_info").html('<ul class="items">' +
+                '<li><b>Name:</b><br>' + (typeof element['data']['name'] === "undefined" ? undefined : element['data']['name']) + '</li><hr style="margin: 0px;">' +
+                '<li><b>Short name:</b><br>' + ( typeof element['data']['short_name'] === "undefined" ? undefined : element['data']['short_name']) + '</li><hr style="margin: 0px;">' +
+                '<li><b>Colour:</b><br>' + (typeof element['data']['background-color'] === "undefined" ? default_edge_colour : element['data']['background-color']) + '</li>' +
+                '</ul>');
+            }
+            $("#workflow_element_info").show();
         }
-    }
-
-    function getLinkName(src, tgt) {
-        return src.id() + "->" + tgt.id();
-    }
-    //#endregion
-
-    //#region Remove
-    function performRemove(e) {
-        if (!e.data.canPerform(e, performRemove)) {
-            return;
-        }
-
-        cy.remove(e.cyTarget);
-    }
-    //#endregion
+    });
 }
+//var nodes = (workflow['elements']['nodes']);
+//for (var i = 0; i < nodes.length; i++) {
+//    if (typeof nodes[i]["data"]["name"] !== 'undefined') {
+//        nodes[i]["data"]["short_name"] = truncateString(nodes[i]["data"]["name"], 30);
+//    }
+//}
+//cy.load(workflow['elements']);
+
+//#region node tools
+function addPersonToGraph(e) {
+    addObject(e, addPersonToGraph);
+}
+
+function addHouseToGraph(e) {
+    addObject(e, addHouseToGraph);
+}
+
+function addBusinessToGraph(e) {
+    addObject(e, addBusinessToGraph);
+}
+
+function addAutoToGraph(e) {
+    addObject(e, addAutoToGraph);
+}
+
+function addAssetToGraph(e) {
+    addObject(e, addAssetToGraph);
+}
+
+function addObject(e, action) {
+    if (!e.data.canPerform(e, action)) {
+        return;
+    }
+
+    var toolIndexes = e.data.data.selectedTool;
+    var tool = e.data.data.options.tools[toolIndexes[0]][toolIndexes[1]];
+
+    var object = {
+        group: 'nodes',
+        data: {
+            name: tool.options.text
+        },
+        position: {
+            x: e.cyPosition.x,
+            y: e.cyPosition.y
+        }
+    }
+
+    e.cy.add(object).addClass('tool-node').addClass(tool.options.clazz);
+}
+//#endregion
+
+//#region linking
+var src;
+function performLink(e) {
+    if (!e.data.canPerform(e, performLink)) {
+        return;
+    }
+
+    if (src) {
+        tgt = e.cyTarget;
+
+        e.cy.add({
+            group: "edges",
+            data: {
+                source: src.id(),
+                target: tgt.id()
+            }
+        });
+
+        src.removeClass('selected-node');
+        src = undefined;
+    } else {
+        src = e.cyTarget;
+        src.addClass('selected-node');
+    }
+}
+
+function getLinkName(src, tgt) {
+    return src.id() + "->" + tgt.id();
+}
+//#endregion
+
+//#region Remove
+function performRemove(e) {
+    if (!e.data.canPerform(e, performRemove)) {
+        return;
+    }
+
+    cy.remove(e.cyTarget);
+}
+//#endregion
+
 
 /////////////////////////////////////////////////////
 
@@ -329,6 +360,11 @@ $('#show-wf').click(function(){
 
 function truncateString(str, length) {
     return str.length > length ? str.substring(0, length - 3) + '...' : str
+}
+
+function clearPropertyEditor(){
+    $("#workflow_element_info").html("");
+    $("#workflow_element_info").hide();
 }
 
 

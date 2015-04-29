@@ -557,7 +557,7 @@ hr.style-one {
   );
 }
 
-div.workflow_element_info{
+#workflow_element_info{
 	background-color:white;
 	border:1px solid lightgray;
 	padding-left:1%;
@@ -568,9 +568,10 @@ div.workflow_element_info{
 	margin-bottom:1em;
     border-radius: 4px;
     box-shadow: -2px -2px 5px #DDD;
+    display: none;
 }
 
-div.workflow_element_info ul.items{
+div#workflow_element_info ul.items{
 	margin:0px;
     padding: 0px;
     list-style-type: none;
