@@ -4,7 +4,7 @@ var default_node_height = 30;
 var default_font_size = 11;
 var default_node_colour = '#9FBD6E';
 var default_edge_colour = '#848383';
-var default_selected_colour = '#115F78';
+var default_selected_colour = '#2A62E4';
 
 
 function drawGraph(workflow) {
