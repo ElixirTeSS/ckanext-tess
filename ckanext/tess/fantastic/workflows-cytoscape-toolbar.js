@@ -199,12 +199,12 @@ var default_selected_colour = '#115F78';
 
         });
 
-        var nodes = (workflow['elements']['nodes']);
-        for (var i = 0; i < nodes.length; i++) {
-            if (typeof nodes[i]["data"]["name"] !== 'undefined') {
-                nodes[i]["data"]["short_name"] = truncateString(nodes[i]["data"]["name"], 30);
-            }
-        }
+        //var nodes = (workflow['elements']['nodes']);
+        //for (var i = 0; i < nodes.length; i++) {
+        //    if (typeof nodes[i]["data"]["name"] !== 'undefined') {
+        //        nodes[i]["data"]["short_name"] = truncateString(nodes[i]["data"]["name"], 30);
+        //    }
+        //}
         cy.load(workflow['elements']);
 
         //#region node tools
@@ -296,6 +296,13 @@ var default_selected_colour = '#115F78';
     /////////////////////////////////////////////////////
 
     $('#show-wf').click(function(){
+
+        var nodes = (window.cy.json()['elements']['nodes']);
+        for (var i = 0; i < nodes.length; i++) {
+            if (typeof nodes[i]["data"]["name"] !== 'undefined' & typeof nodes[i]["data"]["short_name"] === 'undefined') {
+                nodes[i]["data"]["short_name"] = truncateString(nodes[i]["data"]["name"], 30);
+            }
+        }
         $( "#dialog-div").text(JSON.stringify(window.cy.json()));
         $( "#dialog-div" ).dialog('open');
     });

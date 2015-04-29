@@ -6,7 +6,8 @@
       {
         "data": {
           "id": "a",
-          "name": "Query sequence and variation data"
+          "name": "Query sequence and variation data",
+          "short_name": "Query sequence and variatio..."
         },
         "position": {
           "x": 178.24602776935,
@@ -25,7 +26,8 @@
         "data": {
           "id": "b",
           "name": "Known structure in pdb?",
-          "parent": "d"
+          "parent": "d",
+          "short_name": "Known structure in pdb?"
         },
         "position": {
           "x": 140.54021073977,
@@ -44,7 +46,8 @@
         "data": {
           "id": "c",
           "name": "Structure analysis and model quality",
-          "parent": "d"
+          "parent": "d",
+          "short_name": "Structure analysis and mode..."
         },
         "position": {
           "x": 183.91638328073,
@@ -62,7 +65,8 @@
       {
         "data": {
           "id": "d",
-          "name": "Obtain structural data"
+          "name": "Obtain structural data",
+          "short_name": "Obtain structural data"
         },
         "position": {
           "x": 162.22829701025,
@@ -81,7 +85,8 @@
         "data": {
           "id": "e",
           "name": "Close relative - homology modelling",
-          "parent": "g"
+          "parent": "g",
+          "short_name": "Close relative - homology m..."
         },
         "position": {
           "x": 194.77281142828,
@@ -100,7 +105,8 @@
         "data": {
           "id": "f",
           "name": "Remote relative - structure prediction",
-          "parent": "g"
+          "parent": "g",
+          "short_name": "Remote relative - structure..."
         },
         "position": {
           "x": 156.56684223661,
@@ -120,7 +126,7 @@
           "id": "g"
         },
         "position": {
-          "x": 175.66982683245,
+          "x": 175.66982683244,
           "y": 118.30849324556
         },
         "group": "nodes",
@@ -135,11 +141,12 @@
       {
         "data": {
           "id": "h",
-          "name": "Structure annotation"
+          "name": "Structure annotation",
+          "short_name": "Structure annotation"
         },
         "position": {
-          "x": 454.4214581081,
-          "y": -72.961540734396
+          "x": 454.42145810811,
+          "y": -72.961540734398
         },
         "group": "nodes",
         "removed": false,
@@ -154,7 +161,8 @@
         "data": {
           "id": "i0",
           "name": "Active site",
-          "parent": "h"
+          "parent": "h",
+          "short_name": "Active site"
         },
         "position": {
           "x": 415.73993174648,
@@ -173,7 +181,8 @@
         "data": {
           "id": "i1",
           "name": "Binding sites",
-          "parent": "h"
+          "parent": "h",
+          "short_name": "Binding sites"
         },
         "position": {
           "x": 450.82240854698,
@@ -192,7 +201,8 @@
         "data": {
           "id": "i2",
           "name": "Interfaces",
-          "parent": "h"
+          "parent": "h",
+          "short_name": "Interfaces"
         },
         "position": {
           "x": 493.10298446973,
@@ -211,7 +221,8 @@
         "data": {
           "id": "i3",
           "name": "Post translational modifications",
-          "parent": "h"
+          "parent": "h",
+          "short_name": "Post translational modifica..."
         },
         "position": {
           "x": 437.95340862993,
@@ -230,7 +241,8 @@
         "data": {
           "id": "i4",
           "name": "Conserved sites",
-          "parent": "h"
+          "parent": "h",
+          "short_name": "Conserved sites"
         },
         "position": {
           "x": 465.13632261583,
@@ -248,7 +260,8 @@
       {
         "data": {
           "id": "j",
-          "name": "Proximity of genetic variation to annotated sites"
+          "name": "Proximity of genetic variation to annotated sites",
+          "short_name": "Proximity of genetic variat..."
         },
         "position": {
           "x": 461.17191413362,
@@ -267,7 +280,8 @@
         "data": {
           "id": "j1",
           "name": "Visualization",
-          "parent": "j"
+          "parent": "j",
+          "short_name": "Visualization"
         },
         "position": {
           "x": 461.17191413362,
@@ -285,11 +299,12 @@
       {
         "data": {
           "id": "k",
-          "name": "Impact assessment"
+          "name": "Impact assessment",
+          "short_name": "Impact assessment"
         },
         "position": {
-          "x": 355.45007953529,
-          "y": 312.14597282752
+          "x": 355.4500795353,
+          "y": 312.14597282753
         },
         "group": "nodes",
         "removed": false,
@@ -304,7 +319,8 @@
         "data": {
           "id": "k1",
           "name": "Structure based analysis of impact",
-          "parent": "k"
+          "parent": "k",
+          "short_name": "Structure based analysis of..."
         },
         "position": {
           "x": 336.81278738218,
@@ -323,7 +339,8 @@
         "data": {
           "id": "k2",
           "name": "Sequence based analysis of impact",
-          "parent": "k"
+          "parent": "k",
+          "short_name": "Sequence based analysis of ..."
         },
         "position": {
           "x": 374.08737168841,
@@ -556,7 +573,10 @@
       "selector": "edge",
       "css": {
         "target-arrow-shape": "triangle",
-        "content": "data(name)"
+        "content": "data(name)",
+        "line-color": "#848383",
+        "source-arrow-color": "#848383",
+        "target-arrow-color": "#848383"
       }
     },
     {
@@ -571,14 +591,14 @@
   ],
   "zoomingEnabled": true,
   "userZoomingEnabled": true,
-  "zoom": 1.0718567688321,
+  "zoom": 1.1198780637007,
   "minZoom": 1.0e-50,
   "maxZoom": 1.0e+50,
   "panningEnabled": true,
   "userPanningEnabled": true,
   "pan": {
-    "x": -49.531150823785,
-    "y": 305.9309750627
+    "x": -57.19826366078,
+    "y": 354.03870632699
   },
   "boxSelectionEnabled": false,
   "layout": {
@@ -589,4 +609,3 @@
     "name": "canvas"
   }
 }
-
