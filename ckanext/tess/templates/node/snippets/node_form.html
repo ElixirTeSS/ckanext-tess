@@ -28,8 +28,6 @@
     {{ form.errors(error_summary) }}
   {% endblock %}
 
-    {{ form.select('member_status', label=_('Node Membership Status'), options=[{'name': 'status', 'value': 'Member'}, {'name':'status', 'value': 'Observer'}, {'name': 'status', 'value': 'Interested'}], selected=data.get('member_status', 'Member'), error=errors.year) }}
-
         {% set node_view_url = h.url_for('node_read', action='read', id=data.name) %}
         <a class="btn" href="{{node_view_url}}" style="float:right; margin-bottom: 20px;"><i class="icon-eye-open"></i> View node</a>
         <div style="clear:both;"></div>
@@ -72,6 +70,8 @@
     {{ form.markdown('description', label=_('Description'), id='field-description', placeholder=_('A little information about this node...'), value=data.description, error=errors.description) }}
 
     {{ form.input('home_page', label=_('Home page'), id='home_page', placeholder=("URL of the node's home page"), value=data.home_page, classes=['control-medium']) }}
+
+    {{ form.select('member_status', label=_('Membership status in ELIXIR'), options=[{'name': 'status', 'value': 'Member'}, {'name':'status', 'value': 'Observer'}], selected=data.get('member_status', 'Member'), error=errors.year) }}
 
     <hr>
     <!-- Add member institutions -->
