@@ -28,7 +28,7 @@
     {{ form.errors(error_summary) }}
   {% endblock %}
 
-    {{ form.select('member_status', label=_('Node Membership Status'), options=[{'name': 'status', 'value': 'Member'}, {'name':'status', 'value': 'Observer'}, {'name': 'status'}], selected=data.get('member_status', 'Member'), error=errors.year) }}
+    {{ form.select('member_status', label=_('Node Membership Status'), options=[{'name': 'status', 'value': 'Member'}, {'name':'status', 'value': 'Observer'}], selected=data.get('member_status', 'Member'), error=errors.year) }}
 
         {% set node_view_url = h.url_for('node_read', action='read', id=data.name) %}
         <a class="btn" href="{{node_view_url}}" style="float:right; margin-bottom: 20px;"><i class="icon-eye-open"></i> View node</a>
