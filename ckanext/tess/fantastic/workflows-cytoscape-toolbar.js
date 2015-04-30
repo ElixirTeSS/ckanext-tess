@@ -318,6 +318,7 @@ function performRemove(e) {
     }
 
     cy.remove(e.cyTarget);
+    clearPropertyEditor();
 }
 //#endregion
 
