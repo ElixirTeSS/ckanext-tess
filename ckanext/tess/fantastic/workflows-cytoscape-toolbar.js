@@ -1,144 +1,162 @@
-//https://github.com/bdparrish/cytoscape.js-toolbar
+//Modified from https://github.com/bdparrish/cytoscape.js-toolbar
+
+jQuery.noConflict();
+
 var default_node_width = 150;
 var default_node_height = 30;
 var default_font_size = 11;
 var default_node_colour = '#9FBD6E';
 var default_edge_colour = '#848383';
 var default_selected_colour = '#2A62E4';
+var action; // 'show', 'new' or 'edit'
 
 
-function drawGraph(workflow) {
+//$( document ).one('click', '.tool-item, .selected-tool', function(event) {
+//    alert('you clicked a '+$(event.target).attr('class')+' element');
+//    if(event.handled !== true) {
+//        if ($(this).hasClass('selected-tool')) {
+//            $(this).removeClass('selected-tool');
+//            alert('element now has classes ' + $(event.target).attr('class'));
+//        }
+//    }
+//});
+
+function drawGraph(workflow, workflow_action) {
+    action = (typeof workflow_action === 'undefined') ? 'show' : workflow_action; // what kind of action we are handling - new workflow, show workflow or edit workflow
+
     var cy = window.cy = cytoscape({
         container: document.getElementById('cy'),
 
         ready: function () {
-            cy.toolbar({
-                toolbarClass: "cy-overall-toolbar",
-                tools: [
-                    [
-                        {
-                            icon: 'fa fa-search-plus',
-                            event: ['tap'],
-                            selector: 'cy',
-                            options: {
-                                cy: {
-                                    zoom: 0.1,
-                                    minZoom: 0.1,
-                                    maxZoom: 10,
-                                    zoomDelay: 45
-                                }
+            if (workflow_action != 'show') {
+                cy.toolbar({
+                    toolbarClass: "cy-overall-toolbar",
+                    tools: [
+                        [
+                            {
+                                icon: 'fa fa-search-plus',
+                                event: ['tap'],
+                                selector: 'cy',
+                                options: {
+                                    cy: {
+                                        zoom: 0.1,
+                                        minZoom: 0.1,
+                                        maxZoom: 10,
+                                        zoomDelay: 45
+                                    }
+                                },
+                                bubbleToCore: false,
+                                tooltip: 'Zoom in',
+                                action: [performZoomIn]
                             },
-                            bubbleToCore: false,
-                            tooltip: 'Zoom in',
-                            action: [performZoomIn]
-                        },
-                        {
-                            icon: 'fa fa-search-minus',
-                            event: ['tap'],
-                            selector: 'cy',
-                            options: {
-                                cy: {
-                                    zoom: -0.1,
-                                    minZoom: 0.1,
-                                    maxZoom: 10,
-                                    zoomDelay: 45
-                                }
+                            {
+                                icon: 'fa fa-search-minus',
+                                event: ['tap'],
+                                selector: 'cy',
+                                options: {
+                                    cy: {
+                                        zoom: -0.1,
+                                        minZoom: 0.1,
+                                        maxZoom: 10,
+                                        zoomDelay: 45
+                                    }
+                                },
+                                bubbleToCore: false,
+                                tooltip: 'Zoom out',
+                                action: [performZoomOut]
+                            }
+                        ],
+                        [
+                            {
+                                icon: 'fa fa-arrow-right',
+                                event: ['tap'],
+                                selector: 'cy',
+                                options: {
+                                    cy: {
+                                        distance: -80
+                                    }
+                                },
+                                bubbleToCore: true,
+                                tooltip: 'Pan right',
+                                action: [performPanRight]
                             },
-                            bubbleToCore: false,
-                            tooltip: 'Zoom out',
-                            action: [performZoomOut]
-                        }
+                            {
+                                icon: 'fa fa-arrow-down',
+                                event: ['tap'],
+                                selector: 'cy',
+                                options: {
+                                    cy: {
+                                        distance: -80
+                                    }
+                                },
+                                bubbleToCore: true,
+                                tooltip: 'Pan Down',
+                                action: [performPanDown]
+                            },
+                            {
+                                icon: 'fa fa-arrow-left',
+                                event: ['tap'],
+                                selector: 'cy',
+                                options: {
+                                    cy: {
+                                        distance: 80
+                                    }
+                                },
+                                bubbleToCore: true,
+                                tooltip: 'Pan left',
+                                action: [performPanLeft]
+                            },
+                            {
+                                icon: 'fa fa-arrow-up',
+                                event: ['tap'],
+                                selector: 'cy',
+                                options: {
+                                    cy: {
+                                        distance: 80
+                                    }
+                                },
+                                bubbleToCore: true,
+                                tooltip: 'Pan up',
+                                action: [performPanUp]
+                            }
+                        ],
+                        [
+                            {
+                                icon: 'fa fa-plus',
+                                event: ['click'],
+                                selector: 'cy',
+                                options: {
+                                    clazz: 'node-person'
+                                },
+                                bubbleToCore: false,
+                                tooltip: 'Add node',
+                                action: [addPersonToGraph]
+                            }
+                        ],
+                        [
+                            {
+                                icon: 'fa fa-link',
+                                event: ['tap'],
+                                selector: 'node',
+                                bubbleToCore: false,
+                                tooltip: 'Link nodes',
+                                action: [performLink]
+                            }
+                        ],
+                        [
+                            {
+                                icon: 'fa fa-trash-o',
+                                event: ['tap'],
+                                selector: 'edge,node',
+                                bubbleToCore: false,
+                                tooltip: 'Remove workflow element',
+                                action: [performRemove]
+                            }
+                        ]
                     ],
-                    [
-                        {
-                            icon: 'fa fa-arrow-right',
-                            event: ['tap'],
-                            selector: 'cy',
-                            options: {
-                                cy: {
-                                    distance: -80
-                                }
-                            },
-                            bubbleToCore: true,
-                            tooltip: 'Pan right',
-                            action: [performPanRight]
-                        },
-                        {
-                            icon: 'fa fa-arrow-down',
-                            event: ['tap'],
-                            selector: 'cy',
-                            options: {
-                                cy: {
-                                    distance: -80
-                                }
-                            },
-                            bubbleToCore: true,
-                            tooltip: 'Pan Down',
-                            action: [performPanDown]
-                        },
-                        {
-                            icon: 'fa fa-arrow-left',
-                            event: ['tap'],
-                            selector: 'cy',
-                            options: {
-                                cy: {
-                                    distance: 80
-                                }
-                            },
-                            bubbleToCore: true,
-                            tooltip: 'Pan left',
-                            action: [performPanLeft]
-                        },
-                        {
-                            icon: 'fa fa-arrow-up',
-                            event: ['tap'],
-                            selector: 'cy',
-                            options: {
-                                cy: {
-                                    distance: 80
-                                }
-                            },
-                            bubbleToCore: true,
-                            tooltip: 'Pan up',
-                            action: [performPanUp]
-                        }
-                    ],
-                    [
-                        {
-                            icon: 'fa fa-plus',
-                            event: ['click'],
-                            selector: 'cy',
-                            options: {
-                                clazz: 'node-person'
-                            },
-                            bubbleToCore: false,
-                            tooltip: 'Add node',
-                            action: [addPersonToGraph]
-                        }
-                    ],
-                    [
-                        {
-                            icon: 'fa fa-link',
-                            event: ['tap'],
-                            selector: 'node',
-                            bubbleToCore: false,
-                            tooltip: 'Link nodes',
-                            action: [performLink]
-                        }
-                    ],
-                    [
-                        {
-                            icon: 'fa fa-trash-o',
-                            event: ['tap'],
-                            selector: 'edge,node',
-                            bubbleToCore: false,
-                            tooltip: 'Remove node/arrow',
-                            action: [performRemove]
-                        }
-                    ]
-                ],
-                appendTools: false
-            });
+                    appendTools: false
+                });
+            }
         },
 
         style: [
@@ -192,11 +210,15 @@ function drawGraph(workflow) {
             }
         ],
 
-        elements: workflow['elements'],
+        elements: (action != 'new' && workflow != undefined)? workflow['elements'] : [],
         layout: {
             name: 'preset',
             padding: 5
-        }
+        },
+
+        autolock: (action == "show")? true : false,
+
+        autoungrabify: (action == "show")? true : false
 
     });
 
@@ -212,11 +234,13 @@ function drawGraph(workflow) {
             var element = cy.getElementById(evtTarget.id()).json(); // Get wf element with this id
             //alert(JSON.stringify(element));
             if (element['group'] == 'nodes') {
-                $("#workflow_element_info").html('<ul class="items">' +
-                '<li><b>Name:</b><br>' + (typeof element['data']['name'] === "undefined" ? undefined : element['data']['name']) + '</li><hr style="margin: 0px;">' +
-                '<li><b>Colour:</b><br>' + (typeof element['data']['background-color'] === "undefined" ? default_node_colour : element['data']['background-color']) + '</li><hr style="margin: 0px;">' +
-                '<li><b>Training material:</b><br>' + (typeof element['data']['training-material'] === "undefined" ? undefined : element['data']['training-material']) + '</li>' +
-                '</ul>');
+                $("#workflow_element_info").html(
+                    '<form id="workflow_element_form" class="dataset-form form-horizontal" method="post" data-module="basic-form" enctype="multipart/form-data">'+
+                    '<ul class="items">' +
+                    '<li><b>Name:</b><br>' + (typeof element['data']['name'] === "undefined" ? undefined : element['data']['name']) + '</li><hr style="margin: 0px;">' +
+                    '<li><b>Colour:</b><br>' + (typeof element['data']['background-color'] === "undefined" ? default_node_colour : element['data']['background-color']) + '</li><hr style="margin: 0px;">' +
+                    '<li><b>Training material:</b><br>' + (typeof element['data']['training-material'] === "undefined" ? undefined : element['data']['training-material']) + '</li>' +
+                    '</ul>');
             }
             else if (element['group'] == 'edges'){
                 $("#workflow_element_info").html('<ul class="items">' +
@@ -227,7 +251,18 @@ function drawGraph(workflow) {
             $("#workflow_element_info").show();
         }
     });
+
+    //$( document ).off('click', '.tool-item, .selected-tool').on('click', '.tool-item, .selected-tool', function(event) {
+    //    alert('you clicked a '+$(event.target).attr('class')+' element');
+    //    if(event.handled !== true) {
+    //        if ($(this).hasClass('selected-tool')) {
+    //            $(this).removeClass('selected-tool');
+    //            alert('element now has classes ' + $(event.target).attr('class'));
+    //        }
+    //    }
+    //});
 }
+
 //var nodes = (workflow['elements']['nodes']);
 //for (var i = 0; i < nodes.length; i++) {
 //    if (typeof nodes[i]["data"]["name"] !== 'undefined') {
@@ -236,25 +271,23 @@ function drawGraph(workflow) {
 //}
 //cy.load(workflow['elements']);
 
+// Add functions to deselect tools from toolbar
+// (i.e. if a tool is selected, the next click on the tool will deselect it)
+// Select all elements whose id starts with 'tool-'
+//$("span#tool-4-0").click(function(){
+//    // If tool is selected - unselect it
+//    if ($(this).hasClass('selected-node')){
+//        $(this).removeClass('selected-node');
+//    }
+//    //if ($(e.cyTarget).hasClass('selected-node')){
+//    //    e.cyTarget.removeClass('selected-node');
+//    //    return;
+//    //}
+//});
+
 //#region node tools
 function addPersonToGraph(e) {
     addObject(e, addPersonToGraph);
-}
-
-function addHouseToGraph(e) {
-    addObject(e, addHouseToGraph);
-}
-
-function addBusinessToGraph(e) {
-    addObject(e, addBusinessToGraph);
-}
-
-function addAutoToGraph(e) {
-    addObject(e, addAutoToGraph);
-}
-
-function addAssetToGraph(e) {
-    addObject(e, addAssetToGraph);
 }
 
 function addObject(e, action) {
@@ -322,6 +355,11 @@ function performRemove(e) {
 }
 //#endregion
 
+//#region Clear tool selection
+function performClearSelectedTool(e) {
+    //cy.remove(e.cyTarget);
+}
+//#endregion
 
 /////////////////////////////////////////////////////
 
