@@ -18,9 +18,9 @@ Example:
 {% set url = h.url_for(node.type ~ '_read', action='read', id=node.name) %}
 <li class="media-item">
   {% block image %}
-    {% if node.get('member_status') == 'Observer': %}
+    {% if node.get('member_status') is defined and node.get('member_status') == 'Observer': %}
     {% block banner %}
-        <span class="node-status-banner">Observer Node</span>
+        <span class="node-status-banner">Observer node</span>
     {% endblock %}
     {% endif %}
     {% if node.get('country_code'): %}
