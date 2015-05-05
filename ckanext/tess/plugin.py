@@ -19,6 +19,11 @@ import datetime
 import ckan.lib.formatters as formatters
 from time import gmtime, strftime
 
+from ckanext.tess.workflow import setup as workflow_model_setup
+
+import logging
+
+log = logging.getLogger(__name__)
 
 def get_tess_version():
     '''Return the value of 'version' parameter from the setyp.py config file.
@@ -37,7 +42,6 @@ def iann_news():
     print "iann_news: " + str(e)
     data = "<p>No events found!</p>"
   return plugins.toolkit.literal(data)
-
 
 def get_filters_for(field_name):
     try:
@@ -235,9 +239,11 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         #config['ckan.template_head_end'] = config.get('ckan.template_head_end', '') +\
         #                '<link rel="stylesheet" href="/css/tess.css" type="text/css"> '
 
-    def before_map(self, map):
-        map.connect('node_old', '/node_old', controller='ckanext.tess.plugin:TeSSController', action='node_old')
+        log.debug("Running workflow model setup method.")
+        workflow_model_setup()
 
+
+    def before_map(self, map):
         map.connect('event', '/event', controller='ckanext.tess.plugin:TeSSController', action='events')
         map.connect('dataset_events', '/dataset/events/{id}', controller='ckanext.tess.plugin:TeSSController', action='add_events', ckan_icon='calendar')
         map.connect('report_event', '/event/new', controller='ckanext.tess.plugin:TeSSController', action='report_event')
@@ -249,7 +255,6 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
 
     def setup_template_variables(self, context, data_dict):
         c.filterable_nodes = 'HI'
-
 
     def get_helpers(self):
         return {
@@ -352,8 +357,6 @@ def setup_events():
 
 
 class TeSSController(HomeController):
-    def node_old(self):
-        return base.render('node_old/index.html')
 
     def events(self):
         setup_events()

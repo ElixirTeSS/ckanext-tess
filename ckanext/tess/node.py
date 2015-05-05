@@ -380,7 +380,7 @@ def get_country_code_for_name(country_name):
 
 def get_available_country_codes():
     '''
-    :return: A list of available country codes not yet taken up by ELIXIR node_old
+    :return: A list of available country codes not yet taken up by ELIXIR
     '''
     countries_map = get_countries_map() # country code -> country name hash
     nodes = get_all_nodes()
@@ -403,7 +403,7 @@ def get_available_country_codes():
 
 def get_available_country_names():
     '''
-    :return: A list of available country codes not yet taken up by ELIXIR node_old
+    :return: A list of available country codes not yet taken up by ELIXIR nodes
     '''
     countries_map = get_countries_map()
     nodes = get_all_nodes()
@@ -423,7 +423,7 @@ def get_available_country_names():
 def get_available_countries():
     '''
     :return: A list of dictionaries {'text': country_name, 'value': country_code_for node, 'name': country_name} of countries
-    that have not already been taken by existing node_old.
+    that have not already been taken by existing nodes.
     '''
     countries = get_countries_map()
     nodes = get_all_nodes()
