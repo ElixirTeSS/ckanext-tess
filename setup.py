@@ -35,5 +35,6 @@ setup(
         organization=ckanext.tess.organization:OrganizationPlugin
         workflow=ckanext.tess.workflow:WorkflowPlugin
         workflow_controller=ckanext.tess.workflow:WorkflowController
+        eventsapi=ckanext.tess.plugin:EventsAPI
     ''',
 )

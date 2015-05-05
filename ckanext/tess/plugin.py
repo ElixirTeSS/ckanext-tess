@@ -18,7 +18,7 @@ from dateutil import parser
 import datetime
 import ckan.lib.formatters as formatters
 from time import gmtime, strftime
-
+from ckanext.tessrelations.model.tables import TessMaterialNode, TessMaterialEvent, TessEvents, TessGroup, TessDomainObject, TessDataset
 
 def get_tess_version():
     '''Return the value of 'version' parameter from the setyp.py config file.
@@ -237,7 +237,7 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
 
     def before_map(self, map):
         map.connect('node_old', '/node_old', controller='ckanext.tess.plugin:TeSSController', action='node_old')
-
+        map.connect('associate_event', '/event/associate/{id}', controller='ckanext.tess.plugin:TeSSController', action='associate_event')
         map.connect('event', '/event', controller='ckanext.tess.plugin:TeSSController', action='events')
         map.connect('dataset_events', '/dataset/events/{id}', controller='ckanext.tess.plugin:TeSSController', action='add_events', ckan_icon='calendar')
         map.connect('report_event', '/event/new', controller='ckanext.tess.plugin:TeSSController', action='report_event')
@@ -350,7 +350,7 @@ def setup_events():
         items_per_page=c.rows
     )
 
-
+import inspect
 class TeSSController(HomeController):
     def node_old(self):
         return base.render('node_old/index.html')
@@ -371,10 +371,37 @@ class TeSSController(HomeController):
         c.pkg_dict = pkg_dict
         params = {}
         params['q'] = pkg_dict.get('title')
-        c.suggested_events = events(params)
-
-
+        c.suggested_events = events()
         setup_events()
-
-
         return base.render('package/related_events.html')
+
+
+def associate_event(context, data_dict):
+    print str(request.body)
+    print context.get('model').Group
+    print data_dict
+    # Save the event
+    #new_event = TessEvents()
+    #new_event.url = data_dict.get('event_url')
+    #new_event.save()
+    # Save the association
+    new_association = TessMaterialEvent()
+    new_association.material_id = data_dict.get('resource_id')
+    new_association.event_id = data_dict.get('event_id')
+    new_association.save()
+
+    return 'jl'
+
+def unassociate_event(context, data_dict):
+    print context.get('model')
+    return {'hello': 'world'}
+
+
+class EventsAPI(plugins.SingletonPlugin):
+    plugins.implements(plugins.interfaces.IActions)
+
+    def get_actions(self):
+        return {
+            'associate_event': associate_event,
+            'unassociate_event': unassociate_event
+        }

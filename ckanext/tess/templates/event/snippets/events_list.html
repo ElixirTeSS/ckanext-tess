@@ -7,6 +7,7 @@ related - True or False - Used when loading events as a tab in manage a training
 {% block events_list %}
 <ul class="media-grid" data-module="media-grid ">
 	{% block events_list_inner %}
+        {% resource 'tess/associate_event.js' %}
             {% for event in events: %}
                 {% snippet "event/snippets/events_item.html", event=event, related=related, position=loop.index %}
             {% endfor %}
