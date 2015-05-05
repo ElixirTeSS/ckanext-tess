@@ -3,21 +3,21 @@
 {% block subtitle %}{{ _("Training workflows") }}{% endblock %}
 
 {% block breadcrumb_content %}
-  <li class="active">{{ h.nav_link(_('Training workflows'), controller='package', action='search', highlight_actions = 'new index') }}</li>
+  <li class="active">{{ h.nav_link(_('Workflows'), controller='ckanext.tess.workflow:WorkflowController', action='index') }}</li>
 {% endblock %}
 
 {% block primary_content %}
   <section class="module">
     <div class="module-content">
       {% block page_primary_action %}
-        {% if h.check_access('package_create') %}
+        {# if h.check_access('workflow_create') #}
           <div class="page_primary_action">
-            <a class="btn btn-primary" href="/workflow/new.html"><i class="icon-plus-sign-alt"></i> Create workflow</a>
+                {% link_for _('Create workflow'), controller='ckanext.tess.workflow:WorkflowController', action='new', class_='btn btn-primary', icon='plus-sign-alt' %}
           </div>
-        {% endif %}
+        {# endif #}
       {% endblock %}
         <div>
-            Have a look at some workflow examples:
+            Have a look at some training workflow examples:
             <ul>
                 <li><a href="/workflow/sequence-analysis-wf.html">Protein sequence analysis workflow</a></li>
                 <li><a href="/workflow/structural-bioinformatics-wf.html">Structural bioinformatics workflow</a></li>

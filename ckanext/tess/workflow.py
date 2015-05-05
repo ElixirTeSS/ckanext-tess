@@ -39,18 +39,30 @@ class WorkflowPlugin(plugins.SingletonPlugin, DefaultGroupForm):
         }
 
     def before_map(self, map):
-        map.connect('workflow', '/workflow', controller='ckanext.tess.workflow:WorkflowController', action='workflows')
-        map.connect('workflow-new', '/workflow/new', controller='ckanext.tess.workflow:WorkflowController', action='new')
+        map.connect('workflow', '/workflow', controller='ckanext.tess.workflow:WorkflowController', action='index')
+        map.connect('new-workflow', '/workflow/new', controller='ckanext.tess.workflow:WorkflowController', action='new')
+        map.connect('edit-workflow', '/workflow/edit/{id}', controller='ckanext.tess.workflow:WorkflowController', action='edit')
+        # map.connect('read-workflow', '/workflow/{id}', controller='ckanext.tess.workflow:WorkflowController', action='read')
+        map.connect('save-workflow', '/workflow/save', controller='ckanext.tess.workflow:WorkflowController', action='save')
+        map.connect('delete-workflow', '/workflow/delete/{id}', controller='ckanext.tess.workflow:WorkflowController', action='delete')
         return map
 
 
 from ckan.controllers.home import HomeController
 
-
 class WorkflowController(HomeController):
 
-    def workflows(self):
+    def index(self):
         return base.render('workflow/index.html')
 
     def new(self):
         return base.render('workflow/new.html')
+
+    def read(self):
+        return base.render('workflow/read.html')
+
+    def delete(self):
+        self.purge()
+
+    def save(self):
+        return base.render('workflow/read.html')

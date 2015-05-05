@@ -235,18 +235,20 @@ function drawGraph(workflow, workflow_action) {
             //alert(JSON.stringify(element));
             if (element['group'] == 'nodes') {
                 $("#workflow_element_info").html(
-                    '<form id="workflow_element_form" class="dataset-form form-horizontal" method="post" data-module="basic-form" enctype="multipart/form-data">'+
                     '<ul class="items">' +
+                    '<li><b>Type:</b> Node</li><hr style="margin: 0px;">' +
                     '<li><b>Name:</b><br>' + (typeof element['data']['name'] === "undefined" ? undefined : element['data']['name']) + '</li><hr style="margin: 0px;">' +
                     '<li><b>Colour:</b><br>' + (typeof element['data']['background-color'] === "undefined" ? default_node_colour : element['data']['background-color']) + '</li><hr style="margin: 0px;">' +
                     '<li><b>Training material:</b><br>' + (typeof element['data']['training-material'] === "undefined" ? undefined : element['data']['training-material']) + '</li>' +
                     '</ul>');
             }
             else if (element['group'] == 'edges'){
-                $("#workflow_element_info").html('<ul class="items">' +
-                '<li><b>Name:</b><br>' + (typeof element['data']['name'] === "undefined" ? undefined : element['data']['name']) + '</li><hr style="margin: 0px;">' +
-                '<li><b>Colour:</b><br>' + (typeof element['data']['background-color'] === "undefined" ? default_edge_colour : element['data']['background-color']) + '</li>' +
-                '</ul>');
+                $("#workflow_element_info").html(
+                    '<ul class="items">' +
+                    '<li><b>Type:</b> Link</li><hr style="margin: 0px;">' +
+                    '<li><b>Name:</b><br>' + (typeof element['data']['name'] === "undefined" ? undefined : element['data']['name']) + '</li><hr style="margin: 0px;">' +
+                    '<li><b>Colour:</b><br>' + (typeof element['data']['background-color'] === "undefined" ? default_edge_colour : element['data']['background-color']) + '</li>' +
+                    '</ul>');
             }
             $("#workflow_element_info").show();
         }
