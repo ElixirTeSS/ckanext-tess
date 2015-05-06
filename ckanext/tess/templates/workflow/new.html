@@ -8,7 +8,8 @@
 <li class="active">{% link_for 'Create workflow', controller='ckanext.tess.workflow:WorkflowController', action='new' %}</li>
 {% endblock %}
 
-{% block page_header %}{% endblock %}
+{% block page_header %}
+{% endblock %}
 
 {% block page_primary_action %}
 {% endblock %}
@@ -25,13 +26,14 @@
 <!--<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">-->
 {% resource 'tess/workflows-cytoscape-toolbar.js' %}
 
-<form class="workflow-form form-horizontal" method="post" data-module="basic-form" enctype="multipart/form-data">
+{% set workflow_create_url = h.url_for('workflow_create') %}
+<form class="form-horizontal" method="post" data-module="basic-form" enctype="multipart/form-data" action="{{workflow_create_url}}">
 
     <div class="form-actions" style="border-top: 0px; padding-top: 0px;">
         {% if h.check_access('workflow_create')  %}
-        {% set workflow_create_url = h.url_for('workflow_create') %}
         <div style="padding-bottom: 30px;">&nbsp;
-            <a class="btn btn-primary pull-right" href="{{workflow_create_url}}"><i class="icon-save"></i> Save workflow</a>
+            <!--<a class="btn btn-primary pull-right" href="{{workflow_create_url}}" name="save"><i class="icon-save"></i> Save workflow</a>-->
+            <button class="btn btn-primary pull-right" name="save" type="submit"><i class="icon-save"></i> Save workflow</button>
         </div>
         {% endif %}
     </div>

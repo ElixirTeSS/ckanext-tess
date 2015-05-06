@@ -47,7 +47,7 @@ class WorkflowPlugin(plugins.SingletonPlugin):
     def before_map(self, map):
         map.connect('workflow', '/workflow', controller='ckanext.tess.workflow:WorkflowController', action='index')
         map.connect('workflow_list', '/workflow', controller='ckanext.tess.workflow:WorkflowController', action='index')
-        # map.connect('workflow_show', '/workflow/{id}', controller='ckanext.tess.workflow:WorkflowController', action='show')
+        #map.connect('workflow_read', '/workflow/{id}', controller='ckanext.tess.workflow:WorkflowController', action='read')
         map.connect('workflow_new', '/workflow/new', controller='ckanext.tess.workflow:WorkflowController', action='new')
         map.connect('workflow_create', '/workflow/create', controller='ckanext.tess.workflow:WorkflowController', action='create')
         map.connect('workflow_update', '/workflow/edit/{id}', controller='ckanext.tess.workflow:WorkflowController', action='update')
@@ -59,7 +59,7 @@ class WorkflowPlugin(plugins.SingletonPlugin):
         authorized = lambda context, data_dict: {'success': True}
         return {
             'workflow_list': authorized,
-            'workflow_show': authorized,
+            'workflow_show': authorized, # action to show/view workflow
             'workflow_new': workflow_actions_authz, # action to render a new workflow form
             'workflow_create': workflow_actions_authz, # create a new workflow in the database
             'workflow_update': workflow_actions_authz,
@@ -74,27 +74,32 @@ class WorkflowController(HomeController):
     def new(self):
         return base.render('workflow/new.html')
 
-    def show(self, id=None):
+    def read(self, id=None):
         if id is None:
-            abort(404)
+            abort(404, _('Workflow id can not be null'))
+
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author,
+                   'schema': None,
+                   'for_view': True}
+
+        data_dict = {'id': id}
+
         return base.render('workflow/read.html')
 
     def create(self):
-        if id is None:
-            abort(404)
-        print "data_dict", data_dict
-        workflow = TessWorkflow.new()
+        print "workflow create action"
+        #workflow = TessWorkflow.new()
+        #workflow_id
         # ... set values, then:
         # workflow.commit()
-        return base.render('workflow/read.html')
+        h.redirect_to('workflow_read', id=workflow_id)
 
     def delete(self, id):
         self.purge()
         return base.render('workflow/index.html')
 
     def update(self, id):
-        # For AJAX calls - do not render anything, just return message
-        #return base.render('workflow/read.html')
         return
 
 
@@ -150,7 +155,7 @@ def define_workflow_table():
 
 def workflow_actions_authz(context, data_dict=None):
     # All registered users can perform workflow operations: new, create, update, delete.
-    # Any user (even if not registered) can do: list and show.
+    # Any user (even if not registered) can do: list and read.
 
     username = context.get('user')
     user = _get_user(username)
