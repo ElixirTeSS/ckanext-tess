@@ -37,6 +37,7 @@ class WorkflowPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.ITemplateHelpers, inherit=True)
     plugins.implements(plugins.interfaces.IMapper, inherit=True)
     plugins.implements(plugins.IConfigurer, inherit=True)
+    plugins.implements(plugins.IAuthFunctions)
 
     def get_helpers(self):
         return {
@@ -45,13 +46,25 @@ class WorkflowPlugin(plugins.SingletonPlugin):
 
     def before_map(self, map):
         map.connect('workflow', '/workflow', controller='ckanext.tess.workflow:WorkflowController', action='index')
-        map.connect('new-workflow', '/workflow/new', controller='ckanext.tess.workflow:WorkflowController', action='new')
-        map.connect('edit-workflow', '/workflow/edit/{id}', controller='ckanext.tess.workflow:WorkflowController', action='edit')
-        # map.connect('read-workflow', '/workflow/{id}', controller='ckanext.tess.workflow:WorkflowController', action='read')
-        map.connect('save-workflow', '/workflow/save', controller='ckanext.tess.workflow:WorkflowController', action='save')
-        map.connect('delete-workflow', '/workflow/delete/{id}', controller='ckanext.tess.workflow:WorkflowController', action='delete')
+        map.connect('workflow_list', '/workflow', controller='ckanext.tess.workflow:WorkflowController', action='index')
+        # map.connect('workflow_show', '/workflow/{id}', controller='ckanext.tess.workflow:WorkflowController', action='show')
+        map.connect('workflow_new', '/workflow/new', controller='ckanext.tess.workflow:WorkflowController', action='new')
+        map.connect('workflow_create', '/workflow/create', controller='ckanext.tess.workflow:WorkflowController', action='create')
+        map.connect('workflow_update', '/workflow/edit/{id}', controller='ckanext.tess.workflow:WorkflowController', action='update')
+        map.connect('workflow_delete', '/workflow/delete/{id}', controller='ckanext.tess.workflow:WorkflowController', action='delete')
         return map
 
+    def get_auth_functions(self):
+        #unauthorized = lambda context, data_dict: {'success': False}
+        authorized = lambda context, data_dict: {'success': True}
+        return {
+            'workflow_list': authorized,
+            'workflow_show': authorized,
+            'workflow_new': workflow_actions_authz, # action to render a new workflow form
+            'workflow_create': workflow_actions_authz, # create a new workflow in the database
+            'workflow_update': workflow_actions_authz,
+            'workflow_delete': workflow_actions_authz
+        }
 
 class WorkflowController(HomeController):
 
@@ -61,7 +74,7 @@ class WorkflowController(HomeController):
     def new(self):
         return base.render('workflow/new.html')
 
-    def view(self, id=None):
+    def show(self, id=None):
         if id is None:
             abort(404)
         return base.render('workflow/read.html')
@@ -69,6 +82,7 @@ class WorkflowController(HomeController):
     def create(self):
         if id is None:
             abort(404)
+        print "data_dict", data_dict
         workflow = TessWorkflow.new()
         # ... set values, then:
         # workflow.commit()
@@ -78,7 +92,7 @@ class WorkflowController(HomeController):
         self.purge()
         return base.render('workflow/index.html')
 
-    def save(self, id):
+    def update(self, id):
         # For AJAX calls - do not render anything, just return message
         #return base.render('workflow/read.html')
         return
@@ -133,6 +147,61 @@ def define_workflow_table():
                              Column('definition', types.UnicodeText, default=u'') # workflow definition in JSON format
                              )
     mapper(TessWorkflow,tess_workflow_table)
+
+def workflow_actions_authz(context, data_dict=None):
+    # All registered users can perform workflow operations: new, create, update, delete.
+    # Any user (even if not registered) can do: list and show.
+
+    username = context.get('user')
+    user = _get_user(username)
+
+    # # Get a list of the members of the 'curators' group.
+    # members = toolkit.get_action('member_list')(
+    #     data_dict={'id': 'curators', 'object_type': 'user'})
+    #
+    # # 'members' is a list of (user_id, object_type, capacity) tuples, we're
+    # # only interested in the user_ids.
+    # member_ids = [member_tuple[0] for member_tuple in members]
+    #
+    # # We have the logged-in user's user name, get their user id.
+    # convert_user_name_or_id_to_id = toolkit.get_converter(
+    #     'convert_user_name_or_id_to_id')
+    # user_id = convert_user_name_or_id_to_id(user_name, context)
+    #
+    # # Finally, we can test whether the user is a member of the curators group.
+    # if user_id in member_ids:
+    #     return {'success': True}
+    # else:
+    #     return {'success': False,
+    #             'msg': 'Only curators are allowed to create groups'}
+
+    if user:
+        # deleted users are always unauthorized
+        if user.is_deleted():
+            return {'success': False, 'msg': 'The user has been deleted and is not allowed to perform this action'}
+            # sysadmins can do anything unless the auth_sysadmins_check
+            # decorator was used in which case they are treated like all other
+            # users.
+        else:
+            return {'success': True}
+        endif
+    else:
+        return {'success': False, 'msg': 'Only registered users can perform this action'}
+    endif
+
+def _get_user(username):
+    ''' Try to get the user from c, if possible, and fallback to using the DB '''
+    if not username:
+        return None
+    # See if we can get the user without touching the DB
+    try:
+        if c.userobj and c.userobj.name == username:
+            return c.userobj
+    except TypeError:
+        # c is not available
+        pass
+    # Get user from the DB
+    return model.User.get(username)
 
 
 def read_workflow_file(relative_file_path):
