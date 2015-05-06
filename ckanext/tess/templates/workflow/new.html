@@ -1,3 +1,4 @@
+{% import 'macros/form.html' as form %}
 {% extends "page.html" %}
 
 {% block subtitle %}{{ _('Workflows') }}{% endblock %}
@@ -10,9 +11,12 @@
 {% block page_header %}{% endblock %}
 
 {% block page_primary_action %}
-  {% if h.check_access('group_create') %}
-    {% link_for _('Save workflow'), controller='ckanext.tess.workflow:WorkflowController', action='save', class_='btn btn-primary', icon='save' %}
-  {% endif %}
+  {# if h.check_access('workflow_create') #}
+    <div class="page_primary_action" style="padding-bottom: 30px;">
+    <a class="btn btn-primary" style="float:right;" href="/workflow/save"><i class="icon-save"></i> Save workflow</a>
+     </div>
+    <!--{% link_for _('Save workflow'), controller='ckanext.tess.workflow:WorkflowController', action='save', class_='btn btn-primary', style="float: right;", icon='save' %}-->
+  {# endif #}
 {% endblock %}
 
 {% block primary_content_inner %}
@@ -26,6 +30,13 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <!--<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">-->
 {% resource 'tess/workflows-cytoscape-toolbar.js' %}
+
+<form class="workflow-form form-horizontal" method="post" data-module="basic-form" enctype="multipart/form-data">
+  {% block basic_fields %}
+    {{ form.input('title', label=_('Name'), id='field-name', placeholder=_('Workflow name'), classes=['control-full']) }}
+    {{ form.markdown('description', label=_('Description'), id='field-description', placeholder=_('A little information about workflow...'), value=None, error=None) }}
+  {% endblock %}
+</form>
 
 <div id="cy" style="float: right;" class="cy col-md-7 col-md-offset-1"></div>
 <script>

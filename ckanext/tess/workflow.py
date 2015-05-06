@@ -32,7 +32,7 @@ log = logging.getLogger(__name__)
 tess_workflow_table = None
 
 
-class WorkflowPlugin(plugins.SingletonPlugin, DefaultGroupForm):
+class WorkflowPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IRoutes, inherit=True)
     plugins.implements(plugins.ITemplateHelpers, inherit=True)
     plugins.implements(plugins.interfaces.IMapper, inherit=True)
@@ -61,14 +61,27 @@ class WorkflowController(HomeController):
     def new(self):
         return base.render('workflow/new.html')
 
-    def read(self):
+    def view(self, id=None):
+        if id is None:
+            abort(404)
         return base.render('workflow/read.html')
 
-    def delete(self):
+    def create(self):
+        if id is None:
+            abort(404)
+        workflow = TessWorkflow.new()
+        # ... set values, then:
+        # workflow.commit()
+        return base.render('workflow/read.html')
+
+    def delete(self, id):
         self.purge()
+        return base.render('workflow/index.html')
 
-    def save(self):
-        return base.render('workflow/read.html')
+    def save(self, id):
+        # For AJAX calls - do not render anything, just return message
+        #return base.render('workflow/read.html')
+        return
 
 
 class TessDomainObject(DomainObject):
@@ -95,7 +108,7 @@ class TessDomainObject(DomainObject):
 
 
 # Workflow model
-class TessWorkflows(TessDomainObject):
+class TessWorkflow(TessDomainObject):
     pass
 
 
@@ -119,7 +132,7 @@ def define_workflow_table():
                              Column('description',types.UnicodeText, default=u''),
                              Column('definition', types.UnicodeText, default=u'') # workflow definition in JSON format
                              )
-    mapper(TessWorkflows,tess_workflow_table)
+    mapper(TessWorkflow,tess_workflow_table)
 
 
 def read_workflow_file(relative_file_path):
