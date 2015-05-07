@@ -350,6 +350,10 @@ def setup_events():
         items_per_page=c.rows
     )
 
+def associated_events(package_id):
+    #Lookup all events with this package_id as the material_id
+    return []
+
 import inspect
 class TeSSController(HomeController):
     def node_old(self):
@@ -371,30 +375,64 @@ class TeSSController(HomeController):
         c.pkg_dict = pkg_dict
         params = {}
         params['q'] = pkg_dict.get('title')
+
+        c.associated_events = associated_events(c.pkg_dict.get('id'))
         c.suggested_events = events()
         setup_events()
         return base.render('package/related_events.html')
 
+def get_event_by_id(id):
+    url = 'http://iann.pro/solr/select/?q=id:' + id
+    try:
+        res = urllib2.urlopen(url)
+        res = res.read()
+        results = parse_xml(res)
+        results['url'] = url
+        if results['count'] == 1:
+            return results['events'][0]
+        else:
+            return {}
+    except Exception, e:
+        print 'Error finding event in iANN.pro: \n %s' % e
+        return {}
+
+def save_event(event_dict=None):
+    db_event = TessEvents()
+    db_event.id = event_dict.get('id')
+    db_event.title = event_dict.get('title', '')
+    db_event.provider = event_dict.get('provider', '')
+    db_event.link = event_dict.get('link', '')
+    db_event.subtitle = event_dict.get('subtitle', '')
+    db_event.venue = event_dict.get('venue', '')
+    db_event.country = event_dict.get('country', '')
+    db_event.city = event_dict.get('city', '')
+    db_event.starts = event_dict.get('starts', '')
+    db_event.ends = event_dict.get('ends', '')
+    db_event.duration = event_dict.get('duration', '')
+    db_event.save()
+    return db_event
 
 def associate_event(context, data_dict):
     print str(request.body)
     print context.get('model').Group
     print data_dict
     # Save the event
-    #new_event = TessEvents()
-    #new_event.url = data_dict.get('event_url')
-    #new_event.save()
-    # Save the association
+    event = get_event_by_id(data_dict.get('event_id'))
+    save_event(event)
+    # save event, or don't?
+    # Save the association between the two.
     new_association = TessMaterialEvent()
+    new_association
     new_association.material_id = data_dict.get('resource_id')
     new_association.event_id = data_dict.get('event_id')
     new_association.save()
+    print TessMaterialEvent.count()
+    return 'Completed Successfully'
 
-    return 'jl'
 
 def unassociate_event(context, data_dict):
-    print context.get('model')
-    return {'hello': 'world'}
+    #
+    return {}
 
 
 class EventsAPI(plugins.SingletonPlugin):
