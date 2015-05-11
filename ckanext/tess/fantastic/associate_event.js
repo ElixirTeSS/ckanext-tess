@@ -1,6 +1,6 @@
 "use strict";
 
-ckan.module('associate_event', function ($, _) {
+ckan.module('event_association', function ($, _) {
     return {
         initialize: function() {
             $.proxyAll(this, /_on/);
@@ -22,18 +22,25 @@ ckan.module('associate_event', function ($, _) {
                     request.setRequestHeader("Authority", 'b8ec0537-efa2-4242-b01f-8219d3077311');
                     request.setRequestHeader("content-type", 'application/json');
                 },
-                url: 'http://localhost:5000/api/3/action/associate_event',
+                url: 'http://localhost:5000/api/3/action/' + this.options.action,
                 data: JSON.stringify(data_dict),
-                success: function (success) {
-                    alert(JSON.stringify(success))
+                success: function (result_hash) {
+                    console.log(result_hash)
+                    if (result_hash['success'] == true) {
+                        alert(JSON.stringify(result_hash['result']))
+                        location.reload();
+                    } else {
+                        alert(result_hash['error']['message'])
+                    }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    alert(xhr.responseText);
+                    alert(xhr.responseJSON['error']['message']);
                 }
             });
         }
     };
 });
+
 
 $(document).ready(function () {
     console.log('ready');

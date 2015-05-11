@@ -5,12 +5,29 @@ related - True or False - Used when loading events as a tab in manage a training
 #}
 
 {% block events_list %}
+        {% if c.associated_events %}
+            <h1> Associated Events</h1>
+            <ul class="media-grid" data-module="media-grid ">
+	        {% block associated_events_list %}
+            {% for event in c.associated_events %}
+                {% snippet "event/snippets/events_item.html", event=event, type='associated', position=loop.index %}
+            {% endfor %}
+                {% endblock %}
+                </ul>
+            <h1> All Events </h1>
+        {% endif %}
 <ul class="media-grid" data-module="media-grid ">
 	{% block events_list_inner %}
         {% resource 'tess/associate_event.js' %}
+        {% if events %}
             {% for event in events: %}
-                {% snippet "event/snippets/events_item.html", event=event, related=related, position=loop.index %}
+                {% if related %}
+                    {% snippet "event/snippets/events_item.html", event=event, type='related', position=loop.index %}
+                {% else %}
+                    {% snippet "event/snippets/events_item.html", event=event, type='regular', position=loop.index %}
+                {% endif %}
             {% endfor %}
+        {% endif %}
   {% endblock %}
 </ul>
 {% endblock %}

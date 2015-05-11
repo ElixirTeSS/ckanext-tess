@@ -16,6 +16,7 @@ import pylons.config as configuration
 
 from dateutil import parser
 import datetime
+from datetime import timedelta
 import ckan.lib.formatters as formatters
 from time import gmtime, strftime
 from ckanext.tessrelations.model.tables import TessMaterialNode, TessMaterialEvent, TessEvents, TessGroup, TessDomainObject, TessDataset
@@ -117,7 +118,8 @@ def parse_xml(xml):
         expired = False
         if datetime.datetime.now() > finish_time:
             expired = formatters.localised_nice_date(finish_time)
-        duration = finish_time - start_time
+        duration = (finish_time - start_time) + timedelta(days=1)
+
 
 
         res = {'title': doc.find("*/[@name='title']").text,
@@ -350,11 +352,31 @@ def setup_events():
         items_per_page=c.rows
     )
 
-def associated_events(package_id):
-    #Lookup all events with this package_id as the material_id
-    return []
 
-import inspect
+def get_event_association(material_id, event_id):
+    event = model.Session.query(TessMaterialEvent).\
+            filter(TessMaterialEvent.material_id == material_id).\
+            filter(TessMaterialEvent.event_id == event_id)
+    return event.first()
+
+def delete_event_associate(id):
+    delete = model.Session.query(TessMaterialEvent).\
+        filter(TessMaterialEvent.id == id).first()
+    print delete
+    return delete
+
+
+def get_associated_events(material_id):
+    events = model.Session.query(TessMaterialEvent).filter(TessMaterialEvent.material_id == material_id)
+    results = []
+    for event in events.all():
+        try:
+            results.append(get_event_by_id(event.event_id))
+        except Exception:
+            print 'Failed to find Event with ID: %s' % event.event_id
+    return results
+
+
 class TeSSController(HomeController):
     def node_old(self):
         return base.render('node_old/index.html')
@@ -376,13 +398,14 @@ class TeSSController(HomeController):
         params = {}
         params['q'] = pkg_dict.get('title')
 
-        c.associated_events = associated_events(c.pkg_dict.get('id'))
+        c.associated_events = get_associated_events(c.pkg_dict.get('id'))
         c.suggested_events = events()
         setup_events()
         return base.render('package/related_events.html')
 
 def get_event_by_id(id):
     url = 'http://iann.pro/solr/select/?q=id:' + id
+    print url
     try:
         res = urllib2.urlopen(url)
         res = res.read()
@@ -417,23 +440,34 @@ def associate_event(context, data_dict):
     print context.get('model').Group
     print data_dict
     # Save the event
-    event = get_event_by_id(data_dict.get('event_id'))
-    save_event(event)
-    # save event, or don't?
-    # Save the association between the two.
-    new_association = TessMaterialEvent()
-    new_association
-    new_association.material_id = data_dict.get('resource_id')
-    new_association.event_id = data_dict.get('event_id')
-    new_association.save()
-    print TessMaterialEvent.count()
-    return 'Completed Successfully'
+    #event = get_event_by_id(data_dict.get('event_id'))
+    #save_event(event)
 
+    #Associate the event
+    if get_event_association(data_dict.get('resource_id'), data_dict.get('event_id')):
+        raise ValidationError('Already Associated. Cannot associate twice!')
+    else:
+        new_association = TessMaterialEvent()
+        new_association.material_id = data_dict.get('resource_id')
+        new_association.event_id = data_dict.get('event_id')
+        new_association.save()
+        return 'Associated successfully'
+
+NotFound = logic.NotFound
+ValidationError = logic.ValidationError
 
 def unassociate_event(context, data_dict):
-    #
-    return {}
+    event = get_event_association(data_dict.get('resource_id'), data_dict.get('event_id'))
+    if event:
+        event.delete()
+        event.commit()
+        return 'Unassociated'
+    else:
+        raise NotFound('Could not find association')
 
+def associated_events(context, data_dict):
+    resources = get_associated_events(data_dict.get('resource_id'))
+    return resources
 
 class EventsAPI(plugins.SingletonPlugin):
     plugins.implements(plugins.interfaces.IActions)
@@ -441,5 +475,6 @@ class EventsAPI(plugins.SingletonPlugin):
     def get_actions(self):
         return {
             'associate_event': associate_event,
-            'unassociate_event': unassociate_event
+            'unassociate_event': unassociate_event,
+            'associated_events': associated_events
         }

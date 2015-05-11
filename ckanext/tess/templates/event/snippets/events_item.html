@@ -1,10 +1,11 @@
 {#
 Event - Event hash - see plugin.py
-Related - Whether we want a button to associate this object with something
+Type - 'related', 'associated', or 'regular'/''/None
 #}
 
 {% block item %}
-
+    {% set id = event.pop('id', 0) %}
+    <div id="event-{{id}}" >
     {% if event.get('link') %}
       {% set link = event.pop('link') %}
     {% endif %}
@@ -12,7 +13,7 @@ Related - Whether we want a button to associate this object with something
     {% block expired %}
         {% if event.get('expired', False) %}
             {# Want 2 in a row? add to class - masonry-brick node-brick #}
-            <li class="media-item expired_event">
+            <li class="media-item expired_event" style="background-color: hotpink;">
         {% else %}
             <li class="media-item">
         {% endif %}
@@ -54,7 +55,7 @@ Related - Whether we want a button to associate this object with something
         {% endif %}
     {% endblock %}
 
-    {% set id = event.pop('id', 0) %}
+
     {% block etc %}
         {% for k, v in event.iteritems(): %}
             {% if v %}
@@ -63,12 +64,12 @@ Related - Whether we want a button to associate this object with something
         {% endfor %}
     {% endblock %}
 
-    {% if related %}
-
+    {% if type == 'related' %}
         <br>
-        <button data-module="associate_event"
+        <button data-module="event_association"
                 class="btn"
                 href="#"
+                data-module-action="associate_event"
                 data-module-event_id="{{id}}"
                 data-module-event_url="{{link}}"
                 data-module-resource_id="{{c.pkg_dict.id}}"> Associate with Material</button>
@@ -77,7 +78,19 @@ Related - Whether we want a button to associate this object with something
     {% if expired %}
         <h4 style="color: rgb(176, 0, 0); text-align: center">[This event happened {{expired}}]</h4>
     {% endif %}
+    {% if type == 'associated' %}
+        <br>
+        <button data-module="event_association"
+                class="btn"
+                href="#"
+                data-module-action="unassociate_event"
+                data-module-event_id="{{id}}"
+                data-module-event_url="{{link}}"
+                data-module-resource_id="{{c.pkg_dict.id}}"> Unassociate Event</button>
+    {% endif %}
 </li>
+</div>
+
 {% endblock %}
 {% if position is divisibleby 3 %}
   <li class="clearfix js-hide"></li>
