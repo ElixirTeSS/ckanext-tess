@@ -17,14 +17,15 @@ ckan.module('event_association', function ($, _) {
             }
 
             var key = this.options.key;
-
+            var pathArray = location.href.split( '/' );
+            var url = pathArray[0] + '//' + pathArray[2];
             $.ajax({
                 type: 'POST',
                 beforeSend: function (request) {
                     request.setRequestHeader("Authority", key);
                     request.setRequestHeader("content-type", 'application/json');
                 },
-                url: 'http://localhost:5000/api/3/action/' + this.options.action,
+                url: url + '/api/3/action/' + this.options.action,
                 data: JSON.stringify(data_dict),
                 success: function (result_hash) {
                     console.log(result_hash)
@@ -36,6 +37,7 @@ ckan.module('event_association', function ($, _) {
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
+
                     alert(xhr.responseJSON['error']['message']);
                 }
             });
