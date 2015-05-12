@@ -10,6 +10,7 @@ ckan.module('event_association', function ($, _) {
 
           $.proxyAll(this, /_on/);
 
+            alert(user.apikey);
             var data_dict = {
                 "event_id": this.options.event_id,
                 "event_url": this.options.event_url,
@@ -19,7 +20,7 @@ ckan.module('event_association', function ($, _) {
             $.ajax({
                 type: 'POST',
                 beforeSend: function (request) {
-                    request.setRequestHeader("Authority", 'b8ec0537-efa2-4242-b01f-8219d3077311');
+                    request.setRequestHeader("Authority", {{c.user.apikey}});
                     request.setRequestHeader("content-type", 'application/json');
                 },
                 url: 'http://localhost:5000/api/3/action/' + this.options.action,
