@@ -72,7 +72,8 @@ Type - 'related', 'associated', or 'regular'/''/None
                 data-module-action="associate_event"
                 data-module-event_id="{{id}}"
                 data-module-event_url="{{link}}"
-                data-module-resource_id="{{c.pkg_dict.id}}"> Associate with Material</button>
+                data-module-resource_id="{{c.pkg_dict.id}}"
+                data-module-key="{{c.key}}"> Associate with Material</button>
     {% endif %}
 
     {% if expired %}
@@ -86,7 +87,8 @@ Type - 'related', 'associated', or 'regular'/''/None
                 data-module-action="unassociate_event"
                 data-module-event_id="{{id}}"
                 data-module-event_url="{{link}}"
-                data-module-resource_id="{{c.pkg_dict.id}}"> Unassociate Event</button>
+                data-module-resource_id="{{c.pkg_dict.id}}"
+                data-module-key="{{c.key}}"> Unassociate Event</button>
     {% endif %}
 </li>
 </div>

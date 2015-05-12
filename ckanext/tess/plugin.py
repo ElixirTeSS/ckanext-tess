@@ -395,6 +395,9 @@ class TeSSController(HomeController):
                    'user': c.user or c.author, 'auth_user_obj': c.userobj}
         pkg_dict = get_action('package_show')(context, {'id': id})
         c.pkg_dict = pkg_dict
+        print c.userobj.apikey
+        c.key = c.userobj.apikey
+
         params = {}
         params['q'] = pkg_dict.get('title')
 

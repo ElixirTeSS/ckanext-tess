@@ -10,17 +10,18 @@ ckan.module('event_association', function ($, _) {
 
           $.proxyAll(this, /_on/);
 
-            alert(user.apikey);
             var data_dict = {
                 "event_id": this.options.event_id,
                 "event_url": this.options.event_url,
                 "resource_id": this.options.resource_id
             }
-            console.log(data_dict);
+
+            var key = this.options.key;
+
             $.ajax({
                 type: 'POST',
                 beforeSend: function (request) {
-                    request.setRequestHeader("Authority", {{c.user.apikey}});
+                    request.setRequestHeader("Authority", key);
                     request.setRequestHeader("content-type", 'application/json');
                 },
                 url: 'http://localhost:5000/api/3/action/' + this.options.action,
