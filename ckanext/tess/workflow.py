@@ -72,6 +72,7 @@ class WorkflowController(HomeController):
         return base.render('workflow/index.html')
 
     def new(self):
+        print "model", model.__dict__
         return base.render('workflow/new.html')
 
     def read(self, id=None):
@@ -85,13 +86,14 @@ class WorkflowController(HomeController):
 
         data_dict = {'id': id}
 
+        print "context", context
         return base.render('workflow/read.html')
 
     def create(self):
         print "workflow create action"
         #workflow = TessWorkflow.new()
-        #workflow_id
-        # ... set values, then:
+        #workflow_id = workflow.get('id')
+        # ... set values, then something like:
         # workflow.commit()
         h.redirect_to('workflow_read', id=workflow_id)
 
