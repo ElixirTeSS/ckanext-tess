@@ -21,6 +21,17 @@ import ckan.lib.formatters as formatters
 from time import gmtime, strftime
 from ckanext.tessrelations.model.tables import TessMaterialNode, TessMaterialEvent, TessEvents, TessGroup, TessDomainObject, TessDataset
 
+import ckan.lib.base as base
+from ckan.controllers.home import HomeController
+import ckan.model as model
+import ckan.logic as logic
+from urllib import urlencode
+
+get_action = logic.get_action
+NotFound = logic.NotFound
+ValidationError = logic.ValidationError
+
+
 def get_tess_version():
     '''Return the value of 'version' parameter from the setyp.py config file.
     :rtype: string
@@ -249,9 +260,6 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         facets_dict['node_id'] = 'ELIXIR Nodes'
         return facets_dict
 
-    def setup_template_variables(self, context, data_dict):
-        c.filterable_nodes = 'HI'
-
 
     def get_helpers(self):
         return {
@@ -301,27 +309,18 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         return []
 
 
-import ckan.lib.base as base
-from ckan.controllers.home import HomeController
-import ckan.model as model
-import ckan.logic as logic
-from urllib import urlencode
-
-get_action = logic.get_action
-
-
 def pager_url(q=None, page=None):
     params = list([(k, v) for k, v in request.params.items()
                          if k != 'page'])
     params.append(('page', page))
-    url = h.url_for(controller='ckanext.tess.plugin:TeSSController', action='events')
+    url = h.full_current_url()
+    url = url.split("?")[0]
     url = url + u'?' + urlencode(params)
     return url
 
 
 def setup_events():
     q_params = {}
-    print request.url
     c.q = q_params['q'] = c.q = request.params.get('q', '')
     c.category = q_params['category'] = request.params.get('category', '')
     c.country = q_params['country'] = request.params.get('country', '')
@@ -362,9 +361,7 @@ def get_event_association(material_id, event_id):
 def delete_event_associate(id):
     delete = model.Session.query(TessMaterialEvent).\
         filter(TessMaterialEvent.id == id).first()
-    print delete
     return delete
-
 
 def get_associated_events(material_id):
     events = model.Session.query(TessMaterialEvent).filter(TessMaterialEvent.material_id == material_id)
@@ -395,20 +392,18 @@ class TeSSController(HomeController):
                    'user': c.user or c.author, 'auth_user_obj': c.userobj}
         pkg_dict = get_action('package_show')(context, {'id': id})
         c.pkg_dict = pkg_dict
-        print c.userobj.apikey
         c.key = c.userobj.apikey
-
         params = {}
         params['q'] = pkg_dict.get('title')
 
         c.associated_events = get_associated_events(c.pkg_dict.get('id'))
-        c.suggested_events = events()
         setup_events()
+        for event in c.associated_events:
+            c.events[:] = [d for d in c.events if d.get('id') != event.get('id')]
         return base.render('package/related_events.html')
 
 def get_event_by_id(id):
     url = 'http://iann.pro/solr/select/?q=id:' + id
-    print url
     try:
         res = urllib2.urlopen(url)
         res = res.read()
@@ -438,34 +433,29 @@ def save_event(event_dict=None):
     db_event.save()
     return db_event
 
-def associate_event(context, data_dict):
-    print str(request.body)
-    print context.get('model').Group
-    print data_dict
-    # Save the event
-    #event = get_event_by_id(data_dict.get('event_id'))
-    #save_event(event)
 
-    #Associate the event
+def associate_event(context, data_dict):
     if get_event_association(data_dict.get('resource_id'), data_dict.get('event_id')):
         raise ValidationError('Already Associated. Cannot associate twice!')
+        message = 'Event could not be associated'
+        h.flash_error(message)
+        return message
     else:
         new_association = TessMaterialEvent()
         new_association.material_id = data_dict.get('resource_id')
         new_association.event_id = data_dict.get('event_id')
         new_association.save()
-        return 'Associated successfully'
+        h.flash_success('Event has been associated')
 
-NotFound = logic.NotFound
-ValidationError = logic.ValidationError
 
 def unassociate_event(context, data_dict):
     event = get_event_association(data_dict.get('resource_id'), data_dict.get('event_id'))
     if event:
         event.delete()
         event.commit()
-        return 'Unassociated'
+        h.flash_notice('Event has been unassociated')
     else:
+        h.flash_error('Could not unassociate event')
         raise NotFound('Could not find association')
 
 def associated_events(context, data_dict):
