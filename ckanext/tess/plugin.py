@@ -16,8 +16,20 @@ import pylons.config as configuration
 
 from dateutil import parser
 import datetime
+from datetime import timedelta
 import ckan.lib.formatters as formatters
 from time import gmtime, strftime
+from ckanext.tessrelations.model.tables import TessMaterialNode, TessMaterialEvent, TessEvents, TessGroup, TessDomainObject, TessDataset
+
+import ckan.lib.base as base
+from ckan.controllers.home import HomeController
+import ckan.model as model
+import ckan.logic as logic
+from urllib import urlencode
+
+get_action = logic.get_action
+NotFound = logic.NotFound
+ValidationError = logic.ValidationError
 
 
 def get_tess_version():
@@ -117,7 +129,8 @@ def parse_xml(xml):
         expired = False
         if datetime.datetime.now() > finish_time:
             expired = formatters.localised_nice_date(finish_time)
-        duration = finish_time - start_time
+        duration = (finish_time - start_time) + timedelta(days=1)
+
 
 
         res = {'title': doc.find("*/[@name='title']").text,
@@ -237,7 +250,7 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
 
     def before_map(self, map):
         map.connect('node_old', '/node_old', controller='ckanext.tess.plugin:TeSSController', action='node_old')
-
+        map.connect('associate_event', '/event/associate/{id}', controller='ckanext.tess.plugin:TeSSController', action='associate_event')
         map.connect('event', '/event', controller='ckanext.tess.plugin:TeSSController', action='events')
         map.connect('dataset_events', '/dataset/events/{id}', controller='ckanext.tess.plugin:TeSSController', action='add_events', ckan_icon='calendar')
         map.connect('report_event', '/event/new', controller='ckanext.tess.plugin:TeSSController', action='report_event')
@@ -246,9 +259,6 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     def dataset_facets(self, facets_dict, package_type):
         facets_dict['node_id'] = 'ELIXIR Nodes'
         return facets_dict
-
-    def setup_template_variables(self, context, data_dict):
-        c.filterable_nodes = 'HI'
 
 
     def get_helpers(self):
@@ -299,27 +309,18 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         return []
 
 
-import ckan.lib.base as base
-from ckan.controllers.home import HomeController
-import ckan.model as model
-import ckan.logic as logic
-from urllib import urlencode
-
-get_action = logic.get_action
-
-
 def pager_url(q=None, page=None):
     params = list([(k, v) for k, v in request.params.items()
                          if k != 'page'])
     params.append(('page', page))
-    url = h.url_for(controller='ckanext.tess.plugin:TeSSController', action='events')
+    url = h.full_current_url()
+    url = url.split("?")[0]
     url = url + u'?' + urlencode(params)
     return url
 
 
 def setup_events():
     q_params = {}
-    print request.url
     c.q = q_params['q'] = c.q = request.params.get('q', '')
     c.category = q_params['category'] = request.params.get('category', '')
     c.country = q_params['country'] = request.params.get('country', '')
@@ -351,6 +352,28 @@ def setup_events():
     )
 
 
+def get_event_association(material_id, event_id):
+    event = model.Session.query(TessMaterialEvent).\
+            filter(TessMaterialEvent.material_id == material_id).\
+            filter(TessMaterialEvent.event_id == event_id)
+    return event.first()
+
+def delete_event_associate(id):
+    delete = model.Session.query(TessMaterialEvent).\
+        filter(TessMaterialEvent.id == id).first()
+    return delete
+
+def get_associated_events(material_id):
+    events = model.Session.query(TessMaterialEvent).filter(TessMaterialEvent.material_id == material_id)
+    results = []
+    for event in events.all():
+        try:
+            results.append(get_event_by_id(event.event_id))
+        except Exception:
+            print 'Failed to find Event with ID: %s' % event.event_id
+    return results
+
+
 class TeSSController(HomeController):
     def node_old(self):
         return base.render('node_old/index.html')
@@ -369,12 +392,82 @@ class TeSSController(HomeController):
                    'user': c.user or c.author, 'auth_user_obj': c.userobj}
         pkg_dict = get_action('package_show')(context, {'id': id})
         c.pkg_dict = pkg_dict
+        c.key = c.userobj.apikey
         params = {}
         params['q'] = pkg_dict.get('title')
-        c.suggested_events = events(params)
 
-
+        c.associated_events = get_associated_events(c.pkg_dict.get('id'))
         setup_events()
-
-
+        for event in c.associated_events:
+            c.events[:] = [d for d in c.events if d.get('id') != event.get('id')]
         return base.render('package/related_events.html')
+
+def get_event_by_id(id):
+    url = 'http://iann.pro/solr/select/?q=id:' + id
+    try:
+        res = urllib2.urlopen(url)
+        res = res.read()
+        results = parse_xml(res)
+        results['url'] = url
+        if results['count'] == 1:
+            return results['events'][0]
+        else:
+            return {}
+    except Exception, e:
+        print 'Error finding event in iANN.pro: \n %s' % e
+        return {}
+
+def save_event(event_dict=None):
+    db_event = TessEvents()
+    db_event.id = event_dict.get('id')
+    db_event.title = event_dict.get('title', '')
+    db_event.provider = event_dict.get('provider', '')
+    db_event.link = event_dict.get('link', '')
+    db_event.subtitle = event_dict.get('subtitle', '')
+    db_event.venue = event_dict.get('venue', '')
+    db_event.country = event_dict.get('country', '')
+    db_event.city = event_dict.get('city', '')
+    db_event.starts = event_dict.get('starts', '')
+    db_event.ends = event_dict.get('ends', '')
+    db_event.duration = event_dict.get('duration', '')
+    db_event.save()
+    return db_event
+
+
+def associate_event(context, data_dict):
+    if get_event_association(data_dict.get('resource_id'), data_dict.get('event_id')):
+        raise ValidationError('Already Associated. Cannot associate twice!')
+        message = 'Event could not be associated'
+        h.flash_error(message)
+        return message
+    else:
+        new_association = TessMaterialEvent()
+        new_association.material_id = data_dict.get('resource_id')
+        new_association.event_id = data_dict.get('event_id')
+        new_association.save()
+        h.flash_success('Event has been associated')
+
+
+def unassociate_event(context, data_dict):
+    event = get_event_association(data_dict.get('resource_id'), data_dict.get('event_id'))
+    if event:
+        event.delete()
+        event.commit()
+        h.flash_notice('Event has been unassociated')
+    else:
+        h.flash_error('Could not unassociate event')
+        raise NotFound('Could not find association')
+
+def associated_events(context, data_dict):
+    resources = get_associated_events(data_dict.get('resource_id'))
+    return resources
+
+class EventsAPI(plugins.SingletonPlugin):
+    plugins.implements(plugins.interfaces.IActions)
+
+    def get_actions(self):
+        return {
+            'associate_event': associate_event,
+            'unassociate_event': unassociate_event,
+            'associated_events': associated_events
+        }
