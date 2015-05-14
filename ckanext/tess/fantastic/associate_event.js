@@ -30,10 +30,9 @@ ckan.module('event_association', function ($, _) {
                 success: function (result_hash) {
                     console.log(result_hash)
                     if (result_hash['success'] == true) {
-                        alert(JSON.stringify(result_hash['result']))
                         location.reload();
                     } else {
-                        alert(result_hash['error']['message'])
+                        alert('Error, could not associate event')
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
