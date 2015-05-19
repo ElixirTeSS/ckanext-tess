@@ -22,6 +22,9 @@ from ckan.model.meta import metadata, mapper, Session, engine
 from ckan.model.types import make_uuid
 from ckan.model.domain_object import DomainObject
 
+import ckan.lib.helpers as h
+
+
 get_action = logic.get_action
 parse_params = logic.parse_params
 redirect = base.redirect
@@ -31,6 +34,7 @@ log = logging.getLogger(__name__)
 
 tess_workflow_table = None
 
+from ckan.common import OrderedDict, c, g, request, _
 
 class WorkflowPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IRoutes, inherit=True)
@@ -47,11 +51,11 @@ class WorkflowPlugin(plugins.SingletonPlugin):
     def before_map(self, map):
         map.connect('workflow', '/workflow', controller='ckanext.tess.workflow:WorkflowController', action='index')
         map.connect('workflow_list', '/workflow', controller='ckanext.tess.workflow:WorkflowController', action='index')
-        #map.connect('workflow_read', '/workflow/{id}', controller='ckanext.tess.workflow:WorkflowController', action='read')
         map.connect('workflow_new', '/workflow/new', controller='ckanext.tess.workflow:WorkflowController', action='new')
         map.connect('workflow_create', '/workflow/create', controller='ckanext.tess.workflow:WorkflowController', action='create')
         map.connect('workflow_update', '/workflow/edit/{id}', controller='ckanext.tess.workflow:WorkflowController', action='update')
         map.connect('workflow_delete', '/workflow/delete/{id}', controller='ckanext.tess.workflow:WorkflowController', action='delete')
+        map.connect('workflow_read', '/workflow/{id}', controller='ckanext.tess.workflow:WorkflowController', action='read')
         return map
 
     def get_auth_functions(self):
@@ -66,27 +70,60 @@ class WorkflowPlugin(plugins.SingletonPlugin):
             'workflow_delete': workflow_actions_authz
         }
 
+
+def get_workflow(workflow_id):
+    workflow = model.Session.query(TessWorkflow).get(workflow_id)
+    result = {}
+    result['definition'] = workflow.definition
+    result['name'] = workflow.name
+    result['description'] = workflow.description
+    result['id'] = workflow.id
+    return result
+
+
 class WorkflowController(HomeController):
 
     def index(self):
+        workflows = model.Session.query(TessWorkflow)
+        results = []
+        for workflow in workflows:
+            result = {}
+            result['definition'] = workflow.definition
+            result['name'] = workflow.name
+            result['description'] = workflow.description
+            result['id'] = workflow.id
+            results.append(result)
+        c.workflows = results
         return base.render('workflow/index.html')
 
     def new(self):
-        print "model", model.__dict__
-        return base.render('workflow/new.html')
+        parameters = logic.parse_params(request.params)
+        if 'save' in parameters:
+            new_model = TessWorkflow()
+            new_model.name = parameters.get('title')
+            new_model.description = parameters.get('description')
+            new_model.definition = parameters.get('dialog-div')
+            new_model.save()
+            id = new_model.id
+            h.flash_notice('%s has been saved' % parameters.get('title'))
+            print new_model
+            print '==========================='
+            print id
+            return h.redirect_to(controller='ckanext.tess.workflow:WorkflowController', action='read', id=id)
+        else:
+            return base.render('workflow/new.html')
 
     def read(self, id=None):
         if id is None:
             abort(404, _('Workflow id can not be null'))
 
-        context = {'model': model, 'session': model.Session,
-                   'user': c.user or c.author,
-                   'schema': None,
-                   'for_view': True}
+        #context = {'model': model, 'session': model.Session,
+        #           'user': c.user or c.author,
+        #           'schema': None,
+        #           'for_view': True}
+        #data_dict = {'id': id}
 
-        data_dict = {'id': id}
-
-        print "context", context
+        c.workflow_dict = get_workflow(id)
         return base.render('workflow/read.html')
 
     def create(self):
@@ -95,7 +132,8 @@ class WorkflowController(HomeController):
         #workflow_id = workflow.get('id')
         # ... set values, then something like:
         # workflow.commit()
-        h.redirect_to('workflow_read', id=workflow_id)
+        print request.params
+        return base.render('workflow/new.html')
 
     def delete(self, id):
         self.purge()
