@@ -19,10 +19,15 @@
             {% endif %}
             {{ form.input('dialog-div', classes=['hidden'], label=_('JSON Representation'), id='dialog-div') }}
         {% endblock %}
-        {% if h.check_access('workflow_create')  %}
-            <div style="padding-bottom: 30px;">&nbsp;
+        <div style="padding-bottom: 30px;">&nbsp;
+            {% if h.check_access('workflow_create')  %}
                 <button class="btn btn-primary pull-right" name="save" type="submit"><i class="icon-save"></i> Save workflow</button>
-            </div>
-        {% endif %}
+            {% endif %}
+            {% if action == 'edit' %}
+                {% if h.check_access('workflow_delete', {'id': workflow.id} )  %}
+                    <!--Delete button -->
+                {% endif %}
+            {% endif %}
+        </div>
     </div>
 </form>
