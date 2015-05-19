@@ -140,7 +140,23 @@ class WorkflowController(HomeController):
         return base.render('workflow/index.html')
 
     def update(self, id):
-        return
+        parameters = logic.parse_params(request.params)
+        if 'save' in parameters:
+            new_model = TessWorkflow()
+            new_model.name = parameters.get('title')
+            new_model.description = parameters.get('description')
+            if parameters.get('dialog-div'):
+                new_model.definition = parameters.get('dialog-div')
+            new_model.save()
+            id = new_model.id
+            h.flash_notice('%s has been saved' % parameters.get('title'))
+            print new_model
+            print '==========================='
+            print id
+            return h.redirect_to(controller='ckanext.tess.workflow:WorkflowController', action='read', id=id)
+        else:
+            c.workflow_dict = get_workflow(id)
+            return base.render('workflow/edit.html')
 
 
 class TessDomainObject(DomainObject):
