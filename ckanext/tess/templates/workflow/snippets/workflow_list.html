@@ -1,0 +1,5 @@
+<ul class="media-grid" data-module="media-grid">
+    {% for workflow in workflows %}
+            {% snippet "workflow/snippets/workflow_item.html", workflow=workflow, position=loop.index %}
+    {% endfor %}
+</ul>

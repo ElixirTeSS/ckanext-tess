@@ -1,0 +1,19 @@
+
+{% set link = h.url_for('workflow_read', action='read', id=workflow.id) %}
+<li class="media-item">
+    {% block image %}
+        <img src="{{ h.url_for_static('/base/images/placeholder-group.png') }}" alt="{{ workflow.name }}" class="media-image"/>
+    {% endblock %}
+    <div style="clear: both;"></div>
+    {% block title %}
+        <h3 class="media-heading">{{ workflow.name}}</h3>
+    {% endblock %}
+    {% block description %}
+        {% if workflow.description %}
+            <p>{{ h.markdown_extract(workflow.description, extract_length=80) }}</p>
+        {% endif %}
+    {% endblock %}
+    <a href="{{ link }}" title="View {{workflow.name}}" class="media-view">
+        <span>"View {{workflow.name}}"</span>
+    </a>
+</li>

@@ -18,10 +18,7 @@
       {% endblock %}
         <div>
             Have a look at some training workflow examples:
-            <ul>
-                <li><a href="/workflow/sequence-analysis-wf.html">Protein sequence analysis workflow</a></li>
-                <li><a href="/workflow/structural-bioinformatics-wf.html">Structural bioinformatics workflow</a></li>
-            </ul>
+            {% snippet "workflow/snippets/workflow_list.html", workflows=c.workflows %}
         </div>
     </div>
   </section>

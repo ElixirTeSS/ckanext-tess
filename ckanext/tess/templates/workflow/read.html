@@ -1,21 +1,58 @@
-{% import 'macros/form.html' as form %}
+{% extends "page.html" %}
 
-<form class="workflow-form form-horizontal" method="post" data-module="basic-form" enctype="multipart/form-data">
-  {% block error_summary %}
-    {{ form.errors(error_summary) }}
-  {% endblock %}
+{% block subtitle %}{{ c.workflow_dict.name }} - {{ _('Workflows') }}{% endblock %}
 
-  {% block basic_fields %}
-    {{ form.input('title', label=_('Name'), id='field-name', placeholder=_('Workflow name'), value=data.name, error=errors.title, classes=['control-full'], attrs=attrs) }}
-  {% endblock %}
+{% block breadcrumb_content %}
+  <li>{% link_for _('Workflows'), controller='ckanext.tess.workflow:WorkflowController', action='index' %}</li>
+  <li class="active">{% link_for c.workflow_dict.name|truncate(35), controller='workflow', action='read', id=c.workflow_dict.id %}</li>
+{% endblock %}
 
-  <div class="form-actions">
-    {% block delete_button %}
-      {% if h.check_access('workflow_delete', {'id': data.id})  %}
-        {% set locale = h.dump_json({'content': _('Are you sure you want to delete this workflow?')}) %}
-        <a class="btn btn-danger pull-left" href="{% url_for controller='workflow', action='delete', id=data.id %}" data-module="confirm-action" data-module-i18n="{{ locale }}">{% block delete_button_text %}{{ _('Delete') }}{% endblock %}</a>
-      {% endif %}
+{% block content_action %}
+  {#% if h.check_access('workflow_update', {'id': c.workflow_dict.id}) %#}
+    {% link_for _('Manage'), controller='ckanext.tess.workflow:WorkflowController', action='update', id=c.workflow_dict.id, class_='btn', icon='wrench' %}
+  {#% endif %#}
+{% endblock %}
+
+
+{% block content_primary_nav %}
+  {{ h.build_nav_icon('workflow_read', _('Workflow'), id=c.workflow_dict.name) }}
+  {{ h.build_nav_icon('workflow_list', _('Materials'), id=c.workflow_dict.name, offset=0) }}
+  {{ h.build_nav_icon('workflow_list', _('Activity Stream'), id=c.workflow_dict.name, offset=0) }}
+{% endblock %}
+
+
+{% block primary_content_inner %}
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="http://cytoscape.github.io/cytoscape.js/api/cytoscape.js-latest/cytoscape.js"></script>
+    <script type="text/javascript" src="https://rawgit.com/bdparrish/cytoscape.js-toolbar/master/cytoscape-toolbar.js"></script>
+    <link type="text/css" href="/workflows-cytoscape.css" rel="stylesheet"/>
+    <link type="text/css" href="/font-awesome-4.0.3/css/font-awesome.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    {% resource 'tess/workflows-cytoscape-toolbar.js' %}
+
+    <div id="wf" style="display: none;">{{c.workflow_dict.definition|safe}}</div>
+    <div id="cy" style="float: right;" class="cy col-md-7 col-md-offset-1"></div>
+    <script>
+        $(document).ready(function(){
+            wf = {{ c.workflow_dict.definition|safe }};
+            drawGraph(wf,'show');
+    });
+    </script>
+
+{% endblock %}
+
+{% block secondary_content %}
+    <div class="module module-narrow module-shallow context-info">
+        <section class="module-content">
+    {% block heading %}
+         <h1 class="heading">{{c.workflow_dict.name}}</h1>
     {% endblock %}
-    <button class="btn btn-primary" name="save" type="submit">{% block save_text %}{{ _('Save workflow') }}{% endblock %}</button>
-  </div>
-</form>
+    {% if c.workflow_dict.description %}
+        <p>{{ h.markdown_extract(c.workflow_dict.description, 180) }}</p>
+    {% else %}
+        <p class="empty">{{ _('There is no description for this workflow') }}</p>
+    {% endif %}
+        </section>
+    </div>
+{% endblock %}

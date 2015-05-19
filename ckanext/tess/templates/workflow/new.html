@@ -26,10 +26,17 @@
 <!--<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">-->
 {% resource 'tess/workflows-cytoscape-toolbar.js' %}
 
-{% set workflow_create_url = h.url_for('workflow_create') %}
+{% set workflow_create_url = h.url_for('workflow_new') %}
 <form class="form-horizontal" method="post" data-module="basic-form" enctype="multipart/form-data" action="{{workflow_create_url}}">
 
     <div class="form-actions" style="border-top: 0px; padding-top: 0px;">
+        <button type="button" id="show-wf" >Show workflow!</button>
+        <!--<div id="dialog-div"></div>-->
+          {% block basic_fields %}
+             {{ form.input('title', label=_('Name'), id='field-name', placeholder=_('Workflow name'), classes=['control-full']) }}
+             {{ form.markdown('description', label=_('Description'), id='field-description', placeholder=_('A little information about workflow...'), value=None, error=None) }}
+            {{ form.markdown('dialog-div', label=_('JSON Representation'), id='dialog-div') }}
+        {% endblock %}
         {% if h.check_access('workflow_create')  %}
         <div style="padding-bottom: 30px;">&nbsp;
             <!--<a class="btn btn-primary pull-right" href="{{workflow_create_url}}" name="save"><i class="icon-save"></i> Save workflow</a>-->
@@ -38,10 +45,7 @@
         {% endif %}
     </div>
 
-    {% block basic_fields %}
-    {{ form.input('title', label=_('Name'), id='field-name', placeholder=_('Workflow name'), classes=['control-full']) }}
-    {{ form.markdown('description', label=_('Description'), id='field-description', placeholder=_('A little information about workflow...'), value=None, error=None) }}
-    {% endblock %}
+
 </form>
 
 <div id="cy" style="float: right;" class="cy col-md-7 col-md-offset-1"></div>
