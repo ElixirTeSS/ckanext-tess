@@ -41,7 +41,7 @@ function drawGraph(workflow, workflow_action) {
                                     cy: {
                                         zoom: 0.1,
                                         minZoom: 0.1,
-                                        maxZoom: 10,
+                                        maxZoom: 0.5,
                                         zoomDelay: 45
                                     }
                                 },
@@ -57,7 +57,7 @@ function drawGraph(workflow, workflow_action) {
                                     cy: {
                                         zoom: -0.1,
                                         minZoom: 0.1,
-                                        maxZoom: 10,
+                                        maxZoom: 0.5,
                                         zoomDelay: 45
                                     }
                                 },
@@ -252,6 +252,7 @@ function drawGraph(workflow, workflow_action) {
             }
             $("#workflow_element_info").show();
         }
+        updateJSONDump();
     });
 
     //$( document ).off('click', '.tool-item, .selected-tool').on('click', '.tool-item, .selected-tool', function(event) {
@@ -287,6 +288,13 @@ function drawGraph(workflow, workflow_action) {
 //    //}
 //});
 
+
+function updateJSONDump() {
+    $("#dialog-div").val(JSON.stringify(window.cy.json()));
+    $("#dialog-div").text(JSON.stringify(window.cy.json()));
+    console.log(window.cy.json());
+}
+
 //#region node tools
 function addPersonToGraph(e) {
     addObject(e, addPersonToGraph);
@@ -312,6 +320,7 @@ function addObject(e, action) {
     }
 
     e.cy.add(object).addClass('tool-node').addClass(tool.options.clazz);
+    updateJSONDump();
 }
 //#endregion
 
@@ -339,6 +348,7 @@ function performLink(e) {
         src = e.cyTarget;
         src.addClass('selected-node');
     }
+    updateJSONDump();
 }
 
 function getLinkName(src, tgt) {
@@ -354,6 +364,7 @@ function performRemove(e) {
 
     cy.remove(e.cyTarget);
     clearPropertyEditor();
+    updateJSONDump();
 }
 //#endregion
 
@@ -366,15 +377,7 @@ function performClearSelectedTool(e) {
 /////////////////////////////////////////////////////
 
 $('#show-wf').click(function(){
-
-    var nodes = (window.cy.json()['elements']['nodes']);
-    for (var i = 0; i < nodes.length; i++) {
-        if (typeof nodes[i]["data"]["name"] !== 'undefined' & typeof nodes[i]["data"]["short_name"] === 'undefined') {
-            nodes[i]["data"]["short_name"] = truncateString(nodes[i]["data"]["name"], 30);
-        }
-    }
-    $( "#dialog-div").text(JSON.stringify(window.cy.json()));
-    $( "#dialog-div" ).dialog('open');
+    updateJSONDump();
 });
 //
 //$('#load-wf').click(function(){
