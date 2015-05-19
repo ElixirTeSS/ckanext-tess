@@ -8,21 +8,18 @@
 {% endblock %}
 
 {% block content_action %}
-  {#% if h.check_access('workflow_update', {'id': c.workflow_dict.id}) %#}
-    {% link_for _('Manage'), controller='ckanext.tess.workflow:WorkflowController', action='update', id=c.workflow_dict.id, class_='btn', icon='wrench' %}
-  {#% endif %#}
-{% endblock %}
 
-
-{% block content_primary_nav %}
-  {{ h.build_nav_icon('workflow_read', _('Workflow'), id=c.workflow_dict.name) }}
-  {{ h.build_nav_icon('workflow_list', _('Materials'), id=c.workflow_dict.name, offset=0) }}
-  {{ h.build_nav_icon('workflow_list', _('Activity Stream'), id=c.workflow_dict.name, offset=0) }}
 {% endblock %}
 
 
 {% block primary_content_inner %}
-    {% snippet "workflow/snippets/display_workflow.html", workflow=c.workflow_dict.definition, action='show' %}
+    {% if c.workflow_dict.definition %}
+        {% snippet "workflow/snippets/display_workflow_info.html", workflow=c.workflow_dict, action='edit' %}
+        {% snippet "workflow/snippets/display_workflow.html", workflow=c.workflow_dict.definition, action='edit' %}
+    {% else %}
+        {% snippet "workflow/snippets/display_workflow_info.html", workflow=c.workflow_dict, action='edit' %}
+        {% snippet "workflow/snippets/display_workflow.html", workflow={}, action='new' %}
+    {% endif %}
 {% endblock %}
 
 {% block secondary_content %}
@@ -38,4 +35,6 @@
     {% endif %}
         </section>
     </div>
+    {% snippet "workflow/snippets/workflow-property-editor.html" %}
+    {% snippet "workflow/snippets/workflow-creation-guide.html" %}
 {% endblock %}

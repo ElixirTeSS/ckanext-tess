@@ -1,0 +1,28 @@
+
+{% import 'macros/form.html' as form %}
+{% if action=='new' %}
+    {% set action_url = h.url_for('workflow_new') %}
+{% elif action=='edit' %}
+    {% set action_url = h.url_for('workflow_update', id=workflow.id) %}
+{% endif %}
+
+<form class="form-horizontal" method="post" data-module="basic-form" enctype="multipart/form-data" action="{{action_url}}">
+
+    <div class="form-actions" style="border-top: 0px; padding-top: 0px;">
+          {% block basic_fields %}
+            {% if action == 'edit' %}
+                {{ form.input('title', label=_('Name'), id='field-name', value=workflow.name, classes=['control-full']) }}
+                {{ form.markdown('description', label=_('Description'), id='field-description', value=workflow.description, placeholder=_('A little information about workflow...'), error=None) }}
+            {% else %}
+                {{ form.input('title', label=_('Name'), id='field-name', placeholder=_('Workflow name'), classes=['control-full']) }}
+                {{ form.markdown('description', label=_('Description'), id='field-description', placeholder=_('A little information about workflow...')) }}
+            {% endif %}
+            {{ form.input('dialog-div', classes=['hidden'], label=_('JSON Representation'), id='dialog-div') }}
+        {% endblock %}
+        {% if h.check_access('workflow_create')  %}
+            <div style="padding-bottom: 30px;">&nbsp;
+                <button class="btn btn-primary pull-right" name="save" type="submit"><i class="icon-save"></i> Save workflow</button>
+            </div>
+        {% endif %}
+    </div>
+</form>
