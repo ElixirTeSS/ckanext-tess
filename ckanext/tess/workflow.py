@@ -21,6 +21,7 @@ from ckan import model
 from ckan.model.meta import metadata, mapper, Session, engine
 from ckan.model.types import make_uuid
 from ckan.model.domain_object import DomainObject
+from ckanext.tessrelations.model.tables import TessWorkflow
 
 import ckan.lib.helpers as h
 
@@ -178,33 +179,6 @@ class TessDomainObject(DomainObject):
         query = Session.query(cls).autoflush(False)
         return query.filter_by(**kwds)
 
-
-# Workflow model
-class TessWorkflow(TessDomainObject):
-    pass
-
-
-# Setup the workflow table/model in the DB
-def setup():
-    log.debug("Setting up workflow model ...")
-    if tess_workflow_table is None:
-        define_workflow_table()
-
-        if not tess_workflow_table.exists():
-            log.debug("Creating workflows table.")
-            tess_workflow_table.create()
-
-
-def define_workflow_table():
-    global tess_workflow_table
-
-    tess_workflow_table = Table('tess_workflow', metadata,
-                             Column('id',types.UnicodeText, primary_key=True, default=make_uuid),
-                             Column('name',types.UnicodeText, default=u''),
-                             Column('description',types.UnicodeText, default=u''),
-                             Column('definition', types.UnicodeText, default=u'') # workflow definition in JSON format
-                             )
-    mapper(TessWorkflow,tess_workflow_table)
 
 def workflow_actions_authz(context, data_dict=None):
     # All registered users can perform workflow operations: new, create, update, delete.
