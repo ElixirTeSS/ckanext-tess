@@ -89,8 +89,15 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         #config['ckan.template_head_end'] = config.get('ckan.template_head_end', '') +\
         #                '<link rel="stylesheet" href="/css/tess.css" type="text/css"> '
 
-    def before_map(self, map):
+    def after_map(self, map):
         map.connect('report_event', '/event/new', controller='ckanext.tess.plugin:TeSSController', action='report_event')
+        map.connect('organization_read', '/organization/{id}', controller='organization', action='read', ckan_icon='book')
+        map.connect('user_datasets', '/user/{id:.*}', controller='user', action='read', ckan_icon='book')
+        map.connect('group_read', '/group/{id}', controller='group', action='read', ckan_icon='book')
+        map.connect('organization_bulk_process','/organization/bulk_process/{id}', controller='organization', action='bulk_process', ckan_icon='book')
+        map.connect('user_dashboard_datasets', '/dashboard/datasets', controller='user',action='dashboard_datasets', ckan_icon='book')
+        map.connect('dataset_read', '/dataset/{id}', controller='package', action='read', ckan_icon='book')
+
         return map
 
     def dataset_facets(self, facets_dict, package_type):
