@@ -1,7 +1,7 @@
 {% import 'macros/form.html' as form %}
 
 {% block package_basic_fields_title %}
-  {{ form.input('title', id='field-title', label=_('Title'), placeholder=_('eg. A descriptive title'), value=data.title, error=errors.title, classes=['control-full'], attrs={'data-module': 'slug-preview-target'}) }}
+  {{ form.input('title', id='field-title', label=_('Title'), placeholder=_('eg. A descriptive title'), is_required=true, value=data.title, error=errors.title, classes=['control-full'], attrs={'data-module': 'slug-preview-target'}) }}
 {% endblock %}
 
 {% block package_basic_fields_url %}
@@ -13,10 +13,12 @@
   {{ form.prepend('name', id='field-name', label=_('URL'), prepend=prefix, placeholder=_('eg. my-dataset'), value=data.name, error=errors.name, attrs=attrs, is_required=true) }}
 {% endblock %}
 
-{% block package_basic_fields_custom %}{% endblock %}
-
 {% block package_basic_fields_description %}
-  {{ form.markdown('notes', id='field-notes', label=_('Description'), placeholder=_('eg. Some useful notes about the data'), value=data.notes, error=errors.notes) }}
+  {{ form.markdown('notes', id='field-notes', label=_('Description'), placeholder=_('Some useful information about the training material'), is_required=true, value=data.notes, error=errors.notes) }}
+{% endblock %}
+
+{% block package_basic_fields_custom %}
+  {{ form.input('training_material_url', label=_('URL'), id='field-training_material_url', placeholder=_("Training material's source URL"), is_required=true, value=data.training_material_url, error=errors.training_material_url, classes=['control-medium']) }}
 {% endblock %}
 
 {% block package_basic_fields_org %}
@@ -107,7 +109,7 @@
 
 {% block package_basic_fields_tags %}
   {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/tag/autocomplete?incomplete=?'} %}
-  {{ form.input('tag_string', id='field-tags', label=_('Tags'), placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tags, classes=['control-full'], attrs=tag_attrs) }}
+  {{ form.input('tag_string', id='field-tags', label=_('Tags'), placeholder=_('e.g. NGS, structural bioinformatics, gene prediction, statistics, linux'), value=data.tag_string, error=errors.tags, classes=['control-full'], attrs=tag_attrs) }}
 {% endblock %}
 
 {% block package_basic_fields_license %}
