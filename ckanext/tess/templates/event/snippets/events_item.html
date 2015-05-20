@@ -3,12 +3,12 @@ Event - Event hash - see plugin.py
 Type - 'related', 'associated', or 'regular'/''/None
 #}
 
+{% if event.get('link') %}
+    {% set link = event.pop('link') %}
+{% endif %}
 {% block item %}
     {% set id = event.pop('id', 0) %}
     <div id="event-{{id}}" >
-    {% if event.get('link') %}
-      {% set link = event.pop('link') %}
-    {% endif %}
 
     {% block expired %}
         {% if event.get('expired', False) %}
