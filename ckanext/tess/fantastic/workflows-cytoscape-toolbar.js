@@ -22,7 +22,13 @@ var action; // 'show', 'new' or 'edit'
 //});
 
 function drawGraph(workflow, workflow_action) {
+    $("#workflow_element_info").hide();
     action = (typeof workflow_action === 'undefined') ? 'show' : workflow_action; // what kind of action we are handling - new workflow, show workflow or edit workflow
+
+    $('#update_editor').on('click', function(event){
+        console.log('click');
+    });
+
 
     var cy = window.cy = cytoscape({
         container: document.getElementById('cy'),
@@ -223,6 +229,7 @@ function drawGraph(workflow, workflow_action) {
     });
 
     cy.on('tap', function(event){
+        updateStage();
         // cyTarget holds a reference to the originator
         // of the event (core or element)
         var evtTarget = event.cyTarget;
@@ -234,25 +241,32 @@ function drawGraph(workflow, workflow_action) {
             var element = cy.getElementById(evtTarget.id()).json(); // Get wf element with this id
             //alert(JSON.stringify(element));
             if (element['group'] == 'nodes') {
+            /*
                 $("#workflow_element_info").html(
                     '<ul class="items">' +
                     '<li><b>Type:</b> Node</li><hr style="margin: 0px;">' +
-                    '<li><b>Name:</b><br>' + (typeof element['data']['name'] === "undefined" ? undefined : element['data']['name']) + '</li><hr style="margin: 0px;">' +
+                    '<li><b>Name:</b><br>' +
+                        '<input type="text">' + (typeof element['data']['name'] === "undefined" ? undefined : element['data']['name']) + '</input>' +
+                    '</li><hr style="margin: 0px;">' +
+
                     '<li><b>Colour:</b><br>' + (typeof element['data']['background-color'] === "undefined" ? default_node_colour : element['data']['background-color']) + '</li><hr style="margin: 0px;">' +
                     '<li><b>Training material:</b><br>' + (typeof element['data']['training-material'] === "undefined" ? undefined : element['data']['training-material']) + '</li>' +
-                    '</ul>');
+                    '</ul>');*/
             }
             else if (element['group'] == 'edges'){
-                $("#workflow_element_info").html(
+
+                /*$("#workflow_element_info").html(
                     '<ul class="items">' +
                     '<li><b>Type:</b> Link</li><hr style="margin: 0px;">' +
                     '<li><b>Name:</b><br>' + (typeof element['data']['name'] === "undefined" ? undefined : element['data']['name']) + '</li><hr style="margin: 0px;">' +
                     '<li><b>Colour:</b><br>' + (typeof element['data']['background-color'] === "undefined" ? default_edge_colour : element['data']['background-color']) + '</li>' +
-                    '</ul>');
+                    '</ul>');*/
             }
             $("#workflow_element_info").show();
         }
         updateJSONDump();
+
+        loadEditor();
     });
 
     //$( document ).off('click', '.tool-item, .selected-tool').on('click', '.tool-item, .selected-tool', function(event) {
@@ -288,6 +302,29 @@ function drawGraph(workflow, workflow_action) {
 //    //}
 //});
 
+function loadEditor() {
+    var current_selected = cy.$(':selected').first();
+    if (current_selected.isNode()) {
+        $('#element-name').val(current_selected.data('name'))
+        $('#element-color').val(current_selected.data('color'))
+        $('#element-topic').val(current_selected.data('topic'))
+    }
+
+}
+
+function updateStage() {
+    var current_selected = cy.$(':selected').first();
+    console.log(current_selected);
+    if (current_selected.isEdge()) {
+        console.log('edge');
+    } else {
+        current_selected.json();
+        current_selected.data('name',$('#element-name').val());
+        current_selected.style('background-color',$('#element-colour').val());
+        current_selected.data('topic',$('#element-topic').val());
+        console.log(current_selected.data())
+    }
+}
 
 function updateJSONDump() {
     $("#dialog-div").val(JSON.stringify(window.cy.json()));
