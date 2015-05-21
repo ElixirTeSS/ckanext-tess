@@ -9,7 +9,7 @@
     <div style="padding: 0 5px;" class="module-content col-md-4">
         <div id="workflow_element_info">
             {{ form.input('title', label=_('Name'), id='element-name', placeholder=_('Stage name')) }}
-            {{ form.input('colour', label=_('Colour'), id='element-colour', placeholder=_('#FE23A9')) }}
+            {{ form.input('color', label=_('Colour'), id='element-color', placeholder=_('#FE23A9 or Yellow')) }}
             {{ form.select('topic', label=_('Topic'), options=[{'value':'Topic 1'},{'value':'Topic 2'},{'value':'Topic 3'}], selected='Topic 1', id='element-topic') }}
             <button class="btn btn-primary pull-right" id="update-editor" type="submit"><i class="icon-save"></i> Save stage</button>
         </div>
