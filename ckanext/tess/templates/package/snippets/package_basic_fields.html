@@ -1,5 +1,6 @@
 {% import 'macros/form.html' as form %}
 
+<div>Data:</div>
 {{data}}
 
 {% block package_basic_fields_title %}
@@ -16,11 +17,11 @@
 {% endblock %}
 
 {% block package_basic_fields_description %}
-  {{ form.markdown('notes', id='field-notes', label=_('Description'), placeholder=_('Some useful information about the training material'), is_required=true, value=data.notes, error=errors.notes) }}
+  {{ form.markdown('notes', id='field-notes', label=_('Description'), placeholder=_('Some useful information about the training material'), value=data.notes, error=errors.notes) }}
 {% endblock %}
 
 {% block package_basic_fields_custom %}
-  {{ form.input('training_material_url', label=_('URL'), id='field-training_material_url', placeholder=_("Training material's source URL"), is_required=true, value=data.training_material_url, error=errors.training_material_url, classes=['control-medium']) }}
+  {{ form.input('training_material_url', label=_('URL'), id='field-training_material_url', placeholder=_("Training material's source URL"), value=data.training_material_url, error=errors.training_material_url, classes=['control-medium']) }}
 {% endblock %}
 
 {% block package_basic_fields_org %}
