@@ -27,3 +27,9 @@
     {{ super() }}
   {% endif %}
 {% endblock %}
+
+{% block form_actions %}
+    {{ super() }}
+    {% block disclaimer %}
+    {% endblock %}
+{% endblock %}
