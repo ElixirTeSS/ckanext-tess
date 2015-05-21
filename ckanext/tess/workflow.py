@@ -25,6 +25,7 @@ from ckanext.tessrelations.model.tables import TessWorkflow
 
 import ckan.lib.helpers as h
 
+abort = base.abort
 
 get_action = logic.get_action
 parse_params = logic.parse_params
@@ -78,6 +79,8 @@ class WorkflowPlugin(plugins.SingletonPlugin):
 def get_workflow(workflow_id):
     workflow = model.Session.query(TessWorkflow).get(workflow_id)
     result = {}
+    if not workflow:
+        abort(404, 'Workflow Not Found')
     result['definition'] = workflow.definition
     result['name'] = workflow.name
     result['description'] = workflow.description
@@ -161,6 +164,7 @@ class WorkflowController(HomeController):
             return h.redirect_to(controller='ckanext.tess.workflow:WorkflowController', action='read', id=id)
         else:
             c.workflow_dict = get_workflow(id)
+
             return base.render('workflow/edit.html')
 
 
