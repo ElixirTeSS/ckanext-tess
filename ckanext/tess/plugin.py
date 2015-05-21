@@ -53,6 +53,14 @@ def iann_news():
     data = "<p>No events found!</p>"
   return plugins.toolkit.literal(data)
 
+# #Override for the default resource_create code when creating package/dataset
+# def tess_resource_create(context, data_dict):
+#     import ckan.logic as logic
+#     print "here"
+#     context['schema'] = TeSSPlugin().create_package_schema()
+#     print 'new schema', context['schema']
+#     return logic.action.create.resource_create(context, data_dict)
+
 ######################
 # Plugin starts here #
 ######################
@@ -68,6 +76,7 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     plugins.implements(plugins.IDatasetForm, inherit=True)
     plugins.implements(plugins.ITemplateHelpers, inherit=True)
     plugins.implements(plugins.IFacets, inherit=True)
+    # plugins.implements(plugins.IActions)
 
     def update_config(self, config):
         # Add this plugin's templates dir to CKAN's extra_template_paths, so
@@ -111,20 +120,33 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                 }
 
     def _modify_package_schema(self, schema):
+
+        _convert_to_extras = toolkit.get_converter('convert_to_extras')
+        _ignore_missing = toolkit.get_validator('ignore_missing')
+        _not_empty = toolkit.get_validator('not_empty')
+        _url_validator = toolkit.get_validator('url_validator')
+
         schema.update({
-            'node_id': [
-                toolkit.get_validator('ignore_missing'),
-                toolkit.get_converter('convert_to_extras')]
+            'node_id': [_ignore_missing, _convert_to_extras],
+            'training_material_url': [_ignore_missing, _convert_to_extras]
+            # 'notes': [_not_empty, _ignore_missing]
         })
         return schema
 
     def show_package_schema(self):
         schema = super(TeSSPlugin, self).show_package_schema()
+
         schema['tags']['__extras'].append(toolkit.get_converter('free_tags_only'))
+
+        _convert_from_extras = toolkit.get_converter('convert_from_extras')
+        _ignore_missing = toolkit.get_validator('ignore_missing')
+        _not_empty = toolkit.get_validator('not_empty')
+        _url_validator = toolkit.get_validator('url_validator')
+
         schema.update({
-            'node_id': [
-                toolkit.get_converter('convert_from_extras'),
-                toolkit.get_validator('ignore_missing')]
+            'node_id': [_convert_from_extras, _ignore_missing],
+            'training_material_url': [_convert_from_extras, _ignore_missing]
+            # 'notes': [_not_empty, _ignore_missing]
         })
         return schema
 
@@ -147,3 +169,8 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         # This plugin doesn't handle any special package types, it just
         # registers itself as the default (above).
         return []
+
+    # def get_actions(self):
+    #     return {
+    #         'resource_create': tess_resource_create,
+    #     }

@@ -1,7 +1,5 @@
 {% import 'macros/form.html' as form %}
 
-{{data}}
-
 {% block package_basic_fields_title %}
   {{ form.input('title', id='field-title', label=_('Title'), placeholder=_('eg. A descriptive title'), is_required=true, value=data.title, error=errors.title, classes=['control-full'], attrs={'data-module': 'slug-preview-target'}) }}
 {% endblock %}
@@ -16,11 +14,11 @@
 {% endblock %}
 
 {% block package_basic_fields_description %}
-  {{ form.markdown('notes', id='field-notes', label=_('Description'), placeholder=_('Some useful information about the training material'), is_required=true, value=data.notes, error=errors.notes) }}
+  {{ form.markdown('notes', id='field-notes', label=_('Description'), placeholder=_('Some useful information about the training material'), value=data.notes, error=errors.notes) }}
 {% endblock %}
 
 {% block package_basic_fields_custom %}
-  {{ form.input('training_material_url', label=_('URL'), id='field-training_material_url', placeholder=_("Training material's source URL"), is_required=true, value=data.training_material_url, error=errors.training_material_url, classes=['control-medium']) }}
+  {{ form.input('training_material_url', label=_('URL'), id='field-training_material_url', placeholder=_("Training material's source URL"), value=data.training_material_url, error=errors.training_material_url, classes=['control-medium']) }}
 {% endblock %}
 
 {% block package_basic_fields_org %}
@@ -117,7 +115,7 @@
 {% block package_basic_fields_license %}
 <div class="control-group">
   {% set error = errors.license_id %}
-  <label class="control-label" for="field-license">{{ _("License") }}</label>
+  <label class="control-label" for="field-license">{{ _("Licence") }}</label>
   <div class="controls">
     <select id="field-license" name="license_id" data-module="autocomplete">
       {% for license_desc, license_id in licenses|sort if license_desc  %}
@@ -125,13 +123,22 @@
       {% endfor %}
     </select>
     {% if error %}<span class="error-block">{{ error }}</span>{% endif %}
-    <span class="info-block info-inline">
+    <span class="info-block info-inline" style="padding-top: 0px;">
       <i class="icon-info-sign"></i>
       {% trans %}
         License definitions can be found
         at <a href="http://opendefinition.org/licenses/">opendefinition.org</a>
       {% endtrans %}
     </span>
+      <p style="font-size: 11px; line-height: 1.2; padding-top: 5px; margin-bottom: 0px;">
+          {%- trans -%}
+          The <i>data license</i> you select above only applies to the contents
+          of any resource files that you add to this training material. By submitting
+          this form, you agree to release the <i>metadata</i> values that you
+          enter into the form under the
+          <a href="http://opendatacommons.org/licenses/odbl/1-0/">Open Database License</a>.
+          {%- endtrans -%}
+      </p>
   </div>
 </div>
 {% endblock %}
