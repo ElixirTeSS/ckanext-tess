@@ -124,12 +124,13 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         _convert_to_extras = toolkit.get_converter('convert_to_extras')
         _ignore_missing = toolkit.get_validator('ignore_missing')
         _not_empty = toolkit.get_validator('not_empty')
+        _not_missing = toolkit.get_validator('not_missing')
         _url_validator = toolkit.get_validator('url_validator')
 
         schema.update({
             'node_id': [_ignore_missing, _convert_to_extras],
-            'training_material_url': [_ignore_missing, _convert_to_extras]
-            # 'notes': [_not_empty, _ignore_missing]
+            'url': [_not_empty, _url_validator],
+            'notes': [_not_empty, _not_missing]
         })
         return schema
 
@@ -141,12 +142,13 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         _convert_from_extras = toolkit.get_converter('convert_from_extras')
         _ignore_missing = toolkit.get_validator('ignore_missing')
         _not_empty = toolkit.get_validator('not_empty')
+        _not_missing = toolkit.get_validator('not_missing')
         _url_validator = toolkit.get_validator('url_validator')
 
         schema.update({
             'node_id': [_convert_from_extras, _ignore_missing],
-            'training_material_url': [_convert_from_extras, _ignore_missing]
-            # 'notes': [_not_empty, _ignore_missing]
+            'url': [_not_empty, _url_validator],
+            'notes': [_not_empty, _not_missing]
         })
         return schema
 

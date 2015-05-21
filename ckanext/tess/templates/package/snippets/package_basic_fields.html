@@ -10,15 +10,15 @@
   {% set domain = domain|replace("http://", "")|replace("https://", "") %}
   {% set attrs = {'data-module': 'slug-preview-slug', 'data-module-prefix': domain, 'data-module-placeholder': '<dataset>'} %}
 
-  {{ form.prepend('name', id='field-name', label=_('URL'), prepend=prefix, placeholder=_('eg. my-dataset'), value=data.name, error=errors.name, attrs=attrs, is_required=true) }}
+  {{ form.prepend('name', id='field-name', label=_('TeSS URL'), prepend=prefix, placeholder=_('eg. my-training-material'), value=data.name, error=errors.name, attrs=attrs, is_required=true) }}
 {% endblock %}
 
 {% block package_basic_fields_description %}
-  {{ form.markdown('notes', id='field-notes', label=_('Description'), placeholder=_('Some useful information about the training material'), value=data.notes, error=errors.notes) }}
+  {{ form.markdown('notes', id='field-notes', label=_('Description'), placeholder=_('Some useful information about the training material'), value=data.notes, error=errors.notes, is_required=true) }}
 {% endblock %}
 
 {% block package_basic_fields_custom %}
-  {{ form.input('training_material_url', label=_('URL'), id='field-training_material_url', placeholder=_("Training material's source URL"), value=data.training_material_url, error=errors.training_material_url, classes=['control-medium']) }}
+  {{ form.input('url', label=_('Source URL'), id='field-url', placeholder=_("Training material's source URL"), value=data.url, error=errors.url, classes=['control-full'], is_required=true) }}
 {% endblock %}
 
 {% block package_basic_fields_org %}
