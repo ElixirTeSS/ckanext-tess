@@ -22,7 +22,14 @@ var action; // 'show', 'new' or 'edit'
 //});
 
 function drawGraph(workflow, workflow_action) {
+    $("#workflow_element_info").hide();
     action = (typeof workflow_action === 'undefined') ? 'show' : workflow_action; // what kind of action we are handling - new workflow, show workflow or edit workflow
+
+    $('#update-editor').click(function(e){
+        updateStage();
+        updateJSONDump();
+    });
+
 
     var cy = window.cy = cytoscape({
         container: document.getElementById('cy'),
@@ -165,7 +172,7 @@ function drawGraph(workflow, workflow_action) {
                 css: {
                     'shape': 'roundrectangle',
                     'content': 'data(short_name)',
-                    'background-color': default_node_colour,
+                    'background-color': 'data(color)',
                     'text-valign': 'center',
                     'text-halign': 'center',
                     'width':default_node_width,
@@ -221,7 +228,6 @@ function drawGraph(workflow, workflow_action) {
         autoungrabify: (action == "show")? true : false
 
     });
-
     cy.on('tap', function(event){
         // cyTarget holds a reference to the originator
         // of the event (core or element)
@@ -229,30 +235,37 @@ function drawGraph(workflow, workflow_action) {
 
         if( evtTarget === cy ){
             // Tap on a background
-            clearPropertyEditor();
+            clearEditor();
         } else {
             var element = cy.getElementById(evtTarget.id()).json(); // Get wf element with this id
             //alert(JSON.stringify(element));
             if (element['group'] == 'nodes') {
+            /*
                 $("#workflow_element_info").html(
                     '<ul class="items">' +
                     '<li><b>Type:</b> Node</li><hr style="margin: 0px;">' +
-                    '<li><b>Name:</b><br>' + (typeof element['data']['name'] === "undefined" ? undefined : element['data']['name']) + '</li><hr style="margin: 0px;">' +
+                    '<li><b>Name:</b><br>' +
+                        '<input type="text">' + (typeof element['data']['name'] === "undefined" ? undefined : element['data']['name']) + '</input>' +
+                    '</li><hr style="margin: 0px;">' +
+
                     '<li><b>Colour:</b><br>' + (typeof element['data']['background-color'] === "undefined" ? default_node_colour : element['data']['background-color']) + '</li><hr style="margin: 0px;">' +
                     '<li><b>Training material:</b><br>' + (typeof element['data']['training-material'] === "undefined" ? undefined : element['data']['training-material']) + '</li>' +
-                    '</ul>');
+                    '</ul>');*/
             }
             else if (element['group'] == 'edges'){
-                $("#workflow_element_info").html(
+
+                /*$("#workflow_element_info").html(
                     '<ul class="items">' +
                     '<li><b>Type:</b> Link</li><hr style="margin: 0px;">' +
                     '<li><b>Name:</b><br>' + (typeof element['data']['name'] === "undefined" ? undefined : element['data']['name']) + '</li><hr style="margin: 0px;">' +
                     '<li><b>Colour:</b><br>' + (typeof element['data']['background-color'] === "undefined" ? default_edge_colour : element['data']['background-color']) + '</li>' +
-                    '</ul>');
+                    '</ul>');*/
             }
             $("#workflow_element_info").show();
         }
         updateJSONDump();
+        clearEditor()
+        loadEditor();
     });
 
     //$( document ).off('click', '.tool-item, .selected-tool').on('click', '.tool-item, .selected-tool', function(event) {
@@ -288,6 +301,43 @@ function drawGraph(workflow, workflow_action) {
 //    //}
 //});
 
+function loadEditor() {
+    clearEditor()
+    var current_selected = cy.$(':selected').first();
+    if (current_selected.isNode()) {
+        $('#element-name').val(current_selected.data('short_name'))
+        $('#element-color').val(current_selected.data('color'))
+        $('#element-topic').val(current_selected.data('topic'))
+    }
+}
+
+function clearEditor() {
+    $('#element-name').val('')
+    $('#element-color').val('')
+    $('#element-topic').val('')
+}
+
+function updateStage() {
+    var current_selected = cy.$(':selected').first();
+    console.log(current_selected);
+    if (current_selected.isEdge()) {
+        console.log('What do with edges?');
+    } else {
+        /* set model properties */
+        current_selected.data('name',$('#element-name').val());
+        current_selected.data('short_name',$('#element-name').val());
+        current_selected.data('color',$('#element-color').val());
+        current_selected.data('topic',$('#element-topic').val());
+
+        propogateStyle(current_selected);
+    }
+}
+
+function propogateStyle(current_selected) {
+        /* Set styles */
+    current_selected.data('content', current_selected.data('short_name'));
+    current_selected.style('background-color', current_selected.data('color'));
+}
 
 function updateJSONDump() {
     $("#dialog-div").val(JSON.stringify(window.cy.json()));
@@ -311,7 +361,8 @@ function addObject(e, action) {
     var object = {
         group: 'nodes',
         data: {
-            name: tool.options.text
+            name: tool.options.text,
+            color: default_node_colour
         },
         position: {
             x: e.cyPosition.x,
@@ -320,6 +371,7 @@ function addObject(e, action) {
     }
 
     e.cy.add(object).addClass('tool-node').addClass(tool.options.clazz);
+
     updateJSONDump();
 }
 //#endregion
@@ -363,7 +415,6 @@ function performRemove(e) {
     }
 
     cy.remove(e.cyTarget);
-    clearPropertyEditor();
     updateJSONDump();
 }
 //#endregion
@@ -404,9 +455,5 @@ function truncateString(str, length) {
     return str.length > length ? str.substring(0, length - 3) + '...' : str
 }
 
-function clearPropertyEditor(){
-    $("#workflow_element_info").html("");
-    $("#workflow_element_info").hide();
-}
 
 
