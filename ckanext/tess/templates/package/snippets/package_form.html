@@ -41,7 +41,6 @@ then itself be extended to add/remove blocks of functionality. #}
           <a class="btn btn-danger pull-left" href="{% url_for controller='package', action='delete', id=data.id %}" data-module="confirm-action" data-module-i18n="{{ locale }}">{% block delete_button_text %}{{ _('Delete') }}{% endblock %}</a>
         {% endif %}
       {% endblock %}
-        <button class="btn btn-primary" type="submit" name="save">{% block save_button_text %}{{ _('Finish') }}{% endblock %}</button>
       {% block save_button %}
         <button class="btn btn-primary" type="submit" name="save">{% block save_button_text %}{{ _('Next: Add additional resources') }}{% endblock %}</button>
       {% endblock %}
