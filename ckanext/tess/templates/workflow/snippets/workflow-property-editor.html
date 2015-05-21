@@ -7,11 +7,13 @@
         {{ _('Workflow property editor') }}
     </h2>
     <div style="padding: 0 5px;" class="module-content col-md-4">
-        <div id="workflow_element_info">
+        <div id="workflow_element_info" style="position: fixed;">
             {{ form.input('title', label=_('Name'), id='element-name', placeholder=_('Stage name')) }}
             {{ form.input('color', label=_('Colour'), id='element-color', placeholder=_('#FE23A9 or Yellow')) }}
             {{ form.select('topic', label=_('Topic'), options=[{'value':'Topic 1'},{'value':'Topic 2'},{'value':'Topic 3'}], selected='Topic 1', id='element-topic') }}
-            <button class="btn btn-primary pull-right" id="update-editor" type="submit"><i class="icon-save"></i> Save stage</button>
+            <button class="btn btn-primary pull-right" id="save_edit" type="submit"><i class="icon-save"></i> Save stage</button>
+            <button class="btn btn-primary pull-left" id="cancel_edit" type="submit"><i class="icon-delete"></i> Discard Changes</button>
+
         </div>
     </div>
 </div>

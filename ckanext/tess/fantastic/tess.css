@@ -569,6 +569,8 @@ hr.style-one {
     border-radius: 4px;
     box-shadow: -2px -2px 5px #DDD;
     display: none;
+    position: fixed;
+    z-index: 19999;
 }
 
 div#workflow_element_info ul.items{
