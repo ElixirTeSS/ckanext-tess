@@ -115,7 +115,7 @@
 {% block package_basic_fields_license %}
 <div class="control-group">
   {% set error = errors.license_id %}
-  <label class="control-label" for="field-license">{{ _("Licence") }}</label>
+  <label class="control-label" for="field-license">{{ _("License") }}</label>
   <div class="controls">
     <select id="field-license" name="license_id" data-module="autocomplete">
       {% for license_desc, license_id in licenses|sort if license_desc  %}
