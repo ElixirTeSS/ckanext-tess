@@ -68,9 +68,9 @@
               {{ h.render_markdown(res.description) }}
             {% endif %}
             {% if not res.description and c.package.notes %}
-              <h3>{{ _('From the training material abstract') }}</h3>
+              <h3>{{ _("From training material's abstract") }}</h3>
               <blockquote>{{ h.markdown_extract(c.package.get('notes')) }}</blockquote>
-              <p>{% trans dataset=c.package.title, url=h.url_for(controller='package', action='read', id=c.package['name']) %}Source: <a href="{{ url }}">{{ dataset }}</a>{% endtrans %}
+              <p>{% trans dataset=c.package.title, url=h.url_for(controller='package', action='read', id=c.package['name']) %}Training material: <a href="{{ url }}">{{ dataset }}</a>{% endtrans %}
             {% endif %}
           </div>
         {% endblock %}
