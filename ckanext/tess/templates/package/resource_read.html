@@ -90,7 +90,7 @@
       <section class="module">
         {% block resource_additional_information_inner %}
         <div class="module-content">
-          <h2>{{ _('Additional Information') }}</h2>
+          <h2>{{ _('Details') }}</h2>
           <table class="table table-striped table-bordered table-condensed" data-module="table-toggle-more">
             <thead>
               <tr>
@@ -116,7 +116,7 @@
                 <td>{% snippet "snippets/license.html", pkg_dict=pkg, text_only=True %}</td>
               </tr>
               {% for key, value in h.format_resource_items(res.items()) %}
-                <tr class="toggle-more"><th scope="row">{{ key }}</th><td>{{ value }}</td></tr>
+                <tr class="toggle-more"><th scope="row">{{ key.replace('package', 'training material', 1) }}</th><td>{{ value }}</td></tr>
               {% endfor %}
             </tbody>
           </table>

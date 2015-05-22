@@ -10,7 +10,7 @@ Example:
 
 #}
 <section id="dataset-resources" class="resources">
-  <h3>{{ _('Related resources') }}</h3>
+  <h3>{{ _('Additional resources') }}</h3>
   {% block resource_list %}
     {% if resources %}
       <ul class="{% block resource_list_class %}resource-list{% endblock %}">
@@ -22,9 +22,17 @@ Example:
       </ul>
     {% else %}
       {% if h.check_access('resource_create', {'package_id': pkg['id']}) %}
-          {% trans url=h.url_for(controller='package', action='new_resource', id=pkg.name) %}
-            <p class="empty">This training material has no additional resources, <a href="{{ url }}">why not add some?</a></p>
+          {% trans %}
+            <p class="empty">
+                This training material has no additional resources.<!-- <a href="{{ url }}">why not add some?</a>-->
+            </p>
+            <p class="empty">
+                An additional resource can be any related training material, tool, service, software, etc. that
+                is relevant for this training material.
+            </p>
           {% endtrans %}
+        {% set url=h.url_for(controller='package', action='new_resource', id=pkg['name']) %}
+        <a class="btn btn-primary" href="{{url}}"><i class="icon-plus"></i>Add new resource</a>
       {% else %}
           <p class="empty">{{ _('This training material has no additional resources') }}</p>
       {% endif %}
