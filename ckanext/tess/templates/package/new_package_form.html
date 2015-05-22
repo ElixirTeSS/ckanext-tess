@@ -2,11 +2,11 @@
 
 {% set form_style = c.form_style or c.action %}
 
-{% block stages %}
-  {% if form_style != 'edit' %}
-    {{ super() }}
-  {% endif %}
-{% endblock %}
+{# block stages #}
+  {# if form_style != 'edit' #}
+    {# super() #}
+  {# endif #}
+{# endblock #}
 
 {% block save_button_text %}
   {% if form_style != 'edit' %}
@@ -30,7 +30,7 @@
 
 {% block save_button %}
   {% if form_style != 'edit' and h.check_access('package_create', {'id': c.pkg_dict.id}) %}
-    <button class="btn" type="submit" name="save" value="next_phase" id="next_phase">Next: Add additional resources</button>
+    <!--<button class="btn" type="submit" name="save" value="next_phase" id="next_phase">Next: Add additional resources</button>-->
     <button class="btn btn-primary" type="submit" name="save">Finish</button>
   {% elif h.check_access('package_update', {'id': c.pkg_dict.id}) %}
     <button class="btn btn-primary" type="submit" name="save">Update training material</button>
