@@ -57,8 +57,8 @@ function drawGraph(workflow, workflow_action) {
                                 options: {
                                     cy: {
                                         zoom: 0.1,
-                                        minZoom: 0.1,
-                                        maxZoom: 0.5,
+                                        minZoom: 0.5,
+                                        maxZoom: 2.0,
                                         zoomDelay: 45
                                     }
                                 },
@@ -73,8 +73,8 @@ function drawGraph(workflow, workflow_action) {
                                 options: {
                                     cy: {
                                         zoom: -0.1,
-                                        minZoom: 0.1,
-                                        maxZoom: 0.5,
+                                        minZoom: 0.5,
+                                        maxZoom: 2.0,
                                         zoomDelay: 45
                                     }
                                 },
@@ -143,11 +143,19 @@ function drawGraph(workflow, workflow_action) {
                                 event: ['click'],
                                 selector: 'cy',
                                 options: {
-                                    clazz: 'node-person'
+                                    class: 'node-person'
                                 },
                                 bubbleToCore: false,
                                 tooltip: 'Add node',
                                 action: [addPersonToGraph]
+                            },
+                            {
+                                icon: 'fa fa-plus-square-o',
+                                event: ['tap'],
+                                selector: 'cy',
+                                bubbleToCore: false,
+                                tooltip: 'Bounding Box',
+                                action: [addObject]
                             }
                         ],
                         [
@@ -235,11 +243,14 @@ function drawGraph(workflow, workflow_action) {
 
         autolock: (action == "show")? true : false,
 
-        autoungrabify: (action == "show")? true : false
+        autoungrabify: (action == "show")? true : false,
 
+        maxZoom: 2.0,
+        minZoom: 0.5
     });
 
     cy.on('tap', function(event){
+        console.log('tappy')
         // cyTarget holds a reference to the originator
         // of the event (core or element)
         var evtTarget = event.cyTarget;
@@ -327,6 +338,8 @@ function updateStage() {
         current_selected.data('short_name',$('#element-name').val());
         current_selected.data('color',$('#element-color').val());
         current_selected.data('topic',$('#element-topic').val());
+
+        /* apply properties to image and update output JSON */
         propogateStyle(current_selected);
         updateJSONDump();
     }
