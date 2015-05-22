@@ -25,15 +25,21 @@ function drawGraph(workflow, workflow_action) {
     closeEditor();
     action = (typeof workflow_action === 'undefined') ? 'show' : workflow_action; // what kind of action we are handling - new workflow, show workflow or edit workflow
 
-    $('#save_edit').click(function(e){
-        updateStage();
-        updateJSONDump();
+    $('#close').click(function(e){
         closeEditor();
     });
 
-    $('#cancel_edit').click(function(e){
-        closeEditor();
+    $('#element-color').change(function(e){
+        updateStage();
     });
+    $('#element-name').change(function(e){
+        updateStage();
+    });
+    $('#element-topic').change(function(e){
+        updateStage();
+    });
+
+
 
     var cy = window.cy = cytoscape({
         container: document.getElementById('cy'),
@@ -321,8 +327,8 @@ function updateStage() {
         current_selected.data('short_name',$('#element-name').val());
         current_selected.data('color',$('#element-color').val());
         current_selected.data('topic',$('#element-topic').val());
-
         propogateStyle(current_selected);
+        updateJSONDump();
     }
 }
 

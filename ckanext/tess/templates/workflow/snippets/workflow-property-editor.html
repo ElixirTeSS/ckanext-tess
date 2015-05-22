@@ -11,9 +11,7 @@
             {{ form.input('title', label=_('Name'), id='element-name', placeholder=_('Stage name')) }}
             {{ form.input('color', label=_('Colour'), id='element-color', placeholder=_('#FE23A9 or Yellow')) }}
             {{ form.select('topic', label=_('Topic'), options=[{'value':'Topic 1'},{'value':'Topic 2'},{'value':'Topic 3'}], selected='Topic 1', id='element-topic') }}
-            <button class="btn btn-primary pull-right" id="save_edit" type="submit"><i class="icon-save"></i> Save stage</button>
-            <button class="btn btn-primary pull-left" id="cancel_edit" type="submit"><i class="icon-delete"></i> Discard Changes</button>
-
+            <button class="btn btn-primary pull-left" id="close" type="submit"><i class="icon-delete"></i> Close </button>
         </div>
     </div>
 </div>
