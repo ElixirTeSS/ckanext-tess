@@ -21,7 +21,7 @@
         {% endblock %}
         <div style="padding-bottom: 30px;">&nbsp;
             {% if h.check_access('workflow_create')  %}
-                <button class="btn btn-primary pull-right" name="save" type="submit"><i class="icon-save"></i> Save workflow</button>
+                <button class="btn btn-primary pull-right" id='save-workflow' name="save" type="submit"><i class="icon-save"></i> Save workflow</button>
             {% endif %}
             {% if action == 'edit' %}
                 {% if h.check_access('workflow_delete', {'id': workflow.id} )  %}

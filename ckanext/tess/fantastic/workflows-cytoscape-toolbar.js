@@ -29,6 +29,10 @@ function drawGraph(workflow, workflow_action) {
         closeEditor();
     });
 
+    $('#save-workflow').click( function(e){
+        updateJSONDump();
+    });
+
     $('#element-color').change(function(e){
         updateStage();
     });
