@@ -57,8 +57,8 @@ function drawGraph(workflow, workflow_action) {
                                 options: {
                                     cy: {
                                         zoom: 0.1,
-                                        minZoom: 0.5,
-                                        maxZoom: 2.0,
+                                        minZoom: 0.1,
+                                        maxZoom: 0.5,
                                         zoomDelay: 45
                                     }
                                 },
@@ -73,8 +73,8 @@ function drawGraph(workflow, workflow_action) {
                                 options: {
                                     cy: {
                                         zoom: -0.1,
-                                        minZoom: 0.5,
-                                        maxZoom: 2.0,
+                                        minZoom: 0.1,
+                                        maxZoom: 0.5,
                                         zoomDelay: 45
                                     }
                                 },
@@ -148,14 +148,6 @@ function drawGraph(workflow, workflow_action) {
                                 bubbleToCore: false,
                                 tooltip: 'Add node',
                                 action: [addPersonToGraph]
-                            },
-                            {
-                                icon: 'fa fa-plus-square-o',
-                                event: ['tap'],
-                                selector: 'cy',
-                                bubbleToCore: false,
-                                tooltip: 'Bounding Box',
-                                action: [addObject]
                             }
                         ],
                         [
@@ -247,6 +239,7 @@ function drawGraph(workflow, workflow_action) {
 
         maxZoom: 2.0,
         minZoom: 0.5
+
     });
 
     cy.on('tap', function(event){
@@ -382,7 +375,7 @@ function addObject(e, action) {
         }
     }
 
-    e.cy.add(object).addClass('tool-node').addClass(tool.options.clazz);
+    e.cy.add(object).addClass('tool-node').addClass(tool.options.class);
 
     updateJSONDump();
 }
