@@ -176,7 +176,7 @@ function drawGraph(workflow, workflow_action) {
                 css: {
                     'shape': 'roundrectangle',
                     'content': 'data(short_name)',
-                    'background-color': 'data[\'color\'])',
+                    'background-color': 'data(color)',
                     'text-valign': 'center',
                     'text-halign': 'center',
                     'width':default_node_width,
@@ -232,6 +232,7 @@ function drawGraph(workflow, workflow_action) {
         autoungrabify: (action == "show")? true : false
 
     });
+
     cy.on('tap', function(event){
         // cyTarget holds a reference to the originator
         // of the event (core or element)
