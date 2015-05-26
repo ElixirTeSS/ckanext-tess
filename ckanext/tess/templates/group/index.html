@@ -26,9 +26,9 @@
       {% endif %}
     {% else %}
       <p class="empty">
-        {{ _('There are currently no packages for this site') }}.
+        {{ _('There are currently no packages') }}.
         {% if h.check_access('group_create') %}
-          {% link_for _('How about creating one?'), controller='group', action='new' %}</a>
+          {% link_for _('How about creating one?'), controller='group', action='new' %}
         {% endif %}
       </p>
     {% endif %}

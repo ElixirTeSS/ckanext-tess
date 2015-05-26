@@ -147,7 +147,7 @@ class WorkflowController(HomeController):
         workflow_name = workflow.name
         workflow.delete()
         workflow.commit()
-        h.flash_success('Deleted the workflow \'%s\'' % workflow_name)
+        h.flash_notice('Deleted the workflow \'%s\'' % workflow_name)
         return h.redirect_to(controller='ckanext.tess.workflow:WorkflowController', action='index')
 
     def update(self, id):
