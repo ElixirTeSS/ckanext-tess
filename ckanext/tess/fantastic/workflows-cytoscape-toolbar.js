@@ -229,7 +229,7 @@ function drawGraph(workflow, workflow_action) {
                     'target-arrow-color': default_selected_colour,
                     'source-arrow-color': default_selected_colour,
                     'border-width':'5',
-                    'border-color':'#999'
+                    'border-color': default_selected_colour
                 }
             }
         ],
@@ -243,6 +243,10 @@ function drawGraph(workflow, workflow_action) {
         autolock: (action == "show")? true : false,
 
         autoungrabify: (action == "show")? true : false,
+
+        autounselectify: (action == "show")? true : false,
+
+        boxSelectionEnabled: (action == "show")? false : true,
 
         maxZoom: 2.0,
         minZoom: 0.5
