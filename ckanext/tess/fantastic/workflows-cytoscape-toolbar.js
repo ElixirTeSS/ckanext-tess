@@ -226,10 +226,13 @@ function drawGraph(workflow, workflow_action) {
                 css: {
                     'background-color': 'data[\'color\'])',
                     'line-color': default_selected_colour,
+                    //'width': '5',
+                    //'line-style': 'dotted',
                     'target-arrow-color': default_selected_colour,
                     'source-arrow-color': default_selected_colour,
-                    'border-width':'5',
-                    'border-color': default_selected_colour
+                    'border-width':'7',
+                    'border-color': '#999',
+                    'background-blacken' : '0.3'
                 }
             }
         ],
