@@ -30,6 +30,7 @@ function drawGraph(workflow, workflow_action) {
     });
 
     $('#save-workflow').click( function(e){
+        clearSelectedWorkflowElements();
         updateJSONDump();
     });
 
@@ -360,6 +361,11 @@ function updateJSONDump() {
     $("#dialog-div").val(JSON.stringify(window.cy.json()));
     $("#dialog-div").text(JSON.stringify(window.cy.json()));
     console.log(window.cy.json());
+}
+
+function clearSelectedWorkflowElements() {
+    //Deselect all selected wf elements
+    cy.$(':selected').unselect();
 }
 
 //#region node tools

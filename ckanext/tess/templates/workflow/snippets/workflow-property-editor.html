@@ -10,7 +10,7 @@
         <p id="no_workflow_element_selected" class="empty" style="padding: 10px;">No workflow element selected</p>
         <div id="workflow_element_info" style="position: initial;">
             <div>
-            {{ form.input('title', label=_('Name'), id='element-name', placeholder=_('Stage name'), classes=['control-full']) }}
+            {{ form.input('title', label=_('Name'), id='element-name', placeholder=_('Element name'), classes=['control-full']) }}
             {{ form.input('color', label=_('Colour'), id='element-color', placeholder=_('#FE23A9 or Yellow'), classes=['control-full']) }}
             {{ form.select('topic', label=_('Topic'), options=[{'value':'Topic 1'},{'value':'Topic 2'},{'value':'Topic 3'}], selected='Topic 1', id='element-topic', classes=['control-full']) }}
         </div>
