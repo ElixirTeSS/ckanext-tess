@@ -25,8 +25,8 @@ function drawGraph(workflow, workflow_action) {
     closeEditor();
     action = (typeof workflow_action === 'undefined') ? 'show' : workflow_action; // what kind of action we are handling - new workflow, show workflow or edit workflow
 
-    $('#close').click(function(e){
-        closeEditor();
+    $('#save_workflow_element_properties').click(function(e){
+        saveWorkflowElementProperties();
     });
 
     $('#save-workflow').click( function(e){
@@ -257,7 +257,7 @@ function drawGraph(workflow, workflow_action) {
             closeEditor();
         } else {
             var element = cy.getElementById(evtTarget.id()); // Get wf element with this id
-            closeEditor();
+            //closeEditor();
             updateJSONDump();
             openEditor(element);
         }
@@ -302,6 +302,7 @@ function drawGraph(workflow, workflow_action) {
 
 function openEditor(element) {
     $("#workflow_element_info").show();
+    $("#no_workflow_element_selected").hide();
     console.log(element)
     if (!(element)) {
         /*If not set, load selected*/
@@ -315,11 +316,16 @@ function openEditor(element) {
     $('#element-topic').val(current_selected.data('topic'))
 }
 
-function closeEditor() {
+function saveWorkflowElementProperties() {
     $('#element-name').val('')
     $('#element-color').val('')
     $('#element-topic').val('')
+    openEditor()
+}
+
+function closeEditor() {
     $("#workflow_element_info").hide();
+    $("#no_workflow_element_selected").show();
 }
 
 function updateStage() {
