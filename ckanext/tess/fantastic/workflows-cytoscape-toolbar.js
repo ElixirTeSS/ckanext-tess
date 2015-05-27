@@ -34,13 +34,13 @@ function drawGraph(workflow, workflow_action) {
     });
 
     $('#element-color').change(function(e){
-        updateStage();
+        updateElement();
     });
     $('#element-name').change(function(e){
-        updateStage();
+        updateElement();
     });
     $('#element-topic').change(function(e){
-        updateStage();
+        updateElement();
     });
 
 
@@ -226,7 +226,9 @@ function drawGraph(workflow, workflow_action) {
                     'background-color': 'data[\'color\'])',
                     'line-color': default_selected_colour,
                     'target-arrow-color': default_selected_colour,
-                    'source-arrow-color': default_selected_colour
+                    'source-arrow-color': default_selected_colour,
+                    'border-width':'5',
+                    'border-color':'#999'
                 }
             }
         ],
@@ -311,7 +313,7 @@ function openEditor(element) {
         var current_selected = element;
     }
 
-    $('#element-name').val(current_selected.data('short_name'))
+    $('#element-name').val(current_selected.data('name'))
     $('#element-color').val(current_selected.data('color'))
     $('#element-topic').val(current_selected.data('topic'))
 }
@@ -328,7 +330,7 @@ function closeEditor() {
     $("#no_workflow_element_selected").show();
 }
 
-function updateStage() {
+function updateElement() {
     var current_selected = cy.$(':selected').first();
     console.log('-----------------')
     console.log(current_selected);
@@ -338,7 +340,7 @@ function updateStage() {
     } else {
         /* set model properties */
         current_selected.data('name',$('#element-name').val());
-        current_selected.data('short_name',$('#element-name').val());
+        current_selected.data('short_name',truncateString($('#element-name').val(), 25));
         current_selected.data('color',$('#element-color').val());
         current_selected.data('topic',$('#element-topic').val());
 
