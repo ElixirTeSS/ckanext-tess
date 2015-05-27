@@ -246,7 +246,7 @@ function drawGraph(workflow, workflow_action) {
 
         autounselectify: (action == "show")? true : false,
 
-        boxSelectionEnabled: (action == "show")? false : true,
+        //boxSelectionEnabled: (action == "show")? false : true,
 
         maxZoom: 2.0,
         minZoom: 0.5
