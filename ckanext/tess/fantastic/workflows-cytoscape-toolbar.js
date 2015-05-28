@@ -157,7 +157,7 @@ function drawGraph(workflow, workflow_action) {
                         ],
                         [
                             {
-                                icon: 'fa fa-plus',
+                                icon: 'fa fa-plus-square',
                                 event: ['click'],
                                 selector: 'node',
                                 options: {
@@ -168,7 +168,6 @@ function drawGraph(workflow, workflow_action) {
                                 action: [addChildNodeToNode]
                             }
                         ],
-
                         [
                             {
                                 icon: 'fa fa-link',
