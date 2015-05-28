@@ -43,8 +43,14 @@ function drawGraph(workflow, workflow_action) {
     $('#element-topic').change(function(e){
         updateElement();
     });
-
-
+    $('#download-png-workflow').click(function(e) {
+        $('#png').show().attr('src', cy.png());
+        $('#json-wf').hide();
+    });
+    $('#download-json-workflow').click(function(e) {
+        $('#json-wf').show().text(JSON.stringify(window.cy.json()));
+        $('#png').hide();
+    })
 
     var cy = window.cy = cytoscape({
         container: document.getElementById('cy'),
@@ -389,7 +395,6 @@ function addNodeToGraph(e) {
         return;
     }
     if (evtTarget === cy) {
-        console.log('LETS MAKE PARENTS')
         addObject(e, addNodeToGraph);
     }
 
@@ -403,11 +408,9 @@ function addChildNodeToNode(e){
     if (evtTarget.isNode()) {
         var toolIndexes = e.data.data.selectedTool;
         var tool = e.data.data.options.tools[toolIndexes[0]][toolIndexes[1]];
-
-        console.log('LETS MAKE BABIES')
-        console.log(evtTarget);
         var object = {
             group: 'nodes',
+            selected: true,
             data: {
                 name: tool.options.text,
                 color: default_node_colour,
@@ -418,7 +421,8 @@ function addChildNodeToNode(e){
                 y: e.cyPosition.y
             }
         }
-        e.cy.add(object).addClass('tool-node').addClass(tool.options.clazz);
+        var a = e.cy.add(object).addClass('tool-node').addClass(tool.options.clazz);
+        console.log(a);
         updateJSONDump();
 
     }
@@ -443,9 +447,7 @@ function addObject(e, action) {
             y: e.cyPosition.y
         }
     }
-
     e.cy.add(object).addClass('tool-node').addClass(tool.options.clazz);
-
     updateJSONDump();
 }
 

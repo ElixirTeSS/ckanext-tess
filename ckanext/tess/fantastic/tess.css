@@ -557,6 +557,12 @@ hr.style-one {
   );
 }
 
+.wf-textarea{
+    width:100%;
+    height: 500px;
+}
+
+
 #workflow_element_info{
 	background-color:white;
 	border:1px solid lightgray;
