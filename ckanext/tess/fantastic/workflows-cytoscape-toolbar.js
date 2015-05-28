@@ -212,7 +212,9 @@ function drawGraph(workflow, workflow_action) {
                     'text-halign': 'center',
                     'width':default_node_width,
                     'height':default_node_height,
-                    'font-size':default_font_size
+                    'font-size':default_font_size,
+                    'border-width':'1',
+                    'border-color': '#999'
                 }
             },
             {
@@ -246,10 +248,13 @@ function drawGraph(workflow, workflow_action) {
                 css: {
                     'background-color': 'data[\'color\'])',
                     'line-color': default_selected_colour,
+                    //'width': '5',
+                    //'line-style': 'dotted',
                     'target-arrow-color': default_selected_colour,
                     'source-arrow-color': default_selected_colour,
-                    'border-width':'5',
-                    'border-color': default_selected_colour
+                    'border-width':'7',
+                    'border-color': default_selected_colour,//'#999',
+                    'background-blacken' : '0.3'
                 }
             }
         ],
@@ -361,7 +366,7 @@ function updateElement() {
     } else {
         /* set model properties */
         current_selected.data('name',$('#element-name').val());
-        current_selected.data('short_name',truncateString($('#element-name').val(), 25));
+        current_selected.data('short_name',truncateString($('#element-name').val(), 30));
         current_selected.data('color',$('#element-color').val());
         current_selected.data('topic',$('#element-topic').val());
 

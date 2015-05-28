@@ -4,7 +4,7 @@
 
 {% block breadcrumb_content %}
   <li>{% link_for _('Workflows'), controller='ckanext.tess.workflow:WorkflowController', action='index' %}</li>
-  <li class="active">{% link_for c.workflow_dict.name|truncate(35), controller='workflow', action='read', id=c.workflow_dict.id %}</li>
+  <li class="active">{% link_for c.workflow_dict.name|truncate(35), controller='ckanext.tess.workflow:WorkflowController', action='read', id=c.workflow_dict.id %}</li>
 {% endblock %}
 
 {% block content_action %}
@@ -15,8 +15,8 @@
 
 {% block content_primary_nav %}
   {{ h.build_nav_icon('workflow_read', _('Workflow'), id=c.workflow_dict.name) }}
-  {{ h.build_nav_icon('workflow_materials', _('Training Materials'), id=c.workflow_dict.name, offset=0) }}
-  {{ h.build_nav_icon('workflow_activities', _('Activity Stream'), id=c.workflow_dict.name, offset=0) }}
+  {{ h.build_nav_icon('workflow_materials', _('Training materials'), id=c.workflow_dict.name, offset=0) }}
+  {{ h.build_nav_icon('workflow_activities', _('Activity log'), id=c.workflow_dict.name, offset=0) }}
 {% endblock %}
 
 
