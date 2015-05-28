@@ -148,13 +148,27 @@ function drawGraph(workflow, workflow_action) {
                                 event: ['click'],
                                 selector: 'cy',
                                 options: {
-                                    class: 'node-person'
+                                    clazz: 'node-person'
                                 },
-                                bubbleToCore: false,
+                                bubbleToCore: true,
                                 tooltip: 'Add node',
-                                action: [addPersonToGraph]
+                                action: [addNodeToGraph]
                             }
                         ],
+                        [
+                            {
+                                icon: 'fa fa-plus',
+                                event: ['click'],
+                                selector: 'node',
+                                options: {
+                                    clazz: 'node-person'
+                                },
+                                bubbleToCore: true,
+                                tooltip: 'Add child node',
+                                action: [addChildNodeToNode]
+                            }
+                        ],
+
                         [
                             {
                                 icon: 'fa fa-link',
@@ -255,13 +269,11 @@ function drawGraph(workflow, workflow_action) {
         minZoom: 0.5
 
     });
+    cy.on('click', function(event){
 
-    cy.on('tap', function(event){
-        console.log('tappy')
         // cyTarget holds a reference to the originator
         // of the event (core or element)
         var evtTarget = event.cyTarget;
-
         if( evtTarget === cy ){
             // Tap on a background
             closeEditor();
@@ -273,10 +285,8 @@ function drawGraph(workflow, workflow_action) {
         }
     });
 
-    cy.on('click', function(event) {
-        console.log('clickky')
+    cy.on('select', function(event){
     });
-
     //$( document ).off('click', '.tool-item, .selected-tool').on('click', '.tool-item, .selected-tool', function(event) {
     //    alert('you clicked a '+$(event.target).attr('class')+' element');
     //    if(event.handled !== true) {
@@ -312,8 +322,10 @@ function drawGraph(workflow, workflow_action) {
 
 function openEditor(element) {
     $("#workflow_element_info").show();
+
     $("#no_workflow_element_selected").hide();
     console.log(element)
+
     if (!(element)) {
         /*If not set, load selected*/
         var current_selected = cy.$(':selected').first();
@@ -340,8 +352,6 @@ function closeEditor() {
 
 function updateElement() {
     var current_selected = cy.$(':selected').first();
-    console.log('-----------------')
-    console.log(current_selected);
 
     if (current_selected.isEdge()) {
         console.log('What do with edges?');
@@ -367,7 +377,6 @@ function propogateStyle(current_selected) {
 function updateJSONDump() {
     $("#dialog-div").val(JSON.stringify(window.cy.json()));
     $("#dialog-div").text(JSON.stringify(window.cy.json()));
-    console.log(window.cy.json());
 }
 
 function clearSelectedWorkflowElements() {
@@ -376,15 +385,53 @@ function clearSelectedWorkflowElements() {
 }
 
 //#region node tools
-function addPersonToGraph(e) {
-    addObject(e, addPersonToGraph);
+function addNodeToGraph(e) {
+
+    var evtTarget = e.cyTarget;
+    if (!e.data.canPerform(e, addNodeToGraph)) {
+        return;
+    }
+    if (evtTarget === cy) {
+        console.log('LETS MAKE PARENTS')
+        addObject(e, addNodeToGraph);
+    }
+
+}
+
+function addChildNodeToNode(e){
+    var evtTarget = e.cyTarget;
+    if (!e.data.canPerform(e, addChildNodeToNode)) {
+        return;
+    }
+    if (evtTarget.isNode()) {
+        var toolIndexes = e.data.data.selectedTool;
+        var tool = e.data.data.options.tools[toolIndexes[0]][toolIndexes[1]];
+
+        console.log('LETS MAKE BABIES')
+        console.log(evtTarget);
+        var object = {
+            group: 'nodes',
+            data: {
+                name: tool.options.text,
+                color: default_node_colour,
+                parent: evtTarget.id()
+            },
+            position: {
+                x: e.cyPosition.x,
+                y: e.cyPosition.y
+            }
+        }
+        e.cy.add(object).addClass('tool-node').addClass(tool.options.clazz);
+        updateJSONDump();
+
+    }
+
 }
 
 function addObject(e, action) {
     if (!e.data.canPerform(e, action)) {
         return;
     }
-
     var toolIndexes = e.data.data.selectedTool;
     var tool = e.data.data.options.tools[toolIndexes[0]][toolIndexes[1]];
 
@@ -400,10 +447,13 @@ function addObject(e, action) {
         }
     }
 
-    e.cy.add(object).addClass('tool-node').addClass(tool.options.class);
+    e.cy.add(object).addClass('tool-node').addClass(tool.options.clazz);
 
     updateJSONDump();
 }
+
+
+
 //#endregion
 
 //#region linking
