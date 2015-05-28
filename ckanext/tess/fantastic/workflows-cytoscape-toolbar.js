@@ -344,6 +344,8 @@ function openEditor(element) {
 
     if (current_selected.isEdge()) {
         $('#element-name').val(current_selected.data('name'));
+        $("#element-type").html("Link");
+
         $("#element-name").show();
         $("label").find("[for='element-name']").show();
 
@@ -353,7 +355,7 @@ function openEditor(element) {
 
         $("#element-train-mat").hide();
         $('label[for="element-train-mat"]').hide();
-        
+
         $("#element-topic").hide();
         $('label[for="element-topic"]').hide();
   }
@@ -362,6 +364,7 @@ function openEditor(element) {
         $('#element-color').val(current_selected.data('color'));
         $('#element-train-mat').val(current_selected.data('training-material'))
         $('#element-topic').val(current_selected.data('topic'));
+        $("#element-type").html("Node");
 
         // Show all field allowed to be modified
         $("#element-name").show();
