@@ -105,7 +105,7 @@ function drawGraph(workflow, workflow_action) {
                     'source-arrow-color': default_edge_colour,
                     'target-arrow-color': default_edge_colour,
                     'font-size':default_font_size
-              }
+                }
             },
             {
                 selector: ':selected',
@@ -168,18 +168,25 @@ function drawGraph(workflow, workflow_action) {
     //        }
     //    }
     //});
-    $( document ).on('click', '.tool-item, .selected-tool', function(event) {
-        //alert('you clicked a '+$(event.target).attr('class')+' element');
-        // Firstly deselect all selected wf elements
-        // then let the toolbar handle any subsequent clicks on the graph, if any
-        //$(event.target).unbind('click');
-        //$(event.target).removeClass('selected-tool');
-        //event.stopPropagation();
-        cy.$(':selected').unselect();
-        closeWorkflowPropertyEditor();
-        //return false;
-   });
 }
+
+$( document ).on('click', '.tool-item, .selected-tool', function(event) {
+    cy.$(':selected').unselect();
+    closeWorkflowPropertyEditor();
+});
+
+$( document ).on('click', '.clear-selection', function(event) {
+    //alert('you clicked a '+$(event.target).attr('class')+' element');
+    // Firstly deselect all selected wf elements
+    // then let the toolbar handle any subsequent clicks on the graph, if any
+    $(event.target).unbind('click');
+    $(event.target).removeClass('selected-tool');
+    event.stopPropagation();
+    cy.$(':selected').unselect();
+    closeWorkflowPropertyEditor();
+    //repositionToolbar(); // not necessary to redraw the toolbar as we managed to consume the event
+    return false;
+});
 
 //var nodes = (workflow['elements']['nodes']);
 //for (var i = 0; i < nodes.length; i++) {
@@ -230,7 +237,7 @@ function openWorkflowPropertyEditor(element) {
 
         $("#element-topic").hide();
         $('label[for="element-topic"]').hide();
-  }
+    }
     else{
         $('#element-name').val(current_selected.data('name'));
         $('#element-color').val(current_selected.data('color'));
@@ -273,7 +280,7 @@ function updateWorkflowElement() {
     if (current_selected.isEdge()) {
         current_selected.data('name',$('#element-name').val());
         current_selected.data('short_name',truncateString($('#element-name').val(), 20));
-   } else {
+    } else {
         /* set model properties */
         current_selected.data('name',$('#element-name').val());
         current_selected.data('short_name',truncateString($('#element-name').val(), 30));
@@ -288,7 +295,7 @@ function updateWorkflowElement() {
 }
 
 function propogateStyle(current_selected) {
-        /* Set styles */
+    /* Set styles */
     current_selected.data('content', current_selected.data('short_name'));
     current_selected.style('background-color', current_selected.data('color'));
 }
@@ -458,15 +465,15 @@ function truncateString(str, length) {
 
 var doit;
 $( window ).resize(function() {
-      doit = setTimeout(repositionToolbar, 200);
+    doit = setTimeout(repositionToolbar, 200);
 });
 
 function repositionToolbar(){
     // This is the best I could do - destroy the old toolbar and
     // recreate a new one that will be positioned correctly on the
     // resized page
-  $(".cy-overall-toolbar").remove();
-  cy.toolbar(createToolbar());
+    $(".cy-overall-toolbar").remove();
+    cy.toolbar(createToolbar());
 }
 
 function createToolbar() {
@@ -610,7 +617,7 @@ function createToolbar() {
             ],
             [
                 {
-                    icon: 'fa fa-eraser',
+                    icon: 'fa fa-eraser clear-selection',
                     event: ['tap'],
                     selector: '',
                     bubbleToCore: false,
