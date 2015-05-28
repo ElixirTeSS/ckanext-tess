@@ -40,6 +40,9 @@ function drawGraph(workflow, workflow_action) {
     $('#element-name').change(function(e){
         updateElement();
     });
+    $('#element-train-mat').change(function(e){
+        updateElement();
+    });
     $('#element-topic').change(function(e){
         updateElement();
     });
@@ -343,6 +346,7 @@ function openEditor(element) {
 
     $('#element-name').val(current_selected.data('name'))
     $('#element-color').val(current_selected.data('color'))
+    $('#element-train-mat').val(current_selected.data('training-material'))
     $('#element-topic').val(current_selected.data('topic'))
 }
 
@@ -350,6 +354,7 @@ function saveWorkflowElementProperties() {
     $('#element-name').val('')
     $('#element-color').val('')
     $('#element-topic').val('')
+    $('#element-train-mat').val('');
     openEditor()
 }
 
@@ -368,6 +373,7 @@ function updateElement() {
         current_selected.data('name',$('#element-name').val());
         current_selected.data('short_name',truncateString($('#element-name').val(), 30));
         current_selected.data('color',$('#element-color').val());
+        current_selected.data('training-material',$('#element-train-mat').val());
         current_selected.data('topic',$('#element-topic').val());
 
         /* apply properties to image and update output JSON */
