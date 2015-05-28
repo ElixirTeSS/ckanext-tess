@@ -168,6 +168,17 @@ function drawGraph(workflow, workflow_action) {
     //        }
     //    }
     //});
+    $( document ).on('click', '.tool-item, .selected-tool', function(event) {
+        //alert('you clicked a '+$(event.target).attr('class')+' element');
+        // Firstly deselect all selected wf elements
+        // then let the toolbar handle any subsequent clicks on the graph, if any
+        //$(event.target).unbind('click');
+        //$(event.target).removeClass('selected-tool');
+        //event.stopPropagation();
+        cy.$(':selected').unselect();
+        closeWorkflowPropertyEditor();
+        //return false;
+   });
 }
 
 //var nodes = (workflow['elements']['nodes']);
@@ -356,8 +367,6 @@ function addObject(e, action) {
     updateJSONDump();
 }
 
-
-
 //#endregion
 
 //#region linking
@@ -402,6 +411,14 @@ function performRemove(e) {
     updateJSONDump();
 }
 //#endregion
+
+function performClearSelection(e) {
+    // Do not really need to clear selection (as this is already
+    // handled when the user clicked on toolbar), but just in case
+    //cy.$(':selected').unselect();
+    // Close property editor as there won't be any elements selected
+    //closeWorkflowPropertyEditor();
+}
 
 //#region Clear tool selection
 function performClearSelectedTool(e) {
@@ -589,6 +606,16 @@ function createToolbar() {
                     bubbleToCore: false,
                     tooltip: 'Remove workflow element',
                     action: [performRemove]
+                }
+            ],
+            [
+                {
+                    icon: 'fa fa-eraser',
+                    event: ['tap'],
+                    selector: '',
+                    bubbleToCore: false,
+                    tooltip: 'Clear selection',
+                    action: [performClearSelection]
                 }
             ]
         ],
