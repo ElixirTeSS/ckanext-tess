@@ -2,7 +2,7 @@
 {% set link = h.url_for('workflow_read', action='read', id=workflow.id) %}
 <li class="media-item">
     {% block image %}
-        <img src="{{ h.url_for_static('/base/images/placeholder-group.png') }}" alt="{{ workflow.name }}" class="media-image"/>
+        <img src="{{ h.url_for_static('/images/placeholder-workflow.png') }}" alt="{{ workflow.name }}" class="media-image"/>
     {% endblock %}
     <div style="clear: both;"></div>
     {% block title %}

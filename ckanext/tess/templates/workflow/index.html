@@ -10,17 +10,17 @@
   <section class="module">
     <div class="module-content">
       {% block page_primary_action %}
-        {# if h.check_access('workflow_create') #}
+        {% if h.check_access('workflow_create') %}
           <div class="page_primary_action">
                 {% link_for _('Create workflow'), controller='ckanext.tess.workflow:WorkflowController', action='new', class_='btn btn-primary', icon='plus-sign-alt' %}
           </div>
-        {# endif #}
+        {% endif %}
       {% endblock %}
       {% if not c.workflows: %}
         <p class="empty">
         {{ _('There are currently no workflows') }}.
          {% if h.check_access('workflow_create') %}
-          {% link_for _('How about creating one?'), controller='ckanext.tess.workflow:WorkflowController', action='new' %}</a>
+          {% link_for _('How about creating one?'), controller='ckanext.tess.workflow:WorkflowController', action='new' %}
         {% endif %}
       </p>
         </p>

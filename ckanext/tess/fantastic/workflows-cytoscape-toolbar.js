@@ -25,22 +25,23 @@ function drawGraph(workflow, workflow_action) {
     closeEditor();
     action = (typeof workflow_action === 'undefined') ? 'show' : workflow_action; // what kind of action we are handling - new workflow, show workflow or edit workflow
 
-    $('#close').click(function(e){
-        closeEditor();
+    $('#save_workflow_element_properties').click(function(e){
+        saveWorkflowElementProperties();
     });
 
     $('#save-workflow').click( function(e){
+        clearSelectedWorkflowElements();
         updateJSONDump();
     });
 
     $('#element-color').change(function(e){
-        updateStage();
+        updateElement();
     });
     $('#element-name').change(function(e){
-        updateStage();
+        updateElement();
     });
     $('#element-topic').change(function(e){
-        updateStage();
+        updateElement();
     });
 
 
@@ -240,7 +241,9 @@ function drawGraph(workflow, workflow_action) {
                     'background-color': 'data[\'color\'])',
                     'line-color': default_selected_colour,
                     'target-arrow-color': default_selected_colour,
-                    'source-arrow-color': default_selected_colour
+                    'source-arrow-color': default_selected_colour,
+                    'border-width':'5',
+                    'border-color': default_selected_colour
                 }
             }
         ],
@@ -254,6 +257,10 @@ function drawGraph(workflow, workflow_action) {
         autolock: (action == "show")? true : false,
 
         autoungrabify: (action == "show")? true : false,
+
+        autounselectify: (action == "show")? true : false,
+
+        //boxSelectionEnabled: (action == "show")? false : true,
 
         maxZoom: 2.0,
         minZoom: 0.5
@@ -269,7 +276,7 @@ function drawGraph(workflow, workflow_action) {
             closeEditor();
         } else {
             var element = cy.getElementById(evtTarget.id()); // Get wf element with this id
-            closeEditor();
+            //closeEditor();
             updateJSONDump();
             openEditor(element);
         }
@@ -312,6 +319,10 @@ function drawGraph(workflow, workflow_action) {
 
 function openEditor(element) {
     $("#workflow_element_info").show();
+
+    $("#no_workflow_element_selected").hide();
+    console.log(element)
+
     if (!(element)) {
         /*If not set, load selected*/
         var current_selected = cy.$(':selected').first();
@@ -319,19 +330,24 @@ function openEditor(element) {
         var current_selected = element;
     }
 
-    $('#element-name').val(current_selected.data('short_name'))
+    $('#element-name').val(current_selected.data('name'))
     $('#element-color').val(current_selected.data('color'))
     $('#element-topic').val(current_selected.data('topic'))
 }
 
-function closeEditor() {
+function saveWorkflowElementProperties() {
     $('#element-name').val('')
     $('#element-color').val('')
     $('#element-topic').val('')
-    $("#workflow_element_info").hide();
+    openEditor()
 }
 
-function updateStage() {
+function closeEditor() {
+    $("#workflow_element_info").hide();
+    $("#no_workflow_element_selected").show();
+}
+
+function updateElement() {
     var current_selected = cy.$(':selected').first();
 
     if (current_selected.isEdge()) {
@@ -339,7 +355,7 @@ function updateStage() {
     } else {
         /* set model properties */
         current_selected.data('name',$('#element-name').val());
-        current_selected.data('short_name',$('#element-name').val());
+        current_selected.data('short_name',truncateString($('#element-name').val(), 25));
         current_selected.data('color',$('#element-color').val());
         current_selected.data('topic',$('#element-topic').val());
 
@@ -358,6 +374,11 @@ function propogateStyle(current_selected) {
 function updateJSONDump() {
     $("#dialog-div").val(JSON.stringify(window.cy.json()));
     $("#dialog-div").text(JSON.stringify(window.cy.json()));
+}
+
+function clearSelectedWorkflowElements() {
+    //Deselect all selected wf elements
+    cy.$(':selected').unselect();
 }
 
 //#region node tools
