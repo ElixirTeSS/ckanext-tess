@@ -236,11 +236,12 @@ function drawGraph(workflow, workflow_action) {
                 selector: 'edge',
                 css: {
                     'target-arrow-shape': 'triangle',
-                    'content': 'data(name)',
+                    'content': 'data(short_name)',
                     'line-color': default_edge_colour,
                     'source-arrow-color': default_edge_colour,
-                    'target-arrow-color': default_edge_colour
-                }
+                    'target-arrow-color': default_edge_colour,
+                    'font-size':default_font_size
+              }
             },
             {
                 selector: ':selected',
@@ -328,8 +329,6 @@ function drawGraph(workflow, workflow_action) {
 //});
 
 function openEditor(element) {
-    $("#workflow_element_info").show();
-
     $("#no_workflow_element_selected").hide();
     console.log(element)
 
@@ -340,9 +339,36 @@ function openEditor(element) {
         var current_selected = element;
     }
 
-    $('#element-name').val(current_selected.data('name'))
-    $('#element-color').val(current_selected.data('color'))
-    $('#element-topic').val(current_selected.data('topic'))
+    if (current_selected.isEdge()) {
+        $('#element-name').val(current_selected.data('name'));
+        $("#element-name").show();
+        $("label").find("[for='element-name']").show();
+
+        // Hide colour and topic fields, we are not allowing modification of these for links/edges
+        $("#element-color").hide();
+        $('label[for="element-color"]').hide();
+
+        $("#element-topic").hide();
+        $('label[for="element-topic"]').hide();
+  }
+    else{
+        $('#element-name').val(current_selected.data('name'));
+        $('#element-color').val(current_selected.data('color'));
+        $('#element-topic').val(current_selected.data('topic'));
+
+        // Show all field allowed to be modified
+        $("#element-name").show();
+        $("#element-color").show();
+        $("#element-topic").show();
+
+        $('label[for="element-name"]').show();
+        $('label[for="element-color"]').show();
+        $('label[for="element-topic"]').show();
+
+    }
+
+    $("#workflow_element_info").show();
+
 }
 
 function saveWorkflowElementProperties() {
@@ -361,8 +387,9 @@ function updateElement() {
     var current_selected = cy.$(':selected').first();
 
     if (current_selected.isEdge()) {
-        console.log('What do with edges?');
-    } else {
+        current_selected.data('name',$('#element-name').val());
+        current_selected.data('short_name',truncateString($('#element-name').val(), 20));
+   } else {
         /* set model properties */
         current_selected.data('name',$('#element-name').val());
         current_selected.data('short_name',truncateString($('#element-name').val(), 30));

@@ -12,7 +12,7 @@
             <div>
             {{ form.input('title', label=_('Name'), id='element-name', placeholder=_('Element name'), classes=['control-full']) }}
             {{ form.input('color', label=_('Colour'), id='element-color', placeholder=_('#FE23A9 or Yellow'), classes=['control-full']) }}
-            {{ form.select('topic', label=_('Topic'), options=[{'value':'Topic 1'},{'value':'Topic 2'},{'value':'Topic 3'}], selected='Topic 1', id='element-topic', classes=['control-full']) }}
+            {{ form.select('topic', label=_('Topic'), id='element-topic', options=[{'value':'Topic 1'},{'value':'Topic 2'},{'value':'Topic 3'}], selected='Topic 1', classes=['control-full']) }}
         </div>
         <button class="btn btn-primary pull-right" id="save_workflow_element_properties" type="submit" style="margin-top: 10px;"><i class="icon-delete"></i> Apply</button>
         </div>
