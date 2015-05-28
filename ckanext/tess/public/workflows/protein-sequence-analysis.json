@@ -1,0 +1,473 @@
+
+
+{
+  "elements": {
+    "nodes": [
+      {
+        "data": {
+          "name": "Databases",
+          "color": "#9FBD6E",
+          "id": "n4",
+          "short_name": "Databases",
+          "training-material": null,
+          "topic": null,
+          "content": "Databases"
+        },
+        "position": {
+          "x": 126.97190186889,
+          "y": -235.2184700469
+        },
+        "group": "nodes",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbed": false,
+        "grabbable": true,
+        "classes": "tool-node node-person"
+      },
+      {
+        "data": {
+          "name": "Translation",
+          "color": "#F9DBE9",
+          "id": "n2",
+          "short_name": "Translation",
+          "training-material": null,
+          "topic": null,
+          "content": "Translation"
+        },
+        "position": {
+          "x": -97.205802106099,
+          "y": -237.461969535
+        },
+        "group": "nodes",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbed": false,
+        "grabbable": true,
+        "classes": "tool-node node-person"
+      },
+      {
+        "data": {
+          "name": "DNA sequence",
+          "color": "#EABED2",
+          "parent": "n2",
+          "id": "n3",
+          "short_name": "DNA sequence",
+          "training-material": null,
+          "topic": null,
+          "content": "DNA sequence"
+        },
+        "position": {
+          "x": -98.416296408406,
+          "y": -268.59955701902
+        },
+        "group": "nodes",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbed": false,
+        "grabbable": true,
+        "classes": "tool-node node-person"
+      },
+      {
+        "data": {
+          "name": "Protein sequence",
+          "color": "#EABED2",
+          "parent": "n2",
+          "id": "n6",
+          "short_name": "Protein sequence",
+          "training-material": null,
+          "topic": null,
+          "content": "Protein sequence"
+        },
+        "position": {
+          "x": -95.995307803792,
+          "y": -206.32438205097
+        },
+        "group": "nodes",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbed": false,
+        "grabbable": true,
+        "classes": "tool-node node-person"
+      },
+      {
+        "data": {
+          "name": "Sequence DB",
+          "color": "#9FBD6E",
+          "parent": "n4",
+          "id": "n0",
+          "short_name": "Sequence DB",
+          "training-material": null,
+          "topic": null,
+          "content": "Sequence DB"
+        },
+        "position": {
+          "x": 127.30156985373,
+          "y": -265.49636995734
+        },
+        "group": "nodes",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbed": false,
+        "grabbable": true,
+        "classes": "tool-node node-person"
+      },
+      {
+        "data": {
+          "name": "Family DB",
+          "color": "#9FBD6E",
+          "parent": "n4",
+          "id": "n1",
+          "short_name": "Family DB",
+          "training-material": null,
+          "topic": null,
+          "content": "Family DB"
+        },
+        "position": {
+          "x": 126.64223388405,
+          "y": -204.94057013646
+        },
+        "group": "nodes",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbed": false,
+        "grabbable": true,
+        "classes": "tool-node node-person"
+      },
+      {
+        "data": {
+          "name": "Alignment",
+          "color": "#E6DBF9",
+          "id": "n5",
+          "short_name": "Alignment",
+          "training-material": null,
+          "topic": null,
+          "content": "Alignment"
+        },
+        "position": {
+          "x": -125.10122768639,
+          "y": -115.32124630997
+        },
+        "group": "nodes",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbed": false,
+        "grabbable": true,
+        "classes": "tool-node node-person"
+      },
+      {
+        "data": {
+          "name": "Annotation",
+          "color": "#BFE2EF",
+          "id": "n7",
+          "short_name": "Annotation",
+          "training-material": null,
+          "topic": null,
+          "content": "Annotation"
+        },
+        "position": {
+          "x": 7.5160555466521,
+          "y": -18.5650397185
+        },
+        "group": "nodes",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbed": false,
+        "grabbable": true,
+        "classes": "tool-node node-person"
+      },
+      {
+        "data": {
+          "name": "Fold class DB",
+          "color": "#9FBD6E",
+          "id": "n8",
+          "short_name": "Fold class DB",
+          "training-material": null,
+          "topic": null,
+          "content": "Fold class DB"
+        },
+        "position": {
+          "x": 78.141848742448,
+          "y": -97.768435163842
+        },
+        "group": "nodes",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbed": false,
+        "grabbable": true,
+        "classes": "tool-node node-person"
+      },
+      {
+        "data": {
+          "name": "Template DB",
+          "color": "#9FBD6E",
+          "id": "n9",
+          "short_name": "Template DB",
+          "training-material": null,
+          "topic": null,
+          "content": "Template DB"
+        },
+        "position": {
+          "x": 242.58397421669,
+          "y": -97.768435163842
+        },
+        "group": "nodes",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbed": false,
+        "grabbable": true,
+        "classes": "tool-node node-person"
+      }
+    ],
+    "edges": [
+      {
+        "data": {
+          "source": "n3",
+          "target": "n6",
+          "id": "e0",
+          "name": "translate",
+          "short_name": "translate"
+        },
+        "position": {
+
+        },
+        "group": "edges",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbed": false,
+        "grabbable": true,
+        "classes": ""
+      },
+      {
+        "data": {
+          "source": "n2",
+          "target": "n4",
+          "id": "e2",
+          "name": "search",
+          "short_name": "search"
+        },
+        "position": {
+
+        },
+        "group": "edges",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbed": false,
+        "grabbable": true,
+        "classes": ""
+      },
+      {
+        "data": {
+          "source": "n5",
+          "target": "n7",
+          "id": "e3"
+        },
+        "position": {
+
+        },
+        "group": "edges",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbed": false,
+        "grabbable": true,
+        "classes": ""
+      },
+      {
+        "data": {
+          "source": "n4",
+          "target": "n5",
+          "id": "e4",
+          "name": "if homologues",
+          "short_name": "if homologues"
+        },
+        "position": {
+
+        },
+        "group": "edges",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbed": false,
+        "grabbable": true,
+        "classes": ""
+      },
+      {
+        "data": {
+          "source": "n4",
+          "target": "n8",
+          "id": "e5",
+          "name": "if 3D coords, search",
+          "short_name": "if 3D coords, search"
+        },
+        "position": {
+
+        },
+        "group": "edges",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbed": false,
+        "grabbable": true,
+        "classes": ""
+      },
+      {
+        "data": {
+          "source": "n4",
+          "target": "n9",
+          "id": "e6",
+          "name": "else, search",
+          "short_name": "else, search"
+        },
+        "position": {
+
+        },
+        "group": "edges",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbed": false,
+        "grabbable": true,
+        "classes": ""
+      },
+      {
+        "data": {
+          "source": "n8",
+          "target": "n7",
+          "id": "e7"
+        },
+        "position": {
+
+        },
+        "group": "edges",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbed": false,
+        "grabbable": true,
+        "classes": ""
+      },
+      {
+        "data": {
+          "source": "n9",
+          "target": "n7",
+          "id": "e8"
+        },
+        "position": {
+
+        },
+        "group": "edges",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbed": false,
+        "grabbable": true,
+        "classes": ""
+      }
+    ]
+  },
+  "style": [
+    {
+      "selector": "node",
+      "style": {
+        "shape": "roundrectangle",
+        "content": "data(short_name)",
+        "background-color": "data(color)",
+        "text-valign": "center",
+        "text-halign": "center",
+        "width": "150px",
+        "height": "30px",
+        "font-size": "11px",
+        "border-width": "1px",
+        "border-color": "#999"
+      }
+    },
+    {
+      "selector": "$node > node",
+      "style": {
+        "shape": "roundrectangle",
+        "padding-top": "10px",
+        "font-weight": "bold",
+        "padding-left": "10px",
+        "padding-bottom": "10px",
+        "padding-right": "10px",
+        "text-valign": "top",
+        "text-halign": "center",
+        "width": "auto",
+        "height": "auto",
+        "font-size": "13px"
+      }
+    },
+    {
+      "selector": "edge",
+      "style": {
+        "target-arrow-shape": "triangle",
+        "content": "data(short_name)",
+        "line-color": "#848383",
+        "source-arrow-color": "#848383",
+        "target-arrow-color": "#848383",
+        "font-size": "11px"
+      }
+    },
+    {
+      "selector": ":selected",
+      "style": {
+        "line-color": "#2A62E4",
+        "target-arrow-color": "#2A62E4",
+        "source-arrow-color": "#2A62E4",
+        "border-width": "7px",
+        "border-color": "#2A62E4",
+        "background-blacken": "0.3"
+      }
+    }
+  ],
+  "zoomingEnabled": true,
+  "userZoomingEnabled": true,
+  "zoom": 1.1953300339497,
+  "minZoom": 0.5,
+  "maxZoom": 2,
+  "panningEnabled": true,
+  "userPanningEnabled": true,
+  "pan": {
+    "x": 244.78467230072,
+    "y": 635.67336148261
+  },
+  "boxSelectionEnabled": false,
+  "layout": {
+    "name": "preset",
+    "padding": 5
+  },
+  "renderer": {
+    "name": "canvas"
+  }
+}
+

@@ -1,14 +1,20 @@
+
+
 {
   "elements": {
     "nodes": [
       {
         "data": {
-          "id": "a",
-          "name": "Query sequence and variation data"
+          "name": "Query sequence and variation data",
+          "color": "white",
+          "id": "n0",
+          "short_name": "Query sequence and variatio...",
+          "topic": null,
+          "content": "Query sequence and variatio..."
         },
         "position": {
-          "x": 147.6098815416,
-          "y": -126.7689246154
+          "x": -148.75665230725,
+          "y": -229.51278307547
         },
         "group": "nodes",
         "removed": false,
@@ -17,17 +23,20 @@
         "locked": false,
         "grabbed": false,
         "grabbable": true,
-        "classes": ""
+        "classes": "tool-node node-person"
       },
       {
         "data": {
-          "id": "b",
-          "name": "Known structure in pdb?",
-          "parent": "d"
+          "name": "Obtain Structural Data - I",
+          "color": "#9FBD6E",
+          "id": "n1",
+          "short_name": "Obtain Structural Data - I",
+          "topic": null,
+          "content": "Obtain Structural Data - I"
         },
         "position": {
-          "x": 165.38876083536,
-          "y": 41.247101523306
+          "x": -146.58502936099,
+          "y": -111.23403515793
         },
         "group": "nodes",
         "removed": false,
@@ -36,17 +45,44 @@
         "locked": false,
         "grabbed": false,
         "grabbable": true,
-        "classes": ""
+        "classes": "tool-node node-person"
       },
       {
         "data": {
-          "id": "c",
+          "name": "Known structure in PDB?",
+          "color": "white",
+          "parent": "n1",
+          "id": "n2",
+          "short_name": "Known structure in PDB?",
+          "topic": null,
+          "content": "Known structure in PDB?"
+        },
+        "position": {
+          "x": -146.94727293944,
+          "y": -137.35650837362
+        },
+        "group": "nodes",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbed": false,
+        "grabbable": true,
+        "classes": "tool-node node-person"
+      },
+      {
+        "data": {
           "name": "Structure analysis and model quality",
-          "parent": "d"
+          "color": "white",
+          "parent": "n1",
+          "id": "n3",
+          "short_name": "Structure analysis and mode...",
+          "topic": null,
+          "content": "Structure analysis and mode..."
         },
         "position": {
-          "x": 128.15694263201,
-          "y": -22.747235478911
+          "x": -146.22278578254,
+          "y": -85.111561942235
         },
         "group": "nodes",
         "removed": false,
@@ -55,16 +91,20 @@
         "locked": false,
         "grabbed": false,
         "grabbable": true,
-        "classes": ""
+        "classes": "tool-node node-person"
       },
       {
         "data": {
-          "id": "d",
-          "name": "Obtain structural data"
+          "name": "Obtain Structural Data - II",
+          "color": "#ACA9C9",
+          "id": "n4",
+          "short_name": "Obtain Structural Data - II",
+          "topic": null,
+          "content": "Obtain Structural Data - II"
         },
         "position": {
-          "x": 146.77285173368,
-          "y": 9.2499330221975
+          "x": -141.49033914291,
+          "y": 59.817150697533
         },
         "group": "nodes",
         "removed": false,
@@ -73,17 +113,21 @@
         "locked": false,
         "grabbed": false,
         "grabbable": true,
-        "classes": ""
+        "classes": "tool-node node-person"
       },
       {
         "data": {
-          "id": "e",
           "name": "Close relative - homology modelling",
-          "parent": "g"
+          "color": "white",
+          "parent": "n4",
+          "id": "n5",
+          "short_name": "Close relative - homology m...",
+          "topic": null,
+          "content": "Close relative - homology m..."
         },
         "position": {
-          "x": 132.22845303008,
-          "y": 218.86007301598
+          "x": -141.49033914291,
+          "y": 10.113781355442
         },
         "group": "nodes",
         "removed": false,
@@ -92,17 +136,21 @@
         "locked": false,
         "grabbed": false,
         "grabbable": true,
-        "classes": ""
+        "classes": "tool-node node-person"
       },
       {
         "data": {
-          "id": "f",
           "name": "Remote relative - structure prediction",
-          "parent": "g"
+          "color": "white",
+          "parent": "n4",
+          "id": "n6",
+          "short_name": "Remote relative - structure...",
+          "topic": null,
+          "content": "Remote relative - structure..."
         },
         "position": {
-          "x": 171.93352173931,
-          "y": 264.07405071247
+          "x": -141.49033914291,
+          "y": 109.52052003962
         },
         "group": "nodes",
         "removed": false,
@@ -111,15 +159,20 @@
         "locked": false,
         "grabbed": false,
         "grabbable": true,
-        "classes": ""
+        "classes": "tool-node node-person"
       },
       {
         "data": {
-          "id": "g"
+          "name": "Structure Annotation",
+          "color": "#EA7EAF",
+          "id": "n7",
+          "short_name": "Structure Annotation",
+          "topic": null,
+          "content": "Structure Annotation"
         },
         "position": {
-          "x": 152.0809873847,
-          "y": 241.46706186422
+          "x": 116.56219788848,
+          "y": -194.90073075232
         },
         "group": "nodes",
         "removed": false,
@@ -128,35 +181,21 @@
         "locked": false,
         "grabbed": false,
         "grabbable": true,
-        "classes": ""
+        "classes": "tool-node node-person"
       },
       {
         "data": {
-          "id": "h",
-          "name": "Structure annotation"
-        },
-        "position": {
-          "x": 432.09130909608,
-          "y": 72.95660184405
-        },
-        "group": "nodes",
-        "removed": false,
-        "selected": false,
-        "selectable": true,
-        "locked": false,
-        "grabbed": false,
-        "grabbable": true,
-        "classes": ""
-      },
-      {
-        "data": {
-          "id": "i0",
           "name": "Active site",
-          "parent": "h"
+          "color": "white",
+          "parent": "n7",
+          "id": "n8",
+          "short_name": "Active site",
+          "topic": null,
+          "content": "Active site"
         },
         "position": {
-          "x": 432.02164054789,
-          "y": -17.786389041554
+          "x": 118.84320566335,
+          "y": -353.56884876428
         },
         "group": "nodes",
         "removed": false,
@@ -165,17 +204,21 @@
         "locked": false,
         "grabbed": false,
         "grabbable": true,
-        "classes": ""
+        "classes": "tool-node node-person"
       },
       {
         "data": {
-          "id": "i1",
           "name": "Binding sites",
-          "parent": "h"
+          "color": "white",
+          "parent": "n7",
+          "id": "n9",
+          "short_name": "Binding sites",
+          "topic": null,
+          "content": "Binding sites"
         },
         "position": {
-          "x": 434.65202748663,
-          "y": 24.952612607023
+          "x": 115.63653667353,
+          "y": -271.79878952407
         },
         "group": "nodes",
         "removed": false,
@@ -184,17 +227,21 @@
         "locked": false,
         "grabbed": false,
         "grabbable": true,
-        "classes": ""
+        "classes": "tool-node node-person"
       },
       {
         "data": {
-          "id": "i2",
           "name": "Interfaces",
-          "parent": "h"
+          "color": "white",
+          "parent": "n7",
+          "id": "n10",
+          "short_name": "Interfaces",
+          "topic": null,
+          "content": "Interfaces"
         },
         "position": {
-          "x": 432.20071415001,
-          "y": 72.933898739477
+          "x": 114.28119011362,
+          "y": -200.10051943993
         },
         "group": "nodes",
         "removed": false,
@@ -203,17 +250,21 @@
         "locked": false,
         "grabbed": false,
         "grabbable": true,
-        "classes": ""
+        "classes": "tool-node node-person"
       },
       {
         "data": {
-          "id": "i3",
-          "name": "Post translational modifications",
-          "parent": "h"
+          "name": "Post-translational modifications",
+          "color": "white",
+          "parent": "n7",
+          "id": "n11",
+          "short_name": "Post-translational modifica...",
+          "topic": null,
+          "content": "Post-translational modifica..."
         },
         "position": {
-          "x": 430.28310021417,
-          "y": 116.66255677812
+          "x": 114.28119011362,
+          "y": -118.45445416721
         },
         "group": "nodes",
         "removed": false,
@@ -222,17 +273,21 @@
         "locked": false,
         "grabbed": false,
         "grabbable": true,
-        "classes": ""
+        "classes": "tool-node node-person"
       },
       {
         "data": {
-          "id": "i4",
           "name": "Conserved sites",
-          "parent": "h"
+          "color": "white",
+          "parent": "n7",
+          "id": "n12",
+          "short_name": "Conserved sites",
+          "topic": null,
+          "content": "Conserved sites"
         },
         "position": {
-          "x": 429.53059070553,
-          "y": 163.69959272965
+          "x": 114.85696626775,
+          "y": -36.232612740361
         },
         "group": "nodes",
         "removed": false,
@@ -241,16 +296,20 @@
         "locked": false,
         "grabbed": false,
         "grabbable": true,
-        "classes": ""
+        "classes": "tool-node node-person"
       },
       {
         "data": {
-          "id": "j",
-          "name": "Proximity of genetic variation to annotated sites"
+          "name": "Impact Assessment",
+          "color": "lightgrey",
+          "id": "n16",
+          "short_name": "Impact Assessment",
+          "topic": null,
+          "content": "Impact Assessment"
         },
         "position": {
-          "x": 180.51943467237,
-          "y": 411.8725925365
+          "x": 315.26893403178,
+          "y": 35.571560363192
         },
         "group": "nodes",
         "removed": false,
@@ -259,54 +318,21 @@
         "locked": false,
         "grabbed": false,
         "grabbable": true,
-        "classes": ""
+        "classes": "tool-node node-person"
       },
       {
         "data": {
-          "id": "j1",
-          "name": "Visualization",
-          "parent": "j"
-        },
-        "position": {
-          "x": 180.51943467237,
-          "y": 411.8725925365
-        },
-        "group": "nodes",
-        "removed": false,
-        "selected": false,
-        "selectable": true,
-        "locked": false,
-        "grabbed": false,
-        "grabbable": true,
-        "classes": ""
-      },
-      {
-        "data": {
-          "id": "k",
-          "name": "Impact assessment"
-        },
-        "position": {
-          "x": 396.82697441532,
-          "y": 493.74477470752
-        },
-        "group": "nodes",
-        "removed": false,
-        "selected": false,
-        "selectable": true,
-        "locked": false,
-        "grabbed": false,
-        "grabbable": true,
-        "classes": ""
-      },
-      {
-        "data": {
-          "id": "k1",
           "name": "Structure based analysis of impact",
-          "parent": "k"
+          "color": "white",
+          "parent": "n16",
+          "id": "n17",
+          "short_name": "Structure based analysis of...",
+          "topic": null,
+          "content": "Structure based analysis of..."
         },
         "position": {
-          "x": 395.62946681246,
-          "y": 461.84264160654
+          "x": 312.39896972407,
+          "y": -17.118927539346
         },
         "group": "nodes",
         "removed": false,
@@ -315,17 +341,21 @@
         "locked": false,
         "grabbed": false,
         "grabbable": true,
-        "classes": ""
+        "classes": "tool-node node-person"
       },
       {
         "data": {
-          "id": "k2",
           "name": "Sequence based analysis of impact",
-          "parent": "k"
+          "color": "white",
+          "parent": "n16",
+          "id": "n18",
+          "short_name": "Sequence based analysis of ...",
+          "topic": null,
+          "content": "Sequence based analysis of ..."
         },
         "position": {
-          "x": 398.02448201818,
-          "y": 525.64690780851
+          "x": 318.13889833949,
+          "y": 88.26204826573
         },
         "group": "nodes",
         "removed": false,
@@ -334,15 +364,60 @@
         "locked": false,
         "grabbed": false,
         "grabbable": true,
-        "classes": ""
+        "classes": "tool-node node-person"
+      },
+      {
+        "data": {
+          "name": "Proximity of Genetic Variation to Annotated Sites",
+          "color": "lightblue",
+          "id": "n19",
+          "short_name": "Proximity of Genetic V...",
+          "topic": null,
+          "content": "Proximity of Genetic V..."
+        },
+        "position": {
+          "x": 104.90304853967,
+          "y": 104.88044923024
+        },
+        "group": "nodes",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbed": false,
+        "grabbable": true,
+        "classes": "tool-node node-person"
+      },
+      {
+        "data": {
+          "name": "Visualization",
+          "color": "white",
+          "parent": "n19",
+          "id": "n20",
+          "short_name": "Visualization",
+          "topic": null,
+          "content": "Visualization"
+        },
+        "position": {
+          "x": 104.90304853967,
+          "y": 104.88044923024
+        },
+        "group": "nodes",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbed": false,
+        "grabbable": true,
+        "classes": "tool-node node-person"
       }
     ],
     "edges": [
       {
         "data": {
-          "id": "ad",
-          "source": "a",
-          "target": "d"
+          "source": "n0",
+          "target": "n1",
+          "id": "e0"
         },
         "position": {
 
@@ -358,9 +433,9 @@
       },
       {
         "data": {
-          "id": "bc",
-          "source": "b",
-          "target": "c"
+          "source": "n2",
+          "target": "n3",
+          "id": "e1"
         },
         "position": {
 
@@ -376,9 +451,9 @@
       },
       {
         "data": {
-          "id": "ef",
-          "source": "e",
-          "target": "f"
+          "source": "n5",
+          "target": "n6",
+          "id": "e2"
         },
         "position": {
 
@@ -394,9 +469,9 @@
       },
       {
         "data": {
-          "id": "dg",
-          "source": "d",
-          "target": "g"
+          "source": "n1",
+          "target": "n4",
+          "id": "e3"
         },
         "position": {
 
@@ -412,9 +487,9 @@
       },
       {
         "data": {
-          "id": "dh",
-          "source": "d",
-          "target": "h"
+          "source": "n4",
+          "target": "n1",
+          "id": "e4"
         },
         "position": {
 
@@ -430,9 +505,9 @@
       },
       {
         "data": {
-          "id": "gd",
-          "source": "g",
-          "target": "d"
+          "source": "n1",
+          "target": "n7",
+          "id": "e8"
         },
         "position": {
 
@@ -448,9 +523,9 @@
       },
       {
         "data": {
-          "id": "hj",
-          "source": "h",
-          "target": "j"
+          "source": "n8",
+          "target": "n9",
+          "id": "e9"
         },
         "position": {
 
@@ -466,9 +541,9 @@
       },
       {
         "data": {
-          "id": "jk",
-          "source": "j",
-          "target": "k"
+          "source": "n10",
+          "target": "n11",
+          "id": "e10"
         },
         "position": {
 
@@ -484,9 +559,9 @@
       },
       {
         "data": {
-          "id": "k1k2",
-          "source": "k1",
-          "target": "k2"
+          "source": "n11",
+          "target": "n12",
+          "id": "e11"
         },
         "position": {
 
@@ -502,9 +577,81 @@
       },
       {
         "data": {
-          "id": "kj",
-          "source": "k",
-          "target": "j"
+          "source": "n9",
+          "target": "n10",
+          "id": "e12"
+        },
+        "position": {
+
+        },
+        "group": "edges",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbed": false,
+        "grabbable": true,
+        "classes": ""
+      },
+      {
+        "data": {
+          "source": "n17",
+          "target": "n18",
+          "id": "e5"
+        },
+        "position": {
+
+        },
+        "group": "edges",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbed": false,
+        "grabbable": true,
+        "classes": ""
+      },
+      {
+        "data": {
+          "source": "n7",
+          "target": "n19",
+          "id": "e6"
+        },
+        "position": {
+
+        },
+        "group": "edges",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbed": false,
+        "grabbable": true,
+        "classes": ""
+      },
+      {
+        "data": {
+          "source": "n19",
+          "target": "n17",
+          "id": "e13"
+        },
+        "position": {
+
+        },
+        "group": "edges",
+        "removed": false,
+        "selected": false,
+        "selectable": true,
+        "locked": false,
+        "grabbed": false,
+        "grabbable": true,
+        "classes": ""
+      },
+      {
+        "data": {
+          "source": "n18",
+          "target": "n20",
+          "id": "e7"
         },
         "position": {
 
@@ -519,5 +666,80 @@
         "classes": ""
       }
     ]
+  },
+  "style": [
+    {
+      "selector": "node",
+      "style": {
+        "shape": "roundrectangle",
+        "content": "data(short_name)",
+        "background-color": "data(color)",
+        "text-valign": "center",
+        "text-halign": "center",
+        "width": "150px",
+        "height": "30px",
+        "font-size": "11px",
+        "border-width": "1px",
+        "border-color": "#999"
+      }
+    },
+    {
+      "selector": "$node > node",
+      "style": {
+        "shape": "roundrectangle",
+        "padding-top": "10px",
+        "font-weight": "bold",
+        "padding-left": "10px",
+        "padding-bottom": "10px",
+        "padding-right": "10px",
+        "text-valign": "top",
+        "text-halign": "center",
+        "width": "auto",
+        "height": "auto",
+        "font-size": "13px"
+      }
+    },
+    {
+      "selector": "edge",
+      "style": {
+        "target-arrow-shape": "triangle",
+        "content": "data(short_name)",
+        "line-color": "#848383",
+        "source-arrow-color": "#848383",
+        "target-arrow-color": "#848383",
+        "font-size": "11px"
+      }
+    },
+    {
+      "selector": ":selected",
+      "style": {
+        "line-color": "#2A62E4",
+        "target-arrow-color": "#2A62E4",
+        "source-arrow-color": "#2A62E4",
+        "border-width": "7px",
+        "border-color": "#2A62E4",
+        "background-blacken": "0.3"
+      }
+    }
+  ],
+  "zoomingEnabled": true,
+  "userZoomingEnabled": true,
+  "zoom": 0.97318075317091,
+  "minZoom": 0.5,
+  "maxZoom": 2,
+  "panningEnabled": true,
+  "userPanningEnabled": true,
+  "pan": {
+    "x": 231.69980252831,
+    "y": 575.07724307479
+  },
+  "boxSelectionEnabled": false,
+  "layout": {
+    "name": "preset",
+    "padding": 5
+  },
+  "renderer": {
+    "name": "canvas"
   }
 }
+
