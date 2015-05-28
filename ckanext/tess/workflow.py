@@ -47,7 +47,8 @@ class WorkflowPlugin(plugins.SingletonPlugin):
 
     def get_helpers(self):
         return {
-            'read_workflow_file' : read_workflow_file
+            'read_workflow_file' : read_workflow_file,
+            'training_material_options' : training_material_options
         }
 
     def before_map(self, map):
@@ -75,6 +76,13 @@ class WorkflowPlugin(plugins.SingletonPlugin):
             'workflow_delete': workflow_actions_authz
         }
 
+
+def training_material_options():
+    res = toolkit.get_action('package_search')(data_dict={'rows': 5000})
+    titles = []
+    for package in res.get('results'):
+        titles.append({'value': package['title']})
+    return titles
 
 def get_workflow(workflow_id):
     workflow = model.Session.query(TessWorkflow).get(workflow_id)

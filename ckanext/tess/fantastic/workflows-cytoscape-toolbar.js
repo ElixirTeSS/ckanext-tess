@@ -40,6 +40,9 @@ function drawGraph(workflow, workflow_action) {
     $('#element-name').change(function(e){
         updateElement();
     });
+    $('#element-train-mat').change(function(e){
+        updateElement();
+    });
     $('#element-topic').change(function(e){
         updateElement();
     });
@@ -344,37 +347,43 @@ function openEditor(element) {
         $("#element-name").show();
         $("label").find("[for='element-name']").show();
 
-        // Hide colour and topic fields, we are not allowing modification of these for links/edges
+        // Hide all the fields where we are not allowing modification for links/edges
         $("#element-color").hide();
         $('label[for="element-color"]').hide();
 
+        $("#element-train-mat").hide();
+        $('label[for="element-train-mat"]').hide();
+        
         $("#element-topic").hide();
         $('label[for="element-topic"]').hide();
   }
     else{
         $('#element-name').val(current_selected.data('name'));
         $('#element-color').val(current_selected.data('color'));
+        $('#element-train-mat').val(current_selected.data('training-material'))
         $('#element-topic').val(current_selected.data('topic'));
 
         // Show all field allowed to be modified
         $("#element-name").show();
         $("#element-color").show();
+        $("#element-train-mat").show();
         $("#element-topic").show();
 
         $('label[for="element-name"]').show();
         $('label[for="element-color"]').show();
+        $('label[for="element-train-mat"]').show();
         $('label[for="element-topic"]').show();
 
     }
 
     $("#workflow_element_info").show();
-
 }
 
 function saveWorkflowElementProperties() {
     $('#element-name').val('')
     $('#element-color').val('')
     $('#element-topic').val('')
+    $('#element-train-mat').val('');
     openEditor()
 }
 
@@ -394,6 +403,7 @@ function updateElement() {
         current_selected.data('name',$('#element-name').val());
         current_selected.data('short_name',truncateString($('#element-name').val(), 30));
         current_selected.data('color',$('#element-color').val());
+        current_selected.data('training-material',$('#element-train-mat').val());
         current_selected.data('topic',$('#element-topic').val());
 
         /* apply properties to image and update output JSON */
