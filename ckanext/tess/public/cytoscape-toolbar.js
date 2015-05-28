@@ -1,18 +1,14 @@
 // zooming
 function performZoomIn(e) {
-	console.log("performing zoom in");
 	performZoom(e, performZoomIn);
 }
 
 function performZoomOut(e) {
-	console.log("performing zoom out");
 	performZoom(e, performZoomOut);
 }
 
 function performZoom(e, action) {
 	if (!e.data.canPerform(e, action)) {
-		console.log("could not perform zoom");
-
 		return;
 	}
 
@@ -60,32 +56,25 @@ function zoomTo(core, x, y, level) {
 
 // panning
 function performPanRight(e) {
-	console.log("performing pan right");
 	performPan(e, performPanRight, 0);
 }
 
 function performPanDown(e) {
-	console.log("performing pan down");
-	performPan(e, performPanDown, 1);
+    performPan(e, performPanDown, 1);
 }
 
 function performPanLeft(e) {
-	console.log("performing pan left");
 	performPan(e, performPanLeft, 2);
 }
 
 function performPanUp(e) {
-	console.log("performing pan up");
 	performPan(e, performPanUp, 3);
 }
 
 function performPan(e, action, direction) {
 	if (!e.data.canPerform(e, action)) {
-	console.log("could not perform pan");
 		return;
 	}
-
-	console.log("performing pan");
 
 	var toolIndexes = e.data.data.selectedTool;
 	var tool = e.data.data.options.tools[toolIndexes[0]][toolIndexes[1]];
@@ -208,7 +197,7 @@ function pan(core, direction, factors) {
 				}
 			]
 		],
-		appendTools: false, // set whether or not to append your custom tools list to the default tools list
+		appendTools: true, // set whether or not to append your custom tools list to the default tools list
 		position: 'left', // set position of toolbar (right, left, up, down)
 		toolbarClass: 'ui-cytoscape-toolbar', // set a class name for the toolbar to help with styling
 		multipleToolsClass: 'tool-item-list', // set a class name for the tools that should be shown in the same position
@@ -301,6 +290,8 @@ function pan(core, direction, factors) {
 						    case 'node,edget':
 						    case 'edge,node':
 						        return e.cyTarget.isNode() || e.cyTarget.isEdge();
+                            case 'node,cy':
+						        return e.cyTarget.isNode() || e.cyTarget == cy;
 							case 'cy':
 								return e.cyTarget == cy || tool.bubbleToCore;
 						}
@@ -399,7 +390,7 @@ function pan(core, direction, factors) {
 													position: 'absolute',
 													top: 28,
 													left: 35,
-													zIndex: 9999
+													zIndex: 10
 												});
 							$toolListWrapper.append($moreArrow);
 						}
@@ -516,7 +507,13 @@ function pan(core, direction, factors) {
 					});
 
 					var bindings = {
-						on: function (event, selector, action) {
+						on: function (event, selector, action) {/*
+                            console.log('event')
+                            console.log(event)
+                            console.log('selector')
+                            console.log(selector)
+                            console.log('action')
+                            console.log(action)*/
 							var index = data.handlers.push({
 								events: event,
 								selector: selector,
