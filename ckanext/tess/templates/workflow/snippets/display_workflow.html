@@ -14,6 +14,11 @@
 
 <div id="wf" style="display: none;">{{workflow}}</div>
 <div id="cy" style="float: right;" class="cy col-md-7 col-md-offset-1"></div>
+
+{% if (action=='show') %}
+    {% snippet "workflow/snippets/export_options.html" %}
+{% endif %}
+
 <script>
     $(document).ready(function(){
         wf= {{ workflow|safe }};
