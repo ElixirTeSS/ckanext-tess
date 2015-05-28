@@ -347,7 +347,6 @@ function addChildNodeToNode(e){
         var a = e.cy.add(object).addClass('tool-node').addClass(tool.options.clazz);
         console.log(a);
         updateJSONDump();
-
     }
 
 }
@@ -368,9 +367,11 @@ function addObject(e, action) {
         position: {
             x: e.cyPosition.x,
             y: e.cyPosition.y
-        }
+        },
+        selected: true
     }
     e.cy.add(object).addClass('tool-node').addClass(tool.options.clazz);
+    openWorkflowPropertyEditor();
     updateJSONDump();
 }
 
@@ -391,15 +392,17 @@ function performLink(e) {
             data: {
                 source: src.id(),
                 target: tgt.id()
-            }
+            },
+            selected: true
         });
 
         src.removeClass('selected-node');
         src = undefined;
     } else {
         src = e.cyTarget;
-        src.addClass('selected-node');
+        //src.addClass('selected-node');
     }
+    openWorkflowPropertyEditor();
     updateJSONDump();
 }
 
@@ -415,6 +418,7 @@ function performRemove(e) {
     }
 
     cy.remove(e.cyTarget);
+    closeWorkflowPropertyEditor();
     updateJSONDump();
 }
 //#endregion
@@ -438,26 +442,6 @@ function performClearSelectedTool(e) {
 $('#show-wf').click(function(){
     updateJSONDump();
 });
-//
-//$('#load-wf').click(function(){
-//    workflow = {
-//        nodes: [
-//            { data: { id: 'a', parent: 'b', name: 'a' } },
-//            { data: { id: 'b', name: 'b' } },
-//            { data: { id: 'c', parent: 'b', name: 'c' } },
-//            { data: { id: 'd', name: 'd' } },
-//            { data: { id: 'e', parent: 'g', name: 'e' } },
-//            { data: { id: 'f', parent: 'e', name: 'f' } },
-//            { data: { id: 'g', name: 'g' } }
-//        ],
-//        edges: [
-//            { data: { id: 'ad', source: 'a', target: 'd' } },
-//            { data: { id: 'eb', source: 'e', target: 'b' } }
-//
-//        ]
-//    };
-//    drawGraph(workflow);
-//});
 
 function truncateString(str, length) {
     return str.length > length ? str.substring(0, length - 3) + '...' : str
