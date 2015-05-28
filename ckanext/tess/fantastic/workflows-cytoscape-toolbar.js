@@ -247,7 +247,7 @@ function drawGraph(workflow, workflow_action) {
                     'target-arrow-color': default_selected_colour,
                     'source-arrow-color': default_selected_colour,
                     'border-width':'7',
-                    'border-color': '#999',
+                    'border-color': default_selected_colour,//'#999',
                     'background-blacken' : '0.3'
                 }
             }
