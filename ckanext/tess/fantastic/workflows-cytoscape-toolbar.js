@@ -53,7 +53,11 @@ function drawGraph(workflow, workflow_action) {
     $('#download-json-workflow').click(function(e) {
         $('#json-wf').show().text(JSON.stringify(window.cy.json()));
         $('#png').hide();
-    })
+    });
+    $('#dialog-div-show').click(function(e) {
+        console.log('hellooo');
+        $('#dialog-div').removeClass('hidden').show();
+    });
 
     var cy = window.cy = cytoscape({
         container: document.getElementById('cy'),
@@ -196,6 +200,17 @@ function drawGraph(workflow, workflow_action) {
                                 tooltip: 'Remove workflow element',
                                 action: [performRemove]
                             }
+                        ],
+                        [
+                            {
+                                icon: 'fa fa-location-arrow',
+                                event: ['tap'],
+                                selector: 'edge,node',
+                                bubbleToCore: false,
+                                selected: true,
+                                tooltip: 'Select mode',
+                                action: []
+                            }
                         ]
                     ],
                     appendTools: false
@@ -332,10 +347,7 @@ function drawGraph(workflow, workflow_action) {
 
 function openEditor(element) {
     $("#workflow_element_info").show();
-
     $("#no_workflow_element_selected").hide();
-    console.log(element)
-
     if (!(element)) {
         /*If not set, load selected*/
         var current_selected = cy.$(':selected').first();
@@ -416,11 +428,11 @@ function addChildNodeToNode(e){
         return;
     }
     if (evtTarget.isNode()) {
+        evtTarget.unselect();
         var toolIndexes = e.data.data.selectedTool;
         var tool = e.data.data.options.tools[toolIndexes[0]][toolIndexes[1]];
         var object = {
             group: 'nodes',
-            selected: true,
             data: {
                 name: tool.options.text,
                 color: default_node_colour,
@@ -429,14 +441,13 @@ function addChildNodeToNode(e){
             position: {
                 x: e.cyPosition.x,
                 y: e.cyPosition.y
-            }
+            },
+            selected: true
         }
-        var a = e.cy.add(object).addClass('tool-node').addClass(tool.options.clazz);
-        console.log(a);
+        e.cy.add(object).select().addClass('tool-node').addClass(tool.options.clazz);
+
         updateJSONDump();
-
     }
-
 }
 
 function addObject(e, action) {
