@@ -608,3 +608,7 @@ div#workflow_element_info ul.items{
     font-size: 11px;
     text-align: center;
 }
+
+.margin-bottom-0 {
+    margin-bottom: 0px;
+}
