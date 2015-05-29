@@ -137,6 +137,8 @@ function drawGraph(workflow, workflow_action) {
 
         //boxSelectionEnabled: (action == "show")? false : true,
 
+        selectionType: 'single',
+
         maxZoom: 2.0,
         minZoom: 0.5
 
