@@ -178,8 +178,12 @@ function drawGraph(workflow, workflow_action) {
 }
 
 $( document ).on('click', '.tool-item, .selected-tool', function(event) {
-    cy.$(':selected').unselect();
-    closeWorkflowPropertyEditor();
+    // For 'select-mode-tool' leave the selected element as is, for all other tools
+    // on the toolbar - remove the selection
+    if ( $(event.target).attr('class').indexOf("select-mode-tool") < 0 ){
+        cy.$(':selected').unselect();
+        closeWorkflowPropertyEditor();
+    }
 });
 
 //$( document ).on('click', '.clear-selection-tool', function(event) {
