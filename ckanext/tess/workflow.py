@@ -10,6 +10,7 @@ from ckan.controllers.home import HomeController
 
 import logging
 
+import datetime
 from sqlalchemy import Table
 from sqlalchemy import Column
 from sqlalchemy import types
@@ -107,6 +108,9 @@ class WorkflowController(HomeController):
             result['name'] = workflow.name
             result['description'] = workflow.description
             result['id'] = workflow.id
+            result['creator'] = model.User.get(workflow.creator_user_id).display_name
+            result['created'] = h.time_ago_from_timestamp(workflow.created)
+            result['modified'] = h.time_ago_from_timestamp(workflow.last_modified)
             results.append(result)
         c.workflows = results
         return base.render('workflow/index.html')
@@ -118,12 +122,12 @@ class WorkflowController(HomeController):
             new_model.name = parameters.get('title')
             new_model.description = parameters.get('description')
             new_model.definition = parameters.get('dialog-div')
+            user_obj = model.User.by_name(c.user.decode('utf8'))
+            if user_obj:
+                new_model.creator_user_id = user_obj.id
             new_model.save()
             id = new_model.id
             h.flash_notice('%s has been saved' % parameters.get('title'))
-            print new_model
-            print '==========================='
-            print id
             return h.redirect_to(controller='ckanext.tess.workflow:WorkflowController', action='read', id=id)
         else:
             return base.render('workflow/new.html')
@@ -166,6 +170,7 @@ class WorkflowController(HomeController):
             workflow.description = parameters.get('description')
             if parameters.get('dialog-div'):
                 workflow.definition = parameters.get('dialog-div')
+            workflow.last_modified = datetime.datetime.utcnow()
             workflow.save()
             id = workflow.id
             h.flash_notice('%s has been updated' % parameters.get('title'))
