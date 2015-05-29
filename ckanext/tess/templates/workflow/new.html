@@ -15,7 +15,11 @@
 {% endblock %}
 
 {% block primary_content_inner %}
-    {% snippet "workflow/snippets/display_workflow_info.html", workflow={}, action='new' %}
+    {% if c.workflow_dict %}
+        {% snippet "workflow/snippets/display_workflow_info.html", workflow=c.workflow_dict, action='new-errors' %}
+    {% else %}
+        {% snippet "workflow/snippets/display_workflow_info.html", workflow={}, action='new' %}
+    {% endif %}
     {% snippet "workflow/snippets/display_workflow.html", workflow={}, action='new' %}
 {% endblock %}
 

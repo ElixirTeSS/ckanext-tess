@@ -3,7 +3,7 @@ import ckan.plugins as plugins
 import ckan.lib.base as base
 import ckan.logic as logic
 import os
-
+import json
 from ckan.lib.plugins import DefaultGroupForm
 
 from ckan.controllers.home import HomeController
@@ -121,17 +121,27 @@ class WorkflowController(HomeController):
     def new(self):
         parameters = logic.parse_params(request.params)
         if 'save' in parameters:
-            new_model = TessWorkflow()
-            new_model.name = parameters.get('title')
-            new_model.description = parameters.get('description')
-            new_model.definition = parameters.get('dialog-div')
-            user_obj = model.User.by_name(c.user.decode('utf8'))
-            if user_obj:
-                new_model.creator_user_id = user_obj.id
-            new_model.save()
-            id = new_model.id
-            h.flash_notice('%s has been saved' % parameters.get('title'))
-            return h.redirect_to(controller='ckanext.tess.workflow:WorkflowController', action='read', id=id)
+            wf = json.loads(parameters.get('dialog-div'))
+            print wf.get('elements')
+            if wf.get('elements') != {}:
+                new_model = TessWorkflow()
+                new_model.name = parameters.get('title')
+                new_model.description = parameters.get('description')
+                new_model.definition = parameters.get('dialog-div')
+                user_obj = model.User.by_name(c.user.decode('utf8'))
+                if user_obj:
+                    new_model.creator_user_id = user_obj.id
+                print new_model.definition
+                new_model.save()
+                id = new_model.id
+                h.flash_notice('%s has been saved' % parameters.get('title'))
+                return h.redirect_to(controller='ckanext.tess.workflow:WorkflowController', action='read', id=id)
+            else:
+                h.flash_error('Whoops! It looks like you have not drawn any of the Training Workflow. Add some stages to create a Training Workflow.')
+                c.workflow_dict = {}
+                c.workflow_dict['name'] = parameters.get('title')
+                c.workflow_dict['description'] = parameters.get('description')
+                return base.render('workflow/new.html')
         else:
             return base.render('workflow/new.html')
 
@@ -168,16 +178,24 @@ class WorkflowController(HomeController):
     def update(self, id):
         parameters = logic.parse_params(request.params)
         if 'save' in parameters:
-            workflow = model.Session.query(TessWorkflow).get(id)
-            workflow.name = parameters.get('title')
-            workflow.description = parameters.get('description')
-            if parameters.get('dialog-div'):
-                workflow.definition = parameters.get('dialog-div')
-            workflow.last_modified = datetime.datetime.utcnow()
-            workflow.save()
-            id = workflow.id
-            h.flash_notice('%s has been updated' % parameters.get('title'))
-            return h.redirect_to(controller='ckanext.tess.workflow:WorkflowController', action='read', id=id)
+            wf = json.loads(parameters.get('dialog-div'))
+            if wf.get('elements') != {}:
+                workflow = model.Session.query(TessWorkflow).get(id)
+                workflow.name = parameters.get('title')
+                workflow.description = parameters.get('description')
+                if parameters.get('dialog-div'):
+                    workflow.definition = parameters.get('dialog-div')
+                workflow.last_modified = datetime.datetime.utcnow()
+                workflow.save()
+                id = workflow.id
+                h.flash_notice('%s has been updated' % parameters.get('title'))
+                return h.redirect_to(controller='ckanext.tess.workflow:WorkflowController', action='read', id=id)
+            else:
+                h.flash_error('Whoops! It looks like your Training Workflow is empty. Please add stages to update.')
+                c.workflow_dict = get_workflow(id)
+                c.workflow_dict['name'] = parameters.get('title')
+                c.workflow_dict['description'] = parameters.get('description')
+                return base.render('workflow/edit.html')
         else:
             c.workflow_dict = get_workflow(id)
 
