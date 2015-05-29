@@ -394,17 +394,18 @@ function performLink(e) {
             data: {
                 source: src.id(),
                 target: tgt.id()
-            },
-            selected: true
+            }
+            //selected: true
         });
 
         src.removeClass('selected-node');
         src = undefined;
+        openWorkflowPropertyEditor(tgt);
     } else {
         src = e.cyTarget;
-        //src.addClass('selected-node');
+        src.addClass('selected-node');
+        openWorkflowPropertyEditor(src);
     }
-    openWorkflowPropertyEditor();
     updateJSONDump();
 }
 
