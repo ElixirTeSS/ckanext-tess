@@ -163,8 +163,9 @@ function drawGraph(workflow, workflow_action) {
         }
     });
 
-    cy.on('select', function(event){
-    });
+    //cy.on('select', function(event){
+    //});
+
     //$( document ).off('click', '.tool-item, .selected-tool').on('click', '.tool-item, .selected-tool', function(event) {
     //    alert('you clicked a '+$(event.target).attr('class')+' element');
     //    if(event.handled !== true) {
@@ -181,18 +182,17 @@ $( document ).on('click', '.tool-item, .selected-tool', function(event) {
     closeWorkflowPropertyEditor();
 });
 
-$( document ).on('click', '.clear-selection', function(event) {
-    //alert('you clicked a '+$(event.target).attr('class')+' element');
-    // Firstly deselect all selected wf elements
-    // then let the toolbar handle any subsequent clicks on the graph, if any
-    $(event.target).unbind('click');
-    $(event.target).removeClass('selected-tool');
-    event.stopPropagation();
-    cy.$(':selected').unselect();
-    closeWorkflowPropertyEditor();
-    //repositionToolbar(); // not necessary to redraw the toolbar as we managed to consume the event
-    return false;
-});
+//$( document ).on('click', '.clear-selection-tool', function(event) {
+//    //alert('you clicked a '+$(event.target).attr('class')+' element');
+//    // Firstly deselect all selected wf elements
+//    // then let the toolbar handle any subsequent clicks on the graph, if any
+//    $(event.target).unbind('click');
+//    $(event.target).removeClass('selected-tool');
+//    event.stopPropagation();
+//    cy.$(':selected').unselect();
+//    closeWorkflowPropertyEditor();
+//    return false;
+//});
 
 //var nodes = (workflow['elements']['nodes']);
 //for (var i = 0; i < nodes.length; i++) {
@@ -324,7 +324,6 @@ function addNodeToGraph(e) {
     if (evtTarget === cy) {
         addObject(e, addNodeToGraph);
     }
-
 }
 
 function addChildNodeToNode(e){
@@ -443,9 +442,9 @@ function performClearSelectedTool(e) {
 
 /////////////////////////////////////////////////////
 
-$('#show-wf').click(function(){
-    updateJSONDump();
-});
+//$('#show-wf').click(function(){
+//    updateJSONDump();
+//});
 
 function truncateString(str, length) {
     return str.length > length ? str.substring(0, length - 3) + '...' : str
@@ -471,7 +470,7 @@ function createToolbar() {
         tools: [
             [
                 {
-                    icon: 'fa fa-location-arrow',
+                    icon: 'fa fa-location-arrow select-mode-tool',
                     event: ['tap'],
                     selector: 'edge,node',
                     bubbleToCore: false,
@@ -538,7 +537,7 @@ function createToolbar() {
                         }
                     },
                     bubbleToCore: true,
-                    tooltip: 'Pan Down',
+                    tooltip: 'Pan down',
                     action: [performPanDown]
                 },
                 {
@@ -610,20 +609,20 @@ function createToolbar() {
                     event: ['tap'],
                     selector: 'edge,node',
                     bubbleToCore: false,
-                    tooltip: 'Remove workflow element',
+                    tooltip: 'Remove node or link',
                     action: [performRemove]
                 }
-            ],
-            [
-                {
-                    icon: 'fa fa-eraser clear-selection',
-                    event: ['tap'],
-                    selector: '',
-                    bubbleToCore: false,
-                    tooltip: 'Clear selection',
-                    action: [performClearSelection]
-                }
-            ]
+            ]//,
+            //[
+            //    {
+            //        icon: 'fa fa-eraser clear-selection-tool',
+            //        event: ['tap'],
+            //        selector: '',
+            //        bubbleToCore: false,
+            //        tooltip: 'Clear selection',
+            //        action: [performClearSelection]
+            //    }
+            //]
         ],
         appendTools: false
     };
