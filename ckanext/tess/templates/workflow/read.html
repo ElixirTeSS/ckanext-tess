@@ -35,6 +35,18 @@
     {% else %}
         <p class="empty">{{ _('There is no description for this workflow') }}</p>
     {% endif %}
+            <br><br><br>
+            {% set user = c.workflow_dict.creator %}
+            {% if user %}
+               <p>Author: {{ h.link_to(user.fullname, h.url_for(controller='user', action='read', id=user.name)) }}</p>
+            {% endif %}
+            {% if c.workflow_dict.created %}
+                <p>Date created: {{ h.render_datetime(c.workflow_dict.created) }}</p>
+            {% endif %}
+            {% if c.workflow_dict.last_modified and h.render_datetime(c.workflow_dict.last_modified) != h.render_datetime(c.workflow_dict.created) %}
+                <p>Last Modified: {{ h.render_datetime(c.workflow_dict.last_modified) }}</p>
+            {% endif %}
+
         </section>
     </div>
 {% endblock %}

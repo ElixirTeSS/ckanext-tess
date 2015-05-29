@@ -94,6 +94,9 @@ def get_workflow(workflow_id):
     result['name'] = workflow.name
     result['description'] = workflow.description
     result['id'] = workflow.id
+    result['creator'] = model.User.get(workflow.creator_user_id)
+    result['created'] = workflow.created
+    result['last_modified'] = workflow.last_modified
     return result
 
 
