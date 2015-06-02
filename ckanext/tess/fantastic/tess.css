@@ -563,6 +563,20 @@ hr.style-one {
 }
 
 
+.training-material-info{
+  margin: 10px 10px -20px 0px;
+  padding-bottom: 10px;
+  border: solid;
+  border-width: 1px;
+  border-color: lightgrey;
+}
+#hide-info{
+    float:right;
+    background-color: transparent;
+    border: none;
+}
+
+
 #workflow_element_info{
 	background-color:white;
 	border:1px solid lightgray;

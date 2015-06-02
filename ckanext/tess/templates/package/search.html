@@ -7,6 +7,26 @@
 {% endblock %}
 
 {% block primary_content %}
+{% resource 'tess/hide_element.js' %}
+<div class="training-material-info" >
+    <h2 class="module-heading">
+        <i class="icon-info-sign"></i>
+        {{ _('What are Training Materials?') }}
+        <button id="hide-info" data-module="hide_element" data-module-hide_class="training-material-info">X</button>
+    </h2>
+    <div class="module-content">
+        <p>
+            {% trans %}
+            <p>A <b>material</b> in TeSS is a link to an accessible, online training material along with descriptive metadata and
+            an ontological categorization.</p>
+            <p> Training materials in TeSS are aggregated from Content Providers or registered manually.  If you have a site containing
+                training materials that you wish to be included in TeSS please contact the TeSS team at <a href="mailto:tess@elixir-uk.info"> tess@elixir-uk.info </a></p>
+            <p> See the <a href="/about">About page</a> to find out more about TeSS.</p>
+            {% endtrans %}
+        </p>
+    </div>
+    </div>
+
   <section class="module">
     <div class="module-content">
       {% block page_primary_action %}
