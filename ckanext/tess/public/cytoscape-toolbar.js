@@ -203,7 +203,7 @@ function pan(core, direction, factors) {
 		multipleToolsClass: 'tool-item-list', // set a class name for the tools that should be shown in the same position
 		toolItemClass: 'tool-item', // set a class name for a toolbar item to help with styling
 		autodisableForMobile: true, // disable the toolbar completely for mobile (since we don't really need it with gestures like pinch to zoom)
-		zIndex: 9999, // the z-index of the ui div
+		zIndex: 1, // the z-index of the ui div
 		longClickTime: 325 // time until a multi-tool list will present other tools
 	};
 
