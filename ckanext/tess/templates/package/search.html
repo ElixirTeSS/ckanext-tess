@@ -1,27 +1,32 @@
 {% ckan_extends %}
 
-{% block subtitle %}{{ _("Training materials") }}{% endblock %}
+{% block subtitle %}{{ _("Materials") }}{% endblock %}
 
 {% block breadcrumb_content %}
-  <li class="active">{{ h.nav_link(_('Training materials'), controller='package', action='search', highlight_actions = 'new index') }}</li>
+  <li class="active">{{ h.nav_link(_('Materials'), controller='package', action='search', highlight_actions = 'new index') }}</li>
 {% endblock %}
 
 {% block primary_content %}
 {% resource 'tess/hide_element.js' %}
-<div class="training-material-info" >
-    <h2 class="module-heading">
+<div class="training-material-info">
+    <h2 class="module-heading" style="padding: 10px;">
         <i class="icon-info-sign"></i>
-        {{ _('What are Training Materials?') }}
-        <button id="hide-info" data-module="hide_element" data-module-hide_class="training-material-info">X</button>
+        {{ _('What are materials in TeSS?') }}
+        <button class="icon-remove" id="hide-info" data-module="hide_element" data-module-hide_class="training-material-info"></button>
     </h2>
     <div class="module-content">
         <p>
             {% trans %}
-            <p>A <b>material</b> in TeSS is a link to an accessible, online training material along with descriptive metadata and
-            an ontological categorization.</p>
-            <p> Training materials in TeSS are aggregated from Content Providers or registered manually.  If you have a site containing
-                training materials that you wish to be included in TeSS please contact the TeSS team at <a href="mailto:tess@elixir-uk.info"> tess@elixir-uk.info </a></p>
-            <p> See the <a href="/about">About page</a> to find out more about TeSS.</p>
+            <p>
+                A material in TeSS is a link to an accessible, online training material (such as a text, a presentation, a video),
+                existing elsewhere on the Web and sourced by a content provider,
+                along with description and other meta information (e.g. ontological categorization, keywords, etc.).
+            </p>
+            <p>
+                Training materials in TeSS are automatically aggregated from content providers. Alternatively, they can also
+                be registered in TeSS manually. If you have a site containing training materials that you wish to be included
+                in TeSS please contact the TeSS team at <a href="mailto:tess@elixir-uk.info">tess@elixir-uk.info </a> to arrange automated ingestion.
+            </p>
             {% endtrans %}
         </p>
     </div>
@@ -32,7 +37,7 @@
       {% block page_primary_action %}
         {% if h.check_access('package_create') %}
           <div class="page_primary_action">
-            {% link_for _('Add training material'), controller='package', action='new', class_='btn btn-primary', icon='plus-sign-alt' %}
+            {% link_for _('Register material'), controller='package', action='new', class_='btn btn-primary', icon='plus-sign-alt' %}
           </div>
         {% endif %}
       {% endblock %}

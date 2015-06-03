@@ -12,7 +12,7 @@
   {% if form_style != 'edit' %}
     {{ _('Next: Add additional resources') }}
   {% else %}
-    {{ _('Update training material') }}
+    {{ _('Update material') }}
   {% endif %}
 {% endblock %}
 
@@ -33,7 +33,7 @@
     <!--<button class="btn" type="submit" name="save" value="next_phase" id="next_phase">Next: Add additional resources</button>-->
     <button class="btn btn-primary" type="submit" name="save">Finish</button>
   {% elif h.check_access('package_update', {'id': c.pkg_dict.id}) %}
-    <button class="btn btn-primary" type="submit" name="save">Update training material</button>
+    <button class="btn btn-primary" type="submit" name="save">Update material</button>
   {% endif %}
 {% endblock %}
 
