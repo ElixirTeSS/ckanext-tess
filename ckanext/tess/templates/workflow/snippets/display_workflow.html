@@ -8,6 +8,7 @@
 <script type="text/javascript" src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 <script type="text/javascript" src="/cytoscape.js"></script>
 <script type="text/javascript" src="/cytoscape-toolbar.js"></script>
+<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 <link type="text/css" href="/workflows-cytoscape.css" rel="stylesheet"/>
 <link type="text/css" href="/font-awesome-4.0.3/css/font-awesome.css" rel="stylesheet"/>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
@@ -21,6 +22,22 @@
 <span><br>&nbsp;</span>
 {% endif %}
 <div id="cy" style="float: right;" class="cy col-md-7 col-md-offset-1"></div>
+
+
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Training Materials</h3>
+  </div>
+  <div class="modal-body">
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <button class="btn btn-primary" data-dismiss="modal" id="save-material" class="hidden">SAVEY JONES LOCKER</button>
+  </div>
+</div>
+    <input type='text' id="training-materials"/>
+
 
 <script>
     $(document).ready(function(){
