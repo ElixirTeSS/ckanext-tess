@@ -1,7 +1,7 @@
 {% ckan_extends %}
 
 {% block content_action %}
-  {% link_for _('View training material'), controller='package', action='read', id=pkg.name, class_='btn', icon='eye-open' %}
+  {% link_for _('View material'), controller='package', action='read', id=pkg.name, class_='btn', icon='eye-open' %}
 {% endblock %}
 
 {% block content_primary_nav %}
