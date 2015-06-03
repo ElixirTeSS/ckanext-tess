@@ -1,0 +1,22 @@
+<script type="application/javascript">
+    $('#save-material' ).on('click', function(event) {
+        var selected = [];
+        $('#training_materials input:checked').each(function() {
+            selected.push({
+                        'name': $(this).attr('data-name'),
+                        'id': $(this).attr('data-id')
+            });
+        });
+        cy.$(':selected').data('materials', selected);
+    });
+</script>
+
+Add some training materials to this stage:
+<table id="training_materials">
+{% for mat in c.training_materials %}
+    <tr>
+        <td><input type="checkbox" data-name="{{ mat['value'] }}" data-id="{{ mat['id'] }}"/></td>
+        <td><span id="">{{ mat['value'] }}</span></td>
+    </tr>
+{% endfor %}
+</table>

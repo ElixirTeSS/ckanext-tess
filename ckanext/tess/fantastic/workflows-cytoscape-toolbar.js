@@ -1,6 +1,8 @@
 //Modified from https://github.com/bdparrish/cytoscape.js-toolbar
 
+/*
 jQuery.noConflict();
+*/
 
 var default_node_width = 150;
 var default_node_height = 30;
@@ -55,7 +57,6 @@ function drawGraph(workflow, workflow_action) {
         $('#png').hide();
     });
     $('#dialog-div-show').click(function(e) {
-        console.log('hellooo');
         $('#dialog-div').removeClass('hidden').show();
     });
 
@@ -160,6 +161,15 @@ function drawGraph(workflow, workflow_action) {
             //closeWorkflowPropertyEditor();
             updateJSONDump();
             openWorkflowPropertyEditor(element);
+            if (action == 'show' && evtTarget.isNode()) {
+                var node_info = evtTarget.data();
+                /*if (typeof(node_info.name) != 'undefined') {*/
+                    $('#training-materials').val(JSON.stringify(node_info.materials))
+                    $("#myModal").modal({
+                        remote: '/workflow/read_training'
+                    })
+                /*}*/
+            }
         }
     });
 
@@ -220,6 +230,27 @@ $( document ).on('click', '.tool-item, .selected-tool', function(event) {
 //    //}
 //});
 
+$('#myModal').on('shown', function(e){
+    if (action=='show'){
+        $('#workflow-materials').empty();
+        $('#save-material').addClass('hidden');
+        var tm = $('#training-materials').val();
+        if (tm != undefined && tm != ''){
+            var tm = $.parseJSON(tm);
+            $.each(tm, function(index, material){
+                var row = '<tr>';
+                    row += '<td><a href="/package/' + material['id'] + '">' + material['name'] + '</a></td>';
+                row += '</tr>';
+                $('#workflow-materials').append(row);
+            })
+        } else {
+            $('#workflow-materials').append('No training materials associated with this stage of the workflow');
+        }
+    } else {
+        $('#save-material').removeClass('hidden');
+    }
+});
+
 function openWorkflowPropertyEditor(element) {
     $("#no_workflow_element_selected").hide();
     if (!(element)) {
@@ -238,7 +269,6 @@ function openWorkflowPropertyEditor(element) {
 
         // Hide all the fields where we are not allowing modification for links/edges
         $("#element-color").hide();
-        $('label[for="element-color"]').hide();
 
         $("#element-train-mat").hide();
         $('label[for="element-train-mat"]').hide();
@@ -251,6 +281,7 @@ function openWorkflowPropertyEditor(element) {
         $('#element-color').val(current_selected.data('color'));
         $('#element-train-mat').val(current_selected.data('training-material'))
         $('#element-topic').val(current_selected.data('topic'));
+        $('#training-materials').val(current_selected.data('materials'));
         $("#element-type").html("Node");
 
         // Show all field allowed to be modified
@@ -319,6 +350,20 @@ function clearSelectedWorkflowElements() {
 }
 
 //#region node tools
+
+function addTrainingMaterial(e) {
+    if (!e.data.canPerform(e, addTrainingMaterial)) {
+        return;
+    }
+    var evtTarget = e.cyTarget;
+    if (action == 'edit' && evtTarget.isNode()) {
+        $("#myModal").modal({
+            remote : '/workflow/edit_training'
+        })
+    }
+
+}
+
 function addNodeToGraph(e) {
 
     var evtTarget = e.cyTarget;
@@ -344,7 +389,8 @@ function addChildNodeToNode(e){
             data: {
                 name: tool.options.text,
                 color: default_node_colour,
-                parent: evtTarget.id()
+                parent: evtTarget.id(),
+                materials: []
             },
             position: {
                 x: e.cyPosition.x,
@@ -368,7 +414,8 @@ function addObject(e, action) {
         group: 'nodes',
         data: {
             name: tool.options.text,
-            color: default_node_colour
+            color: default_node_colour,
+            materials: []
         },
         position: {
             x: e.cyPosition.x,
@@ -616,7 +663,21 @@ function createToolbar() {
                     tooltip: 'Remove node or link',
                     action: [performRemove]
                 }
-            ]//,
+            ],
+            [
+                 {
+                    icon: 'fa fa-book',
+                    event: ['tap'],
+                    selector: 'node',
+                    bubbleToCore: false,
+                    tooltip: 'Associate Materials to a Node',
+                    action: [addTrainingMaterial]
+                }
+
+            ]
+
+
+            //,
             //[
             //    {
             //        icon: 'fa fa-eraser clear-selection-tool',
