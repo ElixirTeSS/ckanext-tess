@@ -390,7 +390,7 @@ function pan(core, direction, factors) {
 													position: 'absolute',
 													top: 28,
 													left: 35,
-													zIndex: 10
+													zIndex: 2
 												});
 							$toolListWrapper.append($moreArrow);
 						}
