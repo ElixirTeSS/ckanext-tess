@@ -41,7 +41,7 @@
 
   {% block search_title %}
     {% if not no_title %}
-      <h3>{% snippet 'snippets/search_result_text.html', query=query, count=count, type=type, suffix=suffix %}</h3>
+      <h3>{% snippet 'snippets/search_result_text.html', query=query, count=count, type=type, context=context %}</h3>
     {% endif %}
   {% endblock %}
 

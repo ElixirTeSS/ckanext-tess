@@ -11,12 +11,12 @@ Example:
   {% snippet 'snippets/search_result_text.html', query=query, count=count, type='dataset' %}
 
 #}
-{% set suffix = suffix or "" %}
+{% set context = context or "" %}
 {% if type == 'dataset' %}
   {% set text_query = ungettext('{number} training material found for "{query}"', '{number} training materials found for "{query}"', count) %}
   {% set text_query_none = _('No training materials found for "{query}"') %}
-  {% set text_no_query = ungettext('{number} training material found' + ' ' + suffix, '{number} training materials found' + ' ' + suffix, count) %}
-  {% set text_no_query_none = _('No training materials found' + ' ' + suffix) %}
+  {% set text_no_query = ungettext('{number} training material found' + ' ' + context, '{number} training materials found' + ' ' + context, count) %}
+  {% set text_no_query_none = _('No training materials found' + ' ' + context) %}
 
 {% elif type == 'group' %}
   {% set text_query = ungettext('{number} package found for "{query}"', '{number} packages found for "{query}"', count) %}
