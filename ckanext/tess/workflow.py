@@ -60,6 +60,10 @@ class WorkflowPlugin(plugins.SingletonPlugin):
         map.connect('workflow', '/workflow', controller='ckanext.tess.workflow:WorkflowController', action='index')
         map.connect('workflow_list', '/workflow', controller='ckanext.tess.workflow:WorkflowController', action='index')
         map.connect('workflow_new', '/workflow/new', controller='ckanext.tess.workflow:WorkflowController', action='new')
+
+        map.connect('workflow_training_edit', '/workflow/edit_training', controller='ckanext.tess.workflow:WorkflowController', action='edit_training', ckan_icon="book")
+        map.connect('workflow_training_read', '/workflow/read_training', controller='ckanext.tess.workflow:WorkflowController', action='read_training', ckan_icon="book")
+
         map.connect('workflow_update', '/workflow/edit/{id}', controller='ckanext.tess.workflow:WorkflowController', action='update')
         map.connect('workflow_delete', '/workflow/delete/{id}', controller='ckanext.tess.workflow:WorkflowController', action='delete')
         map.connect('workflow_read', '/workflow/{id}', controller='ckanext.tess.workflow:WorkflowController', action='read', ckan_icon="sitemap")
@@ -82,8 +86,9 @@ def training_material_options():
     res = toolkit.get_action('package_search')(data_dict={'rows': 5000})
     titles = []
     for package in res.get('results'):
-        titles.append({'value': package['title']})
+        titles.append({'value': package['title'], 'id': package['id']})
     return titles
+
 
 def get_workflow(workflow_id):
     workflow = model.Session.query(TessWorkflow).get(workflow_id)
@@ -101,6 +106,15 @@ def get_workflow(workflow_id):
 
 
 class WorkflowController(HomeController):
+
+    def read_training(self):
+        return base.render('workflow/ajax/read_training.html')
+
+    def edit_training(self):
+        c.training_materials = training_material_options()
+
+        return base.render('workflow/ajax/edit_training.html')
+
 
     def index(self):
         workflows = model.Session.query(TessWorkflow)
