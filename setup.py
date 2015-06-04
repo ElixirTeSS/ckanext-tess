@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import sys, os
 
-version = '0.9.1-alpha'
+version = '0.9.2-alpha'
 
 setup(
     name='ckanext-tess',
@@ -38,5 +38,6 @@ setup(
         event=ckanext.tess.event:EventPlugin
         event_controller=ckanext.tess.event:EventController
         event_api=ckanext.tess.event:EventApi
+        tessrelations=ckanext.tess.tessrelations:TessrelationsPlugin
     ''',
 )

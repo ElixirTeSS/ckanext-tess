@@ -19,7 +19,8 @@ import datetime
 from datetime import timedelta
 import ckan.lib.formatters as formatters
 from time import gmtime, strftime
-from ckanext.tessrelations.model.tables import TessMaterialNode, TessMaterialEvent, TessEvents, TessGroup, TessDomainObject, TessDataset
+from ckanext.tess.model.tables import TessMaterialNode, TessMaterialEvent, TessEvents, TessGroup, TessDomainObject, TessDataset
+
 
 import ckan.lib.base as base
 from ckan.controllers.home import HomeController
@@ -72,6 +73,7 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     #plugins.implements(plugins.IConfigurer)
 
     plugins.implements(plugins.IConfigurer, inherit=True)
+    plugins.implements(plugins.IMapper, inherit=True)
     plugins.implements(plugins.IRoutes, inherit=True)
     plugins.implements(plugins.IDatasetForm, inherit=True)
     plugins.implements(plugins.ITemplateHelpers, inherit=True)
@@ -176,3 +178,5 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     #     return {
     #         'resource_create': tess_resource_create,
     #     }
+
+

@@ -22,7 +22,7 @@ from ckan import model
 from ckan.model.meta import metadata, mapper, Session, engine
 from ckan.model.types import make_uuid
 from ckan.model.domain_object import DomainObject
-from ckanext.tessrelations.model.tables import TessWorkflow
+from ckanext.tess.model.tables import TessWorkflow
 
 import ckan.lib.helpers as h
 

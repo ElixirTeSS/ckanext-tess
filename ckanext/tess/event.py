@@ -16,7 +16,7 @@ import datetime
 from datetime import timedelta
 import ckan.lib.formatters as formatters
 from time import gmtime, strftime
-from ckanext.tessrelations.model.tables import TessMaterialNode, TessMaterialEvent, TessEvents, TessGroup, TessDomainObject, TessDataset
+from ckanext.tess.model.tables import TessMaterialNode, TessMaterialEvent, TessEvents, TessGroup, TessDomainObject, TessDataset
 
 import ckan.lib.base as base
 from ckan.controllers.home import HomeController
