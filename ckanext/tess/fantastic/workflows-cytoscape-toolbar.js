@@ -27,15 +27,17 @@ function drawGraph(workflow, workflow_action) {
     closeWorkflowPropertyEditor();
     action = (typeof workflow_action === 'undefined') ? 'show' : workflow_action; // what kind of action we are handling - new workflow, show workflow or edit workflow
 
+    $('#associate-training-materials').click(function(e){
+        loadTrainingMaterialModal();
+    })
+
     $('#save_workflow_element_properties').click(function(e){
         saveWorkflowElementProperties();
     });
-
     $('#save-workflow').click( function(e){
         clearSelectedWorkflowElements();
         updateJSONDump();
     });
-
     $('#element-color').change(function(e){
         updateWorkflowElement();
     });
@@ -355,13 +357,20 @@ function addTrainingMaterial(e) {
     if (!e.data.canPerform(e, addTrainingMaterial)) {
         return;
     }
-    var evtTarget = e.cyTarget;
+    loadTrainingMaterialModal(e)
+}
+
+function loadTrainingMaterialModal(e) {
+    if (e){
+        var evtTarget = e.cyTarget;
+    } else {
+        var evtTarget = cy.$(':selected').first()
+    }
     if (action == 'edit' && evtTarget.isNode()) {
         $("#myModal").modal({
             remote : '/workflow/edit_training'
         })
     }
-
 }
 
 function addNodeToGraph(e) {
