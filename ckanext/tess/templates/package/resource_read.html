@@ -32,17 +32,24 @@
             {% endif %}
             {% if res.url and h.is_url(res.url) %}
               <li>
-                <a class="btn btn-primary resource-url-analytics resource-type-{{ res.resource_type }}" href="{{ res.url }}">
                   {% if res.resource_type in ('listing', 'service') %}
+                    <a class="btn btn-primary resource-url-analytics resource-type-{{ res.resource_type }}" href="{{ res.url }}">
                     <i class="icon-eye-open"></i> {{ _('View') }}
+                    </a>
                   {% elif  res.resource_type == 'api' %}
+                    <a class="btn btn-primary resource-url-analytics resource-type-{{ res.resource_type }}" href="{{ res.url }}">
                     <i class="icon-key"></i> {{ _('API Endpoint') }}
+                    </a>
                   {% elif not res.has_views or not res.can_be_previewed %}
-                    <i class="icon-external-link"></i> {{ _('Go to resource') }}
+                    <a href="{{ res.url }}" class="btn btn-success" target="_blank">
+                    <i class="icon-share-alt"></i>
+                    Open
+                    </a>
                   {% else %}
+                    <a class="btn btn-primary resource-url-analytics resource-type-{{ res.resource_type }}" href="{{ res.url }}">
                     <i class="icon-download"></i> {{ _('Download') }}
+                    </a>
                   {% endif %}
-                </a>
               </li>
             {% endif %}
             {% if 'datastore' in g.plugins %}
