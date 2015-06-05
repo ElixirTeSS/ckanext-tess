@@ -32,6 +32,7 @@
       {{ form.image_upload(data, errors, field_url='url', field_upload='upload', field_clear='clear_upload',
          is_upload_enabled=False, is_url=data.url and not is_upload, is_upload=is_upload,
          upload_label=_('File'), url_label=_('URL')) }}
+        {{ form.input('image_url', label=_('Image URL'), id='field-image_url', placeholder=_('URL for a custom image for this resource'), value=data.image_url, error=errors.image_url, classes=['control-medium']) }}
     {% endblock %}
 
     {% block basic_fields_format %}
