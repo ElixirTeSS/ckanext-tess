@@ -151,7 +151,6 @@ function drawGraph(workflow, workflow_action) {
 
     });
     cy.on('click', function(event){
-
         // cyTarget holds a reference to the originator
         // of the event (core or element)
         var evtTarget = event.cyTarget;

@@ -8,23 +8,37 @@
             });
         });
         cy.$(':selected').data('materials', selected);
+
     });
-    $('#myModal').on('show', function(e){
-        if (action=='edit'){
+    $('#myModal').on('show', function(e) {
+        populateModal();
+    });
+    populateModal();
+
+    function populateModal() {
+        if (action == 'edit') {
             /* reset stuff */
-            $('#training_materials input:checked').each(function() {
+            $('#training_materials input:checked').each(function () {
                 $(this).prop('checked', false);
             });
             $('#workflow-materials').empty();
             /* Setup existing content (name, description, associated resources) */
             var node = $.parseJSON($('#node-info').val());
             console.log(node)
-            if (node.name)          { $('.modal-workflow-title').text(node.name);}
-            else                    { $('.modal-workflow-title').text('Unnamed Node'); }
-            if (node.description)   { $('.modal-workflow-description').text(node.description);
-                                      $('.modal-workflow-description').removeClass('empty') }
-            else                    { $('.modal-workflow-description').text('There is no description for this workflow stage');
-                                      $('.modal-workflow-description').addClass('empty') }
+            if (node.name) {
+                $('.modal-workflow-title').text(node.name);
+            }
+            else {
+                $('.modal-workflow-title').text('Unnamed Node');
+            }
+            if (node.description) {
+                $('.modal-workflow-description').text(node.description);
+                $('.modal-workflow-description').removeClass('empty')
+            }
+            else {
+                $('.modal-workflow-description').text('There is no description for this workflow stage');
+                $('.modal-workflow-description').addClass('empty')
+            }
 
             if (node.materials != undefined && node.materials.constructor === Array && node.materials.length > 0) {
                 $.each(node.materials, function (index, material) {
@@ -41,7 +55,7 @@
         } else {
             $('#save-material').removeClass('hidden');
         }
-    });
+    }
 </script>
 
 <div>
