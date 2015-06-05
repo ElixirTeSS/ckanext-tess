@@ -9,7 +9,9 @@
         });
         cy.$(':selected').data('materials', selected);
     });
-    $('#myModal').on('shown', function(e){
+    $('#myModal').on('show', function(e){
+        $('#myModal').close()
+        $('#myModal').open()
         if (action=='edit'){
             /* reset stuff */
             $('#training_materials input:checked').each(function() {
@@ -52,10 +54,10 @@
 </div>
 
 <h3>Add training materials to <span class="modal-workflow-title"></span>:</h3>
-<table id="training_materials">
+<table class='table' id="training_materials">
 {% for mat in c.training_materials %}
     <tr>
-        <td><input type="checkbox" data-name="{{ mat['value'] }}" data-id="{{ mat['id'] }}" id="{{ mat['id'] }}" value="0"/></td>
+        <td style="width:20px;"><input type="checkbox" data-name="{{ mat['value'] }}" data-id="{{ mat['id'] }}" id="{{ mat['id'] }}" value="0"/></td>
         <td><span id="">{{ mat['value'] }}</span></td>
     </tr>
 {% endfor %}
