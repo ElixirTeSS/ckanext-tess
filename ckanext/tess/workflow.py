@@ -111,8 +111,9 @@ class WorkflowController(HomeController):
         return base.render('workflow/ajax/read_training.html')
 
     def edit_training(self):
+        print
         c.training_materials = training_material_options()
-
+        c.stage_name
         return base.render('workflow/ajax/edit_training.html')
 
 

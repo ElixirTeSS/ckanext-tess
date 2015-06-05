@@ -15,10 +15,8 @@
             </div>
             <div>
             {{ form.input('title', label=_('Name'), id='element-name', placeholder=_('Element name'), classes=['control-full margin-bottom-0']) }}
+            {{ form.textarea('description', label=_('Description'), id='element-description', placeholder=_('Short description (max 5 sentences)'), classes=['control-full margin-bottom-0']) }}
             {{ form.input('color', label=_('Colour'), id='element-color', placeholder=_('#FE23A9 or Yellow'), classes=['control-full margin-bottom-0']) }}
-            {{ form.select('train-mat', label=_('Training material'),
-                options=h.training_material_options(),
-                id='element-train-mat', classes=['control-full margin-bottom-0']) }}
             {{ form.select('topic', label=_('Topic'), id='element-topic', options=[{'value':'Topic 1'},{'value':'Topic 2'},{'value':'Topic 3'}], selected='Topic 1', classes=['control-full']) }}
         </div>
             <button class="btn btn-primary pull-left" id="associate-training-materials" type="submit" style="margin-top: 10px;"><i class="icon-book"></i> Associate Material</button>
