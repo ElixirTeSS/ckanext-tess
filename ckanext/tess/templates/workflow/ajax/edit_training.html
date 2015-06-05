@@ -10,15 +10,13 @@
         cy.$(':selected').data('materials', selected);
     });
     $('#myModal').on('show', function(e){
-        $('#myModal').close()
-        $('#myModal').open()
         if (action=='edit'){
             /* reset stuff */
             $('#training_materials input:checked').each(function() {
                 $(this).prop('checked', false);
             });
             $('#workflow-materials').empty();
-            /* Setup various names and displays of existing content (name, description, associated resources */
+            /* Setup existing content (name, description, associated resources) */
             var node = $.parseJSON($('#node-info').val());
             console.log(node)
             if (node.name)          { $('.modal-workflow-title').text(node.name);}
@@ -49,11 +47,11 @@
 <div>
     <h3>Description</h3>
     <div class="modal-workflow-description empty">No description set</div>
-    <h3>Training Materials for '<span class="modal-workflow-title"></span>'</h3>
+    <h3>Training Materials for <em class="modal-workflow-title"></em></h3>
     <table id="workflow-materials"></table>
 </div>
 
-<h3>Add training materials to <span class="modal-workflow-title"></span>:</h3>
+<h3>Add training materials to <em class="modal-workflow-title"></em>:</h3>
 <table class='table' id="training_materials">
 {% for mat in c.training_materials %}
     <tr>
