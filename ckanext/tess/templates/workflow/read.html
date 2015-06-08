@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block primary_content_inner %}
+    {% snippet "workflow/snippets/export_options.html" %}
     {% snippet "workflow/snippets/display_workflow.html", workflow=c.workflow_dict.definition, action='show' %}
 {% endblock %}
 

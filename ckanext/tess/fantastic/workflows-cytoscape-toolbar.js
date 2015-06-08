@@ -51,10 +51,12 @@ function drawGraph(workflow, workflow_action) {
         updateWorkflowElement();
     });
     $('#download-png-workflow').click(function(e) {
+        $('#export').modal('show')
         $('#png').show().attr('src', cy.png());
         $('#json-wf').hide();
     });
     $('#download-json-workflow').click(function(e) {
+        $('#export').modal('show')
         $('#json-wf').show().text(JSON.stringify(window.cy.json()));
         $('#png').hide();
     });

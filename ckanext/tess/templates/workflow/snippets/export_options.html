@@ -1,4 +1,20 @@
-<button class="btn btn-primary pull-right" id='download-json-workflow' name="download-json" type="submit" style="margin: 0px 5px;"><i class="icon-download"></i> Download JSON</button>
+    <div style="margin-bottom: 10px;">
+        <button class="btn btn-primary pull-right" id='download-json-workflow' name="download-json" type="submit" style="margin: 0px 5px;"><i class="icon-download"></i> Download JSON</button>
 <button class="btn btn-primary pull-right" id='download-png-workflow' name="download-png" type="submit" style="margin: 0px 5px;"><i class="icon-download"></i> Download PNG</button>
-<img id="png" style="display:none; border: 1px solid black;"/>
-<textarea id="json-wf" class="wf-textarea" style="display:none"></textarea>
+
+    </div>
+    <span><br>&nbsp;</span>
+
+<div id="export" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="zindex:15">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Export</h3>
+  </div>
+  <div class="modal-body">
+      <img id="png" style="display:none; border: 1px solid black;"/>
+    <textarea id="json-wf" class="wf-textarea" style="display:none"></textarea>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div>
+</div>

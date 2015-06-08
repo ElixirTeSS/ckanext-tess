@@ -14,13 +14,6 @@
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 {% resource 'tess/workflows-cytoscape-toolbar.js' %}
 
-<!--<div id="wf" style="display: none;">{{workflow}}</div>-->
-{% if (action=='show') %}
-<div style="margin-bottom: 10px;">
-    {% snippet "workflow/snippets/export_options.html" %}
-</div>
-<span><br>&nbsp;</span>
-{% endif %}
 <div id="cy" style="float: right;" class="cy col-md-7 col-md-offset-1"></div>
 
 
