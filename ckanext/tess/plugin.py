@@ -134,7 +134,8 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
             'url': [_not_empty, _url_validator],
             'notes': [_not_empty, _not_missing]
         })
-        schema['resources'].update({ 'image_url' : [ _convert_to_extras, _ignore_missing, _url_validator ] })
+        #schema['resources'].update({ 'image_url' : [ _convert_to_extras, _ignore_missing, _url_validator ] })
+        schema['resources'].update({ 'image_url' : [ _ignore_missing, _url_validator ] })
         return schema
 
     def show_package_schema(self):
@@ -153,7 +154,8 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
             'url': [_not_empty, _url_validator],
             'notes': [_not_empty, _not_missing]
         })
-        schema['resources'].update({ 'image_url' : [ _convert_from_extras, _ignore_missing, _url_validator ] })
+        #schema['resources'].update({ 'image_url' : [ _convert_from_extras, _ignore_missing, _url_validator ] })
+        schema['resources'].update({ 'image_url' : [  _ignore_missing, _url_validator ] })
         return schema
 
     def create_package_schema(self):
