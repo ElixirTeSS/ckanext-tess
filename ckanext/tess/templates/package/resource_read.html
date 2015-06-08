@@ -119,10 +119,6 @@
                 <td>{{ res.mimetype_inner or res.mimetype or res.format or _('unknown') }}</td>
               </tr>
               <tr>
-                <th scope="row">Image URL</th>
-                <td>{{ h.format_resource_items(res.image_url) or 'None' }}</td>
-              </tr>
-              <tr>
                 <th scope="row">{{ _('License') }}</th>
                 <td>{% snippet "snippets/license.html", pkg_dict=pkg, text_only=True %}</td>
               </tr>
