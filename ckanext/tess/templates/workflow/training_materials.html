@@ -1,0 +1,25 @@
+{% extends "workflow/read_base.html" %}
+
+{% block breadcrumb_content %}
+  <li>{% link_for _('Workflow'), controller='ckanext.tess.workflow:WorkflowController', action='index' %}</li>
+  <li class="active">{% link_for c.workflow_dict.name|truncate(35), controller='ckanext.tess.workflow:WorkflowController', action='display_workflow_materials', id=c.workflow_dict.id %}</li>
+{% endblock %}
+
+{% block primary_content_inner %}
+
+    {% for material in c.node_materials %}
+        <h3 class="heading">{{ material.get('name') }}</h3>
+        {% if material.get('description') %}
+            <p> {{ material.get('description') }}</p>
+        {% endif %}
+        {% if material.get('materials'): %}
+            <ul>
+                {% for m in material.get('materials') %}
+                    <li>{% link_for m.get('name'), controller='package', action='read', id=m.get('id') %}<br></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <span class="empty"> No training materials are associated with this training workflow stage </span>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

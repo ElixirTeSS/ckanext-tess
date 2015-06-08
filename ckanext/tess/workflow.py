@@ -55,7 +55,7 @@ class WorkflowPlugin(plugins.SingletonPlugin):
     def before_map(self, map):
         # <Placeholders>
         map.connect('workflow_activities', '/workflow/activities/{id}', controller='ckanext.tess.workflow:WorkflowController', action='index', ckan_icon='time')
-        map.connect('workflow_materials', '/workflow/materials/{id}', controller='ckanext.tess.workflow:WorkflowController', action='index', ckan_icon='book')
+        map.connect('workflow_materials', '/workflow/materials/{id}', controller='ckanext.tess.workflow:WorkflowController', action='display_workflow_materials', ckan_icon='book')
         # </placeholders>
         map.connect('workflow', '/workflow', controller='ckanext.tess.workflow:WorkflowController', action='index')
         map.connect('workflow_list', '/workflow', controller='ckanext.tess.workflow:WorkflowController', action='index')
@@ -116,6 +116,21 @@ class WorkflowController(HomeController):
         c.stage_name
         return base.render('workflow/ajax/edit_training.html')
 
+    def display_workflow_materials(self, id=None):
+        c.workflow_dict = get_workflow(id)
+        wf = json.loads(c.workflow_dict.get('definition'))
+        node_materials = []
+
+        elements = wf.get('elements')
+        nodes = elements.get('nodes')
+        if nodes:
+            for node in nodes:
+                node_data = node.get('data')
+                node_materials.append({'name': node_data.get('name', 'Unnamed Node'),
+                                        'description': node_data.get('description', None),
+                                        'materials': node_data.get('materials', [])})
+        c.node_materials = node_materials
+        return base.render('workflow/training_materials.html')
 
     def index(self):
         workflows = model.Session.query(TessWorkflow)
