@@ -44,7 +44,7 @@ function drawGraph(workflow, workflow_action) {
     $('#element-name').change(function(e){
         updateWorkflowElement();
     });
-    $('#element-train-mat').change(function(e){
+    $('#element-description').change(function(e){
         updateWorkflowElement();
     });
     $('#element-topic').change(function(e){
@@ -151,7 +151,6 @@ function drawGraph(workflow, workflow_action) {
 
     });
     cy.on('click', function(event){
-
         // cyTarget holds a reference to the originator
         // of the event (core or element)
         var evtTarget = event.cyTarget;
@@ -163,14 +162,12 @@ function drawGraph(workflow, workflow_action) {
             //closeWorkflowPropertyEditor();
             updateJSONDump();
             openWorkflowPropertyEditor(element);
+            var node_info = evtTarget.data();
+            $('#node-info').val(JSON.stringify(node_info))
             if (action == 'show' && evtTarget.isNode()) {
-                var node_info = evtTarget.data();
-                /*if (typeof(node_info.name) != 'undefined') {*/
-                    $('#training-materials').val(JSON.stringify(node_info.materials))
-                    $("#myModal").modal({
-                        remote: '/workflow/read_training'
-                    })
-                /*}*/
+                $("#myModal").modal({
+                    remote: '/workflow/read_training'
+                });
             }
         }
     });
@@ -232,27 +229,6 @@ $( document ).on('click', '.tool-item, .selected-tool', function(event) {
 //    //}
 //});
 
-$('#myModal').on('shown', function(e){
-    if (action=='show'){
-        $('#workflow-materials').empty();
-        $('#save-material').addClass('hidden');
-        var tm = $('#training-materials').val();
-        if (tm != undefined && tm != ''){
-            var tm = $.parseJSON(tm);
-            $.each(tm, function(index, material){
-                var row = '<tr>';
-                    row += '<td><a href="/package/' + material['id'] + '">' + material['name'] + '</a></td>';
-                row += '</tr>';
-                $('#workflow-materials').append(row);
-            })
-        } else {
-            $('#workflow-materials').append('No training materials associated with this stage of the workflow');
-        }
-    } else {
-        $('#save-material').removeClass('hidden');
-    }
-});
-
 function openWorkflowPropertyEditor(element) {
     $("#no_workflow_element_selected").hide();
     if (!(element)) {
@@ -272,8 +248,8 @@ function openWorkflowPropertyEditor(element) {
         // Hide all the fields where we are not allowing modification for links/edges
         $("#element-color").hide();
 
-        $("#element-train-mat").hide();
-        $('label[for="element-train-mat"]').hide();
+        $("#element-description").hide();
+        $('label[for="element-description"]').hide();
 
         $("#element-topic").hide();
         $('label[for="element-topic"]').hide();
@@ -281,7 +257,7 @@ function openWorkflowPropertyEditor(element) {
     else{
         $('#element-name').val(current_selected.data('name'));
         $('#element-color').val(current_selected.data('color'));
-        $('#element-train-mat').val(current_selected.data('training-material'))
+        $('#element-description').val(current_selected.data('description'))
         $('#element-topic').val(current_selected.data('topic'));
         $('#training-materials').val(current_selected.data('materials'));
         $("#element-type").html("Node");
@@ -289,12 +265,12 @@ function openWorkflowPropertyEditor(element) {
         // Show all field allowed to be modified
         $("#element-name").show();
         $("#element-color").show();
-        $("#element-train-mat").show();
+        $("#element-description").show();
         $("#element-topic").show();
 
         $('label[for="element-name"]').show();
         $('label[for="element-color"]').show();
-        $('label[for="element-train-mat"]').show();
+        $('label[for="element-description"]').show();
         $('label[for="element-topic"]').show();
 
     }
@@ -306,7 +282,7 @@ function saveWorkflowElementProperties() {
     $('#element-name').val('');
     $('#element-color').val('');
     $('#element-topic').val('');
-    $('#element-train-mat').val('');
+    $('#element-description').val('');
     openWorkflowPropertyEditor();
 }
 
@@ -326,7 +302,7 @@ function updateWorkflowElement() {
         current_selected.data('name',$('#element-name').val());
         current_selected.data('short_name',truncateString($('#element-name').val(), 30));
         current_selected.data('color',$('#element-color').val());
-        current_selected.data('training-material',$('#element-train-mat').val());
+        current_selected.data('description',$('#element-description').val());
         current_selected.data('topic',$('#element-topic').val());
 
         /* apply properties to image and update output JSON */
@@ -366,6 +342,8 @@ function loadTrainingMaterialModal(e) {
     } else {
         var evtTarget = cy.$(':selected').first()
     }
+    var node_info = evtTarget.data();
+    $('#node-info').val(JSON.stringify(node_info))
     if (action == 'edit' && evtTarget.isNode()) {
         $("#myModal").modal({
             remote : '/workflow/edit_training'

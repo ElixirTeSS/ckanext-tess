@@ -8,14 +8,68 @@
             });
         });
         cy.$(':selected').data('materials', selected);
+
     });
+    $('#myModal').on('show', function(e) {
+        populateModal();
+    });
+    populateModal();
+
+    function populateModal() {
+        if (action == 'edit') {
+            /* reset stuff */
+            $('#training_materials input:checked').each(function () {
+                $(this).prop('checked', false);
+            });
+            $('#workflow-materials').empty();
+            /* Setup existing content (name, description, associated resources) */
+            var node = $.parseJSON($('#node-info').val());
+            console.log(node)
+            if (node.name) {
+                $('.modal-workflow-title').text(node.name);
+            }
+            else {
+                $('.modal-workflow-title').text('Unnamed Node');
+            }
+            if (node.description) {
+                $('.modal-workflow-description').text(node.description);
+                $('.modal-workflow-description').removeClass('empty')
+            }
+            else {
+                $('.modal-workflow-description').text('There is no description for this workflow stage');
+                $('.modal-workflow-description').addClass('empty')
+            }
+
+            if (node.materials != undefined && node.materials.constructor === Array && node.materials.length > 0) {
+                $.each(node.materials, function (index, material) {
+                    var row = '<tr>';
+                    row += '<td><a href="/package/' + material['id'] + '">' + material['name'] + '</a></td>';
+                    row += '</tr>';
+                    $('#workflow-materials').append(row);
+                    /* Also set checkboxes to checked if they're already assigned */
+                    $('#' + material['id']).prop('checked', true)
+                });
+            } else {
+                $('#workflow-materials').html('<div class="empty">There are currently no associated materials with this workflow stage.</div>');
+            }
+        } else {
+            $('#save-material').removeClass('hidden');
+        }
+    }
 </script>
 
-Add some training materials to this stage:
-<table id="training_materials">
+<div>
+    <h3>Description</h3>
+    <div class="modal-workflow-description empty">No description set</div>
+    <h3>Training Materials for <em class="modal-workflow-title"></em></h3>
+    <table id="workflow-materials"></table>
+</div>
+
+<h3>Add training materials to <em class="modal-workflow-title"></em>:</h3>
+<table class='table' id="training_materials">
 {% for mat in c.training_materials %}
     <tr>
-        <td><input type="checkbox" data-name="{{ mat['value'] }}" data-id="{{ mat['id'] }}"/></td>
+        <td style="width:20px;"><input type="checkbox" data-name="{{ mat['value'] }}" data-id="{{ mat['id'] }}" id="{{ mat['id'] }}" value="0"/></td>
         <td><span id="">{{ mat['value'] }}</span></td>
     </tr>
 {% endfor %}

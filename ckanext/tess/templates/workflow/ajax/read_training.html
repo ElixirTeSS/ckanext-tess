@@ -1,3 +1,42 @@
-Training Materials for this Workflow Stage
+<script>
+    function populateModal() {
+        if (action=='show'){
+            $('#workflow-materials').empty();
+            $('#save-material').addClass('hidden');
+            var node = $.parseJSON($('#node-info').val());
+            console.log(node)
+            if (node.name)          { $('.modal-workflow-title').text(node.name);}
+            else                    { $('.modal-workflow-title').text('Unnamed Node'); }
+            if (node.description)   { $('.modal-workflow-description').text(node.description);
+                                      $('.modal-workflow-description').removeClass('empty') }
+            else                    { $('.modal-workflow-description').text('There is no description for this workflow stage');
+                                      $('.modal-workflow-description').addClass('empty') }
 
-<table id="workflow-materials"></table>
+            if (node.materials != undefined && node.materials.constructor === Array && node.materials.length > 0) {
+                $.each(node.materials, function (index, material) {
+                    var row = '<tr>';
+                    row += '<td><a href="/package/' + material['id'] + '">' + material['name'] + '</a></td>';
+                    row += '</tr>';
+                    $('#workflow-materials').append(row);
+                });
+            } else {
+                $('#workflow-materials').html('<div class="empty">There are no associated materials with this workflow stage.</div>');
+            }
+        } else {
+            $('#save-material').removeClass('hidden');
+        }
+    }
+    $('#myModal').on('show', function(e){
+        populateModal();
+    });
+
+    populateModal();
+</script>
+
+<div>
+    <h3>Description</h3>
+    <div class="modal-workflow-description empty">No description set</div>
+    <h3>Training Materials for <em class="modal-workflow-title"></em></h3>
+    <table class='table' id="workflow-materials"></table>
+</div>
+
