@@ -11,7 +11,8 @@
 {% block content_primary_nav %}
   {{ h.build_nav_icon('workflow_read', _('Workflow'), id=c.workflow_dict.id) }}
   {{ h.build_nav_icon('workflow_materials', _('Training materials'), id=c.workflow_dict.id, offset=0) }}
-  {{ h.build_nav_icon('workflow_activities', _('Activity log'), id=c.workflow_dict.id, offset=0) }}
+  {#{ h.build_nav_icon('workflow_activities', _('Activity log'), id=c.workflow_dict.id, offset=0) }
+    TODO: This might be a big job. Activity Streams are quite hard-coded and inextensible in CKAN #}
 {% endblock %}
 
 
