@@ -385,7 +385,15 @@ function addChildNodeToNode(e){
             },
             selected: true
         }
-        e.cy.add(object).select().addClass('tool-node').addClass(tool.options.clazz);
+        var newChild = e.cy.add(object)
+        newChild.select();
+        evtTarget.unselect();
+        /* newChild is selected at this point in execution - but some code further on resets the parent to being
+        selected! Need to find out where this is and stop it. Or maybe emergency exit execution :S
+        Proof - uncomment:
+            console.log(newChild.selected())
+        */
+        newChild.addClass('tool-node').addClass(tool.options.clazz);
         updateJSONDump();
     }
 }
