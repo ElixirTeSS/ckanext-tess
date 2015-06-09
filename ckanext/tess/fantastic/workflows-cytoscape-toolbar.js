@@ -74,7 +74,6 @@ function drawGraph(workflow, workflow_action) {
             if (workflow_action != 'show') {
                 cy.toolbar(createToolbar());
             }
-            $('select[name="colorpicker-longlist"]').simplecolorpicker({picker: true, theme: 'glyphicons'});
         },
 
         style: [
