@@ -7,7 +7,7 @@ jQuery.noConflict();
 var default_node_width = 150;
 var default_node_height = 30;
 var default_font_size = 11;
-var default_node_colour = '#9FBD6E';
+var default_node_colour = '#7bd148';
 var default_edge_colour = '#848383';
 var default_selected_colour = '#2A62E4';
 var action; // 'show', 'new' or 'edit'
@@ -41,6 +41,9 @@ function drawGraph(workflow, workflow_action) {
     $('#element-color').change(function(e){
         updateWorkflowElement();
     });
+    $('#colorpicker-longlist').change(function(e){
+        updateWorkflowElement();
+    });
     $('#element-name').change(function(e){
         updateWorkflowElement();
     });
@@ -71,6 +74,7 @@ function drawGraph(workflow, workflow_action) {
             if (workflow_action != 'show') {
                 cy.toolbar(createToolbar());
             }
+            $('select[name="colorpicker-longlist"]').simplecolorpicker({picker: true, theme: 'glyphicons'});
         },
 
         style: [
@@ -152,6 +156,7 @@ function drawGraph(workflow, workflow_action) {
         minZoom: 0.5
 
     });
+
     cy.on('click', function(event){
         // cyTarget holds a reference to the originator
         // of the event (core or element)
@@ -258,7 +263,13 @@ function openWorkflowPropertyEditor(element) {
     }
     else{
         $('#element-name').val(current_selected.data('name'));
-        $('#element-color').val(current_selected.data('color'));
+
+        if (current_selected.data('color')){
+            $('select[name="colorpicker-longlist"]').simplecolorpicker('selectColor', current_selected.data('color'));
+        } else {
+            $('select[name="colorpicker-longlist"]').simplecolorpicker('selectColor', default_node_colour);
+        }
+
         $('#element-description').val(current_selected.data('description'))
         $('#element-topic').val(current_selected.data('topic'));
         $('#training-materials').val(current_selected.data('materials'));
@@ -303,7 +314,7 @@ function updateWorkflowElement() {
         /* set model properties */
         current_selected.data('name',$('#element-name').val());
         current_selected.data('short_name',truncateString($('#element-name').val(), 30));
-        current_selected.data('color',$('#element-color').val());
+        current_selected.data('color',$('#colorpicker-longlist').val());
         current_selected.data('description',$('#element-description').val());
         current_selected.data('topic',$('#element-topic').val());
 
