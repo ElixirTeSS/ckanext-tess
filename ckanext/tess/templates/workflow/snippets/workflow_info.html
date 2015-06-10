@@ -18,8 +18,8 @@
       {% block workflow_additional_info %}
         {% if workflow_dict.creator %}
           <tr>
-            <th scope="row" class="dataset-label">{{ _("Author") }}</th>
-            <td class="dataset-details" property="dc:creator">{{ h.mail_to(email_address=workflow_dict.creator.email, name=workflow_dict.creator.name) }}</td>
+            <th scope="row" class="dataset-label">{{ _("Creator") }}</th>
+            <td class="dataset-details" property="dc:creator">{{ h.linked_user(workflow_dict.creator) }}</td>
           </tr>
         {% endif %}
         {% if workflow_dict.created %}
