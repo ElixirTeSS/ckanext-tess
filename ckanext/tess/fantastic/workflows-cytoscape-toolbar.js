@@ -57,10 +57,18 @@ function drawGraph(workflow, workflow_action) {
         $('#export').modal('show')
         $('#png').show().attr('src', cy.png());
         $('#json-wf').hide();
+        $('#ro').hide();
     });
     $('#download-json-workflow').click(function(e) {
         $('#export').modal('show')
         $('#json-wf').show().text(JSON.stringify(window.cy.json()));
+        $('#png').hide();
+        $('#ro').hide();
+    });
+    $('#download-ro-workflow').click(function(e) {
+        $('#export').modal('show')
+        $('#ro').show()
+        $('#json-wf').hide()
         $('#png').hide();
     });
     $('#dialog-div-show').click(function(e) {

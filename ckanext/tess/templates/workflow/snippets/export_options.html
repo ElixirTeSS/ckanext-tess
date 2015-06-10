@@ -1,7 +1,15 @@
-    <div style="margin-bottom: 10px;">
-        <button class="btn btn-primary pull-right" id='download-json-workflow' name="download-json" type="submit" style="margin: 0px 5px;"><i class="icon-download"></i> Download JSON</button>
-<button class="btn btn-primary pull-right" id='download-png-workflow' name="download-png" type="submit" style="margin: 0px 5px;"><i class="icon-download"></i> Download PNG</button>
+<div style="margin-bottom: 10px;">
 
+    <div class="export-box">
+        <div class="export-options-heading">
+            Export Options
+        </div>
+        <div class="export-options">
+            <button class="btn btn-default" id='download-png-workflow' name="download-png" type="submit" style="margin: 0px 5px;"><i class="icon-download"></i>PNG</button>
+            <button class="btn btn-default" id='download-ro-workflow' name="download-png" type="submit" style="margin: 0px 5px;"><i class="icon-download"></i>Research Object</button>
+            <button class="btn btn-default" id='download-json-workflow' name="download-json" type="submit" style="margin: 0px 5px;"><i class="icon-download"></i>JSON</button>
+        </div>
+    </div>
     </div>
     <span><br>&nbsp;</span>
 
@@ -12,7 +20,18 @@
   </div>
   <div class="modal-body">
       <img id="png" style="display:none; border: 1px solid black;"/>
-    <textarea id="json-wf" class="wf-textarea" style="display:none"></textarea>
+      <textarea id="json-wf" class="wf-textarea" style="display:none"></textarea>
+      <div id="ro" class="" style="display:none"> <h3>Coming Soon</h3> <br> <p>
+          <b>Research Objects</b> are a way to share academic literature. They provide a mechanism for <b>identification</b>,
+          <b>aggregation</b> and <b>annotation</b> of online academic materials.</p>
+          <p>The TeSS team are working on providing a Research Object export of Training Workflows</p>
+          <p>Find out more about Research Objects:</p>
+          <ul>
+              <li><a href="http://www.researchobject.org/overview/">Research Object Homesite - Overview page</a></li>
+              <li><a href="doi:10.1016/j.websem.2015.01.003"> Using a suite of ontologies for preserving workflow-centric research objects</a></li>
+              <li><a href="http://en.wikipedia.org/wiki/Research_Objects">Research Object Wikipedia Page</a></li>
+          </ul>
+      </div>
   </div>
   <div class="modal-footer">
     <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
