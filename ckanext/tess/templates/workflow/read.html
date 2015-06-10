@@ -5,8 +5,11 @@
   <li class="active">{% link_for c.workflow_dict.name|truncate(35), controller='ckanext.tess.workflow:WorkflowController', action='read', id=c.workflow_dict.id %}</li>
 {% endblock %}
 
-{% block primary_content_inner %}
+{% block show_specific %}
     {% snippet "workflow/snippets/export_options.html" %}
     {% snippet "workflow/snippets/display_workflow.html", workflow=c.workflow_dict.definition, action='show' %}
 {% endblock %}
 
+{% block secondary%}
+{# Keep me empty of woe be tide! #}
+{%endblock%}

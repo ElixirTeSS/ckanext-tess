@@ -8,13 +8,18 @@
   <li class="active">{% link_for _('Manage'), controller='ckanext.tess.workflow:WorkflowController', action='update', id=c.workflow_dict.id %}</li>
 {% endblock %}
 
-{% block content_action %}
-<div style="margin-bottom: 13px;">
-    {% link_for _('View'), controller='ckanext.tess.workflow:WorkflowController', action='read', id=c.workflow_dict.id, class_='btn', icon='eye-open' %}
-</div>
-{% endblock %}
 
-{% block primary_content_inner %}
+{% block primary %}
+    <header class="module-content page-header">
+        <div class="content_action">
+            <div style="margin-bottom: 13px;">
+                {% link_for _('View'), controller='ckanext.tess.workflow:WorkflowController', action='read', id=c.workflow_dict.id, class_='btn', icon='eye-open' %}
+            </div>
+        </div>
+    </header>
+
+    {% snippet "workflow/snippets/workflow-property-editor.html" %}
+
     {% if c.workflow_dict.definition %}
         {% snippet "workflow/snippets/display_workflow_info.html", workflow=c.workflow_dict, action='edit' %}
         {% snippet "workflow/snippets/display_workflow.html", workflow=c.workflow_dict.definition, action='edit' %}
@@ -24,19 +29,6 @@
     {% endif %}
 {% endblock %}
 
-{% block secondary_content %}
-    <div class="module module-narrow module-shallow context-info">
-        <section class="module-content">
-    {% block heading %}
-         <h1 class="heading">{{c.workflow_dict.name}}</h1>
-    {% endblock %}
-    {% if c.workflow_dict.description %}
-        <p>{{ h.markdown_extract(c.workflow_dict.description, 180) }}</p>
-    {% else %}
-        <p class="empty">{{ _('There is no description for this workflow') }}</p>
-    {% endif %}
-        </section>
-    </div>
-    {% snippet "workflow/snippets/workflow-creation-guide.html" %}
-    {% snippet "workflow/snippets/workflow-property-editor.html" %}
+{% block secondary %}
 {% endblock %}
+

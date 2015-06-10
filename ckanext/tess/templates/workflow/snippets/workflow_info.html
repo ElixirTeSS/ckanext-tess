@@ -1,0 +1,40 @@
+<h1 class="heading">{{c.workflow_dict.name}}</h1>
+        {% if c.workflow_dict.description %}
+            <p>{{ h.markdown_extract(c.workflow_dict.description, 180) }}</p>
+        {% else %}
+            <p class="empty">{{ _('There is no description for this workflow') }}</p>
+        {% endif %}
+
+<section class="additional-info">
+  <h3 class="heading">{{ _('Workflow Info') }}</h3>
+  <table class="table table-striped table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th scope="col" style="background-color: #8CA0A6; color: white;">{{ _('Field') }}</th>
+        <th scope="col" style="background-color: #8CA0A6; color: white;">{{ _('Value') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% block workflow_additional_info %}
+        {% if workflow_dict.creator %}
+          <tr>
+            <th scope="row" class="dataset-label">{{ _("Author") }}</th>
+            <td class="dataset-details" property="dc:creator">{{ h.mail_to(email_address=workflow_dict.creator.email, name=workflow_dict.creator.name) }}</td>
+          </tr>
+        {% endif %}
+        {% if workflow_dict.created %}
+          <tr>
+            <th scope="row" class="dataset-label">{{ _("Created") }}</th>
+            <td class="dataset-details">{{ h.render_datetime(workflow_dict.created, with_hours=True) }}</td>
+          </tr>
+        {% endif %}
+        {% if workflow_dict.last_modified %}
+          <tr>
+            <th scope="row" class="dataset-label">{{ _("Last Updated") }}</th>
+            <td class="dataset-details">{{ h.render_datetime(workflow_dict.last_modified, with_hours=True) }}</td>
+          </tr>
+        {% endif %}
+      {% endblock %}
+    </tbody>
+  </table>
+</section>

@@ -562,23 +562,25 @@ hr.style-one {
     height: 500px;
 }
 
-.export-box{
-    background: rgb(244, 244, 244);
-    width: 70%;
-    padding: 10px;
-    margin: 10px auto;
+.workflow-training-material-display {
+    margin-bottom: 30px;
+}
+
+/*.export-box{
 }
 
 .export-options-heading {
-    font-weight: bold;
-    max-width: 130px;
-    margin: 0 auto 10px;
-}
+}*/
 
 .export-options {
-    font-weight: normal;
-    max-width: 360px;
-    margin: 0 auto;
+    padding-bottom: 20px;
+}
+
+.property-editor{
+    width:20%;
+    position:fixed;
+    z-index: 11;
+    right: 5px;
 }
 
 .training-material-info{

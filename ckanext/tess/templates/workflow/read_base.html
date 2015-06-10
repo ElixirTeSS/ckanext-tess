@@ -2,43 +2,29 @@
 
 {% block subtitle %}{{ c.workflow_dict.name }} - {{ _('Workflows') }}{% endblock %}
 
-{% block content_action %}
-  {% if h.check_access('workflow_update', {'id': c.workflow_dict.id}) %}
-    {% link_for _('Manage'), controller='ckanext.tess.workflow:WorkflowController', action='update', id=c.workflow_dict.id, class_='btn', icon='wrench' %}
-  {% endif %}
+
+{% block primary %}
+    <header class="module-content page-header">
+        <div class="content_action">
+            {% if h.check_access('workflow_update', {'id': c.workflow_dict.id}) %}
+                {% link_for _('Manage'), controller='ckanext.tess.workflow:WorkflowController', action='update', id=c.workflow_dict.id, class_='btn', icon='wrench' %}
+            {% endif %}
+        </div>
+        <ul class="nav nav-tabs">
+            {{ h.build_nav_icon('workflow_read', _('Workflow'), id=c.workflow_dict.id) }}
+            {{ h.build_nav_icon('workflow_materials', _('Training materials'), id=c.workflow_dict.id, offset=0) }}
+            {#{ h.build_nav_icon('workflow_activities', _('Activity log'), id=c.workflow_dict.id, offset=0) }
+                TODO: This might be a big job. Activity Streams are quite hard-coded and inextensible in CKAN#}
+        </ul>
+    </header>
+
+    <section class="module-content">
+        {% snippet "workflow/snippets/workflow_info.html", workflow_dict=c.workflow_dict %}
+        {% block show_specific %}
+        {% endblock %}
+    </section>
 {% endblock %}
 
-{% block content_primary_nav %}
-  {{ h.build_nav_icon('workflow_read', _('Workflow'), id=c.workflow_dict.id) }}
-  {{ h.build_nav_icon('workflow_materials', _('Training materials'), id=c.workflow_dict.id, offset=0) }}
-  {#{ h.build_nav_icon('workflow_activities', _('Activity log'), id=c.workflow_dict.id, offset=0) }
-    TODO: This might be a big job. Activity Streams are quite hard-coded and inextensible in CKAN #}
-{% endblock %}
-
-
-{% block secondary_content %}
-    <div class="module module-narrow module-shallow context-info">
-        <section class="module-content">
-    {% block heading %}
-         <h1 class="heading">{{c.workflow_dict.name}}</h1>
-    {% endblock %}
-    {% if c.workflow_dict.description %}
-        <p>{{ h.markdown_extract(c.workflow_dict.description, 180) }}</p>
-    {% else %}
-        <p class="empty">{{ _('There is no description for this workflow') }}</p>
-    {% endif %}
-            <br><br><br>
-            {% set user = c.workflow_dict.creator %}
-            {% if user %}
-               <p>Author: {{ h.link_to(user.fullname, h.url_for(controller='user', action='read', id=user.name)) }}</p>
-            {% endif %}
-            {% if c.workflow_dict.created %}
-                <p>Date created: {{ h.render_datetime(c.workflow_dict.created) }}</p>
-            {% endif %}
-            {% if c.workflow_dict.last_modified and h.render_datetime(c.workflow_dict.last_modified) != h.render_datetime(c.workflow_dict.created) %}
-                <p>Last Modified: {{ h.render_datetime(c.workflow_dict.last_modified) }}</p>
-            {% endif %}
-
-        </section>
-    </div>
-{% endblock %}
+{% block secondary%}
+{# Keep me empty or woe be tide! #}
+{%endblock%}

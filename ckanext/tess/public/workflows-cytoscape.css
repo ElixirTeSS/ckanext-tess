@@ -42,8 +42,9 @@ i {
 /* cytoscape graph */
 .cy {
     height: 900px;
-    width: 630px;
+    width: 900px;
     background-color: #f9f9f9;
+    right: auto;
 }
 
 .cy-overall-toolbar {

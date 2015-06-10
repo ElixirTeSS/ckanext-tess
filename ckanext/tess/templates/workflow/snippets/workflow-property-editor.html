@@ -17,14 +17,14 @@
     ] %}
 
 
-<div class="module module-narrow module-shallow">
+<div class="module property-editor"id="workflow_element_info" >
     <h2 class="module-heading">
         <i class="icon-edit-sign"></i>
         {{ _('Workflow property editor') }}
     </h2>
     <div style="padding: 0 5px;" class="module-content">
         <p id="no_workflow_element_selected" class="empty" style="padding: 10px;">No workflow element selected</p>
-        <div id="workflow_element_info" style="position: initial;">
+        <div style="position: initial;">
             <div class="control-group control-full" style="margin-bottom: 0px;">
                 <label class="control-label" for="element-type">Type</label>
                 <div id="element-type" class="controls" style="background-color: #8CA0A6; color: white; font-weight: bold;"></div>
@@ -34,9 +34,9 @@
             {{ form.textarea('description', label=_('Description'), id='element-description', placeholder=_('Short description (max 5 sentences)'), classes=['control-full margin-bottom-0']) }}
             {{ form.select('colorpicker-longlist', label=_('Colour'), id='colorpicker-longlist', options=colour_list, classes=['control-full']) }}
             {#{ form.select('topic', label=_('Topic'), id='element-topic', options=[{'value':'Topic 1'},{'value':'Topic 2'},{'value':'Topic 3'}], selected='Topic 1', classes=['control-full']) }#}
-                <span id="associate-training-materials"><i class="icon-book"></i> Associate Material </span>
+            <span id="associate-training-materials"><i class="icon-book"></i> Associate Material </span>
         </div>
-            <button class="btn btn-primary pull-left" id="save_workflow_element_properties" type="submit" style="margin-top: 10px;"><i class="icon-save"></i> Apply</button>
+            <button class="btn btn-primary pull-left" id="save_workflow_element_properties" type="submit" style="margin-top: 10px;">Apply and Close</button>
         </div>
     </div>
 </div>
