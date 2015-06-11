@@ -22,9 +22,8 @@
                 $(this).prop('checked', false);
             });
             $('#workflow-materials').empty();
-            /* Setup existing content (name, description, associated resources) */
+            /* Setup existing content (node name, node description, node's associated resources) */
             var node = $.parseJSON($('#node-info').val());
-            console.log(node)
             if (node.name) {
                 $('.modal-workflow-title').text(node.name);
             }
@@ -46,8 +45,12 @@
                     row += '<td><a href="/package/' + material['id'] + '">' + material['name'] + '</a></td>';
                     row += '</tr>';
                     $('#workflow-materials').append(row);
-                    /* Also set checkboxes to checked if they're already assigned */
+                    /* Check associated material checkboxes  */
                     $('#' + material['id']).prop('checked', true)
+                    /* Delete and Prepend them so they bubble to the top */
+                    var assigned_material = $('#row-' + material['id']);
+                    assigned_material.remove()
+                    $('#training_materials').prepend(assigned_material)
                 });
             } else {
                 $('#workflow-materials').html('<div class="empty">There are currently no associated materials with this workflow stage.</div>');
@@ -68,7 +71,7 @@
 <h3>Add training materials to <em class="modal-workflow-title"></em>:</h3>
 <table class='table' id="training_materials">
 {% for mat in c.training_materials %}
-    <tr>
+    <tr id="row-{{mat.get('id')}}">
         <td style="width:20px;"><input type="checkbox" data-name="{{ mat['value'] }}" data-id="{{ mat['id'] }}" id="{{ mat['id'] }}" value="0"/></td>
         <td><span id="">{{ mat['value'] }}</span></td>
     </tr>

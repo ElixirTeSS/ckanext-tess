@@ -562,6 +562,26 @@ hr.style-one {
     height: 500px;
 }
 
+.workflow-training-material-display {
+    margin-bottom: 30px;
+}
+
+/*.export-box{
+}
+
+.export-options-heading {
+}*/
+
+.export-options {
+    padding-bottom: 20px;
+}
+
+.property-editor{
+    width:20%;
+    position:fixed;
+    z-index: 11;
+    right: 5px;
+}
 
 .training-material-info{
   margin: 10px 10px -20px 0px;
@@ -575,7 +595,16 @@ hr.style-one {
     background-color: transparent;
     border: none;
 }
+#hide-property-editor{
+    float:right;
+    background-color: transparent;
+    border: none;
+}
 
+.wf-meta-form{
+    width: 80%;
+
+}
 
 #workflow_element_info{
 	background-color:white;

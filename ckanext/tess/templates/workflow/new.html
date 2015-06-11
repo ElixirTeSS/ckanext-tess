@@ -14,7 +14,18 @@
 {% block page_primary_action %}
 {% endblock %}
 
-{% block primary_content_inner %}
+
+{% block primary %}
+    <header class="module-content page-header">
+        <div class="content_action">
+            <div style="margin-bottom: 13px;">
+                {% link_for _('View'), controller='ckanext.tess.workflow:WorkflowController', action='read', id=c.workflow_dict.id, class_='btn', icon='eye-open' %}
+            </div>
+        </div>
+    </header>
+
+    {% snippet "workflow/snippets/workflow-property-editor.html" %}
+
     {% if c.workflow_dict %}
         {% snippet "workflow/snippets/display_workflow_info.html", workflow=c.workflow_dict, action='new-errors' %}
     {% else %}
@@ -23,7 +34,6 @@
     {% snippet "workflow/snippets/display_workflow.html", workflow={}, action='new' %}
 {% endblock %}
 
-{% block secondary_content %}
-    {% snippet "workflow/snippets/workflow-creation-guide.html" %}
-    {% snippet "workflow/snippets/workflow-property-editor.html" %}
+{% block secondary %}
 {% endblock %}
+

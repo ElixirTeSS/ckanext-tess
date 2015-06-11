@@ -33,6 +33,7 @@ function drawGraph(workflow, workflow_action) {
 
     $('#save_workflow_element_properties').click(function(e){
         saveWorkflowElementProperties();
+        updateWorkflowElement();
     });
     $('#save-workflow').click( function(e){
         clearSelectedWorkflowElements();
@@ -57,15 +58,26 @@ function drawGraph(workflow, workflow_action) {
         $('#export').modal('show')
         $('#png').show().attr('src', cy.png());
         $('#json-wf').hide();
+        $('#ro').hide();
     });
     $('#download-json-workflow').click(function(e) {
         $('#export').modal('show')
         $('#json-wf').show().text(JSON.stringify(window.cy.json()));
         $('#png').hide();
+        $('#ro').hide();
     });
-    $('#dialog-div-show').click(function(e) {
-        $('#dialog-div').removeClass('hidden').show();
+    $('#download-ro-workflow').click(function(e) {
+        $('#export').modal('show')
+        $('#ro').show()
+        $('#json-wf').hide()
+        $('#png').hide();
     });
+    $('#show-help').click(function(e) {
+        $('#help-modal').modal('show');
+    });
+    $('#hide-property-editor').click(function(e){
+        closeWorkflowPropertyEditor();
+    })
 
     var cy = window.cy = cytoscape({
         container: document.getElementById('cy'),
@@ -74,7 +86,6 @@ function drawGraph(workflow, workflow_action) {
             if (workflow_action != 'show') {
                 cy.toolbar(createToolbar());
             }
-            $('select[name="colorpicker-longlist"]').simplecolorpicker({picker: true, theme: 'glyphicons'});
         },
 
         style: [
@@ -152,7 +163,7 @@ function drawGraph(workflow, workflow_action) {
 
         selectionType: 'single',
 
-        maxZoom: 2.0,
+        maxZoom: 1.5,
         minZoom: 0.5
 
     });
