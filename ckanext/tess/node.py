@@ -79,7 +79,7 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
     def bulk_process_template(self):
         return 'node/bulk_process.html'
 
-    def after_delete(mapper, connection, instance):
+    def after_delete(self, mapper, connection, instance):
         print 'instance deleted: '
         return
 
