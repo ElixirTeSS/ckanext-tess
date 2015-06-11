@@ -21,6 +21,8 @@
     <section class="module-content">
         {% snippet "workflow/snippets/workflow_info.html", workflow_dict=c.workflow_dict %}
         {% block show_specific %}
+            {# This is implemented by inheriting templates. It contains either the workflow
+                            in 'read.html' or training materials in 'training_material.html' #}
         {% endblock %}
     </section>
 {% endblock %}
