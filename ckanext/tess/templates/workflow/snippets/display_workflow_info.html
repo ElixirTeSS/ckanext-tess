@@ -6,7 +6,7 @@
     {% set action_url = h.url_for('workflow_update', id=workflow.id) %}
 {% endif %}
 
-<div style="width:50%; float:left; margin-right:50px">
+<div class="wf-meta-form">
 <form class="form-horizontal" method="post" data-module="basic-form" enctype="multipart/form-data" action="{{action_url}}">
 
     <div class="form-actions" style="border-top: 0px; padding-top: 0px;">
@@ -34,8 +34,4 @@
         </div>
     </div>
 </form>
-</div>
-
-<div style="width:40%; float:right;">
-    {% snippet "workflow/snippets/workflow-creation-guide.html" %}
 </div>
