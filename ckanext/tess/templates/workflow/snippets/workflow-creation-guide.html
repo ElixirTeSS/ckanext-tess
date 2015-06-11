@@ -1,36 +1,44 @@
 <div id="instructions" style="padding: 0 5px;" class="module-content col-md-4">
-    <ul style="margin: 0px 0px 10px 10px;">
-        <h4>Adding nodes and links</h4>
-    </ul>
-    <ul id="adding-nodes-links">
-        <li>Click on <i class="fa fa-plus"></i> in the toolbar to select the <em>Add node</em> tool</li>
-        <li>Create nodes on the graph by clicking on points in the diagram
-            while <i class="fa fa-plus"></i> is 'on'</li>
-        <li>To create a child node, select the <em>Add child node</em> tool <i class="fa fa-plus-square"></i>
-            and then click on a parent node in the diagram where you want to add a child to</li>
-        <li>Click on <i class="fa fa-link"></i> in the toolbar to select the <em>Link tool</em></li>
-        <li>While the <i class="fa fa-link"></i> tool is 'on', click on
-            the nodes in the graph: the first node you select will be the source of the link,
-            the second will be the target</li>
-    </ul>
-    <hr style="margin:0px 0px;">
-    <ul style="margin: 0px 0px 10px 10px;">
-        <h4>Deleting nodes and links</h4>
-    </ul>
-    <ul id="deleting-nodes-links">
-        <li>Click on <i class="fa fa-trash-o"></i> in the toolbar to select the <em>Remove node</em> tool</li>
-        <li>Delete nodes or links by selecting them in the diagram</li>
-    </ul>
-    <hr style="margin:0px 0px;">
-    <ul style="margin: 0px 0px 10px 10px;">
-        <h4>Zooming and panning</h4>
-    </ul>
-    <ul id="zoom-pan">
-        <li>Select <i class="fa fa-arrow-right"></i> tool from the toolbar
-            (click and hold to get other panning options to appear) then
-            click anywhere on the diagram to pan in the selected direction</li>
-        <li>Select the <i class="fa fa-search-plus"></i> <em>Zoom in</em> tool from the toolbar
-            (click and hold to get the <i class="fa fa-search-minus"></i> <em>Zoom out</em> option to appear),
-            then click anywhere on the diagram to apply the zoom</li>
-    </ul>
+    <table class="table condensed">
+        <head>
+            <th style="width:30px">Icon</th>
+            <th style="width:120px">Action</th>
+            <th>Description</th>
+        </head>
+        <tr>
+            <td><i class="fa fa-location-arrow"/></td>
+            <td>Select</td>
+            <td>Use to select a node or drag around the canvas.</td>
+        </tr>
+        <tr>
+            <td><i class="fa fa-search-plus"/></td>
+            <td>Magnify</td>
+            <td>Click on the canvas to zoom in or out. You can also scroll to zoom on desktops</td>
+        </tr>
+        <tr>
+            <td><i class="fa fa-arrow-right"/></td>
+            <td>Pan</td>
+            <td>Click on the workspace whilst a pan direction is selected to move in that direction</td>
+        </tr>
+        <tr>
+            <td><i class="fa fa-plus"/></td>
+            <td>Create Node</td>
+            <td>This will add a new node to the workflow</td>
+        </tr>
+        <tr>
+            <td><i class="fa fa-plus-square"/></td>
+            <td>Create Child Node</td>
+            <td>This will create a child node inside a selected node</td>
+        </tr>
+        <tr>
+            <td><i class="fa fa-link"/></td>
+            <td>Link</td>
+            <td>Selecting two nodes will create an link pointing from the first to the second</td>
+        </tr>
+        <tr>
+            <td><i class="fa fa-trash-o"/></td>
+            <td>Delete</td>
+            <td>Removes a node or an edge from the workflow. Clicking a parent node will remove its children too</td>
+        </tr>
+    </table>
 </div>
