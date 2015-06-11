@@ -529,8 +529,10 @@ function repositionToolbar(){
     // This is the best I could do - destroy the old toolbar and
     // recreate a new one that will be positioned correctly on the
     // resized page
-    $(".cy-overall-toolbar").remove();
-    cy.toolbar(createToolbar());
+    if (action!='show'){
+        $(".cy-overall-toolbar").remove();
+        cy.toolbar(createToolbar());
+    }
 }
 
 function createToolbar() {
