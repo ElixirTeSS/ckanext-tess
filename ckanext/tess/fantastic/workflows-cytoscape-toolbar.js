@@ -34,7 +34,6 @@ function drawGraph(workflow, workflow_action) {
     $('#save_workflow_element_properties').click(function(e){
         saveWorkflowElementProperties();
         updateWorkflowElement();
-        closeWorkflowPropertyEditor();
     });
     $('#save-workflow').click( function(e){
         clearSelectedWorkflowElements();
@@ -76,6 +75,9 @@ function drawGraph(workflow, workflow_action) {
     $('#show-help').click(function(e) {
         $('#help-modal').modal('show');
     });
+    $('#hide-property-editor').click(function(e){
+        closeWorkflowPropertyEditor();
+    })
 
     var cy = window.cy = cytoscape({
         container: document.getElementById('cy'),
