@@ -595,6 +595,12 @@ hr.style-one {
     background-color: transparent;
     border: none;
 }
+#hide-property-editor{
+    float:right;
+    background-color: transparent;
+    border: none;
+}
+
 .wf-meta-form{
     width: 80%;
 
