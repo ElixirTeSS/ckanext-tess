@@ -10,7 +10,23 @@
 
 
 {% block primary %}
-    <header class="module-content page-header">
+ <header class="module-content page-header">
+
+    <button id="show-help" class="btn btn-default"><i class="icon-info-sign"></i>Help</button>
+
+    <div id="help-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="zindex:15">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h2 class="heading">{{ _('Workflow creation guide') }}</h2>
+        </div>
+        <div class="modal-body">{% snippet "workflow/snippets/workflow-creation-guide.html" %}
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+            <button class="btn btn-primary" data-dismiss="modal" id="save-material" class="hidden">Save</button>
+        </div>
+    </div>
+
         <div class="content_action">
             <div style="margin-bottom: 13px;">
                 {% link_for _('View'), controller='ckanext.tess.workflow:WorkflowController', action='read', id=c.workflow_dict.id, class_='btn', icon='eye-open' %}
