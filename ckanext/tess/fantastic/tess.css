@@ -595,7 +595,10 @@ hr.style-one {
     background-color: transparent;
     border: none;
 }
+.wf-meta-form{
+    width: 80%;
 
+}
 
 #workflow_element_info{
 	background-color:white;
