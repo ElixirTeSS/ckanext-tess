@@ -73,8 +73,8 @@ function drawGraph(workflow, workflow_action) {
         $('#json-wf').hide()
         $('#png').hide();
     });
-    $('#dialog-div-show').click(function(e) {
-        $('#dialog-div').removeClass('hidden').show();
+    $('#show-help').click(function(e) {
+        $('#help-modal').modal('show');
     });
 
     var cy = window.cy = cytoscape({
