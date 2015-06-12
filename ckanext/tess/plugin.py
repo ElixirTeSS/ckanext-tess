@@ -97,6 +97,7 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
 
         config['ckanext.tess.version'] = '0.9.1-alpha'
 
+        config['ckan.favicon'] = 'http://www.elixir-europe.org/sites/all/themes/elixir/images/favicons/favicon.ico'
         #config['ckan.template_head_end'] = config.get('ckan.template_head_end', '') +\
         #                '<link rel="stylesheet" href="/css/tess.css" type="text/css"> '
 
