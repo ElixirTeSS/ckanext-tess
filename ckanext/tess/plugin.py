@@ -43,16 +43,6 @@ def get_tess_version():
         '''
     return configuration.get('ckanext.tess.version', 'N/A')
 
-# Return the iann specific news. This could be replaced with a general news function taking
-# the news source as an argument.
-def iann_news():
-  try:
-    with open ("/tmp/iann.txt", "r") as myfile:
-      data = myfile.read()
-  except Exception, e:
-    print "iann_news: " + str(e)
-    data = "<p>No events found!</p>"
-  return plugins.toolkit.literal(data)
 
 # #Override for the default resource_create code when creating package/dataset
 # def tess_resource_create(context, data_dict):
@@ -65,20 +55,14 @@ def iann_news():
 ######################
 # Plugin starts here #
 ######################
-class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
-    '''TeSS CKAN plugin.
 
-    '''
-    # Declare that this class implements IConfigurer.
-    #plugins.implements(plugins.IConfigurer)
-
-    plugins.implements(plugins.IConfigurer, inherit=True)
-    plugins.implements(plugins.IMapper, inherit=True)
+class TeSSPlugin(plugins.SingletonPlugin):
+    '''TeSS CKAN plugin. '''
     plugins.implements(plugins.IRoutes, inherit=True)
-    plugins.implements(plugins.IDatasetForm, inherit=True)
+    plugins.implements(plugins.IMapper, inherit=True)
+    plugins.implements(plugins.IConfigurer, inherit=True)
     plugins.implements(plugins.ITemplateHelpers, inherit=True)
-    plugins.implements(plugins.IFacets, inherit=True)
-    # plugins.implements(plugins.IActions)
+
 
     def update_config(self, config):
         # Add this plugin's templates dir to CKAN's extra_template_paths, so
@@ -104,82 +88,12 @@ class TeSSPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     def after_map(self, map):
         map.connect('report_event', '/event/new', controller='ckanext.tess.plugin:TeSSController', action='report_event')
         map.connect('organization_read', '/organization/{id}', controller='organization', action='read', ckan_icon='book')
-        map.connect('user_datasets', '/user/{id:.*}', controller='user', action='read', ckan_icon='book')
         map.connect('group_read', '/group/{id}', controller='group', action='read', ckan_icon='book')
         map.connect('organization_bulk_process','/organization/bulk_process/{id}', controller='organization', action='bulk_process', ckan_icon='book')
         map.connect('user_dashboard_datasets', '/dashboard/datasets', controller='user',action='dashboard_datasets', ckan_icon='book')
-        map.connect('dataset_read', '/dataset/{id}', controller='package', action='read', ckan_icon='book')
-
         return map
-
-    def dataset_facets(self, facets_dict, package_type):
-        facets_dict['node_id'] = 'ELIXIR Nodes'
-        return facets_dict
 
     def get_helpers(self):
         return {
-                'get_tess_version' : get_tess_version,
-                'read_news_iann': iann_news
-                }
-
-    def _modify_package_schema(self, schema):
-
-        _convert_to_extras = toolkit.get_converter('convert_to_extras')
-        _ignore_missing = toolkit.get_validator('ignore_missing')
-        _not_empty = toolkit.get_validator('not_empty')
-        _not_missing = toolkit.get_validator('not_missing')
-        _url_validator = toolkit.get_validator('url_validator')
-
-        schema.update({
-            'node_id': [_ignore_missing, _convert_to_extras],
-            'url': [_not_empty, _url_validator],
-            'notes': [_not_empty, _not_missing]
-        })
-        schema['resources'].update({ 'image_url' : [ _convert_to_extras, _ignore_missing, _url_validator ] })
-        return schema
-
-    def show_package_schema(self):
-        schema = super(TeSSPlugin, self).show_package_schema()
-
-        schema['tags']['__extras'].append(toolkit.get_converter('free_tags_only'))
-
-        _convert_from_extras = toolkit.get_converter('convert_from_extras')
-        _ignore_missing = toolkit.get_validator('ignore_missing')
-        _not_empty = toolkit.get_validator('not_empty')
-        _not_missing = toolkit.get_validator('not_missing')
-        _url_validator = toolkit.get_validator('url_validator')
-
-        schema.update({
-            'node_id': [_convert_from_extras, _ignore_missing],
-            'url': [_not_empty, _url_validator],
-            'notes': [_not_empty, _not_missing]
-        })
-        schema['resources'].update({ 'image_url' : [ _convert_from_extras, _ignore_missing, _url_validator ] })
-        return schema
-
-    def create_package_schema(self):
-        schema = super(TeSSPlugin, self).create_package_schema()
-        schema = self._modify_package_schema(schema)
-        return schema
-
-    def update_package_schema(self):
-        schema = super(TeSSPlugin, self).update_package_schema()
-        schema = self._modify_package_schema(schema)
-        return schema
-
-    def is_fallback(self):
-        # Return True to register this plugin as the default handler for
-        # package types not handled by any other IDatasetForm plugin.
-        return True
-
-    def package_types(self):
-        # This plugin doesn't handle any special package types, it just
-        # registers itself as the default (above).
-        return []
-
-    # def get_actions(self):
-    #     return {
-    #         'resource_create': tess_resource_create,
-    #     }
-
-
+            'get_tess_version': get_tess_version
+        }
