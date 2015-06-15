@@ -1,14 +1,9 @@
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 
-import ckan.lib.helpers as h
-from ckan.common import c
-
 class PackagePlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
 
     plugins.implements(plugins.IDatasetForm, inherit=False)
-    plugins.implements(plugins.ITemplateHelpers, inherit=False)
-    events = 'KEMOOOON'
 
     def after_map(self, map):
         map.connect('user_datasets', '/user/{id:.*}', controller='user', action='read', ckan_icon='book')
@@ -19,7 +14,6 @@ class PackagePlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         return facets_dict
 
     def _modify_package_schema(self, schema):
-        c.events = {'blah': 'blah'}
         _convert_to_extras = toolkit.get_converter('convert_to_extras')
         _ignore_missing = toolkit.get_validator('ignore_missing')
         _not_empty = toolkit.get_validator('not_empty')
@@ -34,11 +28,7 @@ class PackagePlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         schema['resources'].update({ 'image_url' : [ _convert_to_extras, _ignore_missing, _url_validator ] })
         return schema
 
-    def get_helpers(self):
-        return {}
-
     def show_package_schema(self):
-        c.events = {'blah': 'blah'}
         schema = super(PackagePlugin, self).show_package_schema()
 
         schema['tags']['__extras'].append(toolkit.get_converter('free_tags_only'))
@@ -76,9 +66,3 @@ class PackagePlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         # This plugin doesn't handle any special package types, it just
         # registers itself as the default (above).
         return []
-
-    def setup_template_variables(self, context, data_dict):
-        print 'does anyone ever listen to me '
-        PackagePlugin.events = {'blah': 'blah'}
-        return super(PackagePlugin, self).setup_template_variables(
-                context, data_dict)
