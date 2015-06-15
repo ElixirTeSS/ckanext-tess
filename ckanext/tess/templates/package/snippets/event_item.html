@@ -1,24 +1,25 @@
 
-<li class="event-item" data-id="{{ res.id }}">
+<li class="resource-item" data-id="{{ res.id }}">
   {% block event_title %}
   <a class="heading" href="{{ res.link }}" title="{{ res.title or res.subtitle}}">
     {{ res.title | truncate(50) }}
   </a>
+    <div style="position: absolute; top: 20px; left: 10px; padding; 2px;">
+        <img src="/images/placeholder-event.png" style="max-width: 38px;">
+    </div>
   {% endblock %}
   {% block event_description %}
-    <div class="meta">
-        <p class="description">
+    <p class="description">
             {% if res.subtitle%}
                 {{ h.markdown_extract(res.subtitle, extract_length=80) }}
             {% endif %}
-        </p>
-        <p class='event-start'><b>Dates:</b> {{res.starts}} - {{res.ends}}</p>
         <!--<p class="event-duration"><b>Duration:</b> {{res.duration}}</p>-->
-        <p class="event-place"><b>Place:</b> {{ res.city }}, {{ res.country }}</p>
+        {{res.starts}} - {{res.ends}}<br>
+        {{ res.city }}, {{ res.country }}
         {% if res.expired %}
-            <p class='empty'>Note: This event has expired</p>
+            <p class='empty'>Note: This event has finished</p>
         {% endif %}
-    </div>
+    </p>
   {% endblock %}
 
   {% block event_explore %}
