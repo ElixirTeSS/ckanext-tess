@@ -21,24 +21,21 @@ Example:
         {% endblock %}
       </ul>
     {% else %}
-
-      <!--{#
-        {% if h.check_access('event_create', {'package_id': pkg['id']}) %}
+        {% if h.check_access('resource_create', {'package_id': pkg['id']}) %}
           {% trans %}
             <p class="empty">
-                This training material has no additional events.&lt;!&ndash; <a href="{{ url }}">why not add some?</a>&ndash;&gt;
+                This training material has no associated events.
             </p>
             <p class="empty">
-                A event can be any related documentation, tool, service, software, etc. that
-                is relevant for this training material.
+                A Related event in TeSS can be any face-to-face training event, course, or
+                conference that is related to this specific training material.
             </p>
           {% endtrans %}
-        {% set url=h.url_for(controller='package', action='new_event', id=pkg['name']) %}
-        <a class="btn btn-primary" href="{{url}}"><i class="icon-plus"></i>Add new event</a>
-      {% else %}#}
-      -->
+        {% set url=h.url_for(controller='ckanext.tess.event:EventController', action='add_events', id=pkg['name']) %}
+        <a class="btn btn-primary" href="{{url}}"><i class="icon-plus"></i>Associate an event</a>
+      {% else %}
           <p class="empty">{{ _('This training material has no additional events') }}</p>
-      <!--{#% endif %#}-->
+      {% endif %}
     {% endif %}
 
     {% endblock %}
