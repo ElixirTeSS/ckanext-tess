@@ -41,6 +41,10 @@
     {% snippet "package/snippets/tags.html", tags=pkg.tags %}
   {% endblock %}
 
+  {% block material_events %}
+    {% snippet "package/snippets/events_list.html", pkg=pkg, events=h.get_associated_events(pkg.id) %}
+  {% endblock %}
+
   {% block package_resources %}
     {% snippet "package/snippets/resources_list.html", pkg=pkg, resources=pkg.resources %}
   {% endblock %}
