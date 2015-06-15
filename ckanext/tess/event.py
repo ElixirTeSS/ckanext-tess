@@ -45,7 +45,8 @@ class EventPlugin(plugins.SingletonPlugin, DefaultGroupForm):
         return {
                 'related_events': related_events,
                 'has_more_options': has_more_options,
-                'events': events
+                'events': events,
+                'get_associated_events': get_associated_events
         }
 
 
