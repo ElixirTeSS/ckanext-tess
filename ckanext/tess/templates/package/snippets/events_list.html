@@ -1,0 +1,45 @@
+{#
+Renders a list of resources with icons and view links.
+
+events - A list of resources to render
+pkg - A package object that the events belong to.
+
+Example:
+
+{% snippet "package/snippets/events_list.html", pkg=pkg, events=h.get_associated_events(pkg.id) %}
+#}
+<section id="dataset-events" class="events">
+  <h3>{{ _('Related events') }}</h3>
+
+  {% block event_list %}
+    {% if events %}
+      <ul class="{% block event_list_class %}event-list{% endblock %}">
+        {% block event_list_inner %}
+          {% for event in events %}
+            {% snippet 'package/snippets/event_item.html', pkg=pkg, res=event %}
+          {% endfor %}
+        {% endblock %}
+      </ul>
+    {% else %}
+
+      <!--{#
+        {% if h.check_access('event_create', {'package_id': pkg['id']}) %}
+          {% trans %}
+            <p class="empty">
+                This training material has no additional events.&lt;!&ndash; <a href="{{ url }}">why not add some?</a>&ndash;&gt;
+            </p>
+            <p class="empty">
+                A event can be any related documentation, tool, service, software, etc. that
+                is relevant for this training material.
+            </p>
+          {% endtrans %}
+        {% set url=h.url_for(controller='package', action='new_event', id=pkg['name']) %}
+        <a class="btn btn-primary" href="{{url}}"><i class="icon-plus"></i>Add new event</a>
+      {% else %}#}
+      -->
+          <p class="empty">{{ _('This training material has no additional events') }}</p>
+      <!--{#% endif %#}-->
+    {% endif %}
+
+    {% endblock %}
+</section>

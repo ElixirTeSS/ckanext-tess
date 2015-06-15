@@ -1,0 +1,33 @@
+
+<li class="event-item" data-id="{{ res.id }}">
+  {% block event_title %}
+  <a class="heading" href="{{ res.link }}" title="{{ res.title or res.subtitle}}">
+    {{ res.title | truncate(50) }}
+  </a>
+  {% endblock %}
+  {% block event_description %}
+    <div class="meta">
+        <p class="description">
+            {% if res.subtitle%}
+                {{ h.markdown_extract(res.subtitle, extract_length=80) }}
+            {% endif %}
+        </p>
+        <p class='event-start'><b>Dates:</b> {{res.starts}} - {{res.ends}}</p>
+        <!--<p class="event-duration"><b>Duration:</b> {{res.duration}}</p>-->
+        <p class="event-place"><b>Place:</b> {{ res.city }}, {{ res.country }}</p>
+        {% if res.expired %}
+            <p class='empty'>Note: This event has expired</p>
+        {% endif %}
+    </div>
+  {% endblock %}
+
+  {% block event_explore %}
+    {% if res.link and h.is_url(res.link) %}
+      <div class="dropdown btn-group">
+        <a href="{{ res.link }}" class="btn btn-success" target="_blank">
+            <i class="icon-share-alt"></i>Open
+        </a>
+      </div>
+    {% endif %}
+  {% endblock %}
+</li>

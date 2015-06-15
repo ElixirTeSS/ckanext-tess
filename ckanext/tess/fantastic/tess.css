@@ -606,6 +606,50 @@ hr.style-one {
 
 }
 
+.event-list {
+  margin: 0;
+  list-style: none;
+  margin: -10px -10px 10px -10px;
+}
+
+.event-item {
+  position: relative;
+  padding: 10px 10px 10px 60px;
+  margin-bottom: 0px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+.event-item:hover {
+  background-color: #eeeeee;
+}
+.event-item .heading {
+  color: #000000;
+  font-size: 14px;
+  font-weight: bold;
+}
+.event-item .format-label {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+.event-item .description {
+  font-size: 12px;
+  margin-bottom: 0;
+}
+.event-item .btn-group {
+  position: absolute;
+  top: 14px;
+  right: 10px;
+}
+.event-item .meta {
+    padding-top:10px;
+    padding-left:20px;
+    line-height: 0.6;
+}
+
+
+
 #workflow_element_info{
 	background-color:white;
 	border:1px solid lightgray;
