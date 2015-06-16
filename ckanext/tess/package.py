@@ -5,10 +5,6 @@ class PackagePlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
 
     plugins.implements(plugins.IDatasetForm, inherit=False)
 
-    def after_map(self, map):
-        map.connect('user_datasets', '/user/{id:.*}', controller='user', action='read', ckan_icon='book')
-        map.connect('dataset_read', '/dataset/{id}', controller='package', action='read', ckan_icon='book')
-
     def dataset_facets(self, facets_dict, package_type):
         facets_dict['node_id'] = 'ELIXIR Nodes'
         return facets_dict
