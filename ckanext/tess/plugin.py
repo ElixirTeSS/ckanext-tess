@@ -87,10 +87,19 @@ class TeSSPlugin(plugins.SingletonPlugin):
 
     def after_map(self, map):
         map.connect('report_event', '/event/new', controller='ckanext.tess.plugin:TeSSController', action='report_event')
+        # Overrides some routes with a different icon - same alias / url / controller / action.
+        map.connect('dataset_groups', '/dataset/groups/{id}', controller='group', action='groups', ckan_icon='folder-open')
+        map.connect('dataset_read', '/dataset/{id}', controller='package', action='read', ckan_icon='book')
+
         map.connect('organization_read', '/organization/{id}', controller='organization', action='read', ckan_icon='book')
+
         map.connect('group_read', '/group/{id}', controller='group', action='read', ckan_icon='book')
-        map.connect('organization_bulk_process','/organization/bulk_process/{id}', controller='organization', action='bulk_process', ckan_icon='book')
+
+        map.connect('user_dashboard_groups', '/dashboard/groups', controller='user', action='dashboard_groups', ckan_icon='folder-open')
         map.connect('user_dashboard_datasets', '/dashboard/datasets', controller='user',action='dashboard_datasets', ckan_icon='book')
+        map.connect('user_datasets', '/user/{id:.*}', controller='user', action='read', ckan_icon='book')
+
+        map.connect('organization_bulk_process','/organization/bulk_process/{id}', controller='organization', action='bulk_process', ckan_icon='book')
         return map
 
     def get_helpers(self):
