@@ -3,10 +3,10 @@
   {% block event_title %}
   <a class="heading" href="{{ res.link }}" title="{{ res.title or res.subtitle}}">
     {{ res.title | truncate(50) }}
-  </a>
     <div style="position: absolute; top: 20px; left: 10px; padding; 2px;">
         <img src="/images/placeholder-event.png" style="max-width: 38px;">
     </div>
+  </a>
   {% endblock %}
   {% block event_description %}
     <p class="description">
