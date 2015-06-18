@@ -22,7 +22,7 @@ Type - 'related', 'associated', or 'regular'/''/None
 
     {% block heading %}
         {% if link %}
-            <a href="{{link}}" target="_blank"><h3 class="media-heading">{{event.pop('title') }}</h3></a>
+            <a href="{{link}}" target="_blank"><h3>{{event.pop('title') }}</h3></a>
         {% else %}
             <h3 class="media-heading">{{event.pop('title') }}</h3><br>
         {% endif %}
@@ -47,21 +47,16 @@ Type - 'related', 'associated', or 'regular'/''/None
     {% endblock %}
 
     {% block date %}
-        {% if event.get('starts') %}
-            <b>Starts:</b> {{ event.pop('starts')}}<br>
-        {% endif %}
-        {% if event.get('ends') %}
-            <b>Finish:</b> {{ event.pop('ends')}}<br>
+        {% if event.get('succinct_dates') %}
+        <b>Date:</b>
+            {{ event.pop('succinct_dates')}}<br>
         {% endif %}
     {% endblock %}
 
-
-    {% block etc %}
-        {% for k, v in event.iteritems(): %}
-            {% if v %}
-                <b>{{k.title()}}</b>: {{v}}<br>
-            {% endif %}
-        {% endfor %}
+    {% block provider %}
+        {% if event.get('provider') %}
+           <b>Provider:</b> {{ event.pop('provider') }}<br>
+        {% endif %}
     {% endblock %}
 
     {% if type == 'related' %}

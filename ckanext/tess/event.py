@@ -16,13 +16,13 @@ import datetime
 from datetime import timedelta
 import ckan.lib.formatters as formatters
 from time import gmtime, strftime
-from ckanext.tess.model.tables import TessMaterialNode, TessMaterialEvent, TessEvents, TessGroup, TessDomainObject, TessDataset
-
+from ckanext.tess.model.tables import TessMaterialEvent
 import ckan.lib.base as base
 from ckan.controllers.home import HomeController
 import ckan.model as model
 import ckan.logic as logic
 from urllib import urlencode
+import ckan.lib.formatters as formatters
 
 get_action = logic.get_action
 NotFound = logic.NotFound
@@ -86,6 +86,19 @@ class EventApi(plugins.SingletonPlugin):
             'unassociate_event': unassociate_event,
             'associated_events': associated_events
         }
+
+
+def format_nice_date_difference(a, b):
+    if a.day == b.day and a.month == b.month and a.year == b.year:
+        return '%s %s %s' % (a.day, formatters._MONTH_FUNCTIONS[a.month-1](), a.year)
+    elif a.day != b.day and a.month == b.month and a.year == b.year:
+        return '%s - %s %s %s' % (a.day, b.day, formatters._MONTH_FUNCTIONS[a.month-1](), b.year)
+    elif a.day != b.day and a.month != b.month and a.year == b.year:
+        return '%s %s - %s %s %s' % (a.day, formatters._MONTH_FUNCTIONS[a.month-1](),b.day, formatters._MONTH_FUNCTIONS[b.month-1](), b.year)
+    else:
+        return '%s - %s' % (formatters.localised_nice_date(a, show_date=True, with_hours=True),
+                            formatters.localised_nice_date(b, show_date=True, with_hours=True))
+
 
 
 def get_filters_for(field_name):
@@ -180,9 +193,9 @@ def parse_xml(xml):
                'city': doc.find("*/[@name='city']").text,
                'starts': formatters.localised_nice_date(start_time, show_date=True),#, with_hours=True),
                'ends': formatters.localised_nice_date(finish_time, show_date=True),#, with_hours=True), - Most of these are 00:00
+               'succinct_dates': format_nice_date_difference(start_time, finish_time),
                'expired': expired,
                'duration': duration
-               #'start': strptime(doc.find("*/[@name='start']", '%Y-%m-%dT%h-%m-%sZ').text)
                }
         results.append(res)
     return {'count': count, 'events': results}
