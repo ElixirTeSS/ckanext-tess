@@ -100,11 +100,24 @@ def format_nice_date_difference(a, b):
                             formatters.localised_nice_date(b, show_date=True, with_hours=True))
 
 
+def get_event_filters():
+    url = construct_url('http://iann.pro/solr/select?facet=true&facet.field=%s&rows=0' % 'category')
+    res = urllib2.urlopen(url)
+    res = res.read()
+    doc = et.fromstring(res)
+    fields = doc.findall("./lst/lst/lst/int")
+    field_list = []
+    for field in fields:
+        if field.attrib['name'] == 'course':
+            field_list.append({'name': 'Course', 'count': field.text})
+        elif field.attrib['name'] == 'meeting':
+            field_list.append({'name': 'Event', 'count': field.text})
+    return field_list
 
 def get_filters_for(field_name):
     try:
         #TODO; Only load 10 filters unless parameter _provider_limit=1000 - provider_limit is calling solr # filters times. Need to minimize
-        if not c.active_filters.get(field_name, None): # Don't bother if the filter is already active
+
             url = construct_url('http://iann.pro/solr/select?facet=true&facet.field=%s&rows=0' % field_name)
             res = urllib2.urlopen(url)
             res = res.read()
@@ -120,10 +133,9 @@ def get_filters_for(field_name):
                     hash_val = {'name': name, 'count': field.text}
                     field_list.append(hash_val)
             return field_list
-        else:
-            return [{'name': field_name}, {'count': 0}]
+
     except Exception, e:
-        print 'Could not load country filters \n %s' % e
+        print 'Could not load filters for %s \n %s' % (field_name, e)
         return []
 
 # Bit of a hack here - Because providers have acronyms/funny mixtures of cases - we query each provider
@@ -209,8 +221,8 @@ def construct_url(original_url):
 
         if c.page:
             original_url = ('%s&start=%s' % (original_url, str(c.page*c.rows-c.rows)))
-        if c.category:
-            original_url = ('%s&q=category:%s' % (original_url, c.category))
+        if c.event_type:
+            original_url = ('%s&q=category:%s' % (original_url, c.event_type))
         else:
             original_url = ('%s&q=category:%s' % (original_url, 'event'))
         if not c.include_expired_events:  # Exclude this for past events too
@@ -219,8 +231,8 @@ def construct_url(original_url):
             original_url = ('%s%%20AND%%20%s' % (original_url, date))
         if c.country:
             original_url = ('%s%%20AND%%20country:"%s"' % (original_url, urllib.quote(c.country)))
-        if c.topic:
-            original_url = ('%s%%20AND%%20field:"%s"' % (original_url, urllib.quote(c.topic)))
+        if c.field:
+            original_url = ('%s%%20AND%%20field:"%s"' % (original_url, urllib.quote(c.field)))
         if c.provider:
             original_url = ('%s%%20AND%%20provider:"%s"' % (original_url, urllib.quote(c.provider)))
         #print original_url
@@ -276,22 +288,22 @@ def pager_url(q=None, page=None):
 def setup_events():
     q_params = {}
     c.q = q_params['q'] = c.q = request.params.get('q', '')
-    c.category = q_params['category'] = request.params.get('category', '')
+    c.event_type = q_params['event_type'] = request.params.get('event_type', '')
     c.country = q_params['country'] = request.params.get('country', '')
-    c.topic = q_params['topic'] = request.params.get('topic', '')
+    c.field = q_params['field'] = request.params.get('field', '')
     c.provider = q_params['provider'] = request.params.get('provider', '')
     c.rows = q_params['rows'] = request.params.get('rows', 25)
     c.sort_by_selected = q_params['sort'] = request.params.get('sort', '')
     c.page_number = q_params['page'] = int(request.params.get('page', 0))
     c.include_expired_events = q_params['include_expired'] = request.params.get('include_expired', False)
     events_hash = events()
-    c.active_filters = {'category': c.category, 'topic': c.topic, 'country': c.country, 'provider': c.provider}
+    c.active_filters = {'event_type': c.event_type, 'field': c.field, 'country': c.country, 'provider': c.provider}
     filters = {}
     if not c.filters:
-        filters['category'] = get_filters_for('category')
-        filters['topic'] = get_filters_for('field')
         filters['provider'] = get_filters_for('provider')
         filters['country'] = get_filters_for('country')
+        filters['field'] = get_filters_for('field')
+        filters['event_type'] = get_event_filters()
     c.filters = filters
 
     c.base_url = h.full_current_url()
