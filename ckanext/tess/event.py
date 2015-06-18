@@ -222,7 +222,10 @@ def construct_url(original_url):
         if c.page:
             original_url = ('%s&start=%s' % (original_url, str(c.page*c.rows-c.rows)))
         if c.event_type:
-            original_url = ('%s&q=category:%s' % (original_url, c.event_type))
+            if c.event_type == 'Event':
+                original_url = ('%s&q=category:%s' % (original_url, 'meeting'))
+            else:
+                original_url = ('%s&q=category:%s' % (original_url, c.event_type))
         else:
             original_url = ('%s&q=category:%s' % (original_url, 'event'))
         if not c.include_expired_events:  # Exclude this for past events too
