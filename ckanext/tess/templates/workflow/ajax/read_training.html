@@ -9,7 +9,7 @@
             else                    { $('.modal-workflow-title').text('Unnamed Node'); }
             if (node.description)   { $('.modal-workflow-description').text(node.description);
                                       $('.modal-workflow-description').removeClass('empty') }
-            else                    { $('.modal-workflow-description').text('There is no description for this workflow stage');
+            else                    { $('.modal-workflow-description').text('There is no description for this workflow node');
                                       $('.modal-workflow-description').addClass('empty') }
 
             if (node.materials != undefined && node.materials.constructor === Array && node.materials.length > 0) {
@@ -20,7 +20,7 @@
                     $('#workflow-materials').append(row);
                 });
             } else {
-                $('#workflow-materials').html('<div class="empty">There are no associated materials with this workflow stage.</div>');
+                $('#workflow-materials').html('<div class="empty">There are no associated materials with this workflow node.</div>');
             }
         } else {
             $('#save-material').removeClass('hidden');
@@ -36,7 +36,7 @@
 <div>
     <h3>Description</h3>
     <div class="modal-workflow-description empty">No description set</div>
-    <h3>Training Materials for <em class="modal-workflow-title"></em></h3>
+    <h3>Training materials for <em class="modal-workflow-title"></em></h3>
     <table class='table' id="workflow-materials"></table>
 </div>
 

@@ -7,7 +7,7 @@
 
 {% block show_specific %}
     <div class="workflow-training-materials-display">
-    <h3 class="heading">Training Materials for {{c.workflow_dict.name}}</h3>
+    <h3 class="heading">Training materials for {{c.workflow_dict.name}}</h3>
 
     {% for material in c.node_materials %}
         {% if material.get('name') %}
@@ -23,7 +23,7 @@
                         {% endfor %}
                     </ul>
                 {% else %}
-                    <span class="empty"> No training materials are associated with this training workflow stage </span>
+                    <span class="empty"> No training materials are associated with this workflow node.</span>
                 {% endif %}
             </div>
         {% endif %}
