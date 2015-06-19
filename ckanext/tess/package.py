@@ -1,9 +1,32 @@
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
+from ckanext.tess.model.tables import TessMaterialNode
+import ckan.model as model
+
+def create_or_update_association(pkg_dict):
+    if pkg_dict.get('node_id'):
+        association = model.Session.query(TessMaterialNode).\
+            filter(TessMaterialEvent.material_id == pkg_dict.get('id')).\
+            filter(TessMaterialEvent.node_id == pkg_dict.get('node_id'))
+        association.first()
+        a = TessMaterialNode()
+
+
 
 class PackagePlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
 
     plugins.implements(plugins.IDatasetForm, inherit=False)
+    plugins.implements(plugins.IPackageController, inherit=True)
+
+    def after_create(self, context, pkg_dict):
+        create_or_update_association(pkg_dict)
+        print pkg_dict
+        pass
+
+    def after_update(self, context, pkg_dict):
+        create_or_update_association(pkg_dict)
+        print pkg_dict
+        pass
 
     def dataset_facets(self, facets_dict, package_type):
         facets_dict['node_id'] = 'ELIXIR Nodes'
@@ -62,3 +85,4 @@ class PackagePlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         # This plugin doesn't handle any special package types, it just
         # registers itself as the default (above).
         return []
+
