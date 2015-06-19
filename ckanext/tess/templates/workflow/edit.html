@@ -8,7 +8,6 @@
   <li class="active">{% link_for _('Manage'), controller='ckanext.tess.workflow:WorkflowController', action='update', id=c.workflow_dict.id %}</li>
 {% endblock %}
 
-
 {% block primary %}
  <header class="module-content page-header">
 
@@ -39,7 +38,7 @@
         {% snippet "workflow/snippets/display_workflow.html", workflow=c.workflow_dict.definition, action='edit' %}
     {% else %}
         {% snippet "workflow/snippets/display_workflow_info.html", workflow=c.workflow_dict, action='edit' %}
-        {% snippet "workflow/snippets/display_workflow.html", workflow={}, action='new' %}
+        {% snippet "workflow/snippets/display_workflow.html", action='new' %}
     {% endif %}
 {% endblock %}
 

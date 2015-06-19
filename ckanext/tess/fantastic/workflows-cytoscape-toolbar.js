@@ -24,6 +24,9 @@ var action; // 'show', 'new' or 'edit'
 //});
 
 function drawGraph(workflow, workflow_action) {
+
+//    alert('action: ' + workflow_action + ' wf: ' + JSON.stringify(workflow) + ' elements: ' + JSON.stringify(workflow['elements']));
+
     closeWorkflowPropertyEditor();
     action = (typeof workflow_action === 'undefined') ? 'show' : workflow_action; // what kind of action we are handling - new workflow, show workflow or edit workflow
 
@@ -147,7 +150,7 @@ function drawGraph(workflow, workflow_action) {
             }
         ],
 
-        elements: (action != 'new' && workflow != undefined)? workflow['elements'] : [],
+        elements: (action == 'new' || (typeof workflow === 'undefined') || workflow == {})? {"nodes":[], "edges":[]} : workflow['elements'],
         layout: {
             name: 'preset',
             padding: 5
@@ -167,6 +170,8 @@ function drawGraph(workflow, workflow_action) {
         minZoom: 0.5
 
     });
+
+//    alert(JSON.stringify(window.cy.json()));
 
     cy.on('click', function(event){
         // cyTarget holds a reference to the originator
@@ -342,6 +347,7 @@ function propogateStyle(current_selected) {
 }
 
 function updateJSONDump() {
+    //alert(JSON.stringify(window.cy.json()));
     $("#dialog-div").val(JSON.stringify(window.cy.json()));
     $("#dialog-div").text(JSON.stringify(window.cy.json()));
 }
@@ -712,4 +718,16 @@ function createToolbar() {
         ],
         appendTools: false
     };
+}
+
+function isWorkflowEmptyConfirm() {
+    if ($('#field-name').val() == ""){
+        alert('You have to specify the name of the workflow.');
+        return false;
+    }
+    if ((typeof window.cy.nodes() === 'undefined') || window.cy.nodes().length == 0){
+        confirm('You cannot save an empty workflow. Add at least one node.');
+        return false;
+    }
+    return true;
 }

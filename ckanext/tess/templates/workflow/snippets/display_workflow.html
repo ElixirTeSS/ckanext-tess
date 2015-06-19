@@ -39,7 +39,11 @@
 
 <script>
     $(document).ready(function(){
-        wf= {{ workflow|safe }};
-        drawGraph(wf,'{{action}}');
+        wf= {{workflow|safe}};
+        action = '{{action|safe}}';
+        if ( action == 'new' && wf == {}){
+            wf = undefined;
+        }
+        drawGraph(wf,action);
     });
 </script>
