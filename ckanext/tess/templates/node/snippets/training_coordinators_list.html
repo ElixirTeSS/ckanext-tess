@@ -1,0 +1,22 @@
+{# use h.training_coordinators() to find the list.
+The result contains an array of hashes that look like:
+{trc: name of coordinator
+trc_image: image
+trc_email: email
+node: node-name}
+#}
+
+<div class="module-content">
+    <ul class="media-grid masonry" data-module="media-grid">
+        {% for trc in training_coordinators %}
+        <li class="media-item masonry-brick node-brick">
+            {% snippet "snippets/training_coordinator.html",
+                    trc=trc.get('trc'),
+                    trc_email=trc.get('trc_email'),
+                    trc_image=trc.get('trc_image'),
+                    node=trc.get('node')
+            %}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
