@@ -117,7 +117,6 @@ def get_event_filters():
 def get_filters_for(field_name):
     try:
         #TODO; Only load 10 filters unless parameter _provider_limit=1000 - provider_limit is calling solr # filters times. Need to minimize
-
             url = construct_url('http://iann.pro/solr/select?facet=true&facet.field=%s&rows=0' % field_name)
             res = urllib2.urlopen(url)
             res = res.read()
@@ -294,6 +293,7 @@ def setup_events():
     c.event_type = q_params['event_type'] = request.params.get('event_type', '')
     c.country = q_params['country'] = request.params.get('country', '')
     c.field = q_params['field'] = request.params.get('field', '')
+    print c.field
     c.provider = q_params['provider'] = request.params.get('provider', '')
     c.rows = q_params['rows'] = request.params.get('rows', 25)
     c.sort_by_selected = q_params['sort'] = request.params.get('sort', '')
