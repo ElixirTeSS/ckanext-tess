@@ -47,7 +47,7 @@
         {% block content_action %}
             {% if h.check_access('group_update', {'id': c.group_dict.id}) %}
             <div style="float: right; padding: 10px;">
-                {% link_for _('Manage'), controller='ckanext.tess.node:NodeController', action='edit', id=node.get('name'), class_='btn', icon='wrench' %}
+                {% link_for _('Edit'), controller='ckanext.tess.node:NodeController', action='edit', id=node.get('name'), class_='btn', icon='wrench' %}
             </div>
             {% endif %}
         {% endblock %}

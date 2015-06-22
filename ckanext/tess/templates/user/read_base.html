@@ -11,8 +11,8 @@
 
 {% block content_action %}
   {% if h.check_access('user_update', user) %}
-    {% link_for _('Manage My Account'), controller='user', action='edit', id=user.name, class_='btn', icon='wrench' %}
-    {% link_for _('Node Admin'), controller='ckanext.tess.admin:AdminController', action='bulk_process_materials', class_='btn', icon='elixir' %}
+    {% link_for _('Manage my account'), controller='user', action='edit', id=user.name, class_='btn', icon='wrench' %}
+    {% link_for _('Node admin'), controller='ckanext.tess.admin:AdminController', action='bulk_process_materials', class_='btn', icon='elixir' %}
   {% endif %}
   {% if h.check_access('user_update', user) %}
 

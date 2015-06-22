@@ -5,7 +5,7 @@
 {% block breadcrumb_content %}
   <li>{% link_for _('Workflows'), controller='ckanext.tess.workflow:WorkflowController', action='index' %}</li>
   <li>{% link_for c.workflow_dict.name|truncate(35), controller='ckanext.tess.workflow:WorkflowController', action='read', id=c.workflow_dict.id %}</li>
-  <li class="active">{% link_for _('Manage'), controller='ckanext.tess.workflow:WorkflowController', action='update', id=c.workflow_dict.id %}</li>
+  <li class="active">{% link_for _('Edit'), controller='ckanext.tess.workflow:WorkflowController', action='update', id=c.workflow_dict.id %}</li>
 {% endblock %}
 
 {% block primary %}
