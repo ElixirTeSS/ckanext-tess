@@ -2,7 +2,7 @@
         {% if c.workflow_dict.description %}
             <p>{{ h.markdown_extract(c.workflow_dict.description, 180) }}</p>
         {% else %}
-            <p class="empty">{{ _('There is no description for this workflow') }}</p>
+            <p class="empty">{{ _('There is no description for this workflow.') }}</p>
         {% endif %}
 
 <section class="additional-info">

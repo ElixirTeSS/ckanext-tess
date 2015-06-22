@@ -9,7 +9,7 @@
             else                    { $('.modal-workflow-title').text('Unnamed Node'); }
             if (node.description)   { $('.modal-workflow-description').text(node.description);
                                       $('.modal-workflow-description').removeClass('empty') }
-            else                    { $('.modal-workflow-description').text('There is no description for this workflow node');
+            else                    { $('.modal-workflow-description').text('There is no description for this workflow node.');
                                       $('.modal-workflow-description').addClass('empty') }
 
             if (node.materials != undefined && node.materials.constructor === Array && node.materials.length > 0) {
