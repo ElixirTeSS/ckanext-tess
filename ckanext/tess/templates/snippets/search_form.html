@@ -45,6 +45,26 @@
     {% endif %}
   {% endblock %}
 
+
+
+    {# Cannot use search_facets #}
+    {% block search_facets_events %}
+    {% if c.active_filters %}
+        <p class="filter-list">
+        {% for filter, values in c.active_filters.iteritems() %}
+            {% if values %}
+                <span class="facet">{{filter.replace('_',' ').capitalize() }}:</span>
+                <span class="filtered pill">
+                    {{values}} <a href="{{ h.remove_url_param(filter) }}" class="remove" title="{{ _('Remove') }}"><i class="icon-remove"></i></a>
+                    </span>
+            {% endif %}
+        {% endfor %}
+        </p>
+    {% endif %}
+    {% endblock %}
+
+
+
   {% block search_facets %}
     {% if facets %}
       <p class="filter-list">
