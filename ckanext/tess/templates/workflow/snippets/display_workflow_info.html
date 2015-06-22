@@ -11,12 +11,18 @@
 
     <div class="form-actions" style="border-top: 0px; padding-top: 0px;">
           {% block basic_fields %}
+            {% set desc_placeholder = 'The description of your Training Workflow. This should contain as much information as possible for example:
+                    * Authors
+                    * Contributors
+                    * Any Publications
+                    * Original Source (if applicable)
+                ' %}
             {% if action == 'edit' or action=='new-errors' %}
-                {{ form.input('title', label=_('Name'), id='field-name', value=workflow.name, is_required = true, classes=['control-full']) }}
-                {{ form.markdown('description', label=_('Description'), id='field-description', value=workflow.description, placeholder=_('A little information about workflow...'), error=None) }}
+                {{ form.input('title', label=_('Name'), id='field-name', value=workflow.name, is_required = true, classes=['control-full'], placeholder=_('Your Training Workflow\'s Title')) }}
+                {{ form.markdown('description', label=_('Description'), id='field-description', value=workflow.description, placeholder=desc_placeholder, error=None) }}
             {% else %}
-                {{ form.input('title', label=_('Name'), id='field-name', placeholder=_('Workflow name'), classes=['control-full']) }}
-                {{ form.markdown('description', label=_('Description'), id='field-description', placeholder=_('A little information about workflow...')) }}
+                {{ form.input('title', label=_('Name'), id='field-name', classes=['control-full'], placeholder=_('Your Training Workflow\'s Title')) }}
+                {{ form.markdown('description', label=_('Description'), id='field-description', placeholder=desc_placeholder) }}
             {% endif %}
             {{ form.input('dialog-div', classes=['hidden'], label=_('JSON Representation'), id='dialog-div') }}
         {% endblock %}
