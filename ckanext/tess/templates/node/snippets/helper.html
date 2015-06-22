@@ -3,7 +3,6 @@
         <i class="icon-info-sign"></i>
         {{ _('What are ELIXIR nodes?') }}
     </h2>
-
     <div class="module-content">
         <p>
             ELIXIR is a pan-European research infrastructure.
@@ -21,12 +20,23 @@
         </p>
     </div>
     <hr style="margin: 0px;">
+    <h2 class="module-heading">
+        <i class="icon-info-sign"></i>
+        {{ _('Training coordinators') }}
+    </h2>
+    <div class="module-content">
+       {% set training_coordinators_url = h.url_for('training_coordinators') %}
+        <p>
+            See a <a href="{{training_coordinators_url}}">full list of training coordinators</a> from all nodes.
+        </p>
+    </div>
+    <hr style="margin: 0px;">
     <nav>
         <ul class="unstyled nav nav-simple nav-facet-no-icon">
 
             {% set grouped_nodes = h.get_nodes_grouped_by_status() %}
 
-            <h2 class="module-heading"> Members </h2>
+            <h2 class="module-heading">Member nodes</h2>
              <li class="nav-item">
                 <a href="/node/custom/hub.html" title="">
                     <span>The Hub</span>
@@ -39,8 +49,7 @@
                     <a href="{{url}}"><img src="/images/node_flags/{{country_code}}-small.png">&nbsp;&nbsp;{{node.display_name}}</a>
                 </li>
             {% endfor %}
-
-            <h2 class="module-heading"> Observers </h2>
+            <h2 class="module-heading">Observer nodes</h2>
             {% for node in grouped_nodes['observer_nodes']: %}
                 {% set url = h.url_for(node.type ~ '_read', action='read', id=node.name) %}
                 {% set country_code = h.get_extras(node)['country_code'] %}

@@ -6,6 +6,12 @@
 {% block primary %}
     <header class="module-content page-header">
         <div class="content_action">
+            {% if h.check_access('workflow_delete', {'id': c.workflow_dict.id} )  %}
+                    {% set locale = h.dump_json({'content': _('Are you sure you want to delete this workflow?')}) %}
+                    <a href="{% url_for controller='ckanext.tess.workflow:WorkflowController',
+                     action='delete', id=c.workflow_dict.id %}" class="btn btn-danger" style="margin-right:20px" data-module="confirm-action" data-module-i18n="{{ locale }}">{{ _('Delete') }}</a>
+                {% endif %}
+
             {% if h.check_access('workflow_update', {'id': c.workflow_dict.id}) %}
                 {% link_for _('Edit'), controller='ckanext.tess.workflow:WorkflowController', action='update', id=c.workflow_dict.id, class_='btn', icon='pencil' %}
             {% endif %}

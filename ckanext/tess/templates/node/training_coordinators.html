@@ -1,0 +1,21 @@
+{% extends "page.html" %}
+
+{% block subtitle %}{{ _('Training coordinators') }}{% endblock %}
+
+{% block breadcrumb_content %}
+  <li class="active">{% link_for _('Nodes'), controller='ckanext.tess.node:NodeController', action='index' %}</li>
+{% endblock %}
+
+{% block page_header %}{% endblock %}
+
+{% block page_primary_action %}
+{% endblock %}
+
+{% block primary_content_inner %}
+   <h1 class="hide-heading">Training coordinators</h1>
+   {% snippet "home/snippets/training_coordinators.html", training_coordinators=h.training_coordinators() %}
+{% endblock %}
+
+{% block secondary_content %}
+  {% snippet "node/snippets/helper.html" %}
+{% endblock %}

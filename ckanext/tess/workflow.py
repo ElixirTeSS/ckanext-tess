@@ -151,27 +151,30 @@ class WorkflowController(HomeController):
     def new(self):
         parameters = logic.parse_params(request.params)
         if 'save' in parameters:
-            wf = json.loads(parameters.get('dialog-div'))
-            print wf.get('elements')
-            if wf.get('elements') != {}:
-                new_model = TessWorkflow()
-                new_model.name = parameters.get('title')
-                new_model.description = parameters.get('description')
-                new_model.definition = parameters.get('dialog-div')
-                user_obj = model.User.by_name(c.user.decode('utf8'))
-                if user_obj:
-                    new_model.creator_user_id = user_obj.id
-                print new_model.definition
-                new_model.save()
-                id = new_model.id
-                h.flash_notice('%s has been saved' % parameters.get('title'))
-                return h.redirect_to(controller='ckanext.tess.workflow:WorkflowController', action='read', id=id)
-            else:
-                h.flash_error('Whoops! It looks like you have not drawn any of the Training Workflow. Add some stages to create a Training Workflow.')
-                c.workflow_dict = {}
-                c.workflow_dict['name'] = parameters.get('title')
-                c.workflow_dict['description'] = parameters.get('description')
-                return base.render('workflow/new.html')
+            wf_definition = parameters.get('dialog-div')
+            wf_json = json.loads(wf_definition)
+            print 'old def: ', json.dumps(wf_json)
+            # if wf.get('elements') != {}:
+            if wf_json.get('elements') == {}:
+                wf_json[u'elements'] = {u'nodes':[], u'edges':[]} # empty wf
+            new_model = TessWorkflow()
+            new_model.name = parameters.get('title')
+            new_model.description = parameters.get('description')
+            new_model.definition = json.dumps(wf_json)
+            print 'new def: ', new_model.definition
+            user_obj = model.User.by_name(c.user.decode('utf8'))
+            if user_obj:
+                new_model.creator_user_id = user_obj.id
+            new_model.save()
+            id = new_model.id
+            h.flash_notice('%s has been saved' % (parameters.get('title') or 'Workflow'))
+            return h.redirect_to(controller='ckanext.tess.workflow:WorkflowController', action='read', id=id)
+            # else:
+            #     h.flash_warning('Whoops! It looks like you have not added any nodes to your workflow. Are you sure you want to save an empty workflow?')
+            #     c.workflow_dict = {}
+            #     c.workflow_dict['name'] = parameters.get('title')
+            #     c.workflow_dict['description'] = parameters.get('description')
+            #     return base.render('workflow/new.html')
         else:
             return base.render('workflow/new.html')
 
@@ -199,37 +202,37 @@ class WorkflowController(HomeController):
 
     def delete(self, id):
         workflow = model.Session.query(TessWorkflow).get(id)
-        workflow_name = workflow.name
         workflow.delete()
         workflow.commit()
-        h.flash_notice('Deleted the workflow \'%s\'' % workflow_name)
+        h.flash_notice('%s has been deleted' % (workflow.name or 'Workflow'))
         return h.redirect_to(controller='ckanext.tess.workflow:WorkflowController', action='index')
 
     def update(self, id):
         parameters = logic.parse_params(request.params)
         if 'save' in parameters:
             wf = json.loads(parameters.get('dialog-div'))
-            if wf.get('elements') != {}:
-                workflow = model.Session.query(TessWorkflow).get(id)
-                workflow.name = parameters.get('title')
-                workflow.description = parameters.get('description')
-                if parameters.get('dialog-div'):
-                    workflow.definition = parameters.get('dialog-div')
-                workflow.last_modified = datetime.datetime.utcnow()
-                workflow.save()
-                id = workflow.id
-                h.flash_notice('%s has been updated' % parameters.get('title'))
-                return h.redirect_to(controller='ckanext.tess.workflow:WorkflowController', action='read', id=id)
-            else:
-                h.flash_error('Whoops! It looks like your Training Workflow is empty. Please add stages to update.')
-                c.workflow_dict = get_workflow(id)
-                c.workflow_dict['name'] = parameters.get('title')
-                c.workflow_dict['description'] = parameters.get('description')
-                return base.render('workflow/edit.html')
+            if wf.get('elements') == {}:
+                wf['elements'] = {"nodes":[], "edges":[]} # empty wf
+            workflow = model.Session.query(TessWorkflow).get(id)
+            workflow.name = parameters.get('title')
+            workflow.description = parameters.get('description')
+            if parameters.get('dialog-div'):
+                workflow.definition = parameters.get('dialog-div')
+            workflow.last_modified = datetime.datetime.utcnow()
+            workflow.save()
+            id = workflow.id
+            h.flash_notice('%s has been updated' % (parameters.get('title') or 'Workflow'))
+            return h.redirect_to(controller='ckanext.tess.workflow:WorkflowController', action='read', id=id)
+            # else:
+            #     h.flash_error('Whoops! It looks like your Training Workflow is empty. Please add stages to update.')
+            #     c.workflow_dict = get_workflow(id)
+            #     c.workflow_dict['name'] = parameters.get('title')
+            #     c.workflow_dict['description'] = parameters.get('description')
+            #     return base.render('workflow/edit.html')
         else:
             c.workflow_dict = get_workflow(id)
 
-            return base.render('workflow/edit.html')
+        return base.render('workflow/edit.html')
 
 
 class TessDomainObject(DomainObject):

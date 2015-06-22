@@ -12,7 +12,7 @@
     <div class="form-actions" style="border-top: 0px; padding-top: 0px;">
           {% block basic_fields %}
             {% if action == 'edit' or action=='new-errors' %}
-                {{ form.input('title', label=_('Name'), id='field-name', value=workflow.name, classes=['control-full']) }}
+                {{ form.input('title', label=_('Name'), id='field-name', value=workflow.name, is_required = true, classes=['control-full']) }}
                 {{ form.markdown('description', label=_('Description'), id='field-description', value=workflow.description, placeholder=_('A little information about workflow...'), error=None) }}
             {% else %}
                 {{ form.input('title', label=_('Name'), id='field-name', placeholder=_('Workflow name'), classes=['control-full']) }}
@@ -23,7 +23,7 @@
 
         <div style="padding-bottom: 30px;">&nbsp;
             {% if h.check_access('workflow_create')  %}
-                <button class="btn btn-primary pull-right" id='save-workflow' name="save" type="submit"><i class="icon-save"></i> Save workflow</button>
+                <button class="btn btn-primary pull-right" id='save-workflow' name="save" type="submit" onclick="return isWorkflowEmptyConfirm();"><i class="icon-save"></i> Save workflow</button>
             {% endif %}
             {% if action == 'edit'%}
                 {% if h.check_access('workflow_delete', {'id': workflow.id} )  %}

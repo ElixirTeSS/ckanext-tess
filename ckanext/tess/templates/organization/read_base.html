@@ -8,9 +8,14 @@
 {% endblock %}
 
 {% block content_action %}
-  {% if h.check_access('organization_update', {'id': c.group_dict.id}) %}
-    {% link_for _('Manage'), controller='organization', action='edit', id=c.group_dict.name, class_='btn', icon='wrench' %}
-  {% endif %}
+      {% if h.check_access('organization_delete', {'id': c.group_dict.id})  %}
+        {% set locale = h.dump_json({'content': _('Are you sure you want to delete this content provider? This will delete all the public and private training materials belonging to this content provider.')}) %}
+        <a class="btn btn-danger pull-left" href="{% url_for controller='organization', action='delete', id=c.group_dict.id %}" style="margin-right:20px" data-module="confirm-action" data-module-i18n="{{ locale }}">{% block delete_button_text %}{{ _('Delete') }}{% endblock %}</a>
+      {% endif %}
+
+      {% if h.check_access('organization_update', {'id': c.group_dict.id}) %}
+        {% link_for _('Edit'), controller='organization', action='edit', id=c.group_dict.name, class_='btn', icon='wrench' %}
+      {% endif %}
 {% endblock %}
 
 {% block content_primary_nav %}

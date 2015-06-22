@@ -45,10 +45,20 @@
             {% snippet "node/snippets/node_list_dropdown.html" %}
         </div>
         {% block content_action %}
+
             {% if h.check_access('group_update', {'id': c.group_dict.id}) %}
             <div style="float: right; padding: 10px;">
-                {% link_for _('Manage'), controller='ckanext.tess.node:NodeController', action='edit', id=node.get('name'), class_='btn', icon='wrench' %}
+                {% link_for _('Edit'), controller='ckanext.tess.node:NodeController', action='edit', id=node.get('name'), class_='btn', icon='wrench' %}
             </div>
+
+            {% if h.check_access('group_delete', {'id': c.group_dict.id})  %}
+            <div style="float: right; padding: 10px;">
+                {% set locale = h.dump_json({'content': _('Are you sure you want to delete this node?')}) %}
+                    <a class="btn btn-danger pull-right" href="{% url_for 'delete-node', id=c.group_dict.id %}"
+                       data-module="confirm-action"  data-module-i18n="{{ locale }}">Delete</a>
+            </div>
+           {% endif %}
+
             {% endif %}
         {% endblock %}
 </header>

@@ -7,7 +7,7 @@
 {% block primary_content_inner %}
   {% link_for _('Back to all members'), controller='group', action='members', id=group.name, class_='btn pull-right', icon='arrow-left' %}
   <h1 class="page-heading">
-    {% block page_heading %}{{ _('Edit Member') if user else _('Add Member') }}{% endblock %}
+    {% block page_heading %}{{ _('Edit member') if user else _('Add member') }}{% endblock %}
   </h1>
   {% block form %}
   <form class="dataset-form form-horizontal add-member-form" method='post'>

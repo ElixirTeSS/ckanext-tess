@@ -10,6 +10,7 @@ import ckan.logic as logic
 NotFound = logic.NotFound
 
 from ckan.lib.plugins import DefaultGroupForm
+import ckan.lib.base as base
 
 class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
     plugins.implements(plugins.IGroupForm, inherit=True)
@@ -46,13 +47,14 @@ class NodePlugin(plugins.SingletonPlugin, DefaultGroupForm):
 
     def before_map(self, map):
         map.connect('node', '/node', controller='ckanext.tess.node:NodeController', action='index')
+        map.connect('training_coordinators', '/node/training-coordinators', controller='ckanext.tess.node:NodeController', action='training_coordinators')
         map.connect('new-node', '/node/new', controller='ckanext.tess.node:NodeController', action='new')
         map.connect('edit-node', '/node/edit/{id}', controller='ckanext.tess.node:NodeController', action='edit')
-        map.connect('read-node', '/node/{id}', controller='ckanext.tess.node:NodeController', action='read')
         map.connect('delete-node', '/node/delete/{id}', controller='ckanext.tess.node:NodeController', action='delete')
         map.connect('bulk_process_org', '/organization/bulk_process/{id}',
                     controller='ckanext.tess.organization:OrganizationController',
                     action='bulk_process')
+        map.connect('read-node', '/node/{id}', controller='ckanext.tess.node:NodeController', action='read')
         return map
 
     def is_fallback(self):
@@ -172,7 +174,8 @@ class NodeController(group.GroupController):
     def _guess_group_type(self, expecting_name=False):
         return 'node'
 
-
+    def training_coordinators(self):
+        return base.render('node/training_coordinators.html')
 
 
 def reorder_dataset_facets(facet_keys, facet_values):
