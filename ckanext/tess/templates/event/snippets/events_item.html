@@ -22,7 +22,7 @@ Type - 'related', 'associated', or 'regular'/''/None
 
     {% block heading %}
         {% if link %}
-            <a href="{{link}}" target="_blank"><h3>{{event.pop('title') }}</h3></a>
+            <a href="{{link}}" target="_blank"><h4 style="margin:0px; padding:0px;">{{event.pop('title') }}</h4></a>
         {% else %}
             <h3 class="media-heading">{{event.pop('title') }}</h3><br>
         {% endif %}
@@ -34,6 +34,13 @@ Type - 'related', 'associated', or 'regular'/''/None
         {% endif %}
     {% endblock %}
 
+    {% block date %}
+        {% if event.get('succinct_dates') %}
+        <b>Date:</b>
+            {{ event.pop('succinct_dates')}}<br>
+        {% endif %}
+    {% endblock %}
+        
     {% block venue %}
         {% if event.get('venue') %}
             <b>Venue:</b> {{ event.pop('venue')}}
@@ -42,14 +49,7 @@ Type - 'related', 'associated', or 'regular'/''/None
 
     {% block location %}
         {% if event.get('city') and event.get('country') %}
-            <b>Place:</b> {{ event.pop('city')}}, {{ event.pop('country')}}<br>
-        {% endif %}
-    {% endblock %}
-
-    {% block date %}
-        {% if event.get('succinct_dates') %}
-        <b>Date:</b>
-            {{ event.pop('succinct_dates')}}<br>
+            <b>Location:</b> {{ event.pop('city')}}, {{ event.pop('country')}}<br>
         {% endif %}
     {% endblock %}
 
