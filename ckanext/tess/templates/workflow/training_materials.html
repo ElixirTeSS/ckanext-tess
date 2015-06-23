@@ -9,23 +9,29 @@
     <div class="workflow-training-materials-display">
     <h3 class="heading">Training materials for {{c.workflow_dict.name}}</h3>
 
-    {% for material in c.node_materials %}
-        {% if material.get('name') %}
-            <div class="workflow-training-material-display">
-                <h4 class="heading">{{ material.get('name') }}</h4>
-                {% if material.get('description') %}
-                    <p> {{ material.get('description') }}</p>
-                {% endif %}
-                {% if material.get('materials'): %}
+    {% for node, children in c.node_structure.iteritems() %}
+        {% if children.get('root') %}
+            {% snippet 'workflow/snippets/workflow_stage_item.html', stage=c.node_content.get(node) %}
+            <ul>
+            {% for child in children %}
+                {% snippet 'workflow/snippets/workflow_stage_item.html', stage=c.node_content.get(child) %}
+                {% if c.node_structure.get(child) %}
                     <ul>
-                        {% for m in material.get('materials') %}
-                            <li>{% link_for m.get('name'), controller='package', action='read', id=m.get('id') %}<br></li>
-                        {% endfor %}
+                    {% for subchild in c.node_structure.get(child) %}
+                        {% snippet 'workflow/snippets/workflow_stage_item.html', stage=c.node_content.get(subchild) %}
+                        {% if c.node_structure.get(subchild) %}
+                            <ul>
+                            {% for subsubchild in c.node_structure.get(subchild) %}
+                                {% snippet 'workflow/snippets/workflow_stage_item.html', stage=c.node_content.get(subsubchild) %}
+                            {% endfor %}
+                            </ul>
+                        {% endif %}
+                    {% endfor %}
                     </ul>
-                {% else %}
-                    <span class="empty"> No training materials are associated with this workflow node.</span>
                 {% endif %}
-            </div>
+            {% endfor %}
+            </ul>
+            <hr>
         {% endif %}
     {% endfor %}
     </div>
