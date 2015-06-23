@@ -8,21 +8,23 @@
         <nav>
             <ul class="{{ nav_class or 'unstyled nav nav-simple nav-facet' }}">
 
-                {% if not c.active_filters[filter_name] %} <!--c.category not in names -->
+                {% if not c.active_filters[filter_name] %} <!--Display all filters as usual-->
                     {% for filter in filter_options[:(h.get_param_int('_%s_limit' % filter_name))] %}
                         {% set href = h.add_url_param(new_params={filter_name: filter['name']}) %}
                         <li class='nav-item'><a href="{{ href }}" title="{{ filter['name']}}"><span>{{ filter['name']}} ({{filter['count']}}) </span></a></li>
                     {% endfor %}
                 {% else %}
+                    <!--Display the active filters. -->
                     {% set href = h.remove_url_param(filter_name) %}
                     <li class='nav-item active'><a href="{{ href }}" title="{{ c.active_filters[filter_name] }}"><span>{{ c.active_filters[filter_name] }}</span></a></li>
-                    {% for filter in filter_options[:(h.get_param_int('_%s_limit' % filter_name))] %}
-                        {% if c.active_filters[filter_name] != filter['name']  %}
-                            {% set params = c.active_filters[filter_name] + ',' + filter['name'] %}
-                            {% set href = h.add_url_param(new_params={filter_name: params}) %}
-                            <li class='nav-item'><a href="{{ href }}" title="{{ filter['name']}}"><span>{{ filter['name']}} ({{filter['count']}}) </span></a></li>
+                    <!--Then all the others -->
+                 <!--   {% for filter in filter_options[:(h.get_param_int('_%s_limit' % filter_name))] %}
+                        {% if c.active_filters[filter_name] and c.active_filters[filter_name] != filter['name']  %}
+                                {{c.active_filters[filter_name]}}
+                                {% set href = h.add_url_param(new_params={filter_name: params}) %}
+                                <li class='nav-item'><a href="{{ href }}" title="{{ filter['name']}}"><span>{{ filter['name']}} ({{filter['count']}}) </span></a></li>
                         {% endif %}
-                    {% endfor %}
+                    {% endfor %}-->
                 {% endif %}
             </ul>
         </nav>

@@ -101,22 +101,28 @@ def format_nice_date_difference(a, b):
 
 
 def get_event_filters():
-    url = construct_url('http://iann.pro/solr/select?facet=true&facet.field=%s&rows=0' % 'category')
-    res = urllib2.urlopen(url)
-    res = res.read()
-    doc = et.fromstring(res)
-    fields = doc.findall("./lst/lst/lst/int")
-    field_list = []
-    for field in fields:
-        if field.attrib['name'] == 'course':
-            field_list.append({'name': 'Course', 'count': field.text})
-        elif field.attrib['name'] == 'meeting':
-            field_list.append({'name': 'Event', 'count': field.text})
-    return field_list
+    try:
+        url = construct_url('http://iann.pro/solr/select?facet=true&facet.field=category&rows=0')
+        res = urllib2.urlopen(url)
+        res = res.read()
+        doc = et.fromstring(res)
+        fields = doc.findall("./lst/lst/lst/int")
+        field_list = []
+        for field in fields:
+            if field.text and field.text != '0' and field.attrib['name'] != 'event':
+                field_list.append({'name': field.attrib['name'].capitalize(), 'count': field.text})
+        return field_list
+    except Exception, e:
+        print 'Could not load category filters'
+
+
 
 def get_filters_for(field_name):
     try:
         #TODO; Only load 10 filters unless parameter _provider_limit=1000 - provider_limit is calling solr # filters times. Need to minimize
+        if c.active_filters.get('field_name'):
+            return []
+        else:
             url = construct_url('http://iann.pro/solr/select?facet=true&facet.field=%s&rows=0' % field_name)
             res = urllib2.urlopen(url)
             res = res.read()
@@ -234,7 +240,14 @@ def construct_url(original_url):
         if c.country:
             original_url = ('%s%%20AND%%20country:"%s"' % (original_url, urllib.quote(c.country)))
         if c.field:
-            original_url = ('%s%%20AND%%20field:"%s"' % (original_url, urllib.quote(c.field)))
+            if type(c.field) is []:
+                fields = c.field
+                original_url = ('%s%%20AND%%20field:"%s"' % (original_url, urllib.quote(fields(0))))
+                for field in fields:
+                    original_url = ('%s%%20OR%%20field:"%s"' % (original_url, urllib.quote(field)))
+            else:
+                original_url = ('%s%%20AND%%20field:"%s"' % (original_url, urllib.quote(c.field)))
+
         if c.provider:
             original_url = ('%s%%20AND%%20provider:"%s"' % (original_url, urllib.quote(c.provider)))
         #print original_url
@@ -289,16 +302,17 @@ def pager_url(q=None, page=None):
 
 def setup_events():
     q_params = {}
-    c.q = q_params['q'] = c.q = request.params.get('q', '')
-    c.event_type = q_params['event_type'] = request.params.get('event_type', '')
-    c.country = q_params['country'] = request.params.get('country', '')
-    c.field = q_params['field'] = request.params.get('field', '')
-    print c.field
-    c.provider = q_params['provider'] = request.params.get('provider', '')
-    c.rows = q_params['rows'] = request.params.get('rows', 25)
-    c.sort_by_selected = q_params['sort'] = request.params.get('sort', '')
-    c.page_number = q_params['page'] = int(request.params.get('page', 0))
-    c.include_expired_events = q_params['include_expired'] = request.params.get('include_expired', False)
+    c.q = c.q = request.params.get('q', '')
+    c.event_type = request.params.get('event_type', '')
+    c.country = request.params.get('country', '')
+#    c.field = []
+#    c.field.append(request.params.get('field', '').split(','))
+    c.field = request.params.get('field', '')
+    c.provider = request.params.get('provider', '')
+    c.rows = request.params.get('rows', 25)
+    c.sort_by_selected = request.params.get('sort', '')
+    c.page_number = int(request.params.get('page', 0))
+    c.include_expired_events = request.params.get('include_expired', False)
     events_hash = events()
     c.active_filters = {'event_type': c.event_type, 'field': c.field, 'country': c.country, 'provider': c.provider}
     filters = {}
