@@ -1,0 +1,30 @@
+{#
+    Description:
+    stage - dictionary containing meta information about a workflow stage.
+
+    Example content for 'stage':
+    stage = {'name': blah, 'description': blah, 'materials': [123435432, 123254354]}
+
+    Usage:
+    {% snippet 'workflow/snippets/workflow_stage_item.html', stage=c.node_content.get('n0') %}
+#}
+
+{% if stage %}
+<li style="list-style-type: none;">
+    <div class="workflow-training-material-display">
+        <h4 class="heading">{{ stage.get('name') }}</h4>
+        {% if stage.get('description') %}
+            <p> {{ stage.get('description') }}</p>
+        {% endif %}
+        {% if stage.get('materials'): %}
+            <ul>
+            {% for material in stage.get('materials') %}
+                <li>{% link_for material.get('name'), controller='package', action='read', id=material.get('id') %}<br></li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <span class="empty"> No training materials are associated with this workflow node.</span>
+        {% endif %}
+    </div>
+</li>
+{% endif %}
