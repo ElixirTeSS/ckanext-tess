@@ -81,6 +81,56 @@ class WorkflowPlugin(plugins.SingletonPlugin):
             'workflow_delete': workflow_actions_authz
         }
 
+'''
+Returns a graph structure of the workflow stages in the form of a dictionary e.g.
+{   u'n0': {u'n1': {}, u'n2': {}, u'n3': {}, 'root': True, u'n4': {}},
+    u'n4': {u'n5': {}, u'n6': {}, u'n7': {}},
+    u'n7': {u'n8': {}, u'n9': {}}
+}
+The top level keys are all parents. In this example the first one 'n0' is root
+The second top level one ('n4') is a child of n0. The third top level ('n7') is a child of
+n7. All other nodes are leaf nodes.
+'''
+def node_structure(workflow_description):
+    nodes = workflow_description.get('elements').get('nodes')
+    node_graph = {}
+    for node in nodes:
+        node_dict = node.get('data')
+        id = node_dict.get('id')
+        parent = node_dict.get('parent')
+        if not parent:  # Then it's a parent
+            print 'node %s is a root node' % node_dict.get('id')
+            node_graph[id] = {'root': True}
+        else:  # Then it's a child
+            print 'parent node of %s is %s' % (node_dict.get('id'), node_dict.get('parent'))
+            # Add the child to the parent. Create the parent if it does not exist.
+            # This will leave orphaned structures
+            if not node_graph.get(parent):
+                node_graph[parent] = {}
+            node_graph[parent][id] = {}
+    return node_graph
+
+'''
+Returns a flat list of node content e.g.
+ {
+  'n0': {'name': 'stage1', 'description': 'this is a description', 'materials': ['234234', '432432432']},
+  'n1': {'name': 'stage2', 'description': 'this is a description', 'materials': ['234234', '432432432', '093402']}
+ }
+'''
+def node_content(workflow_description):
+    elements = workflow_description.get('elements')
+    nodes = elements.get('nodes')
+    node_content = {}
+    if nodes:
+        for node in nodes:
+            node_data = node.get('data')
+            node_content[node_data.get('id')] = {
+                'name': node_data.get('name', 'Unnamed Node'),
+                'description': node_data.get('description', None),
+                'materials': node_data.get('materials', [])
+            }
+    return node_content
+
 
 def training_material_options():
     res = toolkit.get_action('package_search')(data_dict={'rows': 5000})
@@ -120,16 +170,8 @@ class WorkflowController(HomeController):
         c.workflow_dict = get_workflow(id)
         wf = json.loads(c.workflow_dict.get('definition'))
         node_materials = []
-
-        elements = wf.get('elements')
-        nodes = elements.get('nodes')
-        if nodes:
-            for node in nodes:
-                node_data = node.get('data')
-                node_materials.append({'name': node_data.get('name', 'Unnamed Node'),
-                                        'description': node_data.get('description', None),
-                                        'materials': node_data.get('materials', [])})
-        c.node_materials = node_materials
+        c.node_structure = node_structure(wf)
+        c.node_content = node_content(wf)
         return base.render('workflow/training_materials.html')
 
     def index(self):
