@@ -1,0 +1,17 @@
+{#
+
+    c.workflow_structure (see training_materails.html)
+    stage - name of stage e.g. 'n0'
+    USAGE: {% snippet 'workflow/snippets/workflow_stage_list.html', stage='n0' %}
+#}
+
+
+{% snippet 'workflow/snippets/workflow_stage_item.html', stage=c.node_content.get(stage) %}
+{% if c.node_structure.get(stage) %}
+    <ul>
+        {% for child in c.node_structure.get(stage) %}
+            {# Recursively call workflow_stage_list until no more children #}
+            {% snippet 'workflow/snippets/workflow_stage_list.html', stage=child %}
+        {% endfor %}
+    </ul>
+{% endif %}

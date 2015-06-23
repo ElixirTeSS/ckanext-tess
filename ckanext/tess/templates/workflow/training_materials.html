@@ -7,32 +7,17 @@
 
 {% block show_specific %}
     <div class="workflow-training-materials-display">
-    <h3 class="heading">Training materials for {{c.workflow_dict.name}}</h3>
-
-    {% for node, children in c.node_structure.iteritems() %}
-        {% if children.get('root') %}
-            {% snippet 'workflow/snippets/workflow_stage_item.html', stage=c.node_content.get(node) %}
-            <ul>
-            {% for child in children %}
-                {% snippet 'workflow/snippets/workflow_stage_item.html', stage=c.node_content.get(child) %}
-                {% if c.node_structure.get(child) %}
-                    <ul>
-                    {% for subchild in c.node_structure.get(child) %}
-                        {% snippet 'workflow/snippets/workflow_stage_item.html', stage=c.node_content.get(subchild) %}
-                        {% if c.node_structure.get(subchild) %}
-                            <ul>
-                            {% for subsubchild in c.node_structure.get(subchild) %}
-                                {% snippet 'workflow/snippets/workflow_stage_item.html', stage=c.node_content.get(subsubchild) %}
-                            {% endfor %}
-                            </ul>
-                        {% endif %}
+        <h3 class="heading">Training materials for {{c.workflow_dict.name}}</h3>
+        {% for node, children in c.node_structure.iteritems() %}
+            {% if children.get('root') %}
+                {% snippet 'workflow/snippets/workflow_stage_item.html', stage=c.node_content.get(node) %}
+                <ul>
+                    {% for child in children %}
+                        {% snippet 'workflow/snippets/workflow_stage_list.html', stage=child %}
                     {% endfor %}
-                    </ul>
-                {% endif %}
-            {% endfor %}
-            </ul>
-            <hr>
-        {% endif %}
-    {% endfor %}
+                </ul>
+                <hr>
+            {% endif %}
+        {% endfor %}
     </div>
 {% endblock %}
