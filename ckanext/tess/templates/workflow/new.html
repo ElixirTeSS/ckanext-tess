@@ -16,13 +16,15 @@
 
 
 {% block primary %}
-    <header class="module-content page-header">
-        <div class="content_action">
-            <div style="margin-bottom: 13px;">
-                {% link_for _('View'), controller='ckanext.tess.workflow:WorkflowController', action='read', id=c.workflow_dict.id, class_='btn', icon='eye-open' %}
+    {% if action=='edit' %}
+        <header class="module-content page-header">
+            <div class="content_action">
+                <div style="margin-bottom: 13px;">
+                    {% link_for _('View'), controller='ckanext.tess.workflow:WorkflowController', action='read', id=c.workflow_dict.id, class_='btn', icon='eye-open' %}
+                </div>
             </div>
-        </div>
-    </header>
+        </header>
+    {% endif %}
 
     {% snippet "workflow/snippets/workflow-property-editor.html" %}
 
