@@ -26,6 +26,8 @@ from ckanext.tess.model.tables import TessWorkflow
 
 import ckan.lib.helpers as h
 
+import ckan.authz as authz
+
 abort = base.abort
 
 get_action = logic.get_action
@@ -49,7 +51,8 @@ class WorkflowPlugin(plugins.SingletonPlugin):
     def get_helpers(self):
         return {
             'read_workflow_file' : read_workflow_file,
-            'training_material_options' : training_material_options
+            'training_material_options' : training_material_options,
+            'get_workflows_for_user' : get_workflows_for_user,
         }
 
     def before_map(self, map):
@@ -67,6 +70,8 @@ class WorkflowPlugin(plugins.SingletonPlugin):
         map.connect('workflow_update', '/workflow/edit/{id}', controller='ckanext.tess.workflow:WorkflowController', action='update')
         map.connect('workflow_delete', '/workflow/delete/{id}', controller='ckanext.tess.workflow:WorkflowController', action='delete')
         map.connect('workflow_read', '/workflow/{id}', controller='ckanext.tess.workflow:WorkflowController', action='read', ckan_icon="sitemap")
+
+        map.connect('user_dashboard_workflows', '/dashboard/workflows', controller='ckanext.tess.workflow:WorkflowController', action='dashboard_workflows', ckan_icon='sitemap')
         return map
 
     def get_auth_functions(self):
@@ -138,6 +143,22 @@ def training_material_options():
     for package in res.get('results'):
         titles.append({'value': package['title'], 'id': package['id']})
     return titles
+
+def get_workflows_for_user(user_id):
+
+        workflows = model.Session.query(TessWorkflow).filter(TessWorkflow.creator_user_id == user_id)
+        results = []
+        for workflow in workflows:
+            result = {}
+            result['definition'] = workflow.definition
+            result['name'] = workflow.name
+            result['description'] = workflow.description
+            result['id'] = workflow.id
+            result['creator'] = model.User.get(workflow.creator_user_id).display_name
+            result['created'] = h.time_ago_from_timestamp(workflow.created)
+            result['modified'] = h.time_ago_from_timestamp(workflow.last_modified)
+            results.append(result)
+        return results
 
 
 def get_workflow(workflow_id):
@@ -275,6 +296,28 @@ class WorkflowController(HomeController):
             c.workflow_dict = get_workflow(id)
 
         return base.render('workflow/edit.html')
+
+
+    def dashboard_workflows(self):
+        context = {'for_view': True, 'user': c.user or c.author,
+                   'auth_user_obj': c.userobj}
+        data_dict = {'user_obj': c.userobj}
+
+        c.is_sysadmin = authz.is_sysadmin(c.user)
+        try:
+            user_dict = get_action('user_show')(context, data_dict)
+        except NotFound:
+            abort(404, _('User not found'))
+        except NotAuthorized:
+            abort(401, _('Not authorized to see this page'))
+
+        c.user_dict = user_dict
+        c.is_myself = user_dict['name'] == c.user
+        c.about_formatted = h.render_markdown(user_dict['about'])
+
+        c.user_dict['workflows'] = get_workflows_for_user(user_dict['id'])
+
+        return base.render('user/dashboard_workflows.html')
 
 
 class TessDomainObject(DomainObject):
