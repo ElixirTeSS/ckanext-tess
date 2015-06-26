@@ -227,8 +227,8 @@ def construct_url(original_url):
             attr, dir = c.sort.split(' ') # e.g end asc or title asc
             original_url = ('%s&sort=%s%%20%s' % (original_url, attr, dir))
 
-        if c.page:
-            original_url = ('%s&start=%s' % (original_url, str(c.page*c.rows-c.rows)))
+        if c.page_number:
+            original_url = ('%s&start=%s' % (original_url, str(c.page_number*c.rows)))
         if c.event_type:
             if c.event_type == 'Event':
                 original_url = ('%s&q=category:%s' % (original_url, 'meeting'))
@@ -283,11 +283,13 @@ def events(related_materials=True):
                         #context = {'model': model, 'session': model.Session,
                         #    'user': c.user or c.author, 'for_view': True,
                         #    'with_private': False}
-                        package = get_action('package_show')({}, {'id': material_id})
-                        materials.append(package)
+                        if material_id:
+                            package = get_action('package_show')({}, {'id': material_id})
+                            materials.append(package)
                     event['materials'] = materials
             print events
         results['url'] = url
+        print url
     except Exception, e:
         print 'Error loading events from iANN.pro: \n %s' % e
     return results
