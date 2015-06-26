@@ -59,6 +59,15 @@ Type - 'related', 'associated', or 'regular'/''/None
         {% endif %}
     {% endblock %}
 
+    {% if event.get('materials') %}
+        <b>Related Materials:</b>
+        <ul>
+        {% for event in event.get('materials') %}
+            <li style="list-style: none">{% link_for event.get('title'), controller='package', action='read', id=event.get('id') %}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
     {% if type == 'related' %}
         <br>
         <button data-module="event_association"
@@ -85,7 +94,8 @@ Type - 'related', 'associated', or 'regular'/''/None
                 data-module-resource_id="{{c.pkg_dict.id}}"
                 data-module-key="{{c.key}}"> Unassociate Event</button>
     {% endif %}
-</li>
+
+    </li>
 </div>
 
 {% endblock %}
