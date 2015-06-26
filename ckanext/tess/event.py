@@ -228,7 +228,7 @@ def construct_url(original_url):
             original_url = ('%s&sort=%s%%20%s' % (original_url, attr, dir))
 
         if c.page_number:
-            original_url = ('%s&start=%s' % (original_url, str(c.page_number*c.rows)))
+            original_url = ('%s&start=%s' % (original_url, str((c.page_number-1)*c.rows)))
         if c.event_type:
             if c.event_type == 'Event':
                 original_url = ('%s&q=category:%s' % (original_url, 'meeting'))
