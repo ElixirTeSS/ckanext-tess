@@ -1,0 +1,24 @@
+{% extends "user/dashboard.html" %}
+
+{% block dashboard_activity_stream_context %}{% endblock %}
+
+{% block page_primary_action %}
+{% if h.check_access('workflow_create') %}
+{% link_for _('Add workflow'), controller='ckanext.tess.workflow:WorkflowController', action='new', class_="btn btn-primary", icon="plus-sign-alt" %}
+{% endif %}
+{% endblock %}
+
+{% block primary_content_inner %} 
+    <h2 class="hide-heading">{{ _('My workflows')}}</h2> 
+    {% if c.user_dict.workflows %} 
+        {% snippet 'workflow/snippets/workflow_list.html', workflows=c.user_dict.workflows %} 
+    {% else %} 
+    <p class="empty" style="padding-bottom: 10px;"> 
+        {{ _('You have not created any workflows.') }} 
+        {% if h.check_access('workflow_create') %} 
+        {% link_for _('Create one now?'), controller='ckanext.tess.workflow:WorkflowController', action='new' %} 
+        {% endif%} 
+    </p> 
+    {% endif %}
+ {% endblock %}
+
