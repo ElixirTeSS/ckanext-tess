@@ -6,7 +6,7 @@ pkg - A package object that the events belong to.
 
 Example:
 
-{% snippet "package/snippets/events_list.html", pkg=pkg, events=h.get_associated_events(pkg.id) %}
+{% snippet "package/snippets/events_list.html", pkg=pkg, events=h.get_associated_events_by_material_id(pkg.id) %}
 #}
 <section id="dataset-events" class="events">
   <h3>{{ _('Related events') }}</h3>
