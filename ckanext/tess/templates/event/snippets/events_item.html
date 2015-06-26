@@ -61,9 +61,9 @@ Type - 'related', 'associated', or 'regular'/''/None
 
     {% if event.get('materials') %}
         <b>Related Materials:</b>
-        <ul>
+        <ul style="margin-left: 10px;">
         {% for event in event.get('materials') %}
-            <li style="list-style: none">{% link_for event.get('title'), controller='package', action='read', id=event.get('id') %}</li>
+            <li >{% link_for event.get('title'), controller='package', action='read', id=event.get('id') %}</li>
         {% endfor %}
         </ul>
     {% endif %}
