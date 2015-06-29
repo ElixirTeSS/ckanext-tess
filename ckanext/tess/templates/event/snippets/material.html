@@ -1,0 +1,26 @@
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script type="text/javascript">
+    $(function(){
+
+        $('#materials-{{id}}').click(function(){
+            $('#event-material-{{id}}').modal('show');
+        });
+    });
+</script>
+
+<button class="btn btn-default" id="materials-{{id}}">See related materials</button>
+
+<div id="event-material-{{id}}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="zindex:15">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Training materials for {{event.get('title')}}</h3>
+  </div>
+  <div class="modal-body">
+          <b>Related Materials:</b>
+            <ul style="margin-left: 10px;">
+            {% for material in event.get('materials') %}
+            <li >{% link_for material.get('title'), controller='package', action='read', id=material.get('id') %}</li>
+            {% endfor %}
+            </ul>
+  </div>
+</div>

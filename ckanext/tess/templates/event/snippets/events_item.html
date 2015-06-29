@@ -60,13 +60,9 @@ Type - 'related', 'associated', or 'regular'/''/None
     {% endblock %}
 
     {% if event.get('materials') %}
-        <b>Related Materials:</b>
-        <ul style="margin-left: 10px;">
-        {% for event in event.get('materials') %}
-            <li >{% link_for event.get('title'), controller='package', action='read', id=event.get('id') %}</li>
-        {% endfor %}
-        </ul>
+        {% snippet "event/snippets/material.html", id=id, event=event%}
     {% endif %}
+
 
     {% if type == 'related' %}
         <br>
