@@ -6,7 +6,7 @@
 
         <h2 class="module-heading"><i class="icon-medium icon-filter"></i> {{filter_name.replace('_', ' ').capitalize() }}</h2>
         <nav>
-            <ul class="{{ nav_class or 'unstyled nav nav-simple nav-facet' }}">
+            <ul class="unstyled nav nav-simple nav-facet">
 
                 {% if not c.active_filters[filter_name] %} <!--Display all filters as usual-->
                     {% for filter in filter_options[:(h.get_param_int('_%s_limit' % filter_name))] %}

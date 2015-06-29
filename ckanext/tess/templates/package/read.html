@@ -42,7 +42,7 @@
   {% endblock %}
 
   {% block material_events %}
-    {% snippet "package/snippets/events_list.html", pkg=pkg, events=h.get_associated_events(pkg.id) %}
+    {% snippet "package/snippets/events_list.html", pkg=pkg, events=h.get_associated_events_by_material_id(pkg.id) %}
   {% endblock %}
 
   {% block package_resources %}

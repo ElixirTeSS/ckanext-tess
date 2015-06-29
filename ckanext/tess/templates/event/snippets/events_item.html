@@ -59,6 +59,11 @@ Type - 'related', 'associated', or 'regular'/''/None
         {% endif %}
     {% endblock %}
 
+    {% if event.get('materials') %}
+        {% snippet "event/snippets/material.html", id=id, event=event%}
+    {% endif %}
+
+
     {% if type == 'related' %}
         <br>
         <button data-module="event_association"
@@ -85,7 +90,8 @@ Type - 'related', 'associated', or 'regular'/''/None
                 data-module-resource_id="{{c.pkg_dict.id}}"
                 data-module-key="{{c.key}}"> Unassociate Event</button>
     {% endif %}
-</li>
+
+    </li>
 </div>
 
 {% endblock %}

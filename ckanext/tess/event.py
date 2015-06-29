@@ -46,7 +46,7 @@ class EventPlugin(plugins.SingletonPlugin, DefaultGroupForm):
                 'related_events': related_events,
                 'has_more_options': has_more_options,
                 'events': events,
-                'get_associated_events': get_associated_events
+                'get_associated_events_by_material_id': get_associated_events_by_material_id
         }
 
 
@@ -60,16 +60,19 @@ class EventController(HomeController):
         return base.redirect('http://iann.pro/report-event')
 
     def add_events(self, id):
+
+        #TODO: MUST AUTHENTICATE HERE
+
         context = {'model': model, 'session': model.Session,
                    'api_version': 3, 'for_edit': True,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj}
         pkg_dict = get_action('package_show')(context, {'id': id})
         c.pkg_dict = pkg_dict
+        #This gets included in JS to associate event via AJAX
         c.key = c.userobj.apikey
-        params = {}
-        params['q'] = pkg_dict.get('title')
-        c.associated_events = get_associated_events(c.pkg_dict.get('id'))
+        c.associated_events = get_associated_events_by_material_id(c.pkg_dict.get('id'))
         setup_events()
+        #Strip events that are already associated
         for event in c.associated_events:
             c.events[:] = [d for d in c.events if d.get('id') != event.get('id')]
         return base.render('package/related_events.html')
@@ -224,8 +227,8 @@ def construct_url(original_url):
             attr, dir = c.sort.split(' ') # e.g end asc or title asc
             original_url = ('%s&sort=%s%%20%s' % (original_url, attr, dir))
 
-        if c.page:
-            original_url = ('%s&start=%s' % (original_url, str(c.page*c.rows-c.rows)))
+        if c.page_number:
+            original_url = ('%s&start=%s' % (original_url, str((c.page_number-1)*c.rows)))
         if c.event_type:
             if c.event_type == 'Event':
                 original_url = ('%s&q=category:%s' % (original_url, 'meeting'))
@@ -263,7 +266,7 @@ def construct_url(original_url):
         print 'Failed to construct URL for iAnn API \n %s' % e
 
 
-def events():
+def events(related_materials=True):
     results = {}
     original_url = 'http://iann.pro/solr/select/?&rows=%s' % c.rows
     url = construct_url(original_url)
@@ -271,7 +274,22 @@ def events():
         res = urllib2.urlopen(url)
         res = res.read()
         results = parse_xml(res)
+        if related_materials:
+            for event in results['events']:
+                material_ids = get_associated_events_by_event_id(event.get('id'))
+                materials = []
+                if material_ids:
+                    for material_id in material_ids:
+                        #context = {'model': model, 'session': model.Session,
+                        #    'user': c.user or c.author, 'for_view': True,
+                        #    'with_private': False}
+                        if material_id:
+                            package = get_action('package_show')({}, {'id': material_id})
+                            materials.append(package)
+                    event['materials'] = materials
+            print events
         results['url'] = url
+        print url
     except Exception, e:
         print 'Error loading events from iANN.pro: \n %s' % e
     return results
@@ -301,19 +319,21 @@ def pager_url(q=None, page=None):
 
 
 def setup_events():
-    q_params = {}
     c.q = c.q = request.params.get('q', '')
     c.event_type = request.params.get('event_type', '')
     c.country = request.params.get('country', '')
 #    c.field = []
 #    c.field.append(request.params.get('field', '').split(','))
-    c.field = request.params.get('field', '')
     c.provider = request.params.get('provider', '')
     c.rows = request.params.get('rows', 25)
     c.sort_by_selected = request.params.get('sort', '')
     c.page_number = int(request.params.get('page', 0))
     c.include_expired_events = request.params.get('include_expired', False)
-    events_hash = events()
+
+
+    events_hash = events(related_materials=True)
+
+
     c.active_filters = {'event_type': c.event_type, 'field': c.field, 'country': c.country, 'provider': c.provider}
     filters = {}
     if not c.filters:
@@ -349,12 +369,22 @@ def delete_event_associate(id):
         filter(TessMaterialEvent.id == id).first()
     return delete
 
-def get_associated_events(material_id):
-    events = model.Session.query(TessMaterialEvent).filter(TessMaterialEvent.material_id == material_id)
+def get_associated_events_by_material_id(material_id):
+    associations = model.Session.query(TessMaterialEvent).filter(TessMaterialEvent.material_id == material_id)
     results = []
-    for event in events.all():
+    for association in associations.all():
         try:
-            results.append(get_event_by_id(event.event_id))
+            results.append(get_event_by_id(association.event_id))
+        except Exception:
+            print 'Failed to find Event with ID: %s' % association.event_id
+    return results
+
+def get_associated_events_by_event_id(event_id):
+    associations = model.Session.query(TessMaterialEvent).filter(TessMaterialEvent.event_id == event_id)
+    results = []
+    for event in associations.all():
+        try:
+           results.append(event.material_id)
         except Exception:
             print 'Failed to find Event with ID: %s' % event.event_id
     return results
@@ -417,7 +447,7 @@ def unassociate_event(context, data_dict):
         raise NotFound('Could not find association')
 
 def associated_events(context, data_dict):
-    resources = get_associated_events(data_dict.get('resource_id'))
+    resources = get_associated_events_by_material_id(data_dict.get('resource_id'))
     return resources
 
 
