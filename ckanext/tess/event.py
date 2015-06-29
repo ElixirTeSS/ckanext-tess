@@ -163,6 +163,18 @@ def proper_name(field, name):
         print 'Error loading the correct provider names \n %s' % e
         return name
 
+
+def country_name_to_code(countries, name):
+    here = os.path.dirname(__file__)
+    file = os.path.join(here,'countries-all.json')
+    with open(file) as data_file:
+        try:
+            countries_map = json.load(data_file)
+        except Exception, e:
+            print e
+            countries_map = []
+    return countries_map
+
 #def country_filters():
 
     # For list of ELIXIR countries:
@@ -188,20 +200,34 @@ def parse_xml(xml):
     except Exception, e:
         print 'Could not load result element'
 
+    here = os.path.dirname(__file__)
+    file = os.path.join(here,'countries-all.json')
+    with open(file) as data_file:
+        try:
+            countries_map = json.load(data_file)
+        except Exception, e:
+            print e
+            countries_map = []
+
     docs = doc.findall('*/doc')
     results = []
+
     for doc in docs:
         start_time = parser.parse(doc.find("*/[@name='start']").text)
         finish_time = parser.parse(doc.find("*/[@name='end']").text)
         start_time = start_time.replace(tzinfo=None)
         finish_time = finish_time.replace(tzinfo=None)
 
+        country_codes = [code for code, country in countries_map.items() if country == doc.find("*/[@name='country']").text]
+        if country_codes:
+            country = country_codes[0]
+        else:
+            country = doc.find("*/[@name='country']").text
         expired = False
+
         if datetime.datetime.now() > finish_time:
             expired = formatters.localised_nice_date(finish_time)
         duration = (finish_time - start_time) + timedelta(days=1)
-
-
 
         res = {'title': doc.find("*/[@name='title']").text,
                'provider': doc.find("*/[@name='provider']").text,
@@ -209,7 +235,7 @@ def parse_xml(xml):
                'link': doc.find("*/[@name='link']").text,
                'subtitle': doc.find("*/[@name='subtitle']").text,
                'venue': doc.find("*/[@name='venue']").text,
-               'country': doc.find("*/[@name='country']").text,
+               'country': country,
                'city': doc.find("*/[@name='city']").text,
                'starts': formatters.localised_nice_date(start_time, show_date=True),#, with_hours=True),
                'ends': formatters.localised_nice_date(finish_time, show_date=True),#, with_hours=True), - Most of these are 00:00
