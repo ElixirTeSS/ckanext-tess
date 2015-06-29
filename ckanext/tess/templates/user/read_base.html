@@ -48,20 +48,20 @@
       {% endif %}
       {% endblock %}
       {% block user_nums %}
-      <div class="nums">
-        <dl>
-          <dt>{{ _('Followers') }}</dt>
-          <dd>{{ h.SI_number_span(user.num_followers) }}</dd>
-        </dl>
-        <dl>
-          <dt>{{ _('Training materials') }}</dt>
-          <dd>{{ h.SI_number_span(user.number_created_packages) }}</dd>
-        </dl>
-        <dl>
-          <dt>{{ _('Edits') }}</dt>
-          <dd>{{ h.SI_number_span(user.number_of_edits) }}</dd>
-        </dl>
-      </div>
+      <!--<div class="nums">-->
+        <!--<dl>-->
+          <!--<dt>{#{ _('Followers') }#}</dt>-->
+          <!--<dd>{#{ h.SI_number_span(user.num_followers) }#}</dd>-->
+        <!--</dl>-->
+        <!--<dl>-->
+          <!--<dt>{#{ _('Training materials') }#}</dt>-->
+          <!--<dd>{#{ h.SI_number_span(user.number_created_packages) }#}</dd>-->
+        <!--</dl>-->
+        <!--<dl>-->
+          <!--<dt>{#{ _('Edits') }}</dt>-->
+          <!--<dd>{#{ h.SI_number_span(user.number_of_edits) }#}</dd>-->
+        <!--</dl>-->
+      <!--</div>-->
       {% endblock %}
       {% if c.is_myself == false %}
         {% block user_follow %}
