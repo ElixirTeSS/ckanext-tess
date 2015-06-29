@@ -223,9 +223,11 @@ def parse_xml(xml):
 
 def construct_url(original_url):
     try:
-        if c.sort:
-            attr, dir = c.sort.split(' ') # e.g end asc or title asc
+        if c.sort_by_selected:
+            attr, dir = c.sort_by_selected.split(' ') # e.g end asc or title asc
             original_url = ('%s&sort=%s%%20%s' % (original_url, attr, dir))
+        else:
+            original_url = ('%s&sort=end%%20asc' % (original_url))
 
         if c.page_number:
             original_url = ('%s&start=%s' % (original_url, str((c.page_number-1)*c.rows)))

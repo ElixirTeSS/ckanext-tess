@@ -14,8 +14,8 @@
 
 {% block primary_content_inner %}
     {% block events_search_form %}
-        {% set sorting = [ (_('Date Ascending'), 'end asc'),
-                           (_('Date Descending'), 'end desc')] %}
+        {% set sorting = [ (_('Date Soonest'), 'end asc'),
+                           (_('Date Latest'), 'end desc')] %}
         {% snippet 'snippets/search_form.html',     fields=[('category', c.category.lower()), ('include_expired', c.include_expired_events)],
                                             type=(c.category.lower() or 'event'),
                                             query=c.q,
