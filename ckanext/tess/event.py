@@ -93,11 +93,11 @@ class EventApi(plugins.SingletonPlugin):
 
 def format_nice_date_difference(a, b):
     if a.day == b.day and a.month == b.month and a.year == b.year:
-        return '%s %s %s' % (a.day, formatters._MONTH_FUNCTIONS[a.month-1](), a.year)
+        return '%s %s %s' % (a.day, _MONTH_FUNCTIONS[a.month-1](), a.year)
     elif a.day != b.day and a.month == b.month and a.year == b.year:
-        return '%s - %s %s %s' % (a.day, b.day, formatters._MONTH_FUNCTIONS[a.month-1](), b.year)
+        return '%s - %s %s %s' % (a.day, b.day, _MONTH_FUNCTIONS[a.month-1](), b.year)
     elif a.day != b.day and a.month != b.month and a.year == b.year:
-        return '%s %s - %s %s %s' % (a.day, formatters._MONTH_FUNCTIONS[a.month-1](),b.day, formatters._MONTH_FUNCTIONS[b.month-1](), b.year)
+        return '%s %s - %s %s %s' % (a.day, _MONTH_FUNCTIONS[a.month-1](),b.day, _MONTH_FUNCTIONS[b.month-1](), b.year)
     else:
         return '%s - %s' % (formatters.localised_nice_date(a, show_date=True, with_hours=True),
                             formatters.localised_nice_date(b, show_date=True, with_hours=True))
@@ -479,3 +479,30 @@ def associated_events(context, data_dict):
     return resources
 
 
+def _month_jan():
+    return _('Jan')
+def _month_feb():
+    return _('Feb')
+def _month_mar():
+    return _('Mar')
+def _month_apr():
+    return _('Apr')
+def _month_may():
+    return _('May')
+def _month_june():
+    return _('June')
+def _month_july():
+    return _('July')
+def _month_aug():
+    return _('Aug')
+def _month_sept():
+    return _('Sept')
+def _month_oct():
+    return _('Oct')
+def _month_nov():
+    return _('Nov')
+def _month_dec():
+    return _('Dec')
+_MONTH_FUNCTIONS = [_month_jan, _month_feb, _month_mar, _month_apr,
+                   _month_may, _month_june, _month_july, _month_aug,
+                   _month_sept, _month_oct, _month_nov, _month_dec]
