@@ -1,0 +1,34 @@
+{% extends "page.html" %}
+
+{% block subtitle %}{{ _('Events') }}{% endblock %}
+
+{% block breadcrumb_content %}
+<li class="active">{% link_for _('Events'), controller='group', action='index' %}</li>
+{% endblock %}
+
+{% block page_header %}{% endblock %}
+
+{% block page_primary_action %}
+    {% link_for _('Add event'), controller='ckanext.tess.plugin:TeSSController', action='report_event', class_="btn btn-primary", icon="plus-sign-alt"%}
+{% endblock %}
+
+{% block primary_content %}
+    <header class="module-content page-header">
+        <ul class="nav nav-tabs">
+            {{ h.build_nav_icon('event', _('Grid View')) }}
+            {{ h.build_nav_icon('map', _('Map View')) }}
+        </ul>
+    </header>
+
+    {% block primary_content_inner %}
+        {% block attribution %}
+            <p class="events-source-title"><strong>Source:</strong>
+            <a target="_blank" href="http://iann.pro"><img alt="iAnn" src="/images/iann_logo-32x30.png"/></a></p>
+        {% endblock %}
+    {% endblock %}
+{% endblock %}
+
+{% block secondary_content %}
+    {% snippet "event/snippets/helper.html" %}
+    {% snippet "event/snippets/filters.html" %}
+{% endblock %}
