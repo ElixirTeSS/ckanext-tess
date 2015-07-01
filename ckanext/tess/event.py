@@ -36,7 +36,10 @@ class EventPlugin(plugins.SingletonPlugin, DefaultGroupForm):
 
     def before_map(self, map):
         map.connect('associate_event', '/event/associate/{id}', controller='ckanext.tess.event:EventController', action='associate_event')
+        # Need one event route without icon for main menu - and one with icon for 'grid' tab
         map.connect('event', '/event', controller='ckanext.tess.event:EventController', action='events')
+        map.connect('grid', '/event', controller='ckanext.tess.event:EventController', action='events', ckan_icon='table')
+        map.connect('map', '/map', controller='ckanext.tess.event:EventController', action='map', ckan_icon='globe')
         map.connect('dataset_events', '/dataset/events/{id}', controller='ckanext.tess.event:EventController', action='add_events', ckan_icon='calendar')
         map.connect('report_event', '/event/new', controller='ckanext.tess.event:EventController', action='report_event')
         return map
@@ -54,6 +57,12 @@ class EventController(HomeController):
     def events(self):
         setup_events()
         return base.render('event/read.html')
+
+    def map(self):
+        c.rows = request.params.get('rows', 25)
+        setup_events()
+        return base.render('event/map.html')
+
 
     def report_event(self):
         # Bit pointless having a link to here to redirect externally; but we can track that as a statistic
@@ -93,11 +102,11 @@ class EventApi(plugins.SingletonPlugin):
 
 def format_nice_date_difference(a, b):
     if a.day == b.day and a.month == b.month and a.year == b.year:
-        return '%s %s %s' % (a.day, formatters._MONTH_FUNCTIONS[a.month-1](), a.year)
+        return '%s %s %s' % (a.day, _MONTH_FUNCTIONS[a.month-1](), a.year)
     elif a.day != b.day and a.month == b.month and a.year == b.year:
-        return '%s - %s %s %s' % (a.day, b.day, formatters._MONTH_FUNCTIONS[a.month-1](), b.year)
+        return '%s - %s %s %s' % (a.day, b.day, _MONTH_FUNCTIONS[a.month-1](), b.year)
     elif a.day != b.day and a.month != b.month and a.year == b.year:
-        return '%s %s - %s %s %s' % (a.day, formatters._MONTH_FUNCTIONS[a.month-1](),b.day, formatters._MONTH_FUNCTIONS[b.month-1](), b.year)
+        return '%s %s - %s %s %s' % (a.day, _MONTH_FUNCTIONS[a.month-1](),b.day, _MONTH_FUNCTIONS[b.month-1](), b.year)
     else:
         return '%s - %s' % (formatters.localised_nice_date(a, show_date=True, with_hours=True),
                             formatters.localised_nice_date(b, show_date=True, with_hours=True))
@@ -163,6 +172,18 @@ def proper_name(field, name):
         print 'Error loading the correct provider names \n %s' % e
         return name
 
+
+def country_name_to_code(countries, name):
+    here = os.path.dirname(__file__)
+    file = os.path.join(here,'countries-all.json')
+    with open(file) as data_file:
+        try:
+            countries_map = json.load(data_file)
+        except Exception, e:
+            print e
+            countries_map = []
+    return countries_map
+
 #def country_filters():
 
     # For list of ELIXIR countries:
@@ -188,20 +209,34 @@ def parse_xml(xml):
     except Exception, e:
         print 'Could not load result element'
 
+    here = os.path.dirname(__file__)
+    file = os.path.join(here,'countries-all.json')
+    with open(file) as data_file:
+        try:
+            countries_map = json.load(data_file)
+        except Exception, e:
+            print e
+            countries_map = []
+
     docs = doc.findall('*/doc')
     results = []
+
     for doc in docs:
         start_time = parser.parse(doc.find("*/[@name='start']").text)
         finish_time = parser.parse(doc.find("*/[@name='end']").text)
         start_time = start_time.replace(tzinfo=None)
         finish_time = finish_time.replace(tzinfo=None)
 
+        country_codes = [code for code, country in countries_map.items() if country == doc.find("*/[@name='country']").text]
+        if country_codes:
+            country = country_codes[0]
+        else:
+            country = doc.find("*/[@name='country']").text
         expired = False
+
         if datetime.datetime.now() > finish_time:
             expired = formatters.localised_nice_date(finish_time)
         duration = (finish_time - start_time) + timedelta(days=1)
-
-
 
         res = {'title': doc.find("*/[@name='title']").text,
                'provider': doc.find("*/[@name='provider']").text,
@@ -209,8 +244,10 @@ def parse_xml(xml):
                'link': doc.find("*/[@name='link']").text,
                'subtitle': doc.find("*/[@name='subtitle']").text,
                'venue': doc.find("*/[@name='venue']").text,
-               'country': doc.find("*/[@name='country']").text,
+               'country': country,
                'city': doc.find("*/[@name='city']").text,
+               'latitude': doc.find("*/[@name='latitude']").text,
+               'longitude': doc.find("*/[@name='longitude']").text,
                'starts': formatters.localised_nice_date(start_time, show_date=True),#, with_hours=True),
                'ends': formatters.localised_nice_date(finish_time, show_date=True),#, with_hours=True), - Most of these are 00:00
                'succinct_dates': format_nice_date_difference(start_time, finish_time),
@@ -223,9 +260,11 @@ def parse_xml(xml):
 
 def construct_url(original_url):
     try:
-        if c.sort:
-            attr, dir = c.sort.split(' ') # e.g end asc or title asc
+        if c.sort_by_selected:
+            attr, dir = c.sort_by_selected.split(' ') # e.g end asc or title asc
             original_url = ('%s&sort=%s%%20%s' % (original_url, attr, dir))
+        else:
+            original_url = ('%s&sort=end%%20asc' % (original_url))
 
         if c.page_number:
             original_url = ('%s&start=%s' % (original_url, str((c.page_number-1)*c.rows)))
@@ -322,10 +361,9 @@ def setup_events():
     c.q = c.q = request.params.get('q', '')
     c.event_type = request.params.get('event_type', '')
     c.country = request.params.get('country', '')
-#    c.field = []
-#    c.field.append(request.params.get('field', '').split(','))
+    c.field = request.params.get('field', '')
     c.provider = request.params.get('provider', '')
-    c.rows = request.params.get('rows', 25)
+    c.rows = c.rows or request.params.get('rows', 25)
     c.sort_by_selected = request.params.get('sort', '')
     c.page_number = int(request.params.get('page', 0))
     c.include_expired_events = request.params.get('include_expired', False)
@@ -451,3 +489,30 @@ def associated_events(context, data_dict):
     return resources
 
 
+def _month_jan():
+    return _('Jan')
+def _month_feb():
+    return _('Feb')
+def _month_mar():
+    return _('Mar')
+def _month_apr():
+    return _('Apr')
+def _month_may():
+    return _('May')
+def _month_june():
+    return _('June')
+def _month_july():
+    return _('July')
+def _month_aug():
+    return _('Aug')
+def _month_sept():
+    return _('Sept')
+def _month_oct():
+    return _('Oct')
+def _month_nov():
+    return _('Nov')
+def _month_dec():
+    return _('Dec')
+_MONTH_FUNCTIONS = [_month_jan, _month_feb, _month_mar, _month_apr,
+                   _month_may, _month_june, _month_july, _month_aug,
+                   _month_sept, _month_oct, _month_nov, _month_dec]

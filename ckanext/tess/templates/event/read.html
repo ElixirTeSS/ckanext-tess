@@ -1,21 +1,11 @@
-{% extends "page.html" %}
+{% extends "event/read_base.html" %}
 
-{% block subtitle %}{{ _('Events') }}{% endblock %}
-
-{% block breadcrumb_content %}
-<li class="active">{% link_for _('Events'), controller='group', action='index' %}</li>
-{% endblock %}
-
-{% block page_header %}{% endblock %}
-
-{% block page_primary_action %}
-    {% link_for _('Add event'), controller='ckanext.tess.plugin:TeSSController', action='report_event', class_="btn btn-primary", icon="plus-sign-alt"%}
-{% endblock %}
 
 {% block primary_content_inner %}
+
     {% block events_search_form %}
-        {% set sorting = [ (_('Date Ascending'), 'end asc'),
-                           (_('Date Descending'), 'end desc')] %}
+        {% set sorting = [ (_('Date Earliest'), 'end asc'),
+                           (_('Date Latest'), 'end desc')] %}
         {% snippet 'snippets/search_form.html',     fields=[('category', c.category.lower()), ('include_expired', c.include_expired_events)],
                                             type=(c.category.lower() or 'event'),
                                             query=c.q,
@@ -26,26 +16,16 @@
                                             show_empty=request.params,
                                             no_bottom_border=true
         %}
-
-    {% snippet "event/snippets/events_options.html" %}
     {% endblock %}
 
-    {% block events_list %}
+
+    {% block events_display %}
+        {% snippet "event/snippets/events_options.html" %}
         {% snippet "event/snippets/events_list.html", events=c.events %}
     {% endblock %}
 
     {% block page_pagination %}
         {{ c.page.pager() }}
     {% endblock %}
-
-    {% block attribution %}
-        <p class="events-source-title"><strong>Source:</strong>
-        <a target="_blank" href="http://iann.pro"><img alt="iAnn" src="/images/iann_logo-32x30.png"/></a></p>
-    {% endblock %}
-
 {% endblock %}
 
-{% block secondary_content %}
-    {% snippet "event/snippets/helper.html" %}
-    {% snippet "event/snippets/filters.html" %}
-{% endblock %}
