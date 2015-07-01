@@ -36,8 +36,8 @@ class EventPlugin(plugins.SingletonPlugin, DefaultGroupForm):
 
     def before_map(self, map):
         map.connect('associate_event', '/event/associate/{id}', controller='ckanext.tess.event:EventController', action='associate_event')
-        map.connect('event', '/event', controller='ckanext.tess.event:EventController', action='events')
-        map.connect('map', '/map', controller='ckanext.tess.event:EventController', action='map')
+        map.connect('event', '/event', controller='ckanext.tess.event:EventController', action='events', ckan_icon='table')
+        map.connect('map', '/map', controller='ckanext.tess.event:EventController', action='map', ckan_icon='globe')
         map.connect('dataset_events', '/dataset/events/{id}', controller='ckanext.tess.event:EventController', action='add_events', ckan_icon='calendar')
         map.connect('report_event', '/event/new', controller='ckanext.tess.event:EventController', action='report_event')
         return map
