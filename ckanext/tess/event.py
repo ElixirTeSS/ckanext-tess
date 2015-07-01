@@ -37,6 +37,7 @@ class EventPlugin(plugins.SingletonPlugin, DefaultGroupForm):
     def before_map(self, map):
         map.connect('associate_event', '/event/associate/{id}', controller='ckanext.tess.event:EventController', action='associate_event')
         map.connect('event', '/event', controller='ckanext.tess.event:EventController', action='events')
+        map.connect('map', '/map', controller='ckanext.tess.event:EventController', action='map')
         map.connect('dataset_events', '/dataset/events/{id}', controller='ckanext.tess.event:EventController', action='add_events', ckan_icon='calendar')
         map.connect('report_event', '/event/new', controller='ckanext.tess.event:EventController', action='report_event')
         return map
@@ -54,6 +55,11 @@ class EventController(HomeController):
     def events(self):
         setup_events()
         return base.render('event/read.html')
+
+    def map(self):
+        setup_events()
+        return base.render('event/map.html')
+
 
     def report_event(self):
         # Bit pointless having a link to here to redirect externally; but we can track that as a statistic
@@ -237,6 +243,8 @@ def parse_xml(xml):
                'venue': doc.find("*/[@name='venue']").text,
                'country': country,
                'city': doc.find("*/[@name='city']").text,
+               'latitude': doc.find("*/[@name='latitude']").text,
+               'longitude': doc.find("*/[@name='longitude']").text,
                'starts': formatters.localised_nice_date(start_time, show_date=True),#, with_hours=True),
                'ends': formatters.localised_nice_date(finish_time, show_date=True),#, with_hours=True), - Most of these are 00:00
                'succinct_dates': format_nice_date_difference(start_time, finish_time),
