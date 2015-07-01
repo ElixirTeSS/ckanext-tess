@@ -15,7 +15,7 @@
 
         Displaying the next <b>{{c.rows}}</b> upcoming events. <br>Click to display the next
             {% set href = h.remove_url_param('rows', replace=50) %} <a href={{href}}>50</a> |
-            {% set href = h.remove_url_param('rows', replace=200) %} <a href={{href}}>150</a> |
+            {% set href = h.remove_url_param('rows', replace=150) %} <a href={{href}}>150</a> |
             {% set href = h.remove_url_param('rows', replace=5000) %} <a href={{href}}>All</a> upcoming events
 
     {% endblock %}
