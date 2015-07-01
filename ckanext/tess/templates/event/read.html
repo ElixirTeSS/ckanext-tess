@@ -1,5 +1,6 @@
 {% extends "event/read_base.html" %}
 
+
 {% block primary_content_inner %}
 
     {% block events_search_form %}
@@ -18,7 +19,7 @@
     {% endblock %}
 
 
-    {% block events_list %}
+    {% block events_display %}
         {% snippet "event/snippets/events_options.html" %}
         {% snippet "event/snippets/events_list.html", events=c.events %}
     {% endblock %}
