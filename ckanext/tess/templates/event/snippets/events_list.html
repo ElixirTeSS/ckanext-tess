@@ -5,6 +5,7 @@ related - True or False - Used when loading events as a tab in manage a training
 #}
 
 {% block events_list %}
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <ul class="media-grid" data-module="media-grid ">
 	{% block events_list_inner %}
         {% resource 'tess/associate_event.js' %}
