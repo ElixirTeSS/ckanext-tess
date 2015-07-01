@@ -1,4 +1,5 @@
 {% extends "event/read_base.html" %}
+{% import 'macros/form.html' as form %}
 
 {% block primary_content_inner %}
     {% block events_search_form %}
@@ -11,7 +12,12 @@
                                             show_empty=request.params,
                                             no_bottom_border=true
         %}
-        Number of events:  50 | 100 | 200 | 500 | all
+
+        Displaying the next <b>{{c.rows}}</b> upcoming events. <br>Click to display the next
+            {% set href = h.remove_url_param('rows', replace=50) %} <a href={{href}}>50</a> |
+            {% set href = h.remove_url_param('rows', replace=200) %} <a href={{href}}>150</a> |
+            {% set href = h.remove_url_param('rows', replace=5000) %} <a href={{href}}>All</a> upcoming events
+
     {% endblock %}
     {% block events_display %}
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
@@ -30,16 +36,15 @@
 
             var events = [];
             {% for event in c.events %}
-                var info_options = {
-                    content: "blah"
-                }
+                var event_display = "<a href='{{event.get('link')}}' target='_blank'>" +
+                        "<h3>{{event.get('title') }}</h3></a>" +
+                        "<b>Date: </b>{{ event.get('succinct_dates')}}<br>" +
+                        "<b>Location:</b> {{ event.get('city')}}, {{ event.get('country')}}<br>" +
+                        "<b>Provider:</b> {{ event.get('provider', 'Not specified') }}<br>"
                 events.push([
                     {{ event.get('latitude') }},
                     {{ event.get('longitude') }},
-                    "{{ event.get('title') }}",
-                    "{{event.get('link')}}",
-                    "{{event.get('succinct_dates')}}",
-                    "{{event.get('venue')}}"
+                    event_display
                 ]);
             {% endfor %}
 
@@ -60,11 +65,10 @@
                 var marker = new google.maps.Marker({
                         position: position,
                         map: map,
-                        title: event[2]
+                        title: 'wakka'
                 });
-                console.log(event)
                 google.maps.event.addListener(marker, 'click', function() {
-                    infowindow.setContent('<a href="' + event[3] + '"> ' + event[2] + '</a><br> ' + event[4]);
+                    infowindow.setContent(event[2]);
                     infowindow.open(map,marker);
                 });
                 return marker;
@@ -72,8 +76,7 @@
 
             google.maps.event.addDomListener(window, 'load', initialize);
         </script>
-
-            <div id="map-canvas" style="position:fixed; height: 1000px;"></div>
+            <div id="map-canvas" style="background-color: transparent; height: 750px;"></div>
     {% endblock %}
 
 {% endblock %}
