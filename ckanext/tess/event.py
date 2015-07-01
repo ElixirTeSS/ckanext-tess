@@ -57,6 +57,7 @@ class EventController(HomeController):
         return base.render('event/read.html')
 
     def map(self):
+        c.rows = 250
         setup_events()
         return base.render('event/map.html')
 
@@ -358,10 +359,9 @@ def setup_events():
     c.q = c.q = request.params.get('q', '')
     c.event_type = request.params.get('event_type', '')
     c.country = request.params.get('country', '')
-#    c.field = []
-#    c.field.append(request.params.get('field', '').split(','))
+    c.field = request.params.get('field', '')
     c.provider = request.params.get('provider', '')
-    c.rows = request.params.get('rows', 25)
+    c.rows = c.rows or request.params.get('rows', 25)
     c.sort_by_selected = request.params.get('sort', '')
     c.page_number = int(request.params.get('page', 0))
     c.include_expired_events = request.params.get('include_expired', False)
