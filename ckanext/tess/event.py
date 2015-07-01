@@ -36,7 +36,9 @@ class EventPlugin(plugins.SingletonPlugin, DefaultGroupForm):
 
     def before_map(self, map):
         map.connect('associate_event', '/event/associate/{id}', controller='ckanext.tess.event:EventController', action='associate_event')
-        map.connect('event', '/event', controller='ckanext.tess.event:EventController', action='events', ckan_icon='table')
+        # Need one event route without icon for main menu - and one with icon for 'grid' tab
+        map.connect('event', '/event', controller='ckanext.tess.event:EventController', action='events')
+        map.connect('grid', '/event', controller='ckanext.tess.event:EventController', action='events', ckan_icon='table')
         map.connect('map', '/map', controller='ckanext.tess.event:EventController', action='map', ckan_icon='globe')
         map.connect('dataset_events', '/dataset/events/{id}', controller='ckanext.tess.event:EventController', action='add_events', ckan_icon='calendar')
         map.connect('report_event', '/event/new', controller='ckanext.tess.event:EventController', action='report_event')
@@ -57,7 +59,7 @@ class EventController(HomeController):
         return base.render('event/read.html')
 
     def map(self):
-        c.rows = 250
+        c.rows = request.params.get('rows', 25)
         setup_events()
         return base.render('event/map.html')
 
