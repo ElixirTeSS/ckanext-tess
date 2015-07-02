@@ -4,15 +4,21 @@
 {% block primary_content_inner %}
     {% block events_search_form %}
 
+        {% set sorting = [ (_('Date Earliest'), 'end asc'),
+                           (_('Date Latest'), 'end desc')] %}
         {% snippet 'snippets/search_form.html',     fields=[('category', c.category.lower()), ('include_expired', c.include_expired_events)],
                                             type=(c.category.lower() or 'event'),
                                             query=c.q,
+                                            sorting=sorting,
+                                            sorting_selected=c.sort_by_selected,
                                             count=c.events_count,
                                             placeholder=_('Search Events...'),
                                             show_empty=request.params,
                                             no_bottom_border=true
         %}
+    {% endblock %}
 
+    {% block events_limit %}
         Displaying the next
                     {% if (c.rows > c.events_count) %}
                         <b>{{c.events_count}}</b> of
@@ -38,10 +44,9 @@
                 {% set href = h.remove_url_param('rows', replace=c.events_count) %} <a href={{href}}>{{ c.events_count }} (all) </a>
                 {% if c.rows >= c.events_count %}</b>{% endif %}
         {% endif %}
-
-
-
     {% endblock %}
+
+
     {% block events_display %}
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
         <script>
@@ -58,18 +63,24 @@
             }
 
             var events = [];
-            {% for event in c.events %}
-                var event_display = "<a href='{{event.get('link')}}' target='_blank'>" +
-                        "<h3>{{event.get('title') }}</h3></a>" +
-                        "<b>Date: </b>{{ event.get('succinct_dates')}}<br>" +
-                        "<b>Location:</b> {{ event.get('city')}}, {{ event.get('country')}}<br>" +
-                        "<b>Provider:</b> {{ event.get('provider', 'Not specified') }}<br>"
-                events.push([
-                    {{ event.get('latitude') }},
-                    {{ event.get('longitude') }},
-                    event_display
-                ]);
-            {% endfor %}
+            {% if c.events %}
+                {% for event in c.events %}
+                    var event_display = "<a href='{{event.get('link')}}' target='_blank'>" +
+                            "<h3>{{event.get('title') }}</h3></a>" +
+                            "<b>Date: </b>{{ event.get('succinct_dates')}}<br>" +
+                            "<b>Location:</b> {{ event.get('city')}}, {{ event.get('country')}}<br>" +
+                            "<b>Provider:</b> {{ event.get('provider', 'Not specified') }}<br>"
+                    {% if event.get('materials')%}
+                        event_display += "<button class='btn btn-default' id='materials-{{event.get('id')}}'>See related materials</button>";
+                    {% endif %}
+                    events.push([
+                        {{ event.get('latitude') }},
+                        {{ event.get('longitude') }},
+                        event_display,
+                        "{{event.get('title')}}"
+                    ]);
+                {% endfor %}
+            {% endif %}
 
 
             function setEvents(map, events){
@@ -88,7 +99,7 @@
                 var marker = new google.maps.Marker({
                         position: position,
                         map: map,
-                        title: 'wakka'
+                        title: event[3]
                 });
                 google.maps.event.addListener(marker, 'click', function() {
                     infowindow.setContent(event[2]);
