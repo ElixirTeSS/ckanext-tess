@@ -13,10 +13,33 @@
                                             no_bottom_border=true
         %}
 
-        Displaying the next <b>{{c.rows}}</b> upcoming events. <br>Click to display the next
-            {% set href = h.remove_url_param('rows', replace=50) %} <a href={{href}}>50</a> |
-            {% set href = h.remove_url_param('rows', replace=150) %} <a href={{href}}>150</a> |
-            {% set href = h.remove_url_param('rows', replace=5000) %} <a href={{href}}>All</a> upcoming events
+        Displaying the next
+                    {% if (c.rows > c.events_count) %}
+                        <b>{{c.events_count}}</b> of
+                        <b>{{ c.events_count }}</b> upcoming events.<br>
+                    {% else %}
+                        <b>{{c.rows }}</b> of
+                        <b>{{ c.events_count }}</b> upcoming events.<br>
+                    {% endif %}
+
+
+        {% if c.events_count >= 50 %}
+                <br>Set the number of upcoming events to plot to
+                {% if c.rows == 50 %}<b style="text-underline: thick">{% endif %}
+                {% set href = h.remove_url_param('rows', replace=50) %}<a href={{href}}>50</a> |
+                {% if c.rows == 50 %}</b>{% endif %}
+                {% if c.events_count >= 150 %}
+                        {% if c.rows == 150 %}<b style="text-underline: thick">{% endif %}
+                        {% set href = h.remove_url_param('rows', replace=150) %} <a href={{href}}>150</a> |
+                        {% if c.rows == 150 %}</b>{% endif %}
+                {% endif %}
+
+                {% if c.rows >= c.events_count %}<b style="text-underline: thick">{% endif %}
+                {% set href = h.remove_url_param('rows', replace=c.events_count) %} <a href={{href}}>{{ c.events_count }} (all) </a>
+                {% if c.rows >= c.events_count %}</b>{% endif %}
+        {% endif %}
+
+
 
     {% endblock %}
     {% block events_display %}
