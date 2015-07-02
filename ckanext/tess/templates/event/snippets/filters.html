@@ -9,10 +9,12 @@
             <ul class="unstyled nav nav-simple nav-facet">
 
                 {% if not c.active_filters[filter_name] %} <!--Display all filters as usual-->
+                    {% if filter_options %}
                     {% for filter in filter_options[:(h.get_param_int('_%s_limit' % filter_name))] %}
                         {% set href = h.add_url_param(new_params={filter_name: filter['name']}) %}
                         <li class='nav-item'><a href="{{ href }}" title="{{ filter['name']}}"><span>{{ filter['name']}} ({{filter['count']}}) </span></a></li>
                     {% endfor %}
+                    {% endif %}
                 {% else %}
                     <!--Display the active filters. -->
                     {% set href = h.remove_url_param(filter_name) %}
@@ -34,6 +36,7 @@
             {% set plural_title = filter_name + 's' %}
         {% endif %}
         <p class="module-footer">
+            {% if filter_options %}
             {% if not c.active_filters[filter_name] %}
             {% if h.has_more_options(filter_options) %}
                 {% if h.get_param_int('_%s_limit' % filter_name) <= 10%}
@@ -41,6 +44,7 @@
                 {% else %}
                       <a href="{{ h.remove_url_param('_%s_limit' % filter_name) }}" class="read-more">{{ _('Show less {name}').format(name=plural_title) }}</a>
                 {% endif %}
+            {% endif %}
             {% endif %}
             {% endif %}
 
