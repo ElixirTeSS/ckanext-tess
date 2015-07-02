@@ -1,18 +1,52 @@
 {% extends "event/read_base.html" %}
+{% import 'macros/form.html' as form %}
 
 {% block primary_content_inner %}
     {% block events_search_form %}
 
+        {% set sorting = [ (_('Date Earliest'), 'end asc'),
+                           (_('Date Latest'), 'end desc')] %}
         {% snippet 'snippets/search_form.html',     fields=[('category', c.category.lower()), ('include_expired', c.include_expired_events)],
                                             type=(c.category.lower() or 'event'),
                                             query=c.q,
+                                            sorting=sorting,
+                                            sorting_selected=c.sort_by_selected,
                                             count=c.events_count,
                                             placeholder=_('Search Events...'),
                                             show_empty=request.params,
                                             no_bottom_border=true
         %}
-        Number of events:  50 | 100 | 200 | 500 | all
     {% endblock %}
+
+    {% block events_limit %}
+        Displaying the next
+                    {% if (c.rows > c.events_count) %}
+                        <b>{{c.events_count}}</b> of
+                        <b>{{ c.events_count }}</b> upcoming events.<br>
+                    {% else %}
+                        <b>{{c.rows }}</b> of
+                        <b>{{ c.events_count }}</b> upcoming events.<br>
+                    {% endif %}
+
+
+        {% if c.events_count >= 50 %}
+                <br>Set the number of upcoming events to plot to
+                {% if c.rows == 50 %}<b style="text-underline: thick">{% endif %}
+                {% set href = h.remove_url_param('rows', replace=50) %}<a href={{href}}>50</a> |
+                {% if c.rows == 50 %}</b>{% endif %}
+                {% if c.events_count >= 150 %}
+                        {% if c.rows == 150 %}<b style="text-underline: thick">{% endif %}
+                        {% set href = h.remove_url_param('rows', replace=150) %} <a href={{href}}>150</a> |
+                        {% if c.rows == 150 %}</b>{% endif %}
+                {% endif %}
+
+                {% if c.rows >= c.events_count %}<b style="text-underline: thick">{% endif %}
+                {% set href = h.remove_url_param('rows', replace=c.events_count) %} <a href={{href}}>{{ c.events_count }} (all) </a>
+                {% if c.rows >= c.events_count %}</b>{% endif %}
+        {% endif %}
+    {% endblock %}
+
+
     {% block events_display %}
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
         <script>
@@ -29,19 +63,24 @@
             }
 
             var events = [];
-            {% for event in c.events %}
-                var info_options = {
-                    content: "blah"
-                }
-                events.push([
-                    {{ event.get('latitude') }},
-                    {{ event.get('longitude') }},
-                    "{{ event.get('title') }}",
-                    "{{event.get('link')}}",
-                    "{{event.get('succinct_dates')}}",
-                    "{{event.get('venue')}}"
-                ]);
-            {% endfor %}
+            {% if c.events %}
+                {% for event in c.events %}
+                    var event_display = "<a href='{{event.get('link')}}' target='_blank'>" +
+                            "<h3>{{event.get('title') }}</h3></a>" +
+                            "<b>Date: </b>{{ event.get('succinct_dates')}}<br>" +
+                            "<b>Location:</b> {{ event.get('city')}}, {{ event.get('country')}}<br>" +
+                            "<b>Provider:</b> {{ event.get('provider', 'Not specified') }}<br>"
+                    {% if event.get('materials')%}
+                        event_display += "<button class='btn btn-default' id='materials-{{event.get('id')}}'>See related materials</button>";
+                    {% endif %}
+                    events.push([
+                        {{ event.get('latitude') }},
+                        {{ event.get('longitude') }},
+                        event_display,
+                        "{{event.get('title')}}"
+                    ]);
+                {% endfor %}
+            {% endif %}
 
 
             function setEvents(map, events){
@@ -60,11 +99,10 @@
                 var marker = new google.maps.Marker({
                         position: position,
                         map: map,
-                        title: event[2]
+                        title: event[3]
                 });
-                console.log(event)
                 google.maps.event.addListener(marker, 'click', function() {
-                    infowindow.setContent('<a href="' + event[3] + '"> ' + event[2] + '</a><br> ' + event[4]);
+                    infowindow.setContent(event[2]);
                     infowindow.open(map,marker);
                 });
                 return marker;
@@ -72,8 +110,7 @@
 
             google.maps.event.addDomListener(window, 'load', initialize);
         </script>
-
-            <div id="map-canvas" style="position:fixed; height: 1000px;"></div>
+            <div id="map-canvas" style="background-color: transparent; height: 750px;"></div>
     {% endblock %}
 
 {% endblock %}

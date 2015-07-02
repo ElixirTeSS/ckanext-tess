@@ -59,7 +59,12 @@ class EventController(HomeController):
         return base.render('event/read.html')
 
     def map(self):
-        c.rows = request.params.get('rows', 25)
+        default_markers = 50
+        if request.params.get('rows', False):
+            c.rows = int(request.params.get('rows', default_markers))
+        else:
+            c.rows = default_markers
+
         setup_events()
         return base.render('event/map.html')
 
