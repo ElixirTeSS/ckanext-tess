@@ -77,7 +77,7 @@ class TeSSPlugin(plugins.SingletonPlugin):
         config['ckan.site_title'] = "TeSS Training Portal"
 
         # set the logo
-        config['ckan.site_logo'] = 'images/ELIXIR_TeSS_logo_white-small.png'
+        config['ckan.site_logo'] = 'images/ELIXIR_TeSS_logo_white-small-5.png'
 
         config['ckanext.tess.version'] = '0.9.1-alpha'
 
