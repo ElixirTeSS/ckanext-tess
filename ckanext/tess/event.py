@@ -378,9 +378,10 @@ def setup_events():
     c.active_filters = {'event_type': c.event_type, 'field': c.field, 'country': c.country, 'provider': c.provider}
     filters = {}
 
-    pool = Pool(processes=5)
     start = datetime.datetime.now()
-    events_thread = pool.apply_async(events, [True]) # tuple of args for foo
+    events_hash = events(True) # tuple of args for foo
+
+    pool = Pool(processes=5)
     if not c.filters:
         provider_filter_thread = pool.apply_async(get_filters_for, ['provider'])
         country_filter_thread = pool.apply_async(get_filters_for, ['country'])
@@ -396,7 +397,6 @@ def setup_events():
     c.base_url = h.full_current_url()
     c.base_url = c.base_url.split("?")[0]
 
-    events_hash = events_thread.get()
 
     print datetime.datetime.now() - start
 
