@@ -23,6 +23,8 @@ import ckan.model as model
 import ckan.logic as logic
 from urllib import urlencode
 import ckan.lib.formatters as formatters
+from multiprocessing import Pool
+
 
 get_action = logic.get_action
 NotFound = logic.NotFound
@@ -373,21 +375,30 @@ def setup_events():
     c.page_number = int(request.params.get('page', 0))
     c.include_expired_events = request.params.get('include_expired', False)
 
-
-    events_hash = events(related_materials=True)
-
-
     c.active_filters = {'event_type': c.event_type, 'field': c.field, 'country': c.country, 'provider': c.provider}
     filters = {}
+
+    pool = Pool(processes=5)
+    start = datetime.datetime.now()
+    events_thread = pool.apply_async(events, [True]) # tuple of args for foo
     if not c.filters:
-        filters['provider'] = get_filters_for('provider')
-        filters['country'] = get_filters_for('country')
-        filters['field'] = get_filters_for('field')
-        filters['event_type'] = get_event_filters()
+        provider_filter_thread = pool.apply_async(get_filters_for, ['provider'])
+        country_filter_thread = pool.apply_async(get_filters_for, ['country'])
+        field_filter_thread = pool.apply_async(get_filters_for, ['field'])
+        type_filter_thread = pool.apply_async(get_event_filters)
+        filters['provider'] = provider_filter_thread.get()
+        filters['country'] = country_filter_thread.get()
+        filters['field'] = field_filter_thread.get()
+        filters['event_type'] = type_filter_thread.get()
+
     c.filters = filters
 
     c.base_url = h.full_current_url()
     c.base_url = c.base_url.split("?")[0]
+
+    events_hash = events_thread.get()
+
+    print datetime.datetime.now() - start
 
     c.events = events_hash.get('events', None)
     c.events_count = events_hash.get('count', None)
