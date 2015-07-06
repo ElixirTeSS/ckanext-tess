@@ -2,6 +2,7 @@
 {% import 'macros/form.html' as form %}
 
 {% block primary_content_inner %}
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     {% block events_search_form %}
 
         {% set sorting = [ (_('Date Earliest'), 'end asc'),
@@ -60,6 +61,10 @@
                     var map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
 
                     setEvents(map, events);
+                    $('#materials-{{id}}').click(function(){
+                        $('#event-material-{{id}}').modal('show');
+                        alert('clickky')
+                    });
             }
 
             var events = [];
@@ -70,8 +75,17 @@
                             "<b>Date: </b>{{ event.get('succinct_dates')}}<br>" +
                             "<b>Location:</b> {{ event.get('city')}}, {{ event.get('country')}}<br>" +
                             "<b>Provider:</b> {{ event.get('provider', 'Not specified') }}<br>"
-                    {% if event.get('materials')%}
+                    {% if event.get('materials') %}
                         event_display += "<button class='btn btn-default' id='materials-{{event.get('id')}}'>See related materials</button>";
+                        var modal_materials = "<div id='event-material-{{event.get('id')}}' class='modal hide fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true' style='zindex:15'>" +
+                                "<div class='modal-header'>" +
+                                "<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>×</button>" +
+                                "<h3 id='myModalLabel'>Training materials for {{event.get('title')}}</h3>" +
+                                "</div>" +
+                                "<div class='modal-body'>" +
+                                "</div>" +
+                                "</div>";
+                        $('#material-modal').html(modal_materials);
                     {% endif %}
                     events.push([
                         {{ event.get('latitude') }},
@@ -111,6 +125,8 @@
             google.maps.event.addDomListener(window, 'load', initialize);
         </script>
             <div id="map-canvas" style="background-color: transparent; height: 750px;"></div>
+            <div id="material-modal"></div>
+
     {% endblock %}
 
 {% endblock %}
