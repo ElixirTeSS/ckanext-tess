@@ -7,11 +7,13 @@
 {% endblock %}
 
 {% block page_header %}
+
             <header class="module-content page-header">
                 <ul class="nav nav-tabs">
                     {{ h.build_nav_icon('grid', _('Grid View')) }}
                     {{ h.build_nav_icon('map', _('Map View')) }}
                 </ul>
+                {#{ h.get_request_param('country')}#}
             </header>
 {% endblock %}
 

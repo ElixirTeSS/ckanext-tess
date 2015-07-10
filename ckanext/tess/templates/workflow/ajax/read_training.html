@@ -1,5 +1,5 @@
 <script>
-    function populateModal() {
+/*    function populateModal() {
         if (action=='show'){
             $('#workflow-materials').empty();
             $('#save-material').addClass('hidden');
@@ -16,27 +16,72 @@
                 $.each(node.materials, function (index, material) {
                     var row = '<tr>';
                     row += '<td><a href="/package/' + material['id'] + '">' + material['name'] + '</a></td>';
+
+                        row += '<td>';
+                    *//*row += '<form method="post" class="form-horizontal">'
+                    row += '<select id="field-add_group" name="group_added" data-module="autocomplete">'
+                    {% for option in group_dropdown %}
+                        row += '<option value="{{ option[0] }}"> {{ option[1] }}</option>';
+                        {% endfor %}
+                        row += '</select>'
+                        row += '<button type="submit" class="btn btn-primary" title="{{ _("Associate this package with this material") }}">Add to package</button>'
+
+                        row += '</form>'*//*
+                        row += '</td>';
+
+
                     row += '</tr>';
                     $('#workflow-materials').append(row);
                 });
             } else {
                 $('#workflow-materials').html('<div class="empty">There are no associated materials with this workflow node.</div>');
-            }
+            }2
         } else {
             $('#save-material').removeClass('hidden');
         }
-    }
-    $('#myModal').on('show', function(e){
+    }*/
+/*    $('#myModal').on('show', function(e){
         populateModal();
-    });
+    });*/
 
-    populateModal();
+ /*   populateModal();*/
 </script>
-
+{% import 'macros/form.html' as form %}
 <div>
     <h3>Description</h3>
-    <div class="modal-workflow-description empty">No description set</div>
-    <h3>Training materials for <em class="modal-workflow-title"></em></h3>
+    {% if c.node.get('description') %}
+        <div>{{c.node.get('description')}}</div>
+    {% else %}
+        <div class="modal-workflow-description empty">No description for this node has been set</div>
+    {% endif %}
+
+    <h3>Training materials for <em class="modal-workflow-title">{{c.node.get('name')}}</em></h3>
+    {% if c.node.get('materials') %}
+        <table class="table">
+        {% for material in c.node.get('materials') %}
+            <tr>
+                <td>{% link_for material.get('name')|truncate(35), controller='package', action='read', id=material.get('id') %}</td>
+                <td>
+                    <form method="post" >
+                    <select id="field-add_group" name="group_added" data-module="autocomplete">
+                    {% if c.material_package.get(material.get('id')) %}
+                    {% for package in c.material_package.get(material.get('id'), {}).get('available') %}
+                      <option value="{{ package[0] }}"> {{ package[1] }}</option>
+                    {% endfor %}
+                    {% endif %}
+                    </select>
+                    <button type="submit" class="btn btn-primary" title="{{ _('Associate this group with this dataset') }}">{{ _('Add to group') }}</button>
+                    </form>
+                </td>
+                {% if c.material_package.get(material.get('id')) %}
+                <td>{{c.material_package.get(material.get('id'), {}).get('associated')}}</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </table>
+    {% else %}
+        <div class="empty">There are no training materials associated with this node</div>
+    {% endif %}
     <table class='table' id="workflow-materials"></table>
 </div>
 

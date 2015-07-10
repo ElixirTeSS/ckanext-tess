@@ -189,8 +189,9 @@ function drawGraph(workflow, workflow_action) {
             $('#node-info').val(JSON.stringify(node_info))
             if (action == 'show' && evtTarget.isNode()) {
                 $("#myModal").modal({
-                    remote: '/workflow/read_training'
+                    remote: '/workflow/read_training?workflow_id=' + $('#workflow-id').val() + '&node_id=' + evtTarget.id()
                 });
+                console.log(evtTarget.id());
             }
         }
     });
@@ -207,7 +208,16 @@ function drawGraph(workflow, workflow_action) {
     //        }
     //    }
     //});
+
+
 }
+
+$('body').on('hide.bs.modal', function () {
+    $('#myModal').removeData('bs.modal');
+    console.log('GET RID OF IT')
+});
+
+
 
 $( document ).on('click', '.tool-item, .selected-tool', function(event) {
     // For 'select-mode-tool' leave the selected element as is, for all other tools
@@ -218,6 +228,7 @@ $( document ).on('click', '.tool-item, .selected-tool', function(event) {
     }
 });
 
+//$( document ).on('click', '.clear-selection-tool', function(event) {
 //$( document ).on('click', '.clear-selection-tool', function(event) {
 //    //alert('you clicked a '+$(event.target).attr('class')+' element');
 //    // Firstly deselect all selected wf elements

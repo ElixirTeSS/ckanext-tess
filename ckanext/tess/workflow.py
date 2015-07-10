@@ -53,6 +53,7 @@ class WorkflowPlugin(plugins.SingletonPlugin):
             'read_workflow_file' : read_workflow_file,
             'training_material_options' : training_material_options,
             'get_workflows_for_user' : get_workflows_for_user,
+            'available_packages' : available_packages
         }
 
     def before_map(self, map):
@@ -160,6 +161,31 @@ def get_workflows_for_user(user_id):
             results.append(result)
         return results
 
+def available_packages(material_id):
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'for_view': True,
+                   'auth_user_obj': c.userobj, 'use_cache': False}
+        data_dict = {'id': material_id}
+        pkg_dict = get_action('package_show')(context, data_dict)
+        context['is_member'] = True
+        users_groups = get_action('group_list_authz')(context, data_dict)
+        # Remove all groups which type is set to 'node'
+        for item in users_groups[:]:
+            if item['type'] == 'node':
+                users_groups.remove(item)
+        pkg_group_ids = set(group['id'] for group
+                         in pkg_dict.get('groups', []))
+        #print pkg_dict
+        user_group_ids = set(group['id'] for group
+                          in users_groups)
+
+        available_package_groups = [[group['id'], group['display_name']]
+                           for group in users_groups if
+                           group['id'] not in pkg_group_ids
+                           and group['type'] == 'group']
+
+
+        return {'available': available_package_groups, 'associated': pkg_dict.get('groups', [])}
 
 def get_workflow(workflow_id):
     workflow = model.Session.query(TessWorkflow).get(workflow_id)
@@ -179,7 +205,27 @@ def get_workflow(workflow_id):
 class WorkflowController(HomeController):
 
     def read_training(self):
-        return base.render('workflow/ajax/read_training.html')
+        # Get all training materials for the node with node_id of workflow with workflow_id
+        # Get all packages for each training material and all packages it can be assigned to
+        try:
+            parameters = logic.parse_params(request.params)
+            print parameters
+            workflow = get_workflow(parameters.get('workflow_id'))
+            wf = json.loads(workflow.get('definition'))
+            c.node = node_content(wf).get(parameters.get('node_id'))
+            c.material_package = {}
+            for material in c.node.get('materials'):
+                c.material_package[material.get('id')] = available_packages(material.get('id'))
+
+            #print c.node
+            #print model.Session
+            #print c.user or c.author
+            c.group_dropdown = [[0,1],[1,2],[2,3]]
+            return base.render('workflow/ajax/read_training.html')
+        except Exception:
+            return base.render('workflow/ajax/read_training.html')
+
+
 
     def edit_training(self):
         c.training_materials = training_material_options()
