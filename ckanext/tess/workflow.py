@@ -41,6 +41,16 @@ tess_workflow_table = None
 
 from ckan.common import OrderedDict, c, g, request, _
 
+
+class WorkflowApi(plugins.SingletonPlugin):
+    plugins.implements(plugins.interfaces.IActions)
+
+    def get_actions(self):
+        return {
+            'add_material_to_package': add_material_to_package
+        }
+
+
 class WorkflowPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IRoutes, inherit=True)
     plugins.implements(plugins.ITemplateHelpers, inherit=True)
@@ -50,10 +60,11 @@ class WorkflowPlugin(plugins.SingletonPlugin):
 
     def get_helpers(self):
         return {
-            'read_workflow_file' : read_workflow_file,
-            'training_material_options' : training_material_options,
-            'get_workflows_for_user' : get_workflows_for_user,
-            'available_packages' : available_packages
+            'read_workflow_file': read_workflow_file,
+            'training_material_options': training_material_options,
+            'get_workflows_for_user': get_workflows_for_user,
+            'available_packages': available_packages,
+
         }
 
     def before_map(self, map):
@@ -86,6 +97,20 @@ class WorkflowPlugin(plugins.SingletonPlugin):
             'workflow_update': workflow_actions_authz,
             'workflow_delete': workflow_actions_authz
         }
+
+def add_material_to_package(context, data_dict):
+    data_dict = {"id": data_dict.get('package_id'),
+                 "object": data_dict.get('material_id'),
+                 "object_type": 'package',
+                 "capacity": 'public'}
+    try:
+        get_action('member_create')(context, data_dict)
+    except NotFound:
+        abort(404, _('Group not found'))
+
+
+
+
 
 '''
 Returns a graph structure of the workflow stages in the form of a dictionary e.g.
