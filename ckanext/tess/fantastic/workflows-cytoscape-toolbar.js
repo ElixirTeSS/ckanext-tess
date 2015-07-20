@@ -187,6 +187,7 @@ function drawGraph(workflow, workflow_action) {
             openWorkflowPropertyEditor(element);
             var node_info = evtTarget.data();
             $('#node-info').val(JSON.stringify(node_info))
+            $('#node-id').val(evtTarget.id())
             if (action == 'show' && evtTarget.isNode()) {
                 $("#myModal").modal({
                     remote: '/workflow/read_training?workflow_id=' + $('#workflow-id').val() + '&node_id=' + evtTarget.id()
@@ -214,7 +215,7 @@ function drawGraph(workflow, workflow_action) {
 
 $('body').on('hide.bs.modal', function () {
     $('#myModal').removeData('bs.modal');
-    console.log('GET RID OF IT')
+    console.log('Removing Modal data')
 });
 
 
