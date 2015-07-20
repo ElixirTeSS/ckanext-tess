@@ -45,7 +45,40 @@
     });*/
 
  /*   populateModal();*/
+
+    $('.add_to_package').click(function(){
+       var select_id = $(this).data('id');
+       var selected = $('#field-add_group-' + select_id).find(':selected')
+       var data_dict = {
+           "material_id": selected.data('material_id'),
+           "material_name": selected.data('material_name'),
+           "package_id": selected.val(),
+           "package_name": selected.data('package_name')
+       };
+        var pathArray = location.href.split( '/' );
+        var url = pathArray[0] + '//' + pathArray[2];
+        $.ajax({
+            type: 'POST',
+            beforeSend: function (request) {
+                /*request.setRequestHeader("Authority", key);*/
+                request.setRequestHeader("content-type", 'application/json');
+            },
+            url: url + '/api/3/action/add_material_to_package',
+            data: JSON.stringify(data_dict),
+            success: function (result_hash) {
+                if (result_hash['success'] == true) {
+                   $('#myModal').modal('hide');
+                } else {
+                    console.log('Error, could not associate event')
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.responseJSON['error']['message']);
+            }
+        });
+    })
 </script>
+
 {% import 'macros/form.html' as form %}
 <div>
     <h3>Description</h3>
@@ -62,19 +95,29 @@
             <tr>
                 <td>{% link_for material.get('name')|truncate(35), controller='package', action='read', id=material.get('id') %}</td>
                 <td>
-                    <form method="post" >
-                    <select id="field-add_group" name="group_added" data-module="autocomplete">
-                    {% if c.material_package.get(material.get('id')) %}
-                    {% for package in c.material_package.get(material.get('id'), {}).get('available') %}
-                      <option value="{{ package[0] }}"> {{ package[1] }}</option>
-                    {% endfor %}
-                    {% endif %}
+                    <select id="field-add_group-{{material.get('id')}}" name="group_added" data-module="autocomplete">
+                        {% if c.material_package.get(material.get('id')) %}
+                            {% for package in c.material_package.get(material.get('id'), {}).get('available') %}
+                              <option value="{{ package[0] }}"
+                                      data-material_id="{{material.get('id')}}"
+                                      data-material_name="{{material.get('name')}}"
+                                      data-package_name="{{package[1]}}">
+                                  {{ package[1] }}
+                              </option>
+                            {% endfor %}
+                        {% endif %}
                     </select>
-                    <button type="submit" class="btn btn-primary" title="{{ _('Associate this group with this dataset') }}">{{ _('Add to group') }}</button>
+                    <button type="submit" class='add_to_package' data-id='{{material.get("id")}}' class="btn btn-primary" title="{{ _('Add to Package') }}">{{ _('Add to Package') }}</button>
                     </form>
                 </td>
                 {% if c.material_package.get(material.get('id')) %}
-                <td>{{c.material_package.get(material.get('id'), {}).get('associated')}}</td>
+                <td>
+                    <ul>
+                        {% for package in c.material_package.get(material.get('id'), {}).get('associated') %}
+                            <li>{{ package.get('display_name') }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
                 {% endif %}
             </tr>
         {% endfor %}
