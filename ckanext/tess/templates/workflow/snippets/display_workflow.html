@@ -19,25 +19,15 @@
 
 <div id="cy" style="float: right; margin-right: 15px" class="cy col-md-6 col-md-offset-1"></div>
 
-<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="zindex:15">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">Training materials for <em class="modal-workflow-title">...</em></h3>
-  </div>
-  <div class="modal-body">
-      <div style="width:50px; margin: 0 auto;"><img src="/images/spiffygif_132x132.gif"/></div>
-  </div>
-  <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-    <button class="btn btn-primary" data-dismiss="modal" id="save-material" class="hidden">Save</button>
-  </div>
+<div id="modal_container">
+
 </div>
 
 <input type='text' id="node-info" class="hidden"/>
 <input type='text' id="node-id" class="hidden"/>
 <input type='text' id="workflow-id" class="hidden" value="{{c.workflow_dict.id}}"/>
 
-
+<div id="other_modal"></div>
 <script>
     $(document).ready(function(){
         wf= {{workflow|safe}};

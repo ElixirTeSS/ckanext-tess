@@ -34,6 +34,7 @@ function drawGraph(workflow, workflow_action) {
         loadTrainingMaterialModal();
     })
 
+
     $('#save_workflow_element_properties').click(function(e){
         saveWorkflowElementProperties();
         updateWorkflowElement();
@@ -189,10 +190,13 @@ function drawGraph(workflow, workflow_action) {
             $('#node-info').val(JSON.stringify(node_info))
             $('#node-id').val(evtTarget.id())
             if (action == 'show' && evtTarget.isNode()) {
+                var modal_url = '/workflow/read_training?workflow_id=' + $('#workflow-id').val() + '&node_id=' + evtTarget.id();
+                $('#modal_container').load('/workflow_modal.html');
+                console.log(modal_url);
                 $("#myModal").modal({
-                    remote: '/workflow/read_training?workflow_id=' + $('#workflow-id').val() + '&node_id=' + evtTarget.id()
+                    remote: modal_url,
+                    show: true
                 });
-                console.log(evtTarget.id());
             }
         }
     });
@@ -213,9 +217,9 @@ function drawGraph(workflow, workflow_action) {
 
 }
 
-$('body').on('hide.bs.modal', function () {
-    $('#myModal').removeData('bs.modal');
-    console.log('Removing Modal data')
+$('#myModal').on('hidden.bs.modal', function () {
+    /* once hidden. Delete the modal. The html for the modal will be re-added just before it is called. Otherwise content will not refresh*/
+    $('#myModal').remove();
 });
 
 
