@@ -108,7 +108,7 @@ def add_material_to_package(context, data_dict):
     except NotFound:
         abort(404, _('Group not found'))
 
-
+    return data_dict.get('package_name')
 
 
 
@@ -234,7 +234,8 @@ class WorkflowController(HomeController):
         # Get all packages for each training material and all packages it can be assigned to
         try:
             parameters = logic.parse_params(request.params)
-            print parameters
+
+            print request
             workflow = get_workflow(parameters.get('workflow_id'))
             wf = json.loads(workflow.get('definition'))
             c.node = node_content(wf).get(parameters.get('node_id'))
@@ -242,11 +243,7 @@ class WorkflowController(HomeController):
             for material in c.node.get('materials'):
                 c.material_package[material.get('id')] = available_packages(material.get('id'))
 
-            #print c.node
-            #print model.Session
-            #print c.user or c.author
-            c.group_dropdown = [[0,1],[1,2],[2,3]]
-            return base.render('workflow/ajax/read_training.html')
+            return base.render('workflow/ajax/read_training.html', extra_vars={'open_modal_url': request.url})
         except Exception:
             return base.render('workflow/ajax/read_training.html')
 

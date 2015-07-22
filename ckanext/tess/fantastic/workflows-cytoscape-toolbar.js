@@ -83,6 +83,7 @@ function drawGraph(workflow, workflow_action) {
         closeWorkflowPropertyEditor();
     })
 
+
     var cy = window.cy = cytoscape({
         container: document.getElementById('cy'),
 
@@ -217,9 +218,9 @@ function drawGraph(workflow, workflow_action) {
 
 }
 
-$('#myModal').on('hidden.bs.modal', function () {
+$('#myModal').on('hide.bs.modal', function () {
     /* once hidden. Delete the modal. The html for the modal will be re-added just before it is called. Otherwise content will not refresh*/
-    $('#myModal').remove();
+    $('#modal_container').empty();
 });
 
 
@@ -379,6 +380,7 @@ function addTrainingMaterial(e) {
     if (!e.data.canPerform(e, addTrainingMaterial)) {
         return;
     }
+    $('#myModal').modal('hide');
     loadTrainingMaterialModal(e)
 }
 
@@ -391,6 +393,7 @@ function loadTrainingMaterialModal(e) {
     var node_info = evtTarget.data();
     $('#node-info').val(JSON.stringify(node_info))
     if (action == 'edit' && evtTarget.isNode()) {
+        $('#modal_container').load('/workflow_modal.html');
         $("#myModal").modal({
             remote : '/workflow/edit_training'
         })
@@ -747,3 +750,4 @@ function isWorkflowEmptyConfirm() {
     }
     return true;
 }
+

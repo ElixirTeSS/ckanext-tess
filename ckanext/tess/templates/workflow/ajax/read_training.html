@@ -68,12 +68,20 @@
             data: JSON.stringify(data_dict),
             success: function (result_hash) {
                 if (result_hash['success'] == true) {
-                   var modal_url = $('#open_modal_url');
-                    $('#modal_container').load('/workflow_modal.html');
-                    console.log(modal_url);
-                    $("#myModal").modal({
-                        remote: modal_url
-                    });
+                    console.log(result_hash)
+                    var list_div = $('#assigned_packages-'+selected.data('material_id'));
+                    var option =  $('#' + selected.data('material_id') + '-' + selected.data('package_id'));
+                    $(list_div).append('<li>')
+                    $(list_div).append(selected.data('package_name'))
+                    $(list_div).append('</li>')
+                    $(option).remove()
+
+                    /*var modal_url = $('#open_modal_url');
+                     $('#modal_container').load('/workflow_modal.html');
+                     console.log(modal_url);
+                     $("#myModal").modal({
+                         remote: modal_url
+                     });*/
                 } else {
                     console.log('Error, could not associate event')
                 }
@@ -103,10 +111,11 @@
             <tr>
                 <td>{% link_for material.get('name')|truncate(35), controller='package', action='read', id=material.get('id') %}</td>
                 <td>
-                    <select id="field-add_group-{{material.get('id')}}" name="group_added" data-module="autocomplete">
+                    <select id="field-add_group-{{ material.get('id') }}" name="group_added" data-module="autocomplete">
                         {% if c.material_package.get(material.get('id')) %}
                             {% for package in c.material_package.get(material.get('id'), {}).get('available') %}
                               <option value="{{ package[0] }}"
+                                      id="{{ material.get('id') }}-{{ package[0] }}"
                                       data-material_id="{{material.get('id')}}"
                                       data-material_name="{{material.get('name')}}"
                                       data-package_name="{{package[1]}}">
@@ -120,7 +129,7 @@
                 </td>
                 {% if c.material_package.get(material.get('id')) %}
                 <td>
-                    <ul>
+                    <ul id="assigned_packages-{{material.get('id')}}">
                         {% for package in c.material_package.get(material.get('id'), {}).get('associated') %}
                             <li>{{ package.get('display_name') }}</li>
                         {% endfor %}
