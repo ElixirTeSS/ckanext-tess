@@ -141,6 +141,7 @@
         {% for material in c.node.get('materials') %}
             <tr>
                 <td>{% link_for material.get('name')|truncate(35), controller='package', action='read', id=material.get('id') %}</td>
+                {% if c.user %}
                 <td>
                     <select id="field-add_group-{{ material.get('id') }}" name="group_added" data-module="autocomplete">
                         {% if c.material_package.get(material.get('id')) %}
@@ -172,6 +173,7 @@
                         {% endfor %}
                     </ul>
                 </td>
+                {% endif %}
                 {% endif %}
             </tr>
         {% endfor %}

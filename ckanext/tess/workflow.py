@@ -242,14 +242,13 @@ class WorkflowController(HomeController):
         # Get all packages for each training material and all packages it can be assigned to
         try:
             parameters = logic.parse_params(request.params)
-
-            print request
             workflow = get_workflow(parameters.get('workflow_id'))
             wf = json.loads(workflow.get('definition'))
             c.node = node_content(wf).get(parameters.get('node_id'))
             c.material_package = {}
-            for material in c.node.get('materials'):
-                c.material_package[material.get('id')] = available_packages(material.get('id'))
+            if c.userobj:
+                for material in c.node.get('materials'):
+                    c.material_package[material.get('id')] = available_packages(material.get('id'))
 
             return base.render('workflow/ajax/read_training.html', extra_vars={'open_modal_url': request.url})
         except Exception:
