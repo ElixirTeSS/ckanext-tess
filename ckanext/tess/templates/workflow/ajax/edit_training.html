@@ -4,7 +4,7 @@
         // Handler for .ready() called.
     });
 
-    $('#save-material' ).on('click', function(event) {
+    $('#save-material').on('click', function(event) {
         console.log("HEEERREE")
         var selected = [];
         $('#training_materials input:checked').each(function() {
@@ -12,11 +12,12 @@
                         'name': $(this).attr('data-name'),
                         'id': $(this).attr('data-id')
             });
+            $('#bloop').append($(this).attr('data-name'))
         });
         cy.$(':selected').data('materials', selected);
     });
 
-    function populateModal() {
+       function populateModal() {
         if (action == 'edit') {
             /* reset stuff */
             $('#training_materials input:checked').each(function () {
@@ -39,15 +40,12 @@
                 $('.modal-workflow-description').text('There is no description for this workflow node.');
                 $('.modal-workflow-description').addClass('empty')
             }
-            console.log('blahahahha');
-            console.log(node.materials);
             if (node.materials != undefined && node.materials.constructor === Array && node.materials.length > 0) {
                 $.each(node.materials, function (index, material) {
                     var row = '<tr>';
                     row += '<td><a href="/package/' + material['id'] + '">' + material['name'] + '</a></td>';
                     row += '</tr>';
                     $('#workflow-materials').append(row);
-                    console.log(row)
                     /* Check associated material checkboxes  */
                     $('#' + material['id']).prop('checked', true)
                     /* Delete and Prepend them so they bubble to the top */
@@ -62,6 +60,8 @@
             $('#save-material').removeClass('hidden');
         }
     }
+
+
 </script>
 
 <div>
