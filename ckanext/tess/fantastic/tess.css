@@ -699,3 +699,10 @@ div#workflow_element_info ul.items{
 .margin-bottom-0 {
     margin-bottom: 0px;
 }
+.remove-material{
+    color: blue;
+}
+.remove-material:hover{
+    color: red;
+    cursor: pointer;
+}
