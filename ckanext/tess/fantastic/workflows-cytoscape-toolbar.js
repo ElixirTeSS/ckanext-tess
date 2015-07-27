@@ -23,6 +23,11 @@ var action; // 'show', 'new' or 'edit'
 //    }
 //});
 
+
+
+$('#modal_container').load('/workflow_modal.html');
+
+
 function drawGraph(workflow, workflow_action) {
 
 //    alert('action: ' + workflow_action + ' wf: ' + JSON.stringify(workflow) + ' elements: ' + JSON.stringify(workflow['elements']));
@@ -33,7 +38,6 @@ function drawGraph(workflow, workflow_action) {
     $('#associate-training-materials').click(function(e){
         loadTrainingMaterialModal();
     })
-
 
     $('#save_workflow_element_properties').click(function(e){
         saveWorkflowElementProperties();
@@ -81,7 +85,9 @@ function drawGraph(workflow, workflow_action) {
     });
     $('#hide-property-editor').click(function(e){
         closeWorkflowPropertyEditor();
-    })
+        $('#associate-training-materials').toggle()
+    });
+
 
 
     var cy = window.cy = cytoscape({
@@ -192,7 +198,7 @@ function drawGraph(workflow, workflow_action) {
             $('#node-id').val(evtTarget.id())
             if (action == 'show' && evtTarget.isNode()) {
                 var modal_url = '/workflow/read_training?workflow_id=' + $('#workflow-id').val() + '&node_id=' + evtTarget.id();
-                $('#modal_container').load('/workflow_modal.html');
+                /*$('#modal_container').load('/workflow_modal.html');*/
                 console.log(modal_url);
                 $("#myModal").modal({
                     remote: modal_url,
@@ -217,12 +223,6 @@ function drawGraph(workflow, workflow_action) {
 
 
 }
-
-$('#myModal').on('hide.bs.modal', function () {
-    /* once hidden. Delete the modal. The html for the modal will be re-added just before it is called. Otherwise content will not refresh*/
-    $('#modal_container').empty();
-});
-
 
 
 $( document ).on('click', '.tool-item, .selected-tool', function(event) {
@@ -363,6 +363,7 @@ function propogateStyle(current_selected) {
     current_selected.style('background-color', current_selected.data('color'));
 }
 
+
 function updateJSONDump() {
     //alert(JSON.stringify(window.cy.json()));
     $("#dialog-div").val(JSON.stringify(window.cy.json()));
@@ -380,7 +381,6 @@ function addTrainingMaterial(e) {
     if (!e.data.canPerform(e, addTrainingMaterial)) {
         return;
     }
-    $('#myModal').modal('hide');
     loadTrainingMaterialModal(e)
 }
 
@@ -393,7 +393,6 @@ function loadTrainingMaterialModal(e) {
     var node_info = evtTarget.data();
     $('#node-info').val(JSON.stringify(node_info))
     if (action == 'edit' && evtTarget.isNode()) {
-        $('#modal_container').load('/workflow_modal.html');
         $("#myModal").modal({
             remote : '/workflow/edit_training'
         })

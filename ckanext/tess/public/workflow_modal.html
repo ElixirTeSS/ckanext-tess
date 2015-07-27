@@ -1,5 +1,17 @@
+<script>
+    $('#myModal').on('hidden.bs.modal', function () {
+        /* On hide - delete the modal and re-load it.
+         Otherwise previously injected HTML will not be overwritten */
+        $('#modal_container').empty();
+        $('#modal_container').load('/workflow_modal.html');
+        openWorkflowPropertyEditor();
+    });
+    $('#myModal').on('show.bs.modal', function () {
+        closeWorkflowPropertyEditor();
+    });
+</script>
 
-<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="zindex:15">
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="zindex:10">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
     <h3 id="myModalLabel">Training materials for <em class="modal-workflow-title">...</em></h3>
