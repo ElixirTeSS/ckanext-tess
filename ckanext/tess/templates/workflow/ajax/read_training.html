@@ -45,13 +45,45 @@
     });*/
 
  /*   populateModal();*/
+   $('#material_listing').on('click', '.remove-material', function(){
+       var data_dict = {
+           "material_id": $(this).data('material_id'),
+           "package_id": $(this).data('package_id'),
+           "package_name": $(this).data('package_name')
+       };
+       var pathArray = location.href.split( '/' );
+       var url = pathArray[0] + '//' + pathArray[2];
+       $.ajax({
+            type: 'POST',
+            beforeSend: function (request) {
+                /*request.setRequestHeader("Authority", key);*/
+                request.setRequestHeader("content-type", 'application/json');
+            },
+            url: url + '/api/3/action/remove_material_from_package',
+            data: JSON.stringify(data_dict),
+            success: function (result_hash) {
+                var listed_item =  $('#listing-' + data_dict['material_id'] + '-' + data_dict['package_id']);
+                $(listed_item).remove()
+                $('#field-add_group-' + data_dict['material_id'])
+                        .append('<option value="' + data_dict['package_id'] + '" ' +
+                                'id="select-option-' + data_dict['material_id'] + '-' + data_dict['package_id'] + '" ' +
+                                    'data-material_id="' + data_dict['material_id'] + '" ' +
+                                    'data-package_id="' + data_dict['package_id'] + '" ' +
+                                    'data-package_name="'+ data_dict['package_name'] + '">' +
+                        data_dict['package_name'] + '</option>')
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.responseJSON['error']['message']);
+            }
+        });
 
-    $('.add_to_package').click(function(){
+    })
+
+    $('.add_to_package').on('click', function(){
        var select_id = $(this).data('id');
        var selected = $('#field-add_group-' + select_id).find(':selected')
        var data_dict = {
            "material_id": selected.data('material_id'),
-           "material_name": selected.data('material_name'),
            "package_id": selected.val(),
            "package_name": selected.data('package_name')
        };
@@ -68,17 +100,24 @@
             success: function (result_hash) {
                 if (result_hash['success'] == true) {
                     var list_div = $('#assigned_packages-'+selected.data('material_id'));
-                    var option =  $('#' + selected.data('material_id') + '-' + selected.data('package_id'));
-                    $(list_div).append('<li>')
-                    $(list_div).append(selected.data('package_name'))
-                    $(list_div).append('</li>')
+                    var option =  $('#select-option-' + data_dict['material_id'] + '-' + data_dict['package_id']);
+                    $(list_div).append('<li id="listing-' + data_dict['material_id'] + '-' + data_dict['package_id'] + '" style="list-style:none">' +
+                    '<span class="remove-material" ' +
+                            'data-package_id="' + data_dict['package_id'] + '" ' +
+                            'data-material_id="' + data_dict['material_id'] + '"' +
+                            'data-package_name="' + data_dict['package_name'] + '"' +
+                            '> X </span>' +
+                    data_dict['package_name'] +
+                    '</li>');
                     $(option).remove()
                 } else {
                     console.log('Error, could not associate event')
                 }
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.responseJSON['error']['message']);
+                /*console.log(xhr)
+                $('#myModal').modal('hide')*/
+                /*alert(xhr.responseJSON['error']['message']);*/
             }
         });
     })
@@ -97,7 +136,8 @@
 
     <h3>Training materials for <em class="modal-workflow-title">{{c.node.get('name')}}</em></h3>
     {% if c.node.get('materials') %}
-        <table class="table">
+    <div id="material_listing">
+        <table class="table table-condensed">
         {% for material in c.node.get('materials') %}
             <tr>
                 <td>{% link_for material.get('name')|truncate(35), controller='package', action='read', id=material.get('id') %}</td>
@@ -106,7 +146,7 @@
                         {% if c.material_package.get(material.get('id')) %}
                             {% for package in c.material_package.get(material.get('id'), {}).get('available') %}
                               <option value="{{ package[0] }}"
-                                      id="{{ material.get('id') }}-{{ package[0] }}"
+                                      id="select-option-{{ material.get('id') }}-{{ package[0] }}"
                                       data-material_id="{{material.get('id')}}"
                                       data-material_name="{{material.get('name')}}"
                                       data-package_name="{{package[1]}}">
@@ -122,7 +162,13 @@
                 <td>
                     <ul id="assigned_packages-{{material.get('id')}}">
                         {% for package in c.material_package.get(material.get('id'), {}).get('associated') %}
-                            <li>{{ package.get('display_name') }}</li>
+                            <li id="listing-{{material.get('id')}}-{{package.get('id')}}" style="list-style:none">
+                                <span class="remove-material"
+                                      data-package_id="{{package.get('id')}}"
+                                      data-material_id="{{material.get('id')}}"
+                                      data-package_name="{{package.get('display_name')}}">X</span>
+                                {{ package.get('display_name') }}
+                            </li>
                         {% endfor %}
                     </ul>
                 </td>
@@ -134,5 +180,6 @@
         <div class="empty">There are no training materials associated with this node</div>
     {% endif %}
     <table class='table' id="workflow-materials"></table>
+    </div>
 </div>
 
