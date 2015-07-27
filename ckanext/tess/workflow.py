@@ -47,7 +47,8 @@ class WorkflowApi(plugins.SingletonPlugin):
 
     def get_actions(self):
         return {
-            'add_material_to_package': add_material_to_package
+            'add_material_to_package': add_material_to_package,
+            'remove_material_from_package': remove_material_from_package
         }
 
 
@@ -98,6 +99,7 @@ class WorkflowPlugin(plugins.SingletonPlugin):
             'workflow_delete': workflow_actions_authz
         }
 
+
 def add_material_to_package(context, data_dict):
     data_dict = {"id": data_dict.get('package_id'),
                  "object": data_dict.get('material_id'),
@@ -108,9 +110,15 @@ def add_material_to_package(context, data_dict):
     except NotFound:
         abort(404, _('Group not found'))
 
-    return data_dict.get('package_name')
 
-
+def remove_material_from_package(context, data_dict):
+    data_dict = {"id": data_dict.get('package_id'),
+                 "object": data_dict.get('material_id'),
+                "object_type": 'package'}
+    try:
+        get_action('member_delete')(context, data_dict)
+    except NotFound:
+        return {'error': {'message': 'NOOOOO'}}
 
 '''
 Returns a graph structure of the workflow stages in the form of a dictionary e.g.
