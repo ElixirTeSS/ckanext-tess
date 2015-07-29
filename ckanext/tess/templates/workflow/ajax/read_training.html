@@ -119,9 +119,12 @@
                     'data-material_id="' + data_dict['material_id'] + '"' +
                     'data-package_name="' + data_dict['package_name'] + '"' +
                     '> X </span>' +
+                    '<img src="http://s.brighthub.com/s/images/utility/spinner.gif?ver=1458" ' +
+                    'id="busy-' + data_dict['material_id'] + '-' + data_dict['package_id'] + '" hidden/>' +
                     data_dict['package_name'] +
                     '</li>');
                     $(option).remove()
+                    $('#busy-' + data_dict['material_id'] + '-' + data_dict['package_id']).toggle()
                 } else {
                     console.log('Error, could not associate event')
                 }
