@@ -118,7 +118,7 @@ def remove_material_from_package(context, data_dict):
     try:
         get_action('member_delete')(context, data_dict)
     except NotFound:
-        return {'error': {'message': 'NOOOOO'}}
+        return {'error': {'message': 'Could not complete this action as the package could not be found'}}
 
 '''
 Returns a graph structure of the workflow stages in the form of a dictionary e.g.
@@ -199,26 +199,36 @@ def available_packages(material_id):
                    'user': c.user or c.author, 'for_view': True,
                    'auth_user_obj': c.userobj, 'use_cache': False}
         data_dict = {'id': material_id}
-        pkg_dict = get_action('package_show')(context, data_dict)
+        material_dict = get_action('package_show')(context, data_dict)
+        materials_packages = material_dict.get('groups', [])
+
         context['is_member'] = True
-        users_groups = get_action('group_list_authz')(context, data_dict)
+        users_packages = get_action('group_list_authz')(context, data_dict)
+
         # Remove all groups which type is set to 'node'
-        for item in users_groups[:]:
+        for item in users_packages[:]:
             if item['type'] == 'node':
-                users_groups.remove(item)
-        pkg_group_ids = set(group['id'] for group
-                         in pkg_dict.get('groups', []))
-        #print pkg_dict
-        user_group_ids = set(group['id'] for group
-                          in users_groups)
+                users_packages.remove(item)
 
-        available_package_groups = [[group['id'], group['display_name']]
-                           for group in users_groups if
-                           group['id'] not in pkg_group_ids
-                           and group['type'] == 'group']
+        material_packages_ids = set(package['id'] for package
+                         in materials_packages)
 
+        users_packages_ids = set(package['id'] for package
+                          in users_packages)
 
-        return {'available': available_package_groups, 'associated': pkg_dict.get('groups', [])}
+        print 'materials packages = %s \n' % material_packages_ids
+        print 'users packages = %s \n' % users_packages_ids
+
+        associated_packages = [[package['id'], package['display_name']]
+                           for package in users_packages if
+                           package['id'] in material_packages_ids
+                           and package['type'] == 'group']
+
+        available_packages = [[package['id'], package['display_name']]
+                           for package in users_packages if
+                           package['type'] == 'group']
+
+        return {'available': available_packages, 'associated': associated_packages}
 
 def get_workflow(workflow_id):
     workflow = model.Session.query(TessWorkflow).get(workflow_id)

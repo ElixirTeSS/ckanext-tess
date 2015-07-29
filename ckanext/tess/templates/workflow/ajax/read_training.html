@@ -170,11 +170,11 @@
     <div id="material_listing">
         <table class="table">
             {% if c.user %}
-            <th>Training Material</th>
-            <th>Included in My Packages:</th>
-            <th>My Packages</th>
+                <th>Training Material</th>
+                <th>Included in My Packages:</th>
+                <th>My Packages</th>
             {% endif %}
-            {% for material in c.node.get('materials') %}
+            {% for material in c.node.get('materials', {}) %}
             <tr>
                 <td>{% link_for material.get('name')|truncate(35), controller='package', action='read',
                     id=material.get('id') %}
@@ -187,7 +187,7 @@
                         hidden {% endif %}
                     ><b>{{material.get('name')}}</b> is not included in any of your packages.</span>
                     <ul id="assigned_packages-{{material.get('id')}}" style="margin:0">
-                        {% for package in c.material_package.get(material.get('id'), {}).get('associated') %}
+                        {% for package in c.material_package.get(material.get('id'), {}).get('associated', {}) %}
                         <li id="listing-{{material.get('id')}}-{{package.get('id')}}" style="list-style:none">
                                 <span id="delete-{{material.get('id')}}-{{package.get('id')}}"
                                       class="remove-material"
