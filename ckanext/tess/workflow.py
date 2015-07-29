@@ -226,7 +226,8 @@ def available_packages(material_id):
 
         available_packages = [{'id' : package['id'], 'display_name' : package['display_name']}
                            for package in users_packages if
-                           package['type'] == 'group']
+                           package['id'] not in material_packages_ids
+                           and package['type'] == 'group']
 
         return {'available': available_packages, 'associated': associated_packages}
 
