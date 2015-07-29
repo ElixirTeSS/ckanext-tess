@@ -392,7 +392,7 @@ function loadTrainingMaterialModal(e) {
     }
     var node_info = evtTarget.data();
     $('#node-info').val(JSON.stringify(node_info))
-    if (action == 'edit' && evtTarget.isNode()) {
+    if (action != 'show' && evtTarget.isNode()) {
         $("#myModal").modal({
             remote : '/workflow/edit_training'
         })
