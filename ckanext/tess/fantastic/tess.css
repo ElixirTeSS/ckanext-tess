@@ -700,10 +700,10 @@ div#workflow_element_info ul.items{
     margin-bottom: 0px;
 }
 .remove-material{
-    color: blue;
+    color: #206b82;
 }
 .remove-material:hover{
-    color: red;
+    color: #bd362f;
     cursor: pointer;
 }
 

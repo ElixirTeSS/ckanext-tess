@@ -97,8 +97,10 @@
         };
         var busy = '#busy-' + data_dict['material_id'] + '-' + data_dict['package_id']
         var remove_icon = '#delete-' + data_dict['material_id'] + '-' + data_dict['package_id']
+        var submit = '#submit-' + data_dict['material_id'];
         $(busy).toggle()
         $(remove_icon).toggle()
+        $(submit).prop('disabled', true)
         var pathArray = location.href.split('/');
         var url = pathArray[0] + '//' + pathArray[2];
         $.ajax({
@@ -131,7 +133,7 @@
                     console.log('Error, could not associate event')
                 }
                 $('#no_packages_text-' + data_dict['material_id']).hide()
-
+                $(submit).prop('disabled', false)
                 $(busy).toggle()
             },
             error: function (xhr, ajaxOptions, thrownError) {
@@ -160,9 +162,11 @@
     {% if c.node.get('materials') %}
     <div id="material_listing">
         <table class="table">
+            {% if c.user %}
             <th>Training Material</th>
             <th>Included in My Packages:</th>
             <th>My Packages</th>
+            {% endif %}
             {% for material in c.node.get('materials') %}
             <tr>
                 <td>{% link_for material.get('name')|truncate(35), controller='package', action='read',
@@ -209,7 +213,10 @@
                         {% endfor %}
                         {% endif %}
                     </select>
-                    <button type="submit" data-id='{{material.get("id")}}' class="btn btn-primary add_to_package"
+                    <button type="submit"
+                            id='submit-{{material.get("id")}}'
+                            data-id='{{material.get("id")}}'
+                            class="btn btn-primary add_to_package"
                             title="{{ _('Add to Package') }}">{{ _('Add to Package') }}
                     </button>
                     </form>
