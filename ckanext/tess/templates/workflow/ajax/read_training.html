@@ -1,59 +1,63 @@
 <script>
-/*    function populateModal() {
-        if (action=='show'){
-            $('#workflow-materials').empty();
-            $('#save-material').addClass('hidden');
-            var node = $.parseJSON($('#node-info').val());
-            console.log(node)
-            if (node.name)          { $('.modal-workflow-title').text(node.name);}
-            else                    { $('.modal-workflow-title').text('Unnamed Node'); }
-            if (node.description)   { $('.modal-workflow-description').text(node.description);
-                                      $('.modal-workflow-description').removeClass('empty') }
-            else                    { $('.modal-workflow-description').text('There is no description for this workflow node.');
-                                      $('.modal-workflow-description').addClass('empty') }
+    /*    function populateModal() {
+     if (action=='show'){
+     $('#workflow-materials').empty();
+     $('#save-material').addClass('hidden');
+     var node = $.parseJSON($('#node-info').val());
+     console.log(node)
+     if (node.name)          { $('.modal-workflow-title').text(node.name);}
+     else                    { $('.modal-workflow-title').text('Unnamed Node'); }
+     if (node.description)   { $('.modal-workflow-description').text(node.description);
+     $('.modal-workflow-description').removeClass('empty') }
+     else                    { $('.modal-workflow-description').text('There is no description for this workflow node.');
+     $('.modal-workflow-description').addClass('empty') }
 
-            if (node.materials != undefined && node.materials.constructor === Array && node.materials.length > 0) {
-                $.each(node.materials, function (index, material) {
-                    var row = '<tr>';
-                    row += '<td><a href="/package/' + material['id'] + '">' + material['name'] + '</a></td>';
+     if (node.materials != undefined && node.materials.constructor === Array && node.materials.length > 0) {
+     $.each(node.materials, function (index, material) {
+     var row = '<tr>';
+     row += '<td><a href="/package/' + material['id'] + '">' + material['name'] + '</a></td>';
 
-                        row += '<td>';
-                    *//*row += '<form method="post" class="form-horizontal">'
-                    row += '<select id="field-add_group" name="group_added" data-module="autocomplete">'
-                    {% for option in group_dropdown %}
-                        row += '<option value="{{ option[0] }}"> {{ option[1] }}</option>';
-                        {% endfor %}
-                        row += '</select>'
-                        row += '<button type="submit" class="btn btn-primary" title="{{ _("Associate this package with this material") }}">Add to package</button>'
+     row += '<td>';
+     *//*row += '<form method="post" class="form-horizontal">'
+     row += '<select id="field-add_group" name="group_added" data-module="autocomplete">'
+     {% for option in group_dropdown %}
+     row += '<option value="{{ option[0] }}"> {{ option[1] }}</option>';
+     {% endfor %}
+     row += '</select>'
+     row += '<button type="submit" class="btn btn-primary" title="{{ _("Associate this package with this material") }}">Add to package</button>'
 
-                        row += '</form>'*//*
-                        row += '</td>';
+     row += '</form>'*//*
+     row += '</td>';
 
 
-                    row += '</tr>';
-                    $('#workflow-materials').append(row);
-                });
-            } else {
-                $('#workflow-materials').html('<div class="empty">There are no associated materials with this workflow node.</div>');
-            }2
-        } else {
-            $('#save-material').removeClass('hidden');
-        }
-    }*/
-/*    $('#myModal').on('show', function(e){
-        populateModal();
-    });*/
+     row += '</tr>';
+     $('#workflow-materials').append(row);
+     });
+     } else {
+     $('#workflow-materials').html('<div class="empty">There are no associated materials with this workflow node.</div>');
+     }2
+     } else {
+     $('#save-material').removeClass('hidden');
+     }
+     }*/
+    /*    $('#myModal').on('show', function(e){
+     populateModal();
+     });*/
 
- /*   populateModal();*/
-   $('#material_listing').on('click', '.remove-material', function(){
-       var data_dict = {
-           "material_id": $(this).data('material_id'),
-           "package_id": $(this).data('package_id'),
-           "package_name": $(this).data('package_name')
-       };
-       var pathArray = location.href.split( '/' );
-       var url = pathArray[0] + '//' + pathArray[2];
-       $.ajax({
+    /*   populateModal();*/
+    $('#material_listing').on('click', '.remove-material', function () {
+        var data_dict = {
+            "material_id": $(this).data('material_id'),
+            "package_id": $(this).data('package_id'),
+            "package_name": $(this).data('package_name')
+        };
+        var busy = '#busy-' + data_dict['material_id'] + '-' + data_dict['package_id']
+        var remove_icon = '#delete-' + data_dict['material_id'] + '-' + data_dict['package_id']
+        $(busy).toggle()
+        $(remove_icon).toggle()
+        var pathArray = location.href.split('/');
+        var url = pathArray[0] + '//' + pathArray[2];
+        $.ajax({
             type: 'POST',
             beforeSend: function (request) {
                 /*request.setRequestHeader("Authority", key);*/
@@ -62,32 +66,38 @@
             url: url + '/api/3/action/remove_material_from_package',
             data: JSON.stringify(data_dict),
             success: function (result_hash) {
-                var listed_item =  $('#listing-' + data_dict['material_id'] + '-' + data_dict['package_id']);
+                var listed_item = $('#listing-' + data_dict['material_id'] + '-' + data_dict['package_id']);
                 $(listed_item).remove()
                 $('#field-add_group-' + data_dict['material_id'])
                         .append('<option value="' + data_dict['package_id'] + '" ' +
-                                'id="select-option-' + data_dict['material_id'] + '-' + data_dict['package_id'] + '" ' +
-                                    'data-material_id="' + data_dict['material_id'] + '" ' +
-                                    'data-package_id="' + data_dict['package_id'] + '" ' +
-                                    'data-package_name="'+ data_dict['package_name'] + '">' +
+                        'id="select-option-' + data_dict['material_id'] + '-' + data_dict['package_id'] + '" ' +
+                        'data-material_id="' + data_dict['material_id'] + '" ' +
+                        'data-package_id="' + data_dict['package_id'] + '" ' +
+                        'data-package_name="' + data_dict['package_name'] + '">' +
                         data_dict['package_name'] + '</option>')
+                $(busy).toggle()
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.responseJSON['error']['message']);
+                $(busy).toggle()
             }
         });
 
     })
 
-    $('.add_to_package').on('click', function(){
-       var select_id = $(this).data('id');
-       var selected = $('#field-add_group-' + select_id).find(':selected')
-       var data_dict = {
-           "material_id": selected.data('material_id'),
-           "package_id": selected.val(),
-           "package_name": selected.data('package_name')
-       };
-        var pathArray = location.href.split( '/' );
+    $('.add_to_package').on('click', function () {
+        var select_id = $(this).data('id');
+        var selected = $('#field-add_group-' + select_id).find(':selected')
+        var data_dict = {
+            "material_id": selected.data('material_id'),
+            "package_id": selected.val(),
+            "package_name": selected.data('package_name')
+        };
+        var busy = '#busy-' + data_dict['material_id'] + '-' + data_dict['package_id']
+        var remove_icon = '#delete-' + data_dict['material_id'] + '-' + data_dict['package_id']
+        $(busy).toggle()
+        $(remove_icon).toggle()
+        var pathArray = location.href.split('/');
         var url = pathArray[0] + '//' + pathArray[2];
         $.ajax({
             type: 'POST',
@@ -99,25 +109,29 @@
             data: JSON.stringify(data_dict),
             success: function (result_hash) {
                 if (result_hash['success'] == true) {
-                    var list_div = $('#assigned_packages-'+selected.data('material_id'));
-                    var option =  $('#select-option-' + data_dict['material_id'] + '-' + data_dict['package_id']);
+                    var list_div = $('#assigned_packages-' + selected.data('material_id'));
+                    var option = $('#select-option-' + data_dict['material_id'] + '-' + data_dict['package_id']);
                     $(list_div).append('<li id="listing-' + data_dict['material_id'] + '-' + data_dict['package_id'] + '" style="list-style:none">' +
-                    '<span class="remove-material" ' +
-                            'data-package_id="' + data_dict['package_id'] + '" ' +
-                            'data-material_id="' + data_dict['material_id'] + '"' +
-                            'data-package_name="' + data_dict['package_name'] + '"' +
-                            '> X </span>' +
+                    '<span ' +
+                    'id="delete-' + data_dict['material_id'] + '-' + data_dict['package_id'] + '"' +
+                    'class="remove-material" ' +
+                    'data-package_id="' + data_dict['package_id'] + '" ' +
+                    'data-material_id="' + data_dict['material_id'] + '"' +
+                    'data-package_name="' + data_dict['package_name'] + '"' +
+                    '> X </span>' +
                     data_dict['package_name'] +
                     '</li>');
                     $(option).remove()
                 } else {
                     console.log('Error, could not associate event')
                 }
+                $(busy).toggle()
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 /*console.log(xhr)
-                $('#myModal').modal('hide')*/
+                 $('#myModal').modal('hide')*/
                 /*alert(xhr.responseJSON['error']['message']);*/
+                $(busy).toggle()
             }
         });
     })
@@ -126,62 +140,74 @@
 {% import 'macros/form.html' as form %}
 <input type="hidden" value="{{open_modal_url}}" id="open_modal_url">
 
+
 <div>
     <h3>Description</h3>
     {% if c.node.get('description') %}
-        <div>{{c.node.get('description')}}</div>
+    <div>{{c.node.get('description')}}</div>
     {% else %}
-        <div class="modal-workflow-description empty">No description for this node has been set</div>
+    <div class="modal-workflow-description empty">No description for this node has been set</div>
     {% endif %}
 
-    <h3>Training materials for <em class="modal-workflow-title">{{c.node.get('name')}}</em></h3>
+    <h3>Training materials associated with <em class="modal-workflow-title">{{c.node.get('name')}}</em></h3>
     {% if c.node.get('materials') %}
     <div id="material_listing">
-        <table class="table table-condensed">
-        {% for material in c.node.get('materials') %}
+        <table class="table">
+            <th>Training Material</th>
+            <th>Included in My Packages:</th>
+            <th>My Packages</th>
+            {% for material in c.node.get('materials') %}
             <tr>
-                <td>{% link_for material.get('name')|truncate(35), controller='package', action='read', id=material.get('id') %}</td>
-                {% if c.user %}
-                <td>
-                    <select id="field-add_group-{{ material.get('id') }}" name="group_added" data-module="autocomplete">
-                        {% if c.material_package.get(material.get('id')) %}
-                            {% for package in c.material_package.get(material.get('id'), {}).get('available') %}
-                              <option value="{{ package[0] }}"
-                                      id="select-option-{{ material.get('id') }}-{{ package[0] }}"
-                                      data-material_id="{{material.get('id')}}"
-                                      data-material_name="{{material.get('name')}}"
-                                      data-package_name="{{package[1]}}">
-                                  {{ package[1] }}
-                              </option>
-                            {% endfor %}
-                        {% endif %}
-                    </select>
-                    <button type="submit" class='add_to_package' data-id='{{material.get("id")}}' class="btn btn-primary" title="{{ _('Add to Package') }}">{{ _('Add to Package') }}</button>
-                    </form>
+                <td>{% link_for material.get('name')|truncate(35), controller='package', action='read',
+                    id=material.get('id') %}
                 </td>
+                {% if c.user %}
                 {% if c.material_package.get(material.get('id')) %}
                 <td>
                     <ul id="assigned_packages-{{material.get('id')}}">
                         {% for package in c.material_package.get(material.get('id'), {}).get('associated') %}
-                            <li id="listing-{{material.get('id')}}-{{package.get('id')}}" style="list-style:none">
-                                <span class="remove-material"
+                        <li id="listing-{{material.get('id')}}-{{package.get('id')}}" style="list-style:none">
+                                <span id="delete-{{material.get('id')}}-{{package.get('id')}}"
+                                      class="remove-material"
                                       data-package_id="{{package.get('id')}}"
                                       data-material_id="{{material.get('id')}}"
                                       data-package_name="{{package.get('display_name')}}">X</span>
-                                {{ package.get('display_name') }}
-                            </li>
+                            <img src="http://s.brighthub.com/s/images/utility/spinner.gif?ver=1458"
+                                id="busy-{{material.get('id')}}-{{package.get('id')}}"
+                                alt="busy" hidden/>
+                            {{ package.get('display_name') }}
+                        </li>
                         {% endfor %}
                     </ul>
                 </td>
                 {% endif %}
+                <td>
+                    <select id="field-add_group-{{ material.get('id') }}" name="group_added" data-module="autocomplete">
+                        {% if c.material_package.get(material.get('id')) %}
+                        {% for package in c.material_package.get(material.get('id'), {}).get('available') %}
+                        <option value="{{ package[0] }}"
+                                id="select-option-{{ material.get('id') }}-{{ package[0] }}"
+                                data-material_id="{{material.get('id')}}"
+                                data-material_name="{{material.get('name')}}"
+                                data-package_name="{{package[1]}}">
+                            {{ package[1] }}
+                        </option>
+                        {% endfor %}
+                        {% endif %}
+                    </select>
+                    <button type="submit" data-id='{{material.get("id")}}' class="btn btn-primary add_to_package"
+                            title="{{ _('Add to Package') }}">{{ _('Add to Package') }}
+                    </button>
+                    </form>
+                </td>
                 {% endif %}
             </tr>
-        {% endfor %}
+            {% endfor %}
         </table>
-    {% else %}
+        {% else %}
         <div class="empty">There are no training materials associated with this node</div>
-    {% endif %}
-    <table class='table' id="workflow-materials"></table>
+        {% endif %}
+        <table class='table' id="workflow-materials"></table>
     </div>
 </div>
 

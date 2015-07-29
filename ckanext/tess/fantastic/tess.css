@@ -706,3 +706,10 @@ div#workflow_element_info ul.items{
     color: red;
     cursor: pointer;
 }
+
+.workflow_modal {
+    zindex:10;
+    width:60%;
+    margin:auto;
+    left:inherit;
+}
