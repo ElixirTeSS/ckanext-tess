@@ -77,6 +77,10 @@
                 if ($('#assigned_packages-' + data_dict['material_id'] + ' li').length == 0) {
                     $('#no_packages_text-' + data_dict['material_id']).show()
                 }
+                console.log($('#field-add_group-' + data_dict['material_id'] + ' option').length )
+                if ($('#field-add_group-' + data_dict['material_id'] + ' option').length > 0){
+                    $('#submit-' + data_dict['material_id']).prop('disabled', false)
+                }
                 $(busy).toggle()
             },
             error: function (xhr, ajaxOptions, thrownError) {
@@ -133,8 +137,11 @@
                     console.log('Error, could not associate event')
                 }
                 $('#no_packages_text-' + data_dict['material_id']).hide()
-                $(submit).prop('disabled', false)
+                if ($('#field-add_group-' + data_dict['material_id'] + ' option').length != 0){
+                    $(submit).prop('disabled', false)
+                }
                 $(busy).toggle()
+
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 /*console.log(xhr)
@@ -217,7 +224,11 @@
                             id='submit-{{material.get("id")}}'
                             data-id='{{material.get("id")}}'
                             class="btn btn-primary add_to_package"
-                            title="{{ _('Add to Package') }}">{{ _('Add to Package') }}
+                            title="{{ _('Add to Package') }}"
+                            {% if not c.material_package.get(material.get('id'), {}).get('available') %}
+                                 disabled
+                            {% endif %}
+                            >{{ _('Add to Package') }}
                     </button>
                     </form>
                 </td>
