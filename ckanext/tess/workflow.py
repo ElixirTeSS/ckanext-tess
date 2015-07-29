@@ -219,12 +219,12 @@ def available_packages(material_id):
         print 'materials packages = %s \n' % material_packages_ids
         print 'users packages = %s \n' % users_packages_ids
 
-        associated_packages = [[package['id'], package['display_name']]
+        associated_packages = [{'id' : package['id'], 'display_name' : package['display_name']}
                            for package in users_packages if
                            package['id'] in material_packages_ids
                            and package['type'] == 'group']
 
-        available_packages = [[package['id'], package['display_name']]
+        available_packages = [{'id' : package['id'], 'display_name' : package['display_name']}
                            for package in users_packages if
                            package['type'] == 'group']
 
