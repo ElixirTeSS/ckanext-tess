@@ -43,8 +43,7 @@
     /*    $('#myModal').on('show', function(e){
      populateModal();
      });*/
-
-    /*   populateModal();*/
+     /*   populateModal();*/
     $('#material_listing').on('click', '.remove-material', function () {
         var data_dict = {
             "material_id": $(this).data('material_id'),
@@ -75,6 +74,9 @@
                         'data-package_id="' + data_dict['package_id'] + '" ' +
                         'data-package_name="' + data_dict['package_name'] + '">' +
                         data_dict['package_name'] + '</option>')
+                if ($('#assigned_packages-' + data_dict['material_id'] + ' li').length == 0) {
+                    $('#no_packages_text-' + data_dict['material_id']).show()
+                }
                 $(busy).toggle()
             },
             error: function (xhr, ajaxOptions, thrownError) {
@@ -118,7 +120,7 @@
                     'data-package_id="' + data_dict['package_id'] + '" ' +
                     'data-material_id="' + data_dict['material_id'] + '"' +
                     'data-package_name="' + data_dict['package_name'] + '"' +
-                    '> X </span>' +
+                    '> <i class="icon-remove-sign"></i> </span>' +
                     '<img src="http://s.brighthub.com/s/images/utility/spinner.gif?ver=1458" ' +
                     'id="busy-' + data_dict['material_id'] + '-' + data_dict['package_id'] + '" hidden/>' +
                     data_dict['package_name'] +
@@ -128,6 +130,8 @@
                 } else {
                     console.log('Error, could not associate event')
                 }
+                $('#no_packages_text-' + data_dict['material_id']).hide()
+
                 $(busy).toggle()
             },
             error: function (xhr, ajaxOptions, thrownError) {
@@ -167,14 +171,21 @@
                 {% if c.user %}
                 {% if c.material_package.get(material.get('id')) %}
                 <td>
-                    <ul id="assigned_packages-{{material.get('id')}}">
+                    {% if c.material_package.get(material.get('id'), {}).get('associated') %}
+                        <span id="no_packages_text-{{material.get('id')}}" class="empty" hidden><b>{{material.get('name')}}</b> is not included in any of your packages.</span>
+                    {% else %}
+                        <span id="no_packages_text-{{material.get('id')}}" class="empty"><b>{{material.get('name')}}</b> is not included in any of your packages.</span>
+                    {% endif %}
+                    <ul id="assigned_packages-{{material.get('id')}}" style="margin:0">
                         {% for package in c.material_package.get(material.get('id'), {}).get('associated') %}
                         <li id="listing-{{material.get('id')}}-{{package.get('id')}}" style="list-style:none">
                                 <span id="delete-{{material.get('id')}}-{{package.get('id')}}"
                                       class="remove-material"
                                       data-package_id="{{package.get('id')}}"
                                       data-material_id="{{material.get('id')}}"
-                                      data-package_name="{{package.get('display_name')}}">X</span>
+                                      data-package_name="{{package.get('display_name')}}">
+                                    <i class="icon-remove-sign"></i>
+                                </span>
                             <img src="http://s.brighthub.com/s/images/utility/spinner.gif?ver=1458"
                                 id="busy-{{material.get('id')}}-{{package.get('id')}}"
                                 alt="busy" hidden/>
