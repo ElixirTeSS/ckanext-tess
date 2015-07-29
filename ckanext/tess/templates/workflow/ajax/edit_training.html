@@ -4,8 +4,7 @@
         // Handler for .ready() called.
     });
 
-    $('#save-material').on('click', function(event) {
-        console.log("HEEERREE")
+    $('#modal-footer').on('click', '#save-material', function(event) {
         var selected = [];
         $('#training_materials input:checked').each(function() {
             selected.push({
@@ -18,8 +17,7 @@
     });
 
        function populateModal() {
-        if (action == 'edit') {
-            /* reset stuff */
+            $('#save-material').toggle();
             $('#training_materials input:checked').each(function () {
                 $(this).prop('checked', false);
             });
@@ -56,9 +54,6 @@
             } else {
                 $('#workflow-materials').html('<div class="empty">There are currently no associated materials with this workflow stage.</div>');
             }
-        } else {
-            $('#save-material').removeClass('hidden');
-        }
     }
 
 
