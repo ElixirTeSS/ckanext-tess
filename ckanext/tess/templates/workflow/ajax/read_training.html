@@ -182,12 +182,13 @@
                 {% if c.user %}
                 {% if c.material_package.get(material.get('id')) %}
                 <td>
+
                     <span id="no_packages_text-{{material.get('id')}}" class="empty"
-                        {% if c.material_package.get(material.get('id'), {}).get('associated') %}
+                        {% if c.material_package.get(material.get('id'), {}).get('associated', {}) %}
                         hidden {% endif %}
                     ><b>{{material.get('name')}}</b> is not included in any of your packages.</span>
                     <ul id="assigned_packages-{{material.get('id')}}" style="margin:0">
-                        {% for package in c.material_package.get(material.get('id'), {}).get('associated', {}) %}
+                        {% for package in c.material_package.get(material.get('id', {}), {}).get('associated', {}) %}
                         <li id="listing-{{material.get('id')}}-{{package.get('id')}}" style="list-style:none">
                                 <span id="delete-{{material.get('id')}}-{{package.get('id')}}"
                                       class="remove-material"
@@ -209,12 +210,12 @@
                     <select id="field-add_group-{{ material.get('id') }}" name="group_added" data-module="autocomplete">
                         {% if c.material_package.get(material.get('id')) %}
                         {% for package in c.material_package.get(material.get('id'), {}).get('available') %}
-                        <option value="{{ package[0] }}"
-                                id="select-option-{{ material.get('id') }}-{{ package[0] }}"
+                        <option value="{{ package.get('id') }}"
+                                id="select-option-{{ material.get('id') }}-{{ package.get('id') }}"
                                 data-material_id="{{material.get('id')}}"
                                 data-material_name="{{material.get('name')}}"
-                                data-package_name="{{package[1]}}">
-                            {{ package[1] }}
+                                data-package_name="{{package.get('display_name')}}">
+                            {{ package.get('display_name') }}
                         </option>
                         {% endfor %}
                         {% endif %}
