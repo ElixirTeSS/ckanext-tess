@@ -44,6 +44,10 @@
      populateModal();
      });*/
      /*   populateModal();*/
+    $(function() {
+        $('.modal-workflow-title').text(" {{c.node.get('name') }} ");
+    });
+
     $('#material_listing').on('click', '.remove-material', function () {
         var data_dict = {
             "material_id": $(this).data('material_id'),
