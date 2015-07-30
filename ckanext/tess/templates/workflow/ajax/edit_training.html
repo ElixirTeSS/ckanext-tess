@@ -1,7 +1,6 @@
 <script>
     $(function() {
         populateModal();
-        $('.modal-workflow-title').text(" {{c.node.get('name') }} ");
         // Handler for .ready() called.
     });
 
@@ -29,7 +28,7 @@
                 $('.modal-workflow-title').text(node.name);
             }
             else {
-                $('.modal-workflow-title').text('Unnamed Node');
+                $('.modal-workflow-title').text('Unnamed Stage');
             }
             if (node.description) {
                 $('.modal-workflow-description').text(node.description);
