@@ -164,7 +164,7 @@ def node_content(workflow_description):
         for node in nodes:
             node_data = node.get('data')
             node_content[node_data.get('id')] = {
-                'name': node_data.get('name', 'Unnamed Node'),
+                'name': node_data.get('name', 'Unnamed Stage'),
                 'description': node_data.get('description', None),
                 'materials': node_data.get('materials', [])
             }
