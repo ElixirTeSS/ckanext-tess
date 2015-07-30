@@ -1,6 +1,7 @@
 <script>
     $(function() {
         populateModal();
+        $('.modal-workflow-title').text(" {{c.node.get('name') }} ");
         // Handler for .ready() called.
     });
 
@@ -62,7 +63,7 @@
 <div>
     <h3>Description</h3>
     <div class="modal-workflow-description empty">No description set</div>
-    <h3>Training materials for <em class="modal-workflow-title"></em></h3>
+    <h3><em class="modal-workflow-title"></em></h3>
     <table id="workflow-materials"></table>
 </div>
 
