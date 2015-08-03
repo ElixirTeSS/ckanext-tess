@@ -17,6 +17,7 @@ class PackagePlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
 
     plugins.implements(plugins.IDatasetForm, inherit=False)
     plugins.implements(plugins.IPackageController, inherit=True)
+    plugins.implements(plugins.IFacets, inherit=True)
 
     def after_create(self, context, pkg_dict):
         create_or_update_association(pkg_dict)
