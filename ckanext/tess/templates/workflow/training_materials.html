@@ -7,7 +7,7 @@
 
 {% block show_specific %}
     <div class="workflow-training-materials-display">
-        <h3 class="heading">Training materials for {{c.workflow_dict.name}}</h3>
+        <h3 class="heading">Training materials</h3>
         {% for node, children in c.node_structure.iteritems() %}
             {% if children.get('root') %}
                 {% snippet 'workflow/snippets/workflow_stage_item.html', stage=c.node_content.get(node) %}

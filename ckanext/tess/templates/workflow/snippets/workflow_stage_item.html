@@ -12,7 +12,7 @@
 {% if stage %}
 <li style="list-style-type: none;">
     <div class="workflow-training-material-display">
-        <h4 class="heading">{{ stage.get('name') }}</h4>
+        <h4 class="heading">Workflow stage: {{ stage.get('name') }}</h4>
         {% if stage.get('description') %}
             <p> {{ stage.get('description') }}</p>
         {% endif %}
@@ -23,7 +23,7 @@
             {% endfor %}
             </ul>
         {% else %}
-            <span class="empty"> No training materials are associated with this workflow node.</span>
+            <span class="empty">No training materials are associated with this workflow stage.</span>
         {% endif %}
     </div>
 </li>

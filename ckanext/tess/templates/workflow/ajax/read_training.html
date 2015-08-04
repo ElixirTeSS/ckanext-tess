@@ -9,7 +9,7 @@
      else                    { $('.modal-workflow-title').text('Unnamed Node'); }
      if (node.description)   { $('.modal-workflow-description').text(node.description);
      $('.modal-workflow-description').removeClass('empty') }
-     else                    { $('.modal-workflow-description').text('There is no description for this workflow node.');
+     else                    { $('.modal-workflow-description').text('There is no description for this workflow stage.');
      $('.modal-workflow-description').addClass('empty') }
 
      if (node.materials != undefined && node.materials.constructor === Array && node.materials.length > 0) {
@@ -34,7 +34,7 @@
      $('#workflow-materials').append(row);
      });
      } else {
-     $('#workflow-materials').html('<div class="empty">There are no associated materials with this workflow node.</div>');
+     $('#workflow-materials').html('<div class="empty">There are no training materials associated with this workflow stage.</div>');
      }2
      } else {
      $('#save-material').removeClass('hidden');
@@ -45,7 +45,7 @@
      });*/
      /*   populateModal();*/
     $(function() {
-        $('.modal-workflow-title').text(" {{c.node.get('name') }} ");
+        $('.modal-workflow-title').text("Workflow stage: {{c.node.get('name')}}");
     });
 
     $('#material_listing').on('click', '.remove-material', function () {
@@ -160,23 +160,22 @@
 {% import 'macros/form.html' as form %}
 <input type="hidden" value="{{open_modal_url}}" id="open_modal_url">
 
-
 <div>
     <h3>Description</h3>
     {% if c.node.get('description') %}
     <div>{{c.node.get('description')}}</div>
     {% else %}
-    <div class="modal-workflow-description empty">No description for this node has been set</div>
+    <div class="modal-workflow-description empty">No description for this workflow stage has been set</div>
     {% endif %}
 
-    <h3>Training materials associated with <em class="modal-workflow-title">{{c.node.get('name')}}</em></h3>
+    <h3>Training materials associated with this workflow stage</h3>
     {% if c.node.get('materials') %}
     <div id="material_listing">
         <table class="table">
             {% if c.user %}
-                <th>Training Material</th>
-                <th>Included in My Packages:</th>
-                <th>My Packages</th>
+                <th>Training material</th>
+                <th>Included in my packages</th>
+                <th>My packages</th>
             {% endif %}
             {% for material in c.node.get('materials', {}) %}
             <tr>
@@ -228,11 +227,11 @@
                             id='submit-{{material.get("id")}}'
                             data-id='{{material.get("id")}}'
                             class="btn btn-primary add_to_package"
-                            title="{{ _('Add to Package') }}"
+                            title="{{ _('Add to package') }}"
                             {% if not c.material_package.get(material.get('id'), {}).get('available') %}
                                  disabled
                             {% endif %}
-                            >{{ _('Add to Package') }}
+                            >{{ _('Add to package') }}
                     </button>
                     </form>
                 </td>
@@ -241,7 +240,7 @@
             {% endfor %}
         </table>
         {% else %}
-        <div class="empty">There are no training materials associated with this node</div>
+        <div class="empty">There are no training materials associated with this workflow stage</div>
         {% endif %}
         <table class='table' id="workflow-materials"></table>
     </div>
