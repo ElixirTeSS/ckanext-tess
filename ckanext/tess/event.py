@@ -87,6 +87,7 @@ class EventController(HomeController):
         #This gets included in JS to associate event via AJAX
         c.key = c.userobj.apikey
         c.associated_events = get_associated_events_by_material_id(c.pkg_dict.get('id'))
+        c.include_expired_events = True
         setup_events()
         #Strip events that are already associated
         for event in c.associated_events:
@@ -373,7 +374,7 @@ def setup_events():
     c.rows = c.rows or request.params.get('rows', 25)
     c.sort_by_selected = request.params.get('sort', '')
     c.page_number = int(request.params.get('page', 0))
-    c.include_expired_events = request.params.get('include_expired', False)
+    c.include_expired_events = c.include_expired_events or request.params.get('include_expired', False)
 
     c.active_filters = {'event_type': c.event_type, 'field': c.field, 'country': c.country, 'provider': c.provider}
     filters = {}
