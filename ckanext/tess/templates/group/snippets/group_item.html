@@ -42,6 +42,8 @@ Example:
     {% if group.user_member %}
     <input name="group_remove.{{ group.id }}" value="{{ _('Remove') }}" type="submit" class="btn btn-danger btn-small media-edit" title="{{ _('Remove training material from this package') }}"/>
     {% endif %}
+
+    <p><em> Created by {{ group.owner.name }}</em></p>
     {% endblock %}
 </li>
 {% endblock %}

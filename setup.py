@@ -40,5 +40,7 @@ setup(
         event_controller=ckanext.tess.event:EventController
         event_api=ckanext.tess.event:EventApi
         tessrelations=ckanext.tess.tessrelations:TessrelationsPlugin
+        group=ckanext.tess.group:GroupPlugin
+
     ''',
 )
