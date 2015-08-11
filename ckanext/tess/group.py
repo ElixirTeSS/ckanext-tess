@@ -15,7 +15,6 @@ class GroupPlugin(plugins.SingletonPlugin):
         return group
 
 def group_owner(group):
-    print '%s \n\n ******END********' % group
     context = {'model': model, 'session': model.Session,
                 'user': c.user or c.author,
                 'for_view': True}
