@@ -70,7 +70,7 @@
 <table class='table' id="training_materials">
 {% for mat in c.training_materials %}
     <tr id="row-{{mat.get('id')}}">
-        <td style="width:20px;"><input type="checkbox" data-name="{{ mat['value'] }}" data-id="{{ mat['id'] }}" id="{{ mat['id'] }}" value="0"/></td>
+        <td style="width:20px;"><input style="position:static !important;" type="checkbox" data-name="{{ mat['value'] }}" data-id="{{ mat['id'] }}" id="{{ mat['id'] }}" value="0"/></td>
         <td><span id="">{{ mat['value'] }}</span></td>
     </tr>
 {% endfor %}
