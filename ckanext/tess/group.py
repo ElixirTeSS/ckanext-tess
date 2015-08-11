@@ -20,7 +20,7 @@ def group_owner(group):
                 'user': c.user or c.author,
                 'for_view': True}
     admin = logic.get_action('member_list')(context, {'id': group.get('name'), 'object_type': 'user', 'capacity': 'admin'})
-    if isinstance(admin, list) and admin[0][0]:
+    if admin and isinstance(admin, list) and admin[0][0]:
         user = logic.get_action('user_show')(context, {'id': admin[0][0]})
         return {'name': user.get('display_name'), 'link': user.get('id')}
     else:
