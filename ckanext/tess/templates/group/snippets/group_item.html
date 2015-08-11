@@ -43,7 +43,7 @@ Example:
     <input name="group_remove.{{ group.id }}" value="{{ _('Remove') }}" type="submit" class="btn btn-danger btn-small media-edit" title="{{ _('Remove training material from this package') }}"/>
     {% endif %}
 
-    {% if type == 'group' and group.owner.name %}
+    {% if type == 'group' and group.get('owner') and group.owner.get('name') %}
         <p><em> Created by {{ group.owner.name }}</em></p>
     {% endif %}
     {% endblock %}
