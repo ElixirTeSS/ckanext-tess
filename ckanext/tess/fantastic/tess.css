@@ -713,3 +713,8 @@ div#workflow_element_info ul.items{
     margin:auto;
     left:inherit;
 }
+
+.colour-picker{
+    background-color: #E7E7E7;
+    padding: 5px;
+}
