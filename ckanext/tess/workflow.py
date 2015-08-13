@@ -93,10 +93,10 @@ class WorkflowPlugin(plugins.SingletonPlugin):
         return {
             'workflow_list': authorized,
             'workflow_show': authorized, # action to show/view workflow
-            'workflow_new': workflow_actions_authz, # action to render a new workflow form
-            'workflow_create': workflow_actions_authz, # create a new workflow in the database
-            'workflow_update': workflow_actions_authz,
-            'workflow_delete': workflow_actions_authz
+            'workflow_new': workflow_create_authz, # action to render a new workflow form
+            'workflow_create': workflow_create_authz, # create a new workflow in the database
+            'workflow_update': workflow_update_delete_authz,
+            'workflow_delete': workflow_update_delete_authz
         }
 
 
@@ -427,12 +427,23 @@ class TessDomainObject(DomainObject):
         return query.filter_by(**kwds)
 
 
-def workflow_actions_authz(context, data_dict=None):
+def workflow_create_authz(context, data_dict=None):
+    print "create"
+    username = context.get('user')
+    if not username:
+        return {'success': False, 'msg': 'Only registered users can perform this action'}
+    else:
+        return {'success': True}
+
+def workflow_update_delete_authz(context, data_dict=None):
+
     # All registered users can perform workflow operations: new, create, update, delete.
     # Any user (even if not registered) can do: list and read.
 
     username = context.get('user')
     user = _get_user(username)
+
+    workflow_id = data_dict['id']
 
     # # Get a list of the members of the 'curators' group.
     # members = toolkit.get_action('member_list')(
@@ -462,7 +473,15 @@ def workflow_actions_authz(context, data_dict=None):
             # decorator was used in which case they are treated like all other
             # users.
         else:
-            return {'success': True}
+            if not workflow_id:
+                return {'success': False, 'msg': 'The workflow id must be supplied to determine if user is allowed to perform this action'}
+            else:
+                workflows = get_workflows_for_user(user.id)
+                # Is this workflow in the list of workflows for the user?
+                if workflow_id in workflows:
+                    return {'success': True}
+                else:
+                    return {'success': False, 'msg': 'You are not authorised to perform this action'}
         endif
     else:
         return {'success': False, 'msg': 'Only registered users can perform this action'}
