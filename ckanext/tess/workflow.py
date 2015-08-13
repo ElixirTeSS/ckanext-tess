@@ -428,7 +428,6 @@ class TessDomainObject(DomainObject):
 
 
 def workflow_create_authz(context, data_dict=None):
-    print "create"
     username = context.get('user')
     if not username:
         return {'success': False, 'msg': 'Only registered users can perform this action'}
@@ -436,7 +435,6 @@ def workflow_create_authz(context, data_dict=None):
         return {'success': True}
 
 def workflow_update_delete_authz(context, data_dict=None):
-
     # All registered users can perform workflow operations: new, create, update, delete.
     # Any user (even if not registered) can do: list and read.
 
@@ -478,10 +476,10 @@ def workflow_update_delete_authz(context, data_dict=None):
             else:
                 workflows = get_workflows_for_user(user.id)
                 # Is this workflow in the list of workflows for the user?
-                if workflow_id in workflows:
-                    return {'success': True}
-                else:
-                    return {'success': False, 'msg': 'You are not authorised to perform this action'}
+                for workflow in workflows:
+                    if workflow_id  == workflow['id']:
+                        return {'success': True}
+                return {'success': False, 'msg': 'You are not authorised to perform this action'}
         endif
     else:
         return {'success': False, 'msg': 'Only registered users can perform this action'}
