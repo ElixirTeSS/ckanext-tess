@@ -17,8 +17,6 @@ class GroupPlugin(plugins.SingletonPlugin, plugs.DefaultGroupForm):
         if c.controller == 'group':
             group['owner'] = group_owner(group)
             if c.userobj and c.userobj.id:
-                print group['owner'].get('link') == c.userobj.id
-                print group
                 group['display'] = True
             else:
                 group['display'] = False
