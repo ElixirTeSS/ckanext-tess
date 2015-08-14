@@ -25,7 +25,7 @@ from ckan.model.domain_object import DomainObject
 from ckanext.tess.model.tables import TessWorkflow
 
 import ckan.lib.helpers as h
-
+import xml.etree.ElementTree as ET
 import ckan.authz as authz
 
 abort = base.abort
@@ -178,6 +178,20 @@ def training_material_options():
         titles.append({'value': package['title'], 'id': package['id']})
     return titles
 
+
+def tool_options():
+    here = os.path.dirname(__file__)
+    file = os.path.join(here,'elixir_tools.xml')
+    tree = ET.parse(file)
+    root = tree.getroot()
+    tools = []
+    for resource in root.iter('{http://biotoolsregistry.org}resource'):
+        tool = {}
+        tool = {'name' : resource.find('{http://biotoolsregistry.org}name').text, 'link' : resource.find('{http://biotoolsregistry.org}homepage').text }
+        tools.append(tool)
+    return tools
+
+
 def get_workflows_for_user(user_id):
 
         workflows = model.Session.query(TessWorkflow).filter(TessWorkflow.creator_user_id == user_id)
@@ -260,7 +274,6 @@ class WorkflowController(HomeController):
             if c.userobj:
                 for material in c.node.get('materials'):
                     c.material_package[material.get('id')] = available_packages(material.get('id'))
-
             return base.render('workflow/ajax/read_training.html', extra_vars={'open_modal_url': request.url})
         except Exception:
             return base.render('workflow/ajax/read_training.html')
@@ -269,6 +282,7 @@ class WorkflowController(HomeController):
 
     def edit_training(self):
         c.training_materials = training_material_options()
+        c.tools = tool_options()
         return base.render('workflow/ajax/edit_training.html')
 
     def display_workflow_materials(self, id=None):

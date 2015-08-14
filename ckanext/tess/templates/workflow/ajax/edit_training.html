@@ -59,14 +59,26 @@
 
 </script>
 
+
 <div>
+
+<div id="navigate" class="h4" style="position:fixed; float:right; right: 400px">
+    <a href="#training_materials_head">Add Materials</a>
+    <br>
+<a href="#tools_head">Add Tools</a>
+</div>
+
+
     <h3>Description</h3>
     <div class="modal-workflow-description empty">No description set</div>
     <h3><em class="modal-workflow-title"></em></h3>
     <table id="workflow-materials"></table>
 </div>
 
-<h3>Add training materials to <em class="modal-workflow-title"></em>:</h3>
+<span id="training_materials_head">
+    <h3>Add training materials to <em class="modal-workflow-title"></em>:</h3>
+</span>
+
 <table class='table' id="training_materials">
 {% for mat in c.training_materials %}
     <tr id="row-{{mat.get('id')}}">
@@ -75,3 +87,18 @@
     </tr>
 {% endfor %}
 </table>
+
+<span id="tools_head">
+    <h3>Add tools to <em class="modal-workflow-title"></em>:</h3>
+</span>
+
+<table class='table' id="tools">
+{% for tool in c.tools %}
+    <tr id="row-{{tool.get('link')}}">
+        <td style="width:20px;">
+            <input style="position:static !important;" type="checkbox" data-name="{{ tool['name'] }}" data-id="{{ tool['link'] }}" id="{{ tool['link'] }}" value="0"/></td>
+        <td><span id="">{{ tool['name'] }}</span></td>
+    </tr>
+{% endfor %}
+</table>
+
