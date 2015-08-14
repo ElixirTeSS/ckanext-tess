@@ -1,4 +1,3 @@
-next/tess/plugin.pyc
-*.pyc
+ckanext/**/*.pyc
 .idea/
-ckanext_tess.egg-info/*
+*.egg-info/

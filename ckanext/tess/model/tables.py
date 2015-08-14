@@ -24,13 +24,22 @@ material_node_table = None
 tess_event_table = None
 
 def setup():
-    log.debug("In the setup...")
+    log.debug("Performing TeSS setup...")
     if material_event_table is None:
         define_tables()
 
         if not tess_event_table.exists():
-            log.debug("Creating events table.")
+            log.debug("Creating training events table.")
             tess_event_table.create()
+
+        if not tess_workflow_table.exists():
+            log.debug("Creating training workflows table.")
+            tess_workflow_table.create()
+
+        # Check if dataset/package table exists already - if not, exit setup
+        if not tess_dataset_table.exists():
+          log.debug("CKAN's dataset table does not exist - cannot proceed with creating material <-> event and material <-> node tables.")
+          return
 
         if not material_event_table.exists():
            log.debug("Creating material <-> event table.")
@@ -40,15 +49,9 @@ def setup():
             log.debug("Creating material <-> node table.")
             material_node_table.create()
 
-        if not tess_workflow_table.exists():
-            log.debug("Creating workflows table.")
-            tess_workflow_table.create()
-
-
-
 
 def define_tables():
-    log.debug("Defining tables")
+    log.debug("Defining TeSS tables...")
     global material_event_table
     global material_node_table
     global tess_event_table
