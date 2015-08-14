@@ -2,15 +2,29 @@
 import ckan.plugins as plugins
 import ckan.model as model
 import ckan.logic as logic
+import ckan.plugins.toolkit as toolkit
+import ckan.lib.plugins as plugs
+from pylons import c
 NotFound = logic.NotFound
 get_action = logic.get_action
-import ckan.plugins.toolkit as toolkit
-from pylons import c
 
-
-class GroupPlugin(plugins.SingletonPlugin, plugins.toolkit.DefaultGroupForm):
+class GroupPlugin(plugins.SingletonPlugin, plugs.DefaultGroupForm):
 
     plugins.implements(plugins.IGroupForm, inherit=False)
+    plugins.implements(plugins.interfaces.IGroupController, inherit=True)
+
+    def before_view(self, group):
+        if c.controller == 'group':
+            group['owner'] = group_owner(group)
+            if c.userobj and c.userobj.id:
+                print group['owner'].get('link') == c.userobj.id
+                print group
+                group['display'] = True
+            else:
+                group['display'] = False
+
+        return group
+
 
     def group_types(self):
         return ['group']
@@ -23,29 +37,29 @@ class GroupPlugin(plugins.SingletonPlugin, plugins.toolkit.DefaultGroupForm):
         schema = self._modify_group_schema(schema)
         return schema
 
+    def db_to_form_schema(self):
+        schema = super(GroupPlugin, self).form_to_db_schema()
+        _convert_from_extras = toolkit.get_converter('convert_from_extras')
+        _ignore_missing = toolkit.get_validator('ignore_missing')
+        _boolean = toolkit.get_validator('boolean_validator')
+        default_validators = [_convert_from_extras, _ignore_missing, _boolean]
+        schema.update({
+            'private': default_validators
+        })
+
+        return schema
+
     def _modify_group_schema(self, schema):
          #Import core converters and validators
         _convert_to_extras = toolkit.get_converter('convert_to_extras')
         _ignore_missing = toolkit.get_validator('ignore_missing')
+        _boolean = toolkit.get_validator('boolean_validator')
 
-        default_validators = [_ignore_missing, _convert_to_extras]
+        default_validators = [_ignore_missing, _boolean, _convert_to_extras]
         schema.update({
-            'member_status': [_convert_to_extras], #true or false
-            'country_code': [_convert_to_extras],
-            'home_page': default_validators,
-            'institutions': default_validators, # string in JSON format
-            'trc': default_validators,
-            'trc_email': default_validators,
-            'trc_image': default_validators,
-            'staff': default_validators, # in JSON format
-            'carousel_image_1': default_validators,
-            'carousel_image_2': default_validators,
-            'carousel_image_3': default_validators,
-            'twitter': default_validators
+            'private': default_validators
         })
         return schema
-
-
 
 
 def group_owner(group):
@@ -58,3 +72,4 @@ def group_owner(group):
         return {'name': user.get('display_name'), 'link': user.get('id')}
     else:
         return {'name': 'unknown', 'link': '--'}
+
