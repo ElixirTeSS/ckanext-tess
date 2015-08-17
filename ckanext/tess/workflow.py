@@ -187,7 +187,9 @@ def tool_options():
     tools = []
     for resource in root.iter('{http://biotoolsregistry.org}resource'):
         tool = {}
-        tool = {'name' : resource.find('{http://biotoolsregistry.org}name').text, 'link' : resource.find('{http://biotoolsregistry.org}homepage').text }
+        tool = {'name' : resource.find('{http://biotoolsregistry.org}name').text,
+                'link' : resource.find('{http://biotoolsregistry.org}homepage').text,
+                'description' : resource.find('{http://biotoolsregistry.org}description').text}
         tools.append(tool)
     return tools
 
