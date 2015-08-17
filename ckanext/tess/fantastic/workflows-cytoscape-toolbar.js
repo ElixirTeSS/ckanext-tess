@@ -12,6 +12,8 @@ var default_edge_colour = '#848383';
 var default_selected_colour = '#2A62E4';
 var action; // 'show', 'new' or 'edit'
 
+var activity_log = []
+
 
 //$( document ).one('click', '.tool-item, .selected-tool', function(event) {
 //    alert('you clicked a '+$(event.target).attr('class')+' element');
@@ -37,6 +39,24 @@ function drawGraph(workflow, workflow_action) {
 
     $('#associate-training-materials').click(function(e){
         loadTrainingMaterialModal();
+    })
+
+    $('#zoom_enabled').click(function(e){
+        /*ENABLE ZOOM*/
+        if ($('#zoom_enabled').attr('data-value') == 'false'){
+            cy.zoomingEnabled(true)
+            $('#zoom_enabled').attr('data-value', 'true')
+            $('#zoom_enabled').text('Disable Zoom')
+        } else {
+        /* DISABLE ZOOM*/
+            cy.zoom({
+                level: 1.0,
+                renderedPosition: { x: 0, y: 0 }
+            })
+            cy.zoomingEnabled(false)
+            $('#zoom_enabled').attr('data-value', 'false')
+            $('#zoom_enabled').text('Enable Zoom')
+        }
     })
 
     $('#save_workflow_element_properties').click(function(e){
@@ -175,7 +195,8 @@ function drawGraph(workflow, workflow_action) {
         selectionType: 'single',
 
         maxZoom: 1.5,
-        minZoom: 0.5
+        minZoom: 0.5,
+        zoomEnabled: false
 
     });
 
