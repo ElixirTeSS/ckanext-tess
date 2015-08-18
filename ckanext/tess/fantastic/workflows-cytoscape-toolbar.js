@@ -48,9 +48,10 @@ function drawGraph(workflow, workflow_action) {
     })
     $('#disable_zoom').click(function(e){
         cy.zoom({
-            level: 1.0,
+            level: 1.5,
             renderedPosition: { x: 0, y: 0 }
         })
+        cy.center()
         cy.zoomingEnabled(false)
         $('#enable_zoom').toggle()
         $('#disable_zoom').toggle()
