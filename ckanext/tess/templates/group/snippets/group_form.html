@@ -13,7 +13,7 @@
     {% set prefix = h.url_for(controller='group', action='read', id='') %}
     {% set domain = h.url_for(controller='group', action='read', id='', qualified=true) %}
     {% set domain = domain|replace("http://", "")|replace("https://", "") %}
-    {% set attrs = {'data-module': 'slug-preview-slug', 'data-module-prefix': domain, 'data-module-placeholder': '<group>'} %}
+    {% set attrs = {'data-module': 'slug-preview-slug', 'data-module-prefix': domain, 'data-module-placeholder': '<>'} %}
 
     {{ form.prepend('name', label=_('URL'), prepend=prefix, id='field-url', placeholder=_('my-package'), value=data.name, error=errors.name, attrs=attrs, is_required=true) }}
 
@@ -51,6 +51,22 @@
     ) }}
     {% endfor %}
     {% endblock %}
+
+    <div class="control-group">
+        <label class="control-label" for="field-private">{{ _("Publicly Visible") }}</label>
+        <div class="controls">
+          <select type='dropdown' id='private' name="private" value="true">
+              {% if data.get('private') == True %}
+                    <option selected>True</option>
+                    <option>False</option>
+              {% else %}
+                    <option selected>False</option>
+                    <option>True</option>
+              {% endif %}
+          </select>
+      </div>
+      </div>
+
 
     {{ form.required_message() }}
 
