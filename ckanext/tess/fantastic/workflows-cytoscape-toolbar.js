@@ -6,7 +6,7 @@ jQuery.noConflict();
 
 var default_node_width = 150;
 var default_node_height = 30;
-var default_font_size = 11;
+var default_font_size = 9;
 var default_node_colour = '#7bd148';
 var default_edge_colour = '#848383';
 var default_selected_colour = '#2A62E4';
@@ -146,7 +146,7 @@ function drawGraph(workflow, workflow_action) {
                     'text-halign': 'center',
                     'width': 'auto',
                     'height': 'auto',
-                    'font-size': default_font_size + 2
+                    'font-size': default_font_size
                 }
             },
             {
@@ -361,11 +361,11 @@ function updateWorkflowElement() {
 
     if (current_selected.isEdge()) {
         current_selected.data('name',$('#element-name').val());
-        current_selected.data('short_name',truncateString($('#element-name').val(), 20));
+        current_selected.data('short_name',truncateString($('#element-name').val(), 25));
     } else {
         /* set model properties */
         current_selected.data('name',$('#element-name').val());
-        current_selected.data('short_name',truncateString($('#element-name').val(), 30));
+        current_selected.data('short_name',truncateString($('#element-name').val(), 37));
         current_selected.data('color',$('#colorpicker-longlist').val());
         current_selected.data('description',$('#element-description').val());
         current_selected.data('topic',$('#element-topic').val());
