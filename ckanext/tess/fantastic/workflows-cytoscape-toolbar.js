@@ -41,23 +41,21 @@ function drawGraph(workflow, workflow_action) {
         loadTrainingMaterialModal();
     })
 
-    $('#zoom_enabled').click(function(e){
-        /*ENABLE ZOOM*/
-        if ($('#zoom_enabled').attr('data-value') == 'false'){
-            cy.zoomingEnabled(true)
-            $('#zoom_enabled').attr('data-value', 'true')
-            $('#zoom_enabled').text('Disable Zoom')
-        } else {
-        /* DISABLE ZOOM*/
-            cy.zoom({
-                level: 1.0,
-                renderedPosition: { x: 0, y: 0 }
-            })
-            cy.zoomingEnabled(false)
-            $('#zoom_enabled').attr('data-value', 'false')
-            $('#zoom_enabled').text('Enable Zoom')
-        }
+    $('#enable_zoom').click(function(e){
+        cy.zoomingEnabled(true)
+        $('#enable_zoom').toggle()
+        $('#disable_zoom').toggle()
     })
+    $('#disable_zoom').click(function(e){
+        cy.zoom({
+            level: 1.0,
+            renderedPosition: { x: 0, y: 0 }
+        })
+        cy.zoomingEnabled(false)
+        $('#enable_zoom').toggle()
+        $('#disable_zoom').toggle()
+    })
+
 
     $('#save_workflow_element_properties').click(function(e){
         saveWorkflowElementProperties();
