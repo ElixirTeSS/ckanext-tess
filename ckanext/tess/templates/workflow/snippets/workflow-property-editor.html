@@ -31,7 +31,7 @@
                 <div id="element-type" class="controls" style="background-color: #8CA0A6; color: white; font-weight: bold;"></div>
             </div>
             <div>
-            {{ form.input('title', label=_('Name'), id='element-name', placeholder=_('Element name'), classes=['control-full margin-bottom-0']) }}
+            {{ form.textarea('title', label=_('Name'), id='element-name', placeholder=_('Element name'), classes=['control-full margin-bottom-0']) }}
             {{ form.textarea('description', label=_('Description'), id='element-description', placeholder=_('Short description (max 5 sentences)'), classes=['control-full margin-bottom-0']) }}
             {{ form.select('colorpicker-longlist', label=_('Colour'), id='colorpicker-longlist', options=colour_list, classes=['control-full', 'colour-picker']) }}
             {#{ form.select('topic', label=_('Topic'), id='element-topic', options=[{'value':'Topic 1'},{'value':'Topic 2'},{'value':'Topic 3'}], selected='Topic 1', classes=['control-full']) }#}
