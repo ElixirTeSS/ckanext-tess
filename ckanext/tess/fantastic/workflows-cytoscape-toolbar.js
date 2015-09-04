@@ -487,6 +487,7 @@ function addChildNodeToNode(e){
             },
             selected: true
         }
+        create_undo_point()
         var newChild = e.cy.add(object)
         newChild.select();
         evtTarget.unselect();
@@ -520,18 +521,18 @@ function addObject(e, action) {
         },
         selected: true
     }
-    workflow_undo_revisions.push(window.cy.json())
-    workflow_redo_revisions = []
-    set_reversion_buttons()
-    console.log(workflow_undo_revisions)
-
+    create_undo_point()
     e.cy.add(object).addClass('tool-node').addClass(tool.options.clazz);
     openWorkflowPropertyEditor();
     updateJSONDump();
 }
 
 //#endregion
-
+function create_undo_point(){
+    workflow_undo_revisions.push(window.cy.json())
+    workflow_redo_revisions = []
+    set_reversion_buttons()
+}
 //#region linking
 var src;
 function performLink(e) {
@@ -540,6 +541,7 @@ function performLink(e) {
     }
 
     if (src) {
+        create_undo_point()
         tgt = e.cyTarget;
 
         e.cy.add({
@@ -572,7 +574,7 @@ function performRemove(e) {
     if (!e.data.canPerform(e, performRemove)) {
         return;
     }
-
+    create_undo_point()
     cy.remove(e.cyTarget);
     closeWorkflowPropertyEditor();
     updateJSONDump();
