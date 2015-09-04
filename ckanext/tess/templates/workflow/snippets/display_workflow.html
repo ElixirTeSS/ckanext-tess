@@ -23,7 +23,10 @@
 <button class="btn pull-right" id="disable_zoom" style="background-image:none; margin: 0px 15px 5px 0px; width: 150px;"><i class="pull-left fa fa-search-plus" style="opacity: 0.3;"></i>Disable zoom</button>
 </div>
 {% endif %}
-
+{% if action=='edit'%}
+<button id="undo-button"><-UNDO</button>
+<button id="redo-button">REDO-></button>
+{% endif %}
 <div id="cy" style="float: right; margin-right: 15px" class="cy col-md-6 col-md-offset-1"></div>
 
 <div id="modal_container">
@@ -32,7 +35,6 @@
 <input type='text' id="node-info" class="hidden"/>
 <input type='text' id="node-id" class="hidden"/>
 <input type='text' id="workflow-id" class="hidden" value="{{c.workflow_dict.id}}"/>
-
 <div id="other_modal"></div>
 <script>
     $(document).ready(function(){
