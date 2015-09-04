@@ -19,13 +19,15 @@
 
 {% if action=='show'%}
 <div class="zoom_config">
-<button class="btn pull-right" id="enable_zoom" style="display:none; margin: 0px 15px 5px 0px; width: 150px;"><i class="pull-left fa fa-search-plus"></i>Enable zoom</button>
-<button class="btn pull-right" id="disable_zoom" style="background-image:none; margin: 0px 15px 5px 0px; width: 150px;"><i class="pull-left fa fa-search-plus" style="opacity: 0.3;"></i>Disable zoom</button>
+    <button class="btn pull-right" id="enable_zoom" style="display:none; margin: 0px 15px 5px 0px; width: 150px;"><i class="pull-left fa fa-search-plus"></i>Enable zoom</button>
+    <button class="btn pull-right" id="disable_zoom" style="background-image:none; margin: 0px 15px 5px 0px; width: 150px;"><i class="pull-left fa fa-search-plus" style="opacity: 0.3;"></i>Disable zoom</button>
 </div>
 {% endif %}
 {% if action=='edit'%}
-<button id="undo-button"><-UNDO</button>
-<button id="redo-button">REDO-></button>
+<div style=" margin: 0 0 0 50px ">
+    <button class="btn" id="undo-button"><i class="fa fa-undo"></i> Undo</button>
+    <button class="btn" id="redo-button"><i class="fa fa-repeat"></i> Redo </button>
+</div>
 {% endif %}
 <div id="cy" style="float: right; margin-right: 15px" class="cy col-md-6 col-md-offset-1"></div>
 
