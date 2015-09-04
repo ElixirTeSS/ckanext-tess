@@ -16706,7 +16706,7 @@ this.cytoscape = cytoscape;
     var style = ele._private.style;
 
     var text = ele._private.style['content'].strValue;
-    console.log(text)
+    /*console.log(text)*/
     var textTransform = style['text-transform'].value;
     var rscratch = ele._private.rscratch;
 
