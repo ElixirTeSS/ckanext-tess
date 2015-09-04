@@ -12,8 +12,9 @@ var default_edge_colour = '#848383';
 var default_selected_colour = '#2A62E4';
 var action; // 'show', 'new' or 'edit'
 
-var activity_log = []
-
+var workflow_undo_revisions = []
+var workflow_redo_revisions = []
+set_reversion_buttons()
 
 //$( document ).one('click', '.tool-item, .selected-tool', function(event) {
 //    alert('you clicked a '+$(event.target).attr('class')+' element');
@@ -27,8 +28,43 @@ var activity_log = []
 
 
 
+
+
 $('#modal_container').load('/workflow_modal.html');
 
+    $('#undo-button').click(function(e){
+        if (workflow_undo_revisions.length > 0){
+            workflow_redo_revisions.push(window.cy.json())
+            var workflow_revision = workflow_undo_revisions.pop()
+            drawGraph(workflow_revision ,'edit');
+            console.log(workflow_undo_revisions)
+            set_reversion_buttons()
+        }
+    });
+
+    $('#redo-button').click(function(e){
+         if (workflow_redo_revisions.length > 0){
+            workflow_undo_revisions.push(window.cy.json())
+            var workflow_revision = workflow_redo_revisions.pop()
+            drawGraph(workflow_revision ,'edit');
+            console.log(workflow_redo_revisions)
+            set_reversion_buttons()
+        }
+    });
+
+
+function set_reversion_buttons(){
+    if (workflow_redo_revisions.length == 0) {
+        $('#redo-button').prop('disabled', true)
+    } else {
+        $('#redo-button').prop('disabled', false)
+    }
+    if (workflow_undo_revisions.length == 0) {
+        $('#undo-button').prop('disabled', true)
+    } else {
+        $('#undo-button').prop('disabled', false)
+    }
+}
 
 function drawGraph(workflow, workflow_action) {
 
@@ -106,8 +142,6 @@ function drawGraph(workflow, workflow_action) {
         closeWorkflowPropertyEditor();
         $('#associate-training-materials').toggle()
     });
-
-
 
     var cy = window.cy = cytoscape({
         container: document.getElementById('cy'),
@@ -420,7 +454,6 @@ function loadTrainingMaterialModal(e) {
 }
 
 function addNodeToGraph(e) {
-
     var evtTarget = e.cyTarget;
     if (!e.data.canPerform(e, addNodeToGraph)) {
         return;
@@ -431,6 +464,7 @@ function addNodeToGraph(e) {
 }
 
 function addChildNodeToNode(e){
+
     var evtTarget = e.cyTarget;
     if (!e.data.canPerform(e, addChildNodeToNode)) {
         return;
@@ -486,6 +520,11 @@ function addObject(e, action) {
         },
         selected: true
     }
+    workflow_undo_revisions.push(window.cy.json())
+    workflow_redo_revisions = []
+    set_reversion_buttons()
+    console.log(workflow_undo_revisions)
+
     e.cy.add(object).addClass('tool-node').addClass(tool.options.clazz);
     openWorkflowPropertyEditor();
     updateJSONDump();
