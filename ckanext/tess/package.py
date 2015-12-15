@@ -42,8 +42,8 @@ class PackagePlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
 
         schema.update({
             'node_id': [_ignore_missing, _convert_to_extras],
-            'url': [_not_empty, _url_validator],
-            'notes': [_not_empty, _not_missing]
+            'url': [_ignore_missing, _url_validator],
+            'notes': [_ignore_missing]
         })
         schema['resources'].update({ 'image_url' : [ _convert_to_extras, _ignore_missing, _url_validator ] })
         return schema
@@ -61,8 +61,8 @@ class PackagePlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
 
         schema.update({
             'node_id': [_convert_from_extras, _ignore_missing],
-            'url': [_not_empty, _url_validator],
-            'notes': [_not_empty, _not_missing]
+            'url': [_ignore_missing, _url_validator],
+            'notes': [_ignore_missing]
         })
         schema['resources'].update({ 'image_url' : [ _convert_from_extras, _ignore_missing, _url_validator ] })
         return schema
